@@ -1,6 +1,6 @@
 {
   "name": "@metorial/util-websocket",
-  "version": "1.0.0",
+  "version": "1.0.0-rc.1",
   "author": "Tobias Herber",
   "license": "MIT",
   "type": "module",

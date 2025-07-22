@@ -1,7 +1,10 @@
 {
   "name": "@metorial/metorial-js-root",
   "private": true,
-  "scripts": {},
+  "scripts": {
+    "test": "turbo run --concurrency=1 --ui=stream test",
+    "build": "turbo run --ui=stream build"
+  },
   "devDependencies": {
     "prettier": "^3.5.3",
     "turbo": "^2.5.4",
