@@ -1,0 +1,21 @@
+{
+  "name": "@metorial/metorial-js-root",
+  "private": true,
+  "scripts": {},
+  "devDependencies": {
+    "prettier": "^3.5.3",
+    "turbo": "^2.5.4",
+    "typescript": "5.8.2"
+  },
+  "engines": {
+    "node": ">=18",
+    "bun": ">=1.2.15"
+  },
+  "packageManager": "bun@1.2.15",
+  "workspaces": [
+    "mcp/*",
+    "packages/*",
+    "sdk/*"
+  ],
+  "dependencies": {}
+}
