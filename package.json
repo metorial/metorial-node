@@ -18,6 +18,7 @@
   "workspaces": [
     "mcp/*",
     "packages/*",
+    "examples/*",
     "sdk/*"
   ],
   "dependencies": {}
