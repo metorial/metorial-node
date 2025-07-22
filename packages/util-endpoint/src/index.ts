@@ -1,4 +1,4 @@
-import 'cross-fetch/polyfill';
+import './fetch';
 
 export * from './endpoints';
 export * from './error';
