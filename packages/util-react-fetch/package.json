@@ -30,7 +30,8 @@
   },
   "dependencies": {
     "@metorial/util-endpoint": "^1.0.0-rc.1",
-    "@metorial/util-memo": "^1.0.0-rc.1"
+    "@metorial/util-memo": "^1.0.0-rc.1",
+    "@types/react": "^19.1.8"
   },
   "devDependencies": {
     "@types/isomorphic-fetch": "^0.0.39",
