@@ -1,0 +1,40 @@
+name: 'Publish'
+
+on:
+  workflow_dispatch:
+  push:
+  pull_request:
+    branches:
+      - dev
+      - main
+
+jobs:
+  publish:
+    name: 'Publish'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Install Packages
+        run: bun i
+
+      - name: Build Packages
+        run: bun run build
+
+      - name: Test
+        run: bun run test
+
+      - name: Publish
+        run: npx -y @changesets/cli publish
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
