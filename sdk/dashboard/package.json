@@ -1,6 +1,6 @@
 {
   "name": "@metorial/dashboard-sdk",
-  "version": "1.0.0",
+  "version": "1.0.0-rc.1",
   "author": "Tobias Herber",
   "license": "MIT",
   "type": "module",
@@ -25,9 +25,9 @@
     "dist"
   ],
   "dependencies": {
-    "@metorial/fetch": "^1.0.0",
-    "@metorial/generated": "^1.0.0",
-    "@metorial/util-endpoint": "^1.0.0"
+    "@metorial/fetch": "^1.0.0-rc.1",
+    "@metorial/generated": "^1.0.0-rc.1",
+    "@metorial/util-endpoint": "^1.0.0-rc.1"
   },
   "devDependencies": {
     "@types/isomorphic-fetch": "^0.0.39",
