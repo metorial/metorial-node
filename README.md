@@ -290,57 +290,12 @@ Check out the `examples/` directory for more comprehensive examples:
 - [`examples/typescript-anthropic/`](examples/typescript-anthropic/) - Anthropic integration
 - [`examples/typescript-ai-sdk/`](examples/typescript-ai-sdk/) - AI SDK integration
 
-## Requirements
-
-- Node.js 18+
-- TypeScript 5.0+ (for TypeScript projects)
-- Provider-specific SDKs (optional):
-  - `openai` for OpenAI integration
-  - `@anthropic-ai/sdk` for Anthropic integration
-  - `@google/generative-ai` for Google integration
-  - `@mistralai/mistralai` for Mistral integration
-
-## Development
-
-This project includes build scripts to help with common development tasks:
-
-### Setup and Installation
-
-```bash
-npm install        # Install dependencies
-# or
-bun install       # If using Bun
-```
-
-### Build and Test
-
-```bash
-bun run build     # Build all packages
-bun run test      # Run test suite
-```
-
-### Package Management
-
-This is a monorepo using workspaces. The structure includes:
-
-- `mcp/` - MCP provider integrations
-- `packages/` - Core utilities and shared packages
-- `examples/` - Example implementations
-- `sdk/` - Core SDK packages
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Submit a pull request
-
 ## License
 
 MIT License - see [LICENSE](LICENSE) file for details.
 
 ## Support
 
-- 📖 [Documentation](https://docs.metorial.com)
+- 📖 [Documentation](https://metorial.com/docs)
 - 🐛 [GitHub Issues](https://github.com/metorial/metorial-node/issues)
 - 📧 [Email Support](mailto:support@metorial.com)
