@@ -23,6 +23,14 @@ The official Node.js/TypeScript SDK for [Metorial](https://metorial.com) - AI-po
 
 🔄 **Format Conversion**: Provider-specific tool format conversion
 
+## Examples
+
+Check out the `examples/` directory for more comprehensive examples:
+
+- [`examples/typescript-openai/`](examples/typescript-openai/) - OpenAI integration
+- [`examples/typescript-anthropic/`](examples/typescript-anthropic/) - Anthropic integration
+- [`examples/typescript-ai-sdk/`](examples/typescript-ai-sdk/) - AI SDK integration
+
 ## Installation
 
 ```bash
@@ -281,14 +289,6 @@ try {
   }
 }
 ```
-
-## Examples
-
-Check out the `examples/` directory for more comprehensive examples:
-
-- [`examples/typescript-openai/`](examples/typescript-openai/) - OpenAI integration
-- [`examples/typescript-anthropic/`](examples/typescript-anthropic/) - Anthropic integration
-- [`examples/typescript-ai-sdk/`](examples/typescript-ai-sdk/) - AI SDK integration
 
 ## License
 
