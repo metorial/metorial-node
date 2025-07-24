@@ -1,6 +1,6 @@
 # Metorial Node.js SDK
 
-The official Node.js/TypeScript SDK for [Metorial](https://metorial.com) - AI-powered tool calling and session management.
+The official Node.js/TypeScript SDK for [Metorial](https://metorial.com) - The open source integration platform for agentic AI
 
 ## Features
 
