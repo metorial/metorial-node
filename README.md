@@ -16,8 +16,11 @@ The official Node.js/TypeScript SDK for [Metorial](https://metorial.com) - AI-po
 - ✅ AI SDK frameworks
 
 🚀 **Easy Integration**: Simple async/await interface
+
 📡 **Session Management**: Automatic session lifecycle handling
+
 🛠️ **Tool Discovery**: Automatic tool detection and formatting
+
 🔄 **Format Conversion**: Provider-specific tool format conversion
 
 ## Installation
