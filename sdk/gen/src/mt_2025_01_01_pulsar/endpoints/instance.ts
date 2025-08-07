@@ -31,10 +31,9 @@ export class MetorialInstanceEndpoint extends BaseMetorialEndpoint<any> {
    * @see https://metorial.com/api
    * @see https://metorial.com/docs
    */
-  get(): Promise<DashboardInstanceInstanceGetOutput> {
-    let path = 'instance';
+  get() {
     return this._get({
-      path
+      path: ['instance']
     }).transform(mapDashboardInstanceInstanceGetOutput);
   }
 }

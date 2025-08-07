@@ -31,10 +31,9 @@ export class MetorialServersEndpoint extends BaseMetorialEndpoint<any> {
    * @see https://metorial.com/api
    * @see https://metorial.com/docs
    */
-  get(serverId: string): Promise<DashboardInstanceServersGetOutput> {
-    let path = `servers/${serverId}`;
+  get(serverId: string) {
     return this._get({
-      path
+      path: ['servers', serverId]
     }).transform(mapDashboardInstanceServersGetOutput);
   }
 }

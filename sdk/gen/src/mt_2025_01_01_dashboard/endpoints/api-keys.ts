@@ -51,10 +51,9 @@ export class MetorialApiKeysEndpoint extends BaseMetorialEndpoint<any> {
    * @see https://metorial.com/api
    * @see https://metorial.com/docs
    */
-  list(query?: ApiKeysListQuery): Promise<ApiKeysListOutput> {
-    let path = 'api-keys';
+  list(query?: ApiKeysListQuery) {
     return this._get({
-      path,
+      path: ['api-keys'],
 
       query: query ? mapApiKeysListQuery.transformTo(query) : undefined
     }).transform(mapApiKeysListOutput);
@@ -71,10 +70,9 @@ export class MetorialApiKeysEndpoint extends BaseMetorialEndpoint<any> {
    * @see https://metorial.com/api
    * @see https://metorial.com/docs
    */
-  get(apiKeyId: string): Promise<ApiKeysGetOutput> {
-    let path = `api-keys/${apiKeyId}`;
+  get(apiKeyId: string) {
     return this._get({
-      path
+      path: ['api-keys', apiKeyId]
     }).transform(mapApiKeysGetOutput);
   }
 
@@ -89,10 +87,9 @@ export class MetorialApiKeysEndpoint extends BaseMetorialEndpoint<any> {
    * @see https://metorial.com/api
    * @see https://metorial.com/docs
    */
-  create(body: ApiKeysCreateBody): Promise<ApiKeysCreateOutput> {
-    let path = 'api-keys';
+  create(body: ApiKeysCreateBody) {
     return this._post({
-      path,
+      path: ['api-keys'],
       body: mapApiKeysCreateBody.transformTo(body)
     }).transform(mapApiKeysCreateOutput);
   }
@@ -109,13 +106,9 @@ export class MetorialApiKeysEndpoint extends BaseMetorialEndpoint<any> {
    * @see https://metorial.com/api
    * @see https://metorial.com/docs
    */
-  update(
-    apiKeyId: string,
-    body: ApiKeysUpdateBody
-  ): Promise<ApiKeysUpdateOutput> {
-    let path = `api-keys/${apiKeyId}`;
+  update(apiKeyId: string, body: ApiKeysUpdateBody) {
     return this._post({
-      path,
+      path: ['api-keys', apiKeyId],
       body: mapApiKeysUpdateBody.transformTo(body)
     }).transform(mapApiKeysUpdateOutput);
   }
@@ -131,10 +124,9 @@ export class MetorialApiKeysEndpoint extends BaseMetorialEndpoint<any> {
    * @see https://metorial.com/api
    * @see https://metorial.com/docs
    */
-  revoke(apiKeyId: string): Promise<ApiKeysRevokeOutput> {
-    let path = `api-keys/${apiKeyId}`;
+  revoke(apiKeyId: string) {
     return this._delete({
-      path
+      path: ['api-keys', apiKeyId]
     }).transform(mapApiKeysRevokeOutput);
   }
 
@@ -150,13 +142,9 @@ export class MetorialApiKeysEndpoint extends BaseMetorialEndpoint<any> {
    * @see https://metorial.com/api
    * @see https://metorial.com/docs
    */
-  rotate(
-    apiKeyId: string,
-    body: ApiKeysRotateBody
-  ): Promise<ApiKeysRotateOutput> {
-    let path = `api-keys/${apiKeyId}/rotate`;
+  rotate(apiKeyId: string, body: ApiKeysRotateBody) {
     return this._post({
-      path,
+      path: ['api-keys', apiKeyId, 'rotate'],
       body: mapApiKeysRotateBody.transformTo(body)
     }).transform(mapApiKeysRotateOutput);
   }
@@ -172,10 +160,9 @@ export class MetorialApiKeysEndpoint extends BaseMetorialEndpoint<any> {
    * @see https://metorial.com/api
    * @see https://metorial.com/docs
    */
-  reveal(apiKeyId: string): Promise<ApiKeysRevealOutput> {
-    let path = `api-keys/${apiKeyId}/reveal`;
+  reveal(apiKeyId: string) {
     return this._post({
-      path
+      path: ['api-keys', apiKeyId, 'reveal']
     }).transform(mapApiKeysRevealOutput);
   }
 }

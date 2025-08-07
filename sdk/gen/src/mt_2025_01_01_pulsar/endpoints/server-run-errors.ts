@@ -35,12 +35,9 @@ export class MetorialServerRunErrorsEndpoint extends BaseMetorialEndpoint<any> {
    * @see https://metorial.com/api
    * @see https://metorial.com/docs
    */
-  list(
-    query?: DashboardInstanceServerRunErrorsListQuery
-  ): Promise<DashboardInstanceServerRunErrorsListOutput> {
-    let path = 'server-run-errors';
+  list(query?: DashboardInstanceServerRunErrorsListQuery) {
     return this._get({
-      path,
+      path: ['server-run-errors'],
 
       query: query
         ? mapDashboardInstanceServerRunErrorsListQuery.transformTo(query)
@@ -59,12 +56,9 @@ export class MetorialServerRunErrorsEndpoint extends BaseMetorialEndpoint<any> {
    * @see https://metorial.com/api
    * @see https://metorial.com/docs
    */
-  get(
-    serverRunErrorId: string
-  ): Promise<DashboardInstanceServerRunErrorsGetOutput> {
-    let path = `server-run-errors/${serverRunErrorId}`;
+  get(serverRunErrorId: string) {
     return this._get({
-      path
+      path: ['server-run-errors', serverRunErrorId]
     }).transform(mapDashboardInstanceServerRunErrorsGetOutput);
   }
 }
