@@ -1,6 +1,6 @@
 {
   "name": "@metorial/google",
-  "version": "1.0.0-rc.1",
+  "version": "1.0.0-rc.2",
   "author": "Tobias Herber",
   "license": "MIT",
   "type": "module",
@@ -25,11 +25,11 @@
     "dist"
   ],
   "dependencies": {
-    "@metorial/core": "^1.0.0-rc.1",
-    "@metorial/mcp-sdk-utils": "^1.0.0-rc.1",
-    "@metorial/mcp-session": "^1.0.0-rc.1",
-    "@metorial/openai-compatible": "^1.0.0-rc.1",
-    "@metorial/sdk": "^1.0.0-rc.1"
+    "@metorial/core": "^1.0.0-rc.2",
+    "@metorial/mcp-sdk-utils": "^1.0.0-rc.2",
+    "@metorial/mcp-session": "^1.0.0-rc.2",
+    "@metorial/openai-compatible": "^1.0.0-rc.2",
+    "@metorial/sdk": "^1.0.0-rc.2"
   },
   "peerDependencies": {
     "@google/genai": "*"
