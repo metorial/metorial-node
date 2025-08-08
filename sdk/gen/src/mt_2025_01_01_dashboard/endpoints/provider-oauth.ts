@@ -33,9 +33,12 @@ export class MetorialProviderOauthEndpoint extends BaseMetorialEndpoint<any> {
    * @see https://metorial.com/api
    * @see https://metorial.com/docs
    */
-  discover(body: ProviderOauthDiscoverBody) {
+  discover(
+    body: ProviderOauthDiscoverBody
+  ): Promise<ProviderOauthDiscoverOutput> {
+    let path = 'provider-oauth-discovery';
     return this._post({
-      path: ['provider-oauth-discovery'],
+      path,
       body: mapProviderOauthDiscoverBody.transformTo(body)
     }).transform(mapProviderOauthDiscoverOutput);
   }
