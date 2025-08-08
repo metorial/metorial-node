@@ -1,6 +1,6 @@
 {
   "name": "@metorial/openai",
-  "version": "1.0.0-rc.2",
+  "version": "1.0.0-rc.4",
   "author": "Tobias Herber",
   "license": "MIT",
   "type": "module",
@@ -25,11 +25,11 @@
     "dist"
   ],
   "dependencies": {
-    "@metorial/core": "^1.0.0-rc.2",
-    "@metorial/mcp-sdk-utils": "^1.0.0-rc.2",
-    "@metorial/mcp-session": "^1.0.0-rc.2",
-    "@metorial/sdk": "^1.0.0-rc.2",
-    "@metorial/openai-compatible": "^1.0.0-rc.2"
+    "@metorial/core": "^1.0.0-rc.4",
+    "@metorial/mcp-sdk-utils": "^1.0.0-rc.4",
+    "@metorial/mcp-session": "^1.0.0-rc.4",
+    "@metorial/sdk": "^1.0.0-rc.4",
+    "@metorial/openai-compatible": "^1.0.0-rc.4"
   },
   "peerDependencies": {
     "openai": "*"

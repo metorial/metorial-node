@@ -1,6 +1,6 @@
 {
   "name": "@metorial/mcp-session",
-  "version": "1.0.0-rc.2",
+  "version": "1.0.0-rc.4",
   "author": "Tobias Herber",
   "license": "MIT",
   "type": "module",
@@ -25,9 +25,9 @@
     "dist"
   ],
   "dependencies": {
-    "@metorial/json-schema": "^1.0.0-rc.2",
-    "@metorial/core": "^1.0.0-rc.2",
-    "@metorial/util-endpoint": "^1.0.0-rc.2",
+    "@metorial/json-schema": "^1.0.0-rc.4",
+    "@metorial/core": "^1.0.0-rc.4",
+    "@metorial/util-endpoint": "^1.0.0-rc.4",
     "@modelcontextprotocol/sdk": "^1.12.1"
   },
   "devDependencies": {

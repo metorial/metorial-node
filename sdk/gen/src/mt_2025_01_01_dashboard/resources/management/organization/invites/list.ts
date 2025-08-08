@@ -33,7 +33,7 @@ export type ManagementOrganizationInvitesListOutput = {
       updatedAt: Date;
     };
     inviteLink: {
-      Typename: 'organization.invite.link';
+      object: 'organization.invite.link';
       id: string;
       key: string | null;
       keyRedacted: string;
@@ -101,7 +101,7 @@ export let mapManagementOrganizationInvitesListOutput =
           inviteLink: mtMap.objectField(
             'invite_link',
             mtMap.object({
-              Typename: mtMap.objectField('__typename', mtMap.passthrough()),
+              object: mtMap.objectField('object', mtMap.passthrough()),
               id: mtMap.objectField('id', mtMap.passthrough()),
               key: mtMap.objectField('key', mtMap.passthrough()),
               keyRedacted: mtMap.objectField(

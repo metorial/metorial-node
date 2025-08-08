@@ -1,6 +1,6 @@
 {
   "name": "@metorial/util-react-fetch",
-  "version": "1.0.0-rc.2",
+  "version": "1.0.0-rc.4",
   "author": "Tobias Herber",
   "license": "MIT",
   "type": "module",
@@ -29,8 +29,8 @@
     "react-dom": "^19.0.0"
   },
   "dependencies": {
-    "@metorial/util-endpoint": "^1.0.0-rc.2",
-    "@metorial/util-memo": "^1.0.0-rc.2",
+    "@metorial/util-endpoint": "^1.0.0-rc.4",
+    "@metorial/util-memo": "^1.0.0-rc.4",
     "@types/react": "^19.1.8"
   },
   "devDependencies": {
