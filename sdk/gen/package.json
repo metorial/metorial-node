@@ -1,6 +1,6 @@
 {
   "name": "@metorial/generated",
-  "version": "1.0.0-rc.4",
+  "version": "1.0.0-rc.5",
   "author": "Tobias Herber",
   "license": "MIT",
   "type": "module",
@@ -32,8 +32,8 @@
   ],
   "dependencies": {
     "jose": "^5.9.6",
-    "@metorial/util-endpoint": "^1.0.0-rc.4",
-    "@metorial/util-resource-mapper": "^1.0.0-rc.4"
+    "@metorial/util-endpoint": "^1.0.0-rc.5",
+    "@metorial/util-resource-mapper": "^1.0.0-rc.5"
   },
   "devDependencies": {
     "@types/isomorphic-fetch": "^0.0.39",

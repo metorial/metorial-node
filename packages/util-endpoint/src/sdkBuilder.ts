@@ -62,7 +62,7 @@ export class MetorialSDKBuilder<
           apiHost,
           this.#getHeaders!,
           fullConfig.fetch,
-          { enableDebugLogging: !!config.enableDebugLogging }
+          { enableDebugLogging: !!(fullConfig as any).enableDebugLogging }
         );
 
         return {
