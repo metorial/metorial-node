@@ -39,79 +39,108 @@ export type SessionsGetOutput = {
   metadata: Record<string, any>;
   createdAt: Date;
   updatedAt: Date;
+} & {
+  client: {
+    object: 'session.client#preview';
+    info: { name: string; version: string };
+  } | null;
 };
 
-export let mapSessionsGetOutput = mtMap.object<SessionsGetOutput>({
-  object: mtMap.objectField('object', mtMap.passthrough()),
-  id: mtMap.objectField('id', mtMap.passthrough()),
-  status: mtMap.objectField('status', mtMap.passthrough()),
-  connectionStatus: mtMap.objectField('connection_status', mtMap.passthrough()),
-  clientSecret: mtMap.objectField(
-    'client_secret',
+export let mapSessionsGetOutput = mtMap.union([
+  mtMap.unionOption(
+    'object',
     mtMap.object({
       object: mtMap.objectField('object', mtMap.passthrough()),
-      type: mtMap.objectField('type', mtMap.passthrough()),
       id: mtMap.objectField('id', mtMap.passthrough()),
-      secret: mtMap.objectField('secret', mtMap.passthrough()),
-      expiresAt: mtMap.objectField('expires_at', mtMap.date())
-    })
-  ),
-  serverDeployments: mtMap.objectField(
-    'server_deployments',
-    mtMap.array(
-      mtMap.object({
-        object: mtMap.objectField('object', mtMap.passthrough()),
-        id: mtMap.objectField('id', mtMap.passthrough()),
-        name: mtMap.objectField('name', mtMap.passthrough()),
-        description: mtMap.objectField('description', mtMap.passthrough()),
-        metadata: mtMap.objectField('metadata', mtMap.passthrough()),
-        createdAt: mtMap.objectField('created_at', mtMap.date()),
-        updatedAt: mtMap.objectField('updated_at', mtMap.date()),
-        server: mtMap.objectField(
-          'server',
+      status: mtMap.objectField('status', mtMap.passthrough()),
+      connectionStatus: mtMap.objectField(
+        'connection_status',
+        mtMap.passthrough()
+      ),
+      clientSecret: mtMap.objectField(
+        'client_secret',
+        mtMap.object({
+          object: mtMap.objectField('object', mtMap.passthrough()),
+          type: mtMap.objectField('type', mtMap.passthrough()),
+          id: mtMap.objectField('id', mtMap.passthrough()),
+          secret: mtMap.objectField('secret', mtMap.passthrough()),
+          expiresAt: mtMap.objectField('expires_at', mtMap.date())
+        })
+      ),
+      serverDeployments: mtMap.objectField(
+        'server_deployments',
+        mtMap.array(
           mtMap.object({
             object: mtMap.objectField('object', mtMap.passthrough()),
             id: mtMap.objectField('id', mtMap.passthrough()),
             name: mtMap.objectField('name', mtMap.passthrough()),
             description: mtMap.objectField('description', mtMap.passthrough()),
-            type: mtMap.objectField('type', mtMap.passthrough()),
+            metadata: mtMap.objectField('metadata', mtMap.passthrough()),
             createdAt: mtMap.objectField('created_at', mtMap.date()),
-            updatedAt: mtMap.objectField('updated_at', mtMap.date())
-          })
-        ),
-        connectionUrls: mtMap.objectField(
-          'connection_urls',
-          mtMap.object({
-            sse: mtMap.objectField('sse', mtMap.passthrough()),
-            streamableHttp: mtMap.objectField(
-              'streamable_http',
-              mtMap.passthrough()
+            updatedAt: mtMap.objectField('updated_at', mtMap.date()),
+            server: mtMap.objectField(
+              'server',
+              mtMap.object({
+                object: mtMap.objectField('object', mtMap.passthrough()),
+                id: mtMap.objectField('id', mtMap.passthrough()),
+                name: mtMap.objectField('name', mtMap.passthrough()),
+                description: mtMap.objectField(
+                  'description',
+                  mtMap.passthrough()
+                ),
+                type: mtMap.objectField('type', mtMap.passthrough()),
+                createdAt: mtMap.objectField('created_at', mtMap.date()),
+                updatedAt: mtMap.objectField('updated_at', mtMap.date())
+              })
             ),
-            websocket: mtMap.objectField('websocket', mtMap.passthrough())
+            connectionUrls: mtMap.objectField(
+              'connection_urls',
+              mtMap.object({
+                sse: mtMap.objectField('sse', mtMap.passthrough()),
+                streamableHttp: mtMap.objectField(
+                  'streamable_http',
+                  mtMap.passthrough()
+                ),
+                websocket: mtMap.objectField('websocket', mtMap.passthrough())
+              })
+            )
           })
         )
-      })
-    )
-  ),
-  usage: mtMap.objectField(
-    'usage',
-    mtMap.object({
-      totalProductiveMessageCount: mtMap.objectField(
-        'total_productive_message_count',
-        mtMap.passthrough()
       ),
-      totalProductiveClientMessageCount: mtMap.objectField(
-        'total_productive_client_message_count',
-        mtMap.passthrough()
+      usage: mtMap.objectField(
+        'usage',
+        mtMap.object({
+          totalProductiveMessageCount: mtMap.objectField(
+            'total_productive_message_count',
+            mtMap.passthrough()
+          ),
+          totalProductiveClientMessageCount: mtMap.objectField(
+            'total_productive_client_message_count',
+            mtMap.passthrough()
+          ),
+          totalProductiveServerMessageCount: mtMap.objectField(
+            'total_productive_server_message_count',
+            mtMap.passthrough()
+          )
+        })
       ),
-      totalProductiveServerMessageCount: mtMap.objectField(
-        'total_productive_server_message_count',
-        mtMap.passthrough()
+      metadata: mtMap.objectField('metadata', mtMap.passthrough()),
+      createdAt: mtMap.objectField('created_at', mtMap.date()),
+      updatedAt: mtMap.objectField('updated_at', mtMap.date()),
+      client: mtMap.objectField(
+        'client',
+        mtMap.object({
+          object: mtMap.objectField('object', mtMap.passthrough()),
+          info: mtMap.objectField(
+            'info',
+            mtMap.object({
+              name: mtMap.objectField('name', mtMap.passthrough()),
+              version: mtMap.objectField('version', mtMap.passthrough())
+            })
+          )
+        })
       )
     })
-  ),
-  metadata: mtMap.objectField('metadata', mtMap.passthrough()),
-  createdAt: mtMap.objectField('created_at', mtMap.date()),
-  updatedAt: mtMap.objectField('updated_at', mtMap.date())
-});
+  )
+]);
 
