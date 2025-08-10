@@ -6,6 +6,7 @@ export interface MetorialRequest {
   host?: string;
   query?: Record<string, any>;
   body?: Record<string, any> | FormData;
+  headers?: Record<string, string>;
 }
 
 type Method = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
@@ -34,17 +35,25 @@ export class MetorialEndpointManager<Config> {
       url.search = qs.stringify(request.query);
     }
 
-    let headers = new Headers(this.getHeaders?.(this.config) ?? {});
+    let defaultHeaders = this.getHeaders?.(this.config) ?? {};
+    let mergedHeaders: Record<string, string> = {
+      ...defaultHeaders,
+      ...(request.headers ?? {})
+    };
+    let headers = new Headers(mergedHeaders);
 
     let hasBody = method === 'POST' || method === 'PUT' || method === 'PATCH';
-    if (hasBody) {
+    let isFormData = request.body instanceof FormData;
+
+    if (hasBody && !isFormData && !headers.has('Content-Type')) {
       headers.set('Content-Type', 'application/json');
     }
 
     if (this.options.enableDebugLogging) {
       console.log(`[Metorial] ${method} ${url.toString()}`, {
         body: request.body,
-        query: request.query
+        query: request.query,
+        headers: Object.fromEntries(headers.entries())
       });
     }
 
@@ -54,8 +63,8 @@ export class MetorialEndpointManager<Config> {
         method,
         headers,
         body: hasBody
-          ? request.body instanceof FormData
-            ? request.body
+          ? isFormData
+            ? (request.body as FormData)
             : JSON.stringify(request.body ?? {})
           : undefined,
         credentials: 'include',
@@ -67,18 +76,17 @@ export class MetorialEndpointManager<Config> {
       });
 
       // Re-try for too many requests
-      if (response.status == 429 && tryCount < 3) {
+      if (response.status === 429 && tryCount < 3) {
         let retryAfter = response.headers.get('Retry-After');
         if (retryAfter) {
           await new Promise(resolve => setTimeout(resolve, (parseInt(retryAfter) + 3) * 1000));
-          return this.request(method, request);
+          return this.request(method, request, tryCount + 1);
         }
       }
     } catch (error) {
       if (this.options.enableDebugLogging) {
         console.error(`[Metorial] ${method} ${url.toString()}`, error);
       }
-
       throw new MetorialSDKError({
         status: 0,
         code: 'network_error',
@@ -93,7 +101,6 @@ export class MetorialEndpointManager<Config> {
       if (this.options.enableDebugLogging) {
         console.error(`[Metorial] ${method} ${url.toString()}`, error);
       }
-
       throw new MetorialSDKError({
         status: response.status,
         code: 'malformed_response',
@@ -105,7 +112,6 @@ export class MetorialEndpointManager<Config> {
       if (this.options.enableDebugLogging) {
         console.error(`[Metorial] ${method} ${url.toString()}`, data);
       }
-
       throw new MetorialSDKError(data);
     }
 
