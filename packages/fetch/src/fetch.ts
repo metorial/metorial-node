@@ -15,15 +15,12 @@ export let createFetchWithRetry = ({
   ): Promise<Response> {
     let attempt = 0;
     let lastError: any;
+    let lastResponse: any;
 
     while (attempt < retries) {
       try {
         let fetchPromise = fetch(input, init);
         let response = await withTimeout(fetchPromise, timeoutMs);
-
-        if (response.status === 400) {
-          return response;
-        }
 
         if (response.status === 429 && respectRateLimitReset) {
           let reset = response.headers.get('RateLimit-Reset');
@@ -37,11 +34,12 @@ export let createFetchWithRetry = ({
           }
         }
 
-        if (!response.ok) {
-          throw new Error(`Request failed with status ${response.status}`);
+        if (response.status <= 299 || (response.status >= 400 && response.status <= 499)) {
+          return response;
         }
 
-        return response;
+        attempt++;
+        lastResponse = response;
       } catch (err) {
         lastError = err;
 
@@ -57,6 +55,7 @@ export let createFetchWithRetry = ({
       }
     }
 
+    if (lastResponse) return lastResponse;
     throw lastError;
   };
 };

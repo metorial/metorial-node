@@ -1,6 +1,6 @@
 {
   "name": "@metorial/sdk",
-  "version": "1.0.0-rc.4",
+  "version": "1.0.0-rc.5",
   "author": "Tobias Herber",
   "license": "MIT",
   "type": "module",
@@ -25,9 +25,9 @@
     "dist"
   ],
   "dependencies": {
-    "@metorial/core": "^1.0.0-rc.4",
-    "@metorial/mcp-session": "^1.0.0-rc.4",
-    "@metorial/util-endpoint": "^1.0.0-rc.4"
+    "@metorial/core": "^1.0.0-rc.5",
+    "@metorial/mcp-session": "^1.0.0-rc.5",
+    "@metorial/util-endpoint": "^1.0.0-rc.5"
   },
   "devDependencies": {
     "@types/isomorphic-fetch": "^0.0.39",
