@@ -14,40 +14,67 @@ pnpm add @metorial/google
 bun add @metorial/google
 ```
 
-## Features
-
-- 🤖 **Google Gemini Integration**: Full support for Gemini models
-- 🛠️ **Function Calling**: Native function calling support
-- 📡 **Session Management**: Automatic tool lifecycle handling
-- 🔄 **OpenAI Compatibility**: Based on OpenAI-compatible interface
-- ⚡ **TypeScript Support**: Full TypeScript support with comprehensive type definitions
-
 ## Usage
 
 ```typescript
 import { metorialGoogle } from '@metorial/google';
+import { Metorial } from 'metorial';
+import { GoogleGenAI } from '@google/genai';
 
-// Use Google Gemini integration
-```
+let metorial = new Metorial({
+  apiKey: 'your-metorial-api-key'
+});
 
-## Dependencies
+let genAI = new GoogleGenAI({
+  apiKey: 'your-google-api-key'
+});
 
-- `@metorial/core`: Core Metorial functionality
-- `@metorial/mcp-sdk-utils`: MCP SDK utilities
-- `@metorial/mcp-session`: MCP session management
-- `@metorial/openai-compatible`: OpenAI-compatible base functionality
-- `@metorial/sdk`: Main SDK
+await metorial.withProviderSession(
+  metorialGoogle,
+  {
+    serverDeployments: ['your-server-deployment-id']
+  },
+  async session => {
+    let response = await genAI.models.generateContent({
+      model: 'gemini-1.5-pro-latest',
+      contents: [
+        {
+          role: 'user',
+          parts: [
+            {
+              text: 'Summarize the README.md file of the metorial/websocket-explorer repository on GitHub.'
+            }
+          ]
+        }
+      ],
+      config: {
+        tools: session.tools
+      }
+    });
 
-## Peer Dependencies
+    // Handle function calls and tool responses
+    let result = response.response;
+    let functionCalls = result.candidates?.[0]?.content?.parts?.filter(
+      part => part.functionCall
+    );
 
-This package requires the Google Generative AI SDK:
+    if (functionCalls && functionCalls.length > 0) {
+      let toolCalls = functionCalls.map(fc => ({
+        id: `call_${Date.now()}`,
+        type: 'function' as const,
+        function: {
+          name: fc.functionCall!.name,
+          arguments: fc.functionCall!.args
+        }
+      }));
 
-```json
-{
-  "peerDependencies": {
-    "@google/generative-ai": "*"
+      let toolResponses = await session.callTools(toolCalls);
+      console.log('Tool responses:', toolResponses);
+    } else {
+      console.log(result.text());
+    }
   }
-}
+);
 ```
 
 ## License

@@ -14,40 +14,63 @@ pnpm add @metorial/deepseek
 bun add @metorial/deepseek
 ```
 
-## Features
-
-- 🤖 **DeepSeek Integration**: Full support for DeepSeek models
-- 🛠️ **Function Calling**: Native function calling support
-- 📡 **Session Management**: Automatic tool lifecycle handling
-- 🔄 **OpenAI Compatibility**: Based on OpenAI-compatible interface
-- ⚡ **TypeScript Support**: Full TypeScript support with comprehensive type definitions
-
 ## Usage
 
 ```typescript
 import { metorialDeepSeek } from '@metorial/deepseek';
+import { Metorial } from 'metorial';
+import OpenAI from 'openai';
 
-// Use DeepSeek integration
-```
+let metorial = new Metorial({
+  apiKey: 'your-metorial-api-key'
+});
 
-## Dependencies
+let deepseek = new OpenAI({
+  apiKey: 'your-deepseek-api-key',
+  baseURL: 'https://api.deepseek.com'
+});
 
-- `@metorial/core`: Core Metorial functionality
-- `@metorial/mcp-sdk-utils`: MCP SDK utilities
-- `@metorial/mcp-session`: MCP session management
-- `@metorial/openai-compatible`: OpenAI-compatible base functionality
-- `@metorial/sdk`: Main SDK
+await metorial.withProviderSession(
+  metorialDeepSeek,
+  {
+    serverDeployments: ['your-server-deployment-id']
+  },
+  async session => {
+    let messages = [
+      {
+        role: 'user',
+        content:
+          'Summarize the README.md file of the metorial/websocket-explorer repository on GitHub?'
+      }
+    ];
 
-## Peer Dependencies
+    for (let i = 0; i < 10; i++) {
+      let response = await deepseek.chat.completions.create({
+        model: 'deepseek-chat',
+        messages,
+        tools: session.tools
+      });
 
-This package requires an OpenAI-compatible client for DeepSeek API:
+      let choice = response.choices[0]!;
+      let toolCalls = choice.message.tool_calls;
 
-```json
-{
-  "peerDependencies": {
-    "openai": "*"
+      if (!toolCalls) {
+        console.log(choice.message.content);
+        return;
+      }
+
+      let toolResponses = await session.callTools(toolCalls);
+
+      messages.push(
+        {
+          role: 'assistant',
+          tool_calls: choice.message.tool_calls
+        },
+        ...toolResponses
+      );
+    }
   }
-}
+);
 ```
 
 ## License

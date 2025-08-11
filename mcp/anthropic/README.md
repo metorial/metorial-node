@@ -14,26 +14,54 @@ pnpm add @metorial/anthropic
 bun add @metorial/anthropic
 ```
 
-## Features
-
-- 🤖 **Anthropic Integration**: Full support for Anthropic models
-- 🛠️ **Function Calling**: Native function calling interface
-- 📡 **Session Management**: Automatic tool lifecycle handling
-
 ## Usage
 
 ```typescript
 import { metorialAnthropic } from '@metorial/anthropic';
+import { Metorial } from 'metorial';
+import OpenAI from 'openai';
 
-// Use Anthropic integration
+let metorial = new Metorial({
+  apiKey: 'your-metorial-api-key'
+});
+
+let anthropic = new OpenAI({
+  apiKey: 'your-anthropic-api-key',
+  baseURL: 'https://api.anthropic.com/v1'
+});
+
+await metorial.withProviderSession(
+  metorialAnthropic,
+  {
+    serverDeployments: ['your-server-deployment-id']
+  },
+  async session => {
+    let messages = [
+      {
+        role: 'user',
+        content:
+          'Summarize the README.md file of the metorial/websocket-explorer repository on GitHub?'
+      }
+    ];
+
+    let response = await anthropic.chat.completions.create({
+      model: 'claude-3-5-sonnet-20241022',
+      messages,
+      tools: session.tools
+    });
+
+    let choice = response.choices[0]!;
+    let toolCalls = choice.message.tool_calls;
+
+    if (toolCalls && toolCalls.length > 0) {
+      let toolResponses = await session.callTools(toolCalls);
+      console.log('Tool responses:', toolResponses);
+    } else {
+      console.log(choice.message.content);
+    }
+  }
+);
 ```
-
-## Dependencies
-
-- `@metorial/core`: Core Metorial functionalities
-- `@metorial/mcp-sdk-utils`: MCP SDK utilities
-- `@metorial/openai-compatible`: Integration for OpenAI syntax
-- `@metorial/sdk`: Main SDK
 
 ## License
 

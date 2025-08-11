@@ -14,40 +14,77 @@ pnpm add @metorial/mistral
 bun add @metorial/mistral
 ```
 
-## Features
-
-- 🤖 **Mistral Integration**: Full support for Mistral AI models
-- 🛠️ **Function Calling**: Native function calling support
-- 📡 **Session Management**: Automatic tool lifecycle handling
-- 🔄 **OpenAI Compatibility**: Based on OpenAI-compatible interface
-- ⚡ **TypeScript Support**: Full TypeScript support with comprehensive type definitions
-
 ## Usage
 
 ```typescript
 import { metorialMistral } from '@metorial/mistral';
+import { Metorial } from 'metorial';
+import { Mistral } from '@mistralai/mistralai';
 
-// Use Mistral integration
-```
+let metorial = new Metorial({
+  apiKey: 'your-metorial-api-key'
+});
 
-## Dependencies
+let mistral = new Mistral({
+  apiKey: 'your-mistral-api-key'
+});
 
-- `@metorial/core`: Core Metorial functionality
-- `@metorial/mcp-sdk-utils`: MCP SDK utilities
-- `@metorial/mcp-session`: MCP session management
-- `@metorial/openai-compatible`: OpenAI-compatible base functionality
-- `@metorial/sdk`: Main SDK
+await metorial.withProviderSession(
+  metorialMistral,
+  {
+    serverDeployments: ['your-server-deployment-id']
+  },
+  async session => {
+    // make tools Mistral compatibility
+    let fixedTools = session.tools.map(tool => {
+      if (tool.function?.parameters) {
+        let fixedParams = { ...tool.function.parameters };
+        fixedParams.additionalProperties = false;
 
-## Peer Dependencies
+        if (fixedParams.properties) {
+          Object.values(fixedParams.properties).forEach((prop: any) => {
+            if (prop && typeof prop === 'object' && prop.type === 'object') {
+              prop.additionalProperties = false;
+            }
+          });
+        }
 
-This package requires the Mistral AI SDK:
+        return {
+          ...tool,
+          function: {
+            ...tool.function,
+            parameters: fixedParams
+          }
+        };
+      }
+      return tool;
+    });
 
-```json
-{
-  "peerDependencies": {
-    "@mistralai/mistralai": "*"
+    let messages: any[] = [
+      {
+        role: 'user',
+        content:
+          'Summarize the README.md file of the metorial/websocket-explorer repository on GitHub?'
+      }
+    ];
+
+    let response = await mistral.chat.complete({
+      model: 'mistral-large-latest',
+      messages,
+      tools: fixedTools
+    });
+
+    let choice = response.choices[0];
+    let toolCalls = choice.message.toolCalls;
+
+    if (toolCalls && toolCalls.length > 0) {
+      let toolResponses = await session.callTools(toolCalls);
+      console.log('Tool responses:', toolResponses);
+    } else {
+      console.log(choice.message.content);
+    }
   }
-}
+);
 ```
 
 ## License
