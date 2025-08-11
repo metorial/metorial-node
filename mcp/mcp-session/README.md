@@ -14,27 +14,45 @@ pnpm add @metorial/mcp-session
 bun add @metorial/mcp-session
 ```
 
-## Features
-
-- 🔧 **MCP Sessions**: Model Context Protocol session management
-- 📡 **Tool Lifecycle**: Automatic tool discovery and lifecycle handling
-- 🛠️ **Protocol Compliance**: Full MCP specification compliance
-- ⚡ **TypeScript Support**: Full TypeScript support with comprehensive type definitions
-
 ## Usage
 
+This package provides direct MCP session management for advanced use cases.
+
 ```typescript
-import { /* MCP session functions */ } from '@metorial/mcp-session';
+import { MetorialMcpSession } from '@metorial/mcp-session';
+import { Metorial } from 'metorial';
 
-// Use MCP session functionality
+let metorial = new Metorial({
+  apiKey: 'your-metorial-api-key'
+});
+
+// Create an MCP session instance
+let mcpSession = new MetorialMcpSession(metorial, {
+  serverDeployments: ['your-server-deployment-id']
+});
+
+// Get the session metadata
+let session = await mcpSession.getSession();
+
+// Get the tool manager
+let toolManager = await mcpSession.getToolManager();
+
+// Get available tools
+let tools = toolManager.getTools();
+
+// Call a tool directly
+let searchContextTool = tools.find(t => t.name === 'searchContext');
+if (searchContextTool) {
+  let toolResponse = await searchContextTool.call({
+    query: 'metorial websocket explorer',
+    maxResults: 3
+  });
+  console.log('Tool response:', toolResponse);
+}
+
+// Clean up the session
+await mcpSession.close();
 ```
-
-## Dependencies
-
-- `@metorial/core`: Core Metorial functionality
-- `@metorial/json-schema`: JSON Schema utilities
-- `@metorial/util-endpoint`: HTTP endpoint utilities
-- `@modelcontextprotocol/sdk`: MCP SDK
 
 ## License
 

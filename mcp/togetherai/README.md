@@ -26,8 +26,49 @@ bun add @metorial/togetherai
 
 ```typescript
 import { metorialTogetherAI } from '@metorial/togetherai';
+import { Metorial } from 'metorial';
+import OpenAI from 'openai';
 
-// Use Together AI integration
+let metorial = new Metorial({
+  apiKey: 'your-metorial-api-key'
+});
+
+let togetherai = new OpenAI({
+  apiKey: 'your-togetherai-api-key',
+  baseURL: 'https://api.together.xyz/v1'
+});
+
+await metorial.withProviderSession(
+  metorialTogetherAI,
+  {
+    serverDeployments: ['your-server-deployment-id']
+  },
+  async session => {
+    let messages = [
+      {
+        role: 'user',
+        content:
+          'Summarize the README.md file of the metorial/websocket-explorer repository on GitHub?'
+      }
+    ];
+
+    let response = await togetherai.chat.completions.create({
+      model: 'mistralai/Mistral-7B-Instruct-v0.2',
+      messages,
+      tools: session.tools
+    });
+
+    let choice = response.choices[0]!;
+    let toolCalls = choice.message.tool_calls;
+
+    if (toolCalls && toolCalls.length > 0) {
+      let toolResponses = await session.callTools(toolCalls);
+      console.log('Tool responses:', toolResponses);
+    } else {
+      console.log(choice.message.content);
+    }
+  }
+);
 ```
 
 ## Dependencies

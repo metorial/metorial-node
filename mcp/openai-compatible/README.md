@@ -14,22 +14,58 @@ pnpm add @metorial/openai-compatible
 bun add @metorial/openai-compatible
 ```
 
-## Features
-
-- 🔧 **OpenAI Compatibility**: Base functionality for OpenAI-compatible APIs
-- 🛠️ **Function Calling**: Standardized function calling interface
-- 📡 **Session Management**: Automatic tool lifecycle handling
-- 🔄 **Format Conversion**: Converts Metorial tools to OpenAI function format
-- ⚡ **TypeScript Support**: Full TypeScript support with comprehensive type definitions
-
 ## Usage
 
-This package is typically used as a base for other provider packages and not directly by end users.
+This package provides a factory function to create OpenAI-compatible MCP SDKs for any OpenAI-compatible API.
 
 ```typescript
-import { /* OpenAI-compatible functions */ } from '@metorial/openai-compatible';
+import { createOpenAICompatibleMcpSdk } from '@metorial/openai-compatible';
+import { Metorial } from 'metorial';
+import OpenAI from 'openai';
 
-// Use as base for other providers
+let metorial = new Metorial({
+  apiKey: 'your-metorial-api-key'
+});
+
+// Create an OpenAI-compatible provider
+let metorialOpenAICompatible = createOpenAICompatibleMcpSdk({});
+
+await metorial.withProviderSession(
+  metorialOpenAICompatible,
+  {
+    serverDeployments: ['your-server-deployment-id']
+  },
+  async session => {
+    // Use any OpenAI-compatible client
+    let openai = new OpenAI({
+      apiKey: 'your-openai-api-key'
+    });
+
+    let messages = [
+      {
+        role: 'user',
+        content:
+          'Summarize the README.md file of the metorial/websocket-explorer repository on GitHub?'
+      }
+    ];
+
+    let response = await openai.chat.completions.create({
+      model: 'gpt-4o-mini',
+      messages,
+      tools: session.tools
+    });
+
+    let choice = response.choices[0]!;
+    let toolCalls = choice.message.tool_calls;
+
+    if (toolCalls && toolCalls.length > 0) {
+      let toolResponses = await session.callTools(toolCalls);
+      console.log('Tool responses:', toolResponses);
+    } else {
+      console.log(choice.message.content);
+    }
+  }
+);
 ```
 
 ## Dependencies

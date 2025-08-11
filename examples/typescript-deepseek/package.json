@@ -1,0 +1,24 @@
+{
+  "name": "@metorial-examples/typescript-deepseek",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "start": "bun ./src/index.ts"
+  },
+  "dependencies": {
+    "@metorial/sdk": "latest",
+    "@metorial/ai-sdk": "latest",
+    "@metorial/deepseek": "latest",
+    "@ai-sdk/openai": "latest",
+    "@ai-sdk/deepseek": "latest",
+    "ai": "^4.3.16"
+  },
+  "overrides": {
+    "@metorial/mcp-session": "latest"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "typescript": "^5"
+  }
+}

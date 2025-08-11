@@ -16,7 +16,7 @@ metorial.withProviderSession(
       {
         role: 'user',
         content:
-          'Summarize the README.md file of the metorial/websocket-explorer repository on GitHub?'
+          'Summarize the README.md file of the metorial/websocket-explorer repository on GitHub.'
       }
     ];
 

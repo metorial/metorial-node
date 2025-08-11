@@ -14,38 +14,34 @@ pnpm add @metorial/ai-sdk
 bun add @metorial/ai-sdk
 ```
 
-## Features
-
-- 🔧 **AI SDK Integration**: Full compatibility with Vercel's AI SDK
-- 🛠️ **Tool Conversion**: Automatic conversion to AI SDK tool format
-- 📡 **Session Management**: Automatic tool lifecycle handling
-- ⚡ **TypeScript Support**: Full TypeScript support with comprehensive type definitions
-
 ## Usage
 
 ```typescript
 import { metorialAISDK } from '@metorial/ai-sdk';
+import { Metorial } from 'metorial';
+import { openai } from '@ai-sdk/openai';
+import { generateText } from 'ai';
 
-// Use AI SDK integration
-```
+let metorial = new Metorial({
+  apiKey: 'your-metorial-api-key'
+});
 
-## Dependencies
+await metorial.withProviderSession(
+  metorialAISDK,
+  {
+    serverDeployments: ['your-server-deployment-id']
+  },
+  async session => {
+    let { text } = await generateText({
+      model: openai('gpt-4o'),
+      prompt:
+        'Summarize the README.md file of the metorial/websocket-explorer repository on GitHub.',
+      tools: session.tools
+    });
 
-- `@metorial/core`: Core Metorial functionality
-- `@metorial/mcp-sdk-utils`: MCP SDK utilities
-- `@metorial/mcp-session`: MCP session management
-- `@metorial/sdk`: Main SDK
-
-## Peer Dependencies
-
-This package requires the AI SDK:
-
-```json
-{
-  "peerDependencies": {
-    "ai": "*"
+    console.log('Generated text:', text);
   }
-}
+);
 ```
 
 ## License
