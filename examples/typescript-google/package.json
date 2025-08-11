@@ -1,0 +1,25 @@
+{
+  "name": "@metorial-examples/typescript-google",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "start": "bun ./src/index.ts"
+  },
+  "dependencies": {
+    "@ai-sdk/google": "latest",
+    "@ai-sdk/openai": "latest",
+    "@google/genai": "^1.13.0",
+    "@metorial/ai-sdk": "latest",
+    "@metorial/google": "latest",
+    "@metorial/sdk": "latest",
+    "ai": "^4.3.16"
+  },
+  "overrides": {
+    "@metorial/mcp-session": "latest"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "typescript": "^5"
+  }
+}
