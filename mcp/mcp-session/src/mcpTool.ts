@@ -24,6 +24,25 @@ export type Capability =
       serverDeployment: SmallServerDeployment;
     };
 
+const MAX_RETRIES = 10;
+
+let runWithRetries = async <T>(
+  action: () => Promise<T>,
+  retries: number = MAX_RETRIES
+): Promise<T> => {
+  let err: Error | undefined;
+
+  for (let i = 0; i < retries; i++) {
+    try {
+      return await action();
+    } catch (error) {
+      err = error as Error;
+    }
+  }
+
+  throw err!;
+};
+
 export class MetorialMcpTool {
   #id: string;
   #name: string;
@@ -97,18 +116,19 @@ export class MetorialMcpTool {
         description: tool.description ?? null,
         parameters: tool.inputSchema
       },
-      async params => {
-        let client = await session.getClient({
-          deploymentId: serverDeployment!.id
-        });
+      async params =>
+        runWithRetries(async () => {
+          let client = await session.getClient({
+            deploymentId: serverDeployment!.id
+          });
 
-        let result = await client.callTool({
-          name: tool.name,
-          arguments: params
-        });
+          let result = await client.callTool({
+            name: tool.name,
+            arguments: params
+          });
 
-        return result;
-      }
+          return result;
+        }, MAX_RETRIES)
     );
   }
 
@@ -141,19 +161,20 @@ export class MetorialMcpTool {
           additionalProperties: false
         }
       },
-      async params => {
-        let client = await session.getClient({
-          deploymentId: serverDeployment!.id
-        });
+      async params =>
+        runWithRetries(async () => {
+          let client = await session.getClient({
+            deploymentId: serverDeployment!.id
+          });
 
-        let finalUri = uri.expand(params);
+          let finalUri = uri.expand(params);
 
-        let result = await client.readResource({
-          uri: finalUri
-        });
+          let result = await client.readResource({
+            uri: finalUri
+          });
 
-        return result;
-      }
+          return result;
+        }, MAX_RETRIES)
     );
   }
 

@@ -22,11 +22,13 @@ export let createMetorialCoreSDK = sdkBuilder.build(
     headers?: Record<string, string>;
     apiHost?: string;
     mcpHost?: string;
+    fetch?: any;
   }) => ({
     ...soft,
     apiHost: soft.apiHost,
     mcpHost: soft.mcpHost ?? soft.apiHost,
-    apiVersion: '2025-01-01-pulsar'
+    apiVersion: '2025-01-01-pulsar',
+    fetch: soft.fetch
   })
 )(manager => ({
   instance: new MetorialInstanceEndpoint(manager),
