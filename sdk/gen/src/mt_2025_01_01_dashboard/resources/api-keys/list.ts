@@ -9,7 +9,6 @@ export type ApiKeysListOutput = {
     secretRedactedLong: string;
     secret: string | null;
     type:
-      | 'user_auth_token'
       | 'organization_management_token'
       | 'instance_access_token_secret'
       | 'instance_access_token_publishable';
@@ -20,7 +19,6 @@ export type ApiKeysListOutput = {
       id: string;
       status: 'active' | 'deleted';
       type:
-        | 'user_auth_token'
         | 'organization_management'
         | 'instance_secret'
         | 'instance_publishable';
@@ -30,7 +28,6 @@ export type ApiKeysListOutput = {
         id: string;
         type: 'member' | 'machine_access';
         organizationId: string;
-        actorId: string;
         name: string;
         email: string | null;
         imageUrl: string;
@@ -136,7 +133,6 @@ export let mapApiKeysListOutput = mtMap.object<ApiKeysListOutput>({
                   'organization_id',
                   mtMap.passthrough()
                 ),
-                actorId: mtMap.objectField('actor_id', mtMap.passthrough()),
                 name: mtMap.objectField('name', mtMap.passthrough()),
                 email: mtMap.objectField('email', mtMap.passthrough()),
                 imageUrl: mtMap.objectField('image_url', mtMap.passthrough()),
@@ -248,8 +244,7 @@ export type ApiKeysListQuery = {
   cursor?: string | undefined;
   order?: 'asc' | 'desc' | undefined;
 } & (
-  | { type: 'organization_management_token'; organizationId: string }
-  | { type: 'user_auth_token' }
+  | { type: 'organization_management_token' }
   | { type: 'instance_access_token'; instanceId: string }
 );
 
@@ -263,7 +258,6 @@ export let mapApiKeysListQuery = mtMap.union([
       cursor: mtMap.objectField('cursor', mtMap.passthrough()),
       order: mtMap.objectField('order', mtMap.passthrough()),
       type: mtMap.objectField('type', mtMap.passthrough()),
-      organizationId: mtMap.objectField('organization_id', mtMap.passthrough()),
       instanceId: mtMap.objectField('instance_id', mtMap.passthrough())
     })
   )

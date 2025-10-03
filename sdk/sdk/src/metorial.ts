@@ -5,6 +5,23 @@ import {
   MetorialMcpSessionInitServerDeployments
 } from '@metorial/mcp-session';
 
+import type OpenAI from 'openai';
+import type Anthropic from '@anthropic-ai/sdk';
+import type { GoogleGenAI } from '@google/genai';
+import type { Mistral } from '@mistralai/mistralai';
+
+import { runWithOpenAI } from './providers/openai';
+import { runWithAnthropic } from './providers/anthropic';
+import { runWithDeepSeek } from './providers/deepseek';
+import { runWithGoogle } from './providers/google';
+import { runWithMistral } from './providers/mistral';
+import { runWithXAI } from './providers/xai';
+import { runWithTogetherAI } from './providers/togetherai';
+
+import { RunResult } from './providers/types';
+
+export type { RunResult } from './providers/types';
+
 export class Metorial implements MetorialCoreSDK {
   private readonly sdk: MetorialCoreSDK;
 
@@ -26,6 +43,10 @@ export class Metorial implements MetorialCoreSDK {
 
   get sessions() {
     return this.sdk.sessions;
+  }
+
+  get oauth() {
+    return this.sdk.oauth;
   }
 
   get _config() {
@@ -84,9 +105,7 @@ export class Metorial implements MetorialCoreSDK {
 
       return action({
         ...providerData,
-
         session,
-
         getSession: session.getSession.bind(session),
         getCapabilities: session.getCapabilities.bind(session),
         getClient: session.getClient.bind(session),
@@ -94,5 +113,110 @@ export class Metorial implements MetorialCoreSDK {
         getToolManager: session.getToolManager.bind(session)
       });
     });
+  }
+
+  private inferProvider(model: string): 'openai' | 'anthropic' | 'deepseek' | 'google' | 'mistral' | 'xai' | 'togetherai' {
+    const modelLower = model.toLowerCase();
+    
+    if (modelLower.startsWith('claude-')) {
+      return 'anthropic';
+    }
+    
+    if (modelLower.startsWith('gpt-') || modelLower.startsWith('o1-')) {
+      return 'openai';
+    }
+    
+    if (modelLower.includes('deepseek')) {
+      return 'deepseek';
+    }
+    
+    if (modelLower.startsWith('gemini-') || modelLower.includes('google')) {
+      return 'google';
+    }
+    
+    if (modelLower.startsWith('mistral-') || modelLower.includes('mistral')) {
+      return 'mistral';
+    }
+    
+    if (modelLower.startsWith('x-') || modelLower === 'grok-beta') {
+      return 'xai';
+    }
+    
+    if (modelLower.includes('together') || 
+        modelLower.includes('llama') || 
+        modelLower.includes('mixtral') ||
+        modelLower.includes('qwen') ||
+        modelLower.includes('/')) {
+      return 'togetherai';
+    }
+    
+    throw new Error(
+      `Unable to infer provider from model "${model}".`
+    );
+  }
+
+  async run(config: {
+    message: string;
+    serverDeployments: string | string[];
+    model: string;
+    maxSteps?: number;
+    tools?: string[];
+    [key: string]: any;
+  }): Promise<RunResult> {
+    const provider = this.inferProvider(config.model);
+    
+    switch (provider) {
+      case 'openai':
+        return runWithOpenAI({
+          ...config,
+          client: config.client as OpenAI,
+          withProviderSession: this.withProviderSession.bind(this)
+        });
+        
+      case 'anthropic':
+        return runWithAnthropic({
+          ...config,
+          client: config.client as Anthropic,
+          withProviderSession: this.withProviderSession.bind(this)
+        });
+        
+      case 'deepseek':
+        return runWithDeepSeek({
+          ...config,
+          client: config.client as OpenAI,
+          withProviderSession: this.withProviderSession.bind(this)
+        });
+        
+      case 'google':
+        return runWithGoogle({
+          ...config,
+          client: config.client as GoogleGenAI,
+          withProviderSession: this.withProviderSession.bind(this)
+        });
+        
+      case 'mistral':
+        return runWithMistral({
+          ...config,
+          client: config.client as Mistral,
+          withProviderSession: this.withProviderSession.bind(this)
+        });
+        
+      case 'xai':
+        return runWithXAI({
+          ...config,
+          client: config.client as OpenAI,
+          withProviderSession: this.withProviderSession.bind(this)
+        });
+        
+      case 'togetherai':
+        return runWithTogetherAI({
+          ...config,
+          client: config.client as OpenAI,
+          withProviderSession: this.withProviderSession.bind(this)
+        });
+        
+      default:
+        throw new Error(`Unsupported provider: ${provider}`);
+    }
   }
 }

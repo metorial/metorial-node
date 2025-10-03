@@ -126,6 +126,19 @@
         "typescript": "^5",
       },
     },
+    "examples/typescript-openai-run": {
+      "name": "@metorial-examples/typescript-openai-run",
+      "dependencies": {
+        "@metorial/sdk": "workspace:*",
+        "openai": "^5.3.0",
+      },
+      "devDependencies": {
+        "@types/bun": "latest",
+      },
+      "peerDependencies": {
+        "typescript": "^5",
+      },
+    },
     "examples/typescript-togetherai": {
       "name": "@metorial-examples/typescript-togetherai",
       "dependencies": {
@@ -158,7 +171,7 @@
     },
     "mcp/ai-sdk": {
       "name": "@metorial/ai-sdk",
-      "version": "1.0.0-rc.5",
+      "version": "1.0.0-rc.6",
       "dependencies": {
         "@metorial/core": "^1.0.0-rc.1",
         "@metorial/mcp-sdk-utils": "^1.0.0-rc.1",
@@ -177,7 +190,7 @@
     },
     "mcp/anthropic": {
       "name": "@metorial/anthropic",
-      "version": "1.0.0-rc.5",
+      "version": "1.0.0-rc.6",
       "dependencies": {
         "@metorial/core": "^1.0.0-rc.1",
         "@metorial/mcp-sdk-utils": "^1.0.0-rc.1",
@@ -197,7 +210,7 @@
     },
     "mcp/deepseek": {
       "name": "@metorial/deepseek",
-      "version": "1.0.0-rc.5",
+      "version": "1.0.0-rc.6",
       "dependencies": {
         "@metorial/core": "^1.0.0-rc.4",
         "@metorial/mcp-sdk-utils": "^1.0.0-rc.4",
@@ -214,7 +227,7 @@
     },
     "mcp/google": {
       "name": "@metorial/google",
-      "version": "1.0.0-rc.5",
+      "version": "1.0.0-rc.6",
       "dependencies": {
         "@metorial/core": "^1.0.0-rc.1",
         "@metorial/mcp-sdk-utils": "^1.0.0-rc.1",
@@ -234,11 +247,11 @@
     },
     "mcp/mcp-session": {
       "name": "@metorial/mcp-session",
-      "version": "1.0.0-rc.5",
+      "version": "1.0.0-rc.6",
       "dependencies": {
-        "@metorial/core": "^1.0.0-rc.4",
-        "@metorial/json-schema": "^1.0.0-rc.4",
-        "@metorial/util-endpoint": "^1.0.0-rc.4",
+        "@metorial/core": "^1.0.0-rc.6",
+        "@metorial/json-schema": "^1.0.0-rc.6",
+        "@metorial/util-endpoint": "^1.0.0-rc.6",
         "@modelcontextprotocol/sdk": "^1.12.1",
       },
       "devDependencies": {
@@ -249,7 +262,7 @@
     },
     "mcp/mistral": {
       "name": "@metorial/mistral",
-      "version": "1.0.0-rc.5",
+      "version": "1.0.0-rc.6",
       "dependencies": {
         "@metorial/core": "^1.0.0-rc.1",
         "@metorial/mcp-sdk-utils": "^1.0.0-rc.1",
@@ -268,7 +281,7 @@
     },
     "mcp/openai": {
       "name": "@metorial/openai",
-      "version": "1.0.0-rc.5",
+      "version": "1.0.0-rc.6",
       "dependencies": {
         "@metorial/core": "^1.0.0-rc.1",
         "@metorial/mcp-sdk-utils": "^1.0.0-rc.1",
@@ -288,7 +301,7 @@
     },
     "mcp/openai-compatible": {
       "name": "@metorial/openai-compatible",
-      "version": "1.0.0-rc.5",
+      "version": "1.0.0-rc.6",
       "dependencies": {
         "@metorial/core": "^1.0.0-rc.4",
         "@metorial/mcp-sdk-utils": "^1.0.0-rc.4",
@@ -303,7 +316,7 @@
     },
     "mcp/togetherai": {
       "name": "@metorial/togetherai",
-      "version": "1.0.0-rc.5",
+      "version": "1.0.0-rc.6",
       "dependencies": {
         "@metorial/core": "^1.0.0-rc.1",
         "@metorial/mcp-sdk-utils": "^1.0.0-rc.1",
@@ -320,7 +333,7 @@
     },
     "mcp/xai": {
       "name": "@metorial/xai",
-      "version": "1.0.0-rc.5",
+      "version": "1.0.0-rc.6",
       "dependencies": {
         "@metorial/core": "^1.0.0-rc.1",
         "@metorial/mcp-sdk-utils": "^1.0.0-rc.1",
@@ -337,7 +350,7 @@
     },
     "packages/fetch": {
       "name": "@metorial/fetch",
-      "version": "1.0.0-rc.5",
+      "version": "1.0.0-rc.6",
       "dependencies": {
         "cross-fetch": "^4.1.0",
       },
@@ -350,7 +363,7 @@
     },
     "packages/json-schema": {
       "name": "@metorial/json-schema",
-      "version": "1.0.0-rc.5",
+      "version": "1.0.0-rc.6",
       "devDependencies": {
         "@types/isomorphic-fetch": "^0.0.39",
         "@types/ws": "^8.5.13",
@@ -361,7 +374,7 @@
     },
     "packages/mcp-sdk-utils": {
       "name": "@metorial/mcp-sdk-utils",
-      "version": "1.0.0-rc.5",
+      "version": "1.0.0-rc.6",
       "dependencies": {
         "@metorial/core": "^1.0.0-rc.4",
         "@metorial/mcp-session": "^1.0.0-rc.4",
@@ -381,7 +394,7 @@
     },
     "packages/util-async-iterator": {
       "name": "@metorial/util-async-iterator",
-      "version": "1.0.0-rc.5",
+      "version": "1.0.0-rc.6",
       "devDependencies": {
         "tsup": "^7.1.0",
         "typescript": "^5.1.6",
@@ -390,9 +403,9 @@
     },
     "packages/util-endpoint": {
       "name": "@metorial/util-endpoint",
-      "version": "1.0.0-rc.5",
+      "version": "1.0.0-rc.6",
       "dependencies": {
-        "@metorial/util-async-iterator": "^1.0.0-rc.4",
+        "@metorial/util-async-iterator": "^1.0.0-rc.6",
         "@types/qs": "^6.14.0",
         "cross-fetch": "^4.1.0",
         "qs": "^6.13.1",
@@ -406,7 +419,7 @@
     },
     "packages/util-memo": {
       "name": "@metorial/util-memo",
-      "version": "1.0.0-rc.5",
+      "version": "1.0.0-rc.6",
       "devDependencies": {
         "@types/ws": "^8.5.13",
         "tsup": "^7.1.0",
@@ -416,7 +429,7 @@
     },
     "packages/util-react-fetch": {
       "name": "@metorial/util-react-fetch",
-      "version": "1.0.0-rc.5",
+      "version": "1.0.0-rc.6",
       "dependencies": {
         "@metorial/util-endpoint": "^1.0.0-rc.1",
         "@metorial/util-memo": "^1.0.0-rc.1",
@@ -436,7 +449,7 @@
     },
     "packages/util-resource": {
       "name": "@metorial/util-resource",
-      "version": "1.0.0-rc.5",
+      "version": "1.0.0-rc.6",
       "devDependencies": {
         "tsup": "^7.1.0",
         "typescript": "^5.1.6",
@@ -445,7 +458,7 @@
     },
     "packages/util-resource-mapper": {
       "name": "@metorial/util-resource-mapper",
-      "version": "1.0.0-rc.5",
+      "version": "1.0.0-rc.6",
       "devDependencies": {
         "tsup": "^7.1.0",
         "typescript": "^5.1.6",
@@ -454,7 +467,7 @@
     },
     "packages/util-websocket": {
       "name": "@metorial/util-websocket",
-      "version": "1.0.0-rc.5",
+      "version": "1.0.0-rc.6",
       "dependencies": {
         "mitt": "^3.0.1",
         "ws": "^8.18.2",
@@ -469,10 +482,10 @@
     },
     "sdk/core": {
       "name": "@metorial/core",
-      "version": "1.0.0-rc.5",
+      "version": "1.0.0-rc.6",
       "dependencies": {
-        "@metorial/generated": "^1.0.0-rc.4",
-        "@metorial/util-endpoint": "^1.0.0-rc.4",
+        "@metorial/generated": "^1.0.0-rc.6",
+        "@metorial/util-endpoint": "^1.0.0-rc.6",
       },
       "devDependencies": {
         "@types/isomorphic-fetch": "^0.0.39",
@@ -484,10 +497,10 @@
     },
     "sdk/gen": {
       "name": "@metorial/generated",
-      "version": "1.0.0-rc.5",
+      "version": "1.0.0-rc.6",
       "dependencies": {
-        "@metorial/util-endpoint": "^1.0.0-rc.4",
-        "@metorial/util-resource-mapper": "^1.0.0-rc.4",
+        "@metorial/util-endpoint": "^1.0.0-rc.6",
+        "@metorial/util-resource-mapper": "^1.0.0-rc.6",
         "jose": "^5.9.6",
       },
       "devDependencies": {
@@ -500,7 +513,7 @@
     },
     "sdk/metorial": {
       "name": "metorial",
-      "version": "1.0.0-rc.5",
+      "version": "1.0.0-rc.6",
       "dependencies": {
         "@metorial/sdk": "^1.0.0-rc.1",
       },
@@ -512,11 +525,11 @@
     },
     "sdk/sdk": {
       "name": "@metorial/sdk",
-      "version": "1.0.0-rc.5",
+      "version": "1.0.0-rc.6",
       "dependencies": {
-        "@metorial/core": "^1.0.0-rc.4",
-        "@metorial/mcp-session": "^1.0.0-rc.4",
-        "@metorial/util-endpoint": "^1.0.0-rc.4",
+        "@metorial/core": "^1.0.0-rc.6",
+        "@metorial/mcp-session": "^1.0.0-rc.6",
+        "@metorial/util-endpoint": "^1.0.0-rc.6",
       },
       "devDependencies": {
         "@types/isomorphic-fetch": "^0.0.39",
@@ -627,6 +640,8 @@
     "@metorial-examples/typescript-openai": ["@metorial-examples/typescript-openai@workspace:examples/typescript-openai"],
 
     "@metorial-examples/typescript-openai-compatible": ["@metorial-examples/typescript-openai-compatible@workspace:examples/typescript-openai-compatible"],
+
+    "@metorial-examples/typescript-openai-run": ["@metorial-examples/typescript-openai-run@workspace:examples/typescript-openai-run"],
 
     "@metorial-examples/typescript-togetherai": ["@metorial-examples/typescript-togetherai@workspace:examples/typescript-togetherai"],
 
@@ -1402,6 +1417,8 @@
 
     "@metorial-examples/typescript-openai-compatible/@types/bun": ["@types/bun@1.2.20", "", { "dependencies": { "bun-types": "1.2.20" } }, "sha512-dX3RGzQ8+KgmMw7CsW4xT5ITBSCrSbfHc36SNT31EOUg/LA9JWq0VDdEXDRSe1InVWpd2yLUM1FUF/kEOyTzYA=="],
 
+    "@metorial-examples/typescript-openai-run/@types/bun": ["@types/bun@1.2.23", "", { "dependencies": { "bun-types": "1.2.23" } }, "sha512-le8ueOY5b6VKYf19xT3McVbXqLqmxzPXHsQT/q9JHgikJ2X22wyTW3g3ohz2ZMnp7dod6aduIiq8A14Xyimm0A=="],
+
     "@metorial-examples/typescript-togetherai/@ai-sdk/openai": ["@ai-sdk/openai@2.0.9", "", { "dependencies": { "@ai-sdk/provider": "2.0.0", "@ai-sdk/provider-utils": "3.0.1" }, "peerDependencies": { "zod": "^3.25.76 || ^4" } }, "sha512-KLWQ4LWPgKH7V3KtbZ4n8pKkTyuujj+qLwphU5fg6d2WP86OQRJGMTi11UqALZ5LTABUVp3qH62CGGXzjnJV3w=="],
 
     "@metorial-examples/typescript-togetherai/@metorial/ai-sdk": ["@metorial/ai-sdk@1.0.0-rc.5", "", { "dependencies": { "@metorial/core": "^1.0.0-rc.5", "@metorial/mcp-sdk-utils": "^1.0.0-rc.5", "@metorial/mcp-session": "^1.0.0-rc.5", "@metorial/sdk": "^1.0.0-rc.5" }, "peerDependencies": { "ai": "*" } }, "sha512-1ay4U4n65F1q/hoRJrFOkknNFEVDq82/qJDeKC486FI/vHlFI+lK0wgVEcnG8iBGUxByBjk47oq2eF+PfY8wWg=="],
@@ -1565,6 +1582,8 @@
     "@metorial-examples/typescript-openai-compatible/@metorial/sdk/@metorial/util-endpoint": ["@metorial/util-endpoint@1.0.0-rc.5", "", { "dependencies": { "@metorial/util-async-iterator": "^1.0.0-rc.5", "@types/qs": "^6.14.0", "cross-fetch": "^4.1.0", "qs": "^6.13.1" } }, "sha512-SAIPJO8H4gmciunnxT1O8RCW1OoRtZMMTMfmJtalipghaWwKhpE+/mGGIKgpcpHoKF342DWxh+u/pcg3JfUiWA=="],
 
     "@metorial-examples/typescript-openai-compatible/@types/bun/bun-types": ["bun-types@1.2.20", "", { "dependencies": { "@types/node": "*" }, "peerDependencies": { "@types/react": "^19" } }, "sha512-pxTnQYOrKvdOwyiyd/7sMt9yFOenN004Y6O4lCcCUoKVej48FS5cvTw9geRaEcB9TsDZaJKAxPTVvi8tFsVuXA=="],
+
+    "@metorial-examples/typescript-openai-run/@types/bun/bun-types": ["bun-types@1.2.23", "", { "dependencies": { "@types/node": "*" }, "peerDependencies": { "@types/react": "^19" } }, "sha512-R9f0hKAZXgFU3mlrA0YpE/fiDvwV0FT9rORApt2aQVWSuJDzZOyB5QLc0N/4HF57CS8IXJ6+L5E4W1bW6NS2Aw=="],
 
     "@metorial-examples/typescript-togetherai/@ai-sdk/openai/@ai-sdk/provider": ["@ai-sdk/provider@2.0.0", "", { "dependencies": { "json-schema": "^0.4.0" } }, "sha512-6o7Y2SeO9vFKB8lArHXehNuusnpddKPk7xqL7T2/b+OvXMRIXUO1rR4wcv1hAFUAT9avGZshty3Wlua/XA7TvA=="],
 
@@ -1764,6 +1783,8 @@
 
     "@metorial-examples/typescript-openai-compatible/@types/bun/bun-types/@types/node": ["@types/node@24.0.15", "", { "dependencies": { "undici-types": "~7.8.0" } }, "sha512-oaeTSbCef7U/z7rDeJA138xpG3NuKc64/rZ2qmUFkFJmnMsAPaluIifqyWd8hSSMxyP9oie3dLAqYPblag9KgA=="],
 
+    "@metorial-examples/typescript-openai-run/@types/bun/bun-types/@types/node": ["@types/node@24.0.15", "", { "dependencies": { "undici-types": "~7.8.0" } }, "sha512-oaeTSbCef7U/z7rDeJA138xpG3NuKc64/rZ2qmUFkFJmnMsAPaluIifqyWd8hSSMxyP9oie3dLAqYPblag9KgA=="],
+
     "@metorial-examples/typescript-togetherai/@metorial/ai-sdk/@metorial/core/@metorial/generated": ["@metorial/generated@1.0.0-rc.5", "", { "dependencies": { "@metorial/util-endpoint": "^1.0.0-rc.5", "@metorial/util-resource-mapper": "^1.0.0-rc.5", "jose": "^5.9.6" } }, "sha512-oP6Bt0a9PIhnVHc+pU3J+z2iOnpz8EPguNC751O9GFygd81E1XP3iHSGMKU//h3c3RN/m6RBbcZyMiUa6pPPwQ=="],
 
     "@metorial-examples/typescript-togetherai/@metorial/ai-sdk/@metorial/core/@metorial/util-endpoint": ["@metorial/util-endpoint@1.0.0-rc.5", "", { "dependencies": { "@metorial/util-async-iterator": "^1.0.0-rc.5", "@types/qs": "^6.14.0", "cross-fetch": "^4.1.0", "qs": "^6.13.1" } }, "sha512-SAIPJO8H4gmciunnxT1O8RCW1OoRtZMMTMfmJtalipghaWwKhpE+/mGGIKgpcpHoKF342DWxh+u/pcg3JfUiWA=="],
@@ -1855,6 +1876,8 @@
     "@metorial-examples/typescript-openai-compatible/@metorial/sdk/@metorial/core/@metorial/generated/@metorial/util-resource-mapper": ["@metorial/util-resource-mapper@1.0.0-rc.5", "", {}, "sha512-CBR3LgN+PYin8tkoFuWi0o6pOeTul+U2ySxGKIY4Ab/brtCgWpZMKxB9AOhrKNkGkvW2wS35KQvy9tNJbJtLCQ=="],
 
     "@metorial-examples/typescript-openai-compatible/@types/bun/bun-types/@types/node/undici-types": ["undici-types@7.8.0", "", {}, "sha512-9UJ2xGDvQ43tYyVMpuHlsgApydB8ZKfVYTsLDhXkFL/6gfkp+U8xTGdh8pMJv1SpZna0zxG1DwsKZsreLbXBxw=="],
+
+    "@metorial-examples/typescript-openai-run/@types/bun/bun-types/@types/node/undici-types": ["undici-types@7.8.0", "", {}, "sha512-9UJ2xGDvQ43tYyVMpuHlsgApydB8ZKfVYTsLDhXkFL/6gfkp+U8xTGdh8pMJv1SpZna0zxG1DwsKZsreLbXBxw=="],
 
     "@metorial-examples/typescript-togetherai/@metorial/ai-sdk/@metorial/core/@metorial/generated/@metorial/util-resource-mapper": ["@metorial/util-resource-mapper@1.0.0-rc.5", "", {}, "sha512-CBR3LgN+PYin8tkoFuWi0o6pOeTul+U2ySxGKIY4Ab/brtCgWpZMKxB9AOhrKNkGkvW2wS35KQvy9tNJbJtLCQ=="],
 

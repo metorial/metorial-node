@@ -8,7 +8,6 @@ export type ApiKeysRevokeOutput = {
   secretRedactedLong: string;
   secret: string | null;
   type:
-    | 'user_auth_token'
     | 'organization_management_token'
     | 'instance_access_token_secret'
     | 'instance_access_token_publishable';
@@ -19,7 +18,6 @@ export type ApiKeysRevokeOutput = {
     id: string;
     status: 'active' | 'deleted';
     type:
-      | 'user_auth_token'
       | 'organization_management'
       | 'instance_secret'
       | 'instance_publishable';
@@ -29,7 +27,6 @@ export type ApiKeysRevokeOutput = {
       id: string;
       type: 'member' | 'machine_access';
       organizationId: string;
-      actorId: string;
       name: string;
       email: string | null;
       imageUrl: string;
@@ -126,7 +123,6 @@ export let mapApiKeysRevokeOutput = mtMap.object<ApiKeysRevokeOutput>({
             'organization_id',
             mtMap.passthrough()
           ),
-          actorId: mtMap.objectField('actor_id', mtMap.passthrough()),
           name: mtMap.objectField('name', mtMap.passthrough()),
           email: mtMap.objectField('email', mtMap.passthrough()),
           imageUrl: mtMap.objectField('image_url', mtMap.passthrough()),

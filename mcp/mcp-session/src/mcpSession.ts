@@ -162,7 +162,7 @@ export class MetorialMcpSession {
   private get mcpHost() {
     if (this.sdk._config.mcpHost) return this.sdk._config.mcpHost;
 
-    let host = this.sdk._config.apiHost;
+    let host = this.sdk._config.apiHost ?? 'https://api.metorial.com';
 
     if (host.startsWith('https://api.metorial')) {
       return host.replace('https://api.metorial', 'https://mcp.metorial');
