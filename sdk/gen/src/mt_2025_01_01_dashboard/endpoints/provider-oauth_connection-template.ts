@@ -4,9 +4,13 @@ import {
 } from '@metorial/util-endpoint';
 
 import {
+  mapProviderOauthConnectionTemplateEvaluateBody,
+  mapProviderOauthConnectionTemplateEvaluateOutput,
   mapProviderOauthConnectionTemplateGetOutput,
   mapProviderOauthConnectionTemplateListOutput,
   mapProviderOauthConnectionTemplateListQuery,
+  type ProviderOauthConnectionTemplateEvaluateBody,
+  type ProviderOauthConnectionTemplateEvaluateOutput,
   type ProviderOauthConnectionTemplateGetOutput,
   type ProviderOauthConnectionTemplateListOutput,
   type ProviderOauthConnectionTemplateListQuery
@@ -43,6 +47,7 @@ export class MetorialProviderOauthConnectionTemplateEndpoint {
    * @name List oauth connection templates
    * @description List all oauth connection templates
    *
+   * @param `organizationId` - string
    * @param `query` - ProviderOauthConnectionTemplateListQuery
    * @param `opts` - { headers?: Record<string, string> }
    * @returns ProviderOauthConnectionTemplateListOutput
@@ -50,10 +55,11 @@ export class MetorialProviderOauthConnectionTemplateEndpoint {
    * @see https://metorial.com/docs
    */
   list(
+    organizationId: string,
     query?: ProviderOauthConnectionTemplateListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<ProviderOauthConnectionTemplateListOutput> {
-    let path = 'provider-oauth-connection-template';
+    let path = `dashboard/organizations/${organizationId}/provider-oauth-connection-template`;
 
     let request = {
       path,
@@ -73,6 +79,7 @@ export class MetorialProviderOauthConnectionTemplateEndpoint {
    * @name Get oauth connection template
    * @description Get the information of a specific oauth connection template
    *
+   * @param `organizationId` - string
    * @param `oauthTemplateId` - string
    * @param `opts` - { headers?: Record<string, string> }
    * @returns ProviderOauthConnectionTemplateGetOutput
@@ -80,10 +87,11 @@ export class MetorialProviderOauthConnectionTemplateEndpoint {
    * @see https://metorial.com/docs
    */
   get(
+    organizationId: string,
     oauthTemplateId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<ProviderOauthConnectionTemplateGetOutput> {
-    let path = `provider-oauth-connection-template/${oauthTemplateId}`;
+    let path = `dashboard/organizations/${organizationId}/provider-oauth-connection-template/${oauthTemplateId}`;
 
     let request = {
       path,
@@ -93,6 +101,36 @@ export class MetorialProviderOauthConnectionTemplateEndpoint {
 
     return this._get(request).transform(
       mapProviderOauthConnectionTemplateGetOutput
+    );
+  }
+
+  /**
+   * @name Evaluate oauth connection template
+   * @description Evaluate the configuration of an oauth connection template
+   *
+   * @param `oauthTemplateId` - string
+   * @param `body` - ProviderOauthConnectionTemplateEvaluateBody
+   * @param `opts` - { headers?: Record<string, string> }
+   * @returns ProviderOauthConnectionTemplateEvaluateOutput
+   * @see https://metorial.com/api
+   * @see https://metorial.com/docs
+   */
+  evaluate(
+    oauthTemplateId: string,
+    body: ProviderOauthConnectionTemplateEvaluateBody,
+    opts?: { headers?: Record<string, string> }
+  ): Promise<ProviderOauthConnectionTemplateEvaluateOutput> {
+    let path = `provider-oauth-connection-template/${oauthTemplateId}/evaluate`;
+
+    let request = {
+      path,
+      body: mapProviderOauthConnectionTemplateEvaluateBody.transformTo(body),
+
+      ...(opts?.headers ? { headers: opts.headers } : {})
+    } as any;
+
+    return this._post(request).transform(
+      mapProviderOauthConnectionTemplateEvaluateOutput
     );
   }
 }

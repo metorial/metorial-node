@@ -9,5 +9,15 @@ export default defineConfig({
   bundle: true,
   dts: true,
   treeshake: true,
-  noExternal: ['@metorial/generated']
+  noExternal: ['@metorial/generated'],
+  external: [
+    '@metorial/openai',
+    '@metorial/anthropic',
+    '@metorial/deepseek',
+    '@metorial/google',
+    '@metorial/mistral',
+    '@metorial/ai-sdk',
+    'openai',
+    '@anthropic-ai/sdk'
+  ]
 });
