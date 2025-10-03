@@ -16,6 +16,8 @@ export default defineConfig({
     '@metorial/deepseek',
     '@metorial/google',
     '@metorial/mistral',
+    '@metorial/togetherai',
+    '@metorial/xai',
     '@metorial/ai-sdk',
     'openai',
     '@anthropic-ai/sdk'
