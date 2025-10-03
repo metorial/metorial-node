@@ -2,32 +2,72 @@
 
 The official Node.js/TypeScript SDK for [Metorial](https://metorial.com) - The open source integration platform for agentic AI
 
-## Features
+## Complete API Documentation
+**[API Documentation](https://metorial.com/api)** - Complete API reference and guides
 
-🔧 **Multi-Provider Support**: Use the same tools across different AI providers
+## Multi-Provider Support
 
-- ✅ OpenAI (GPT-4, GPT-3.5)
-- ✅ Anthropic (Claude)
-- ✅ Google (Gemini)
-- ✅ Mistral AI
-- ✅ DeepSeek
-- ✅ Together AI
-- ✅ XAI (Grok)
-- ✅ AI SDK frameworks
+Use the same tools across different AI providers
 
-🚀 **Easy Integration**: Simple async/await interface
+| Provider   | Model Examples                    | Client Required     |
+|------------|-----------------------------------|---------------------|
+| OpenAI     | `gpt-4o`, `gpt-4`, `gpt-3.5-turbo` | `openaiClient`     |
+| Anthropic  | `claude-3-5-sonnet-20241022`, `claude-3-haiku-20240307` | `anthropicClient` |
+| Google     | `gemini-pro`, `gemini-1.5-pro`, `gemini-flash` | `googleClient` |
+| DeepSeek   | `deepseek-chat`, `deepseek-coder` | `deepseekClient` |
+| Mistral    | `mistral-large-latest`, `mistral-small-latest` | `mistralClient` |
+| XAI        | `grok-beta`, `grok-vision-beta`   | `xaiClient`        |
+| TogetherAI | `meta-llama/Llama-2-70b-chat-hf`, `NousResearch/Nous-Hermes-2-Mixtral-8x7B-DPO` | `togetheraiClient` |
 
-📡 **Session Management**: Automatic session lifecycle handling
 
-🛠️ **Tool Discovery**: Automatic tool detection and formatting
+## Quick Start
 
-🔄 **Format Conversion**: Provider-specific tool format conversion
+The simplest way to get started is with the `.run()` method, which handles session management and conversation loops automatically:
+
+```typescript
+import { Metorial } from 'metorial';
+import OpenAI from 'openai';
+
+let metorial = new Metorial({ apiKey: 'your-metorial-api-key' });
+let openai = new OpenAI({ apiKey: 'your-openai-api-key' });
+
+let result = await metorial.run({
+  message: 'Scan my slack messages for meetings and put them on my google calendar.',
+  serverDeployments: ['google-calendar-server', 'slack-server'], 
+  model: 'gpt-4o',
+  client: openai,
+  maxSteps: 10 // Optional: limit conversation steps
+});
+
+console.log(`Response (completed in ${result.steps} steps):`);
+console.log(result.text);
+```
+
+### Advanced Usage
+
+```typescript
+// With tool filtering and provider-specific options
+let result = await metorial.run({
+  message: 'Analyze this codebase and create a summary',
+  serverDeployments: ['deployment-1', 'deployment-2'],
+  model: 'claude-3-5-sonnet-20241022',
+  client: anthropic,
+  maxSteps: 15,
+
+  tools: ['github-search', 'file-reader'], // Optional: limit to specific tools
+
+  // Provider specific options
+  temperature: 0.7,
+  max_tokens: 2000
+});
+```
 
 ## Examples
 
 Check out the `examples/` directory for more comprehensive examples:
 
-- [`examples/typescript-openai/`](examples/typescript-openai/) - OpenAI integration
+- [`examples/typescript-openai-run/`](examples/typescript-openai-run/) - **Simple `.run()` method example**
+- [`examples/typescript-openai/`](examples/typescript-openai/) - Manual OpenAI integration
 - [`examples/typescript-anthropic/`](examples/typescript-anthropic/) - Anthropic integration
 - [`examples/typescript-ai-sdk/`](examples/typescript-ai-sdk/) - AI SDK integration
 
@@ -43,7 +83,7 @@ pnpm add metorial
 bun add metorial
 ```
 
-## Quick Start
+## Manual Integration (More Control)
 
 ### OpenAI Example
 
@@ -52,33 +92,33 @@ import { Metorial } from 'metorial';
 import { metorialOpenAI } from '@metorial/openai';
 import OpenAI from 'openai';
 
-const main = async () => {
+let main = async () => {
   // Initialize clients
-  const metorial = new Metorial({
+  let metorial = new Metorial({
     apiKey: 'your-metorial-api-key'
   });
 
-  const openai = new OpenAI({ apiKey: 'your-openai-api-key' });
+  let openai = new OpenAI({ apiKey: 'your-openai-api-key' });
 
   // Use Metorial tools with OpenAI
   await metorial.withProviderSession(
     metorialOpenAI.chatCompletions,
     { serverDeployments: ['your-server-deployment-id'] },
     async session => {
-      const messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
+      let messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
         { role: 'user', content: 'What are the latest commits?' }
       ];
 
       for (let i = 0; i < 10; i++) {
         // Call OpenAI with Metorial tools
-        const response = await openai.chat.completions.create({
+        let response = await openai.chat.completions.create({
           model: 'gpt-4o',
           messages,
           tools: session.tools
         });
 
-        const choice = response.choices[0]!;
-        const toolCalls = choice.message.tool_calls;
+        let choice = response.choices[0]!;
+        let toolCalls = choice.message.tool_calls;
 
         if (!toolCalls) {
           console.log(choice.message.content);
@@ -86,7 +126,7 @@ const main = async () => {
         }
 
         // Execute tools through Metorial
-        const toolResponses = await session.callTools(toolCalls);
+        let toolResponses = await session.callTools(toolCalls);
 
         // Add to conversation
         messages.push(
@@ -113,11 +153,11 @@ import { Metorial } from 'metorial';
 import { metorialAnthropic } from '@metorial/anthropic';
 import Anthropic from '@anthropic-ai/sdk';
 
-const metorial = new Metorial({
+let metorial = new Metorial({
   apiKey: 'your-metorial-api-key'
 });
 
-const anthropic = new Anthropic({
+let anthropic = new Anthropic({
   apiKey: 'your-anthropic-api-key'
 });
 
@@ -125,14 +165,14 @@ await metorial.withProviderSession(
   metorialAnthropic,
   { serverDeployments: ['your-server-deployment-id'] },
   async session => {
-    const messages: Anthropic.Messages.MessageParam[] = [
+    let messages: Anthropic.Messages.MessageParam[] = [
       { role: 'user', content: 'Help me with this GitHub task: ...' }
     ];
 
     // Dedupe tools by name
-    const uniqueTools = Array.from(new Map(session.tools.map(t => [t.name, t])).values());
+    let uniqueTools = Array.from(new Map(session.tools.map(t => [t.name, t])).values());
 
-    const response = await anthropic.messages.create({
+    let response = await anthropic.messages.create({
       model: 'claude-3-5-sonnet-20241022',
       max_tokens: 1024,
       messages,
@@ -140,12 +180,12 @@ await metorial.withProviderSession(
     });
 
     // Handle tool calls
-    const toolCalls = response.content.filter(
+    let toolCalls = response.content.filter(
       (c): c is Anthropic.Messages.ToolUseBlock => c.type === 'tool_use'
     );
 
     if (toolCalls.length > 0) {
-      const toolResponses = await session.callTools(toolCalls);
+      let toolResponses = await session.callTools(toolCalls);
       messages.push({ role: 'assistant', content: response.content as any }, toolResponses);
     }
   }
@@ -159,22 +199,22 @@ import { Metorial } from 'metorial';
 import { metorialGoogle } from '@metorial/google';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
-const metorial = new Metorial({
+let metorial = new Metorial({
   apiKey: 'your-metorial-api-key'
 });
 
-const genAI = new GoogleGenerativeAI('your-google-api-key');
+let genAI = new GoogleGenerativeAI('your-google-api-key');
 
 await metorial.withProviderSession(
   metorialGoogle,
   { serverDeployments: ['your-server-deployment-id'] },
   async session => {
-    const model = genAI.getGenerativeModel({
+    let model = genAI.getGenerativeModel({
       model: 'gemini-pro',
       tools: session.tools
     });
 
-    const response = await model.generateContent('What can you help me with?');
+    let response = await model.generateContent('What can you help me with?');
 
     // Handle function calls if present
     // ... tool call handling logic
@@ -190,12 +230,12 @@ import { metorialDeepSeek } from '@metorial/deepseek';
 import OpenAI from 'openai';
 
 // Works with any OpenAI-compatible API
-const deepseekClient = new OpenAI({
+let deepseekClient = new OpenAI({
   apiKey: 'your-deepseek-key',
   baseURL: 'https://api.deepseek.com'
 });
 
-const metorial = new Metorial({
+let metorial = new Metorial({
   apiKey: 'your-metorial-api-key'
 });
 
@@ -203,7 +243,7 @@ await metorial.withProviderSession(
   metorialDeepSeek.chatCompletions,
   { serverDeployments: ['your-server-deployment-id'] },
   async session => {
-    const response = await deepseekClient.chat.completions.create({
+    let response = await deepseekClient.chat.completions.create({
       model: 'deepseek-chat',
       messages: [{ role: 'user', content: 'Help me code' }],
       tools: session.tools
@@ -233,7 +273,7 @@ await metorial.withProviderSession(
 ```typescript
 import { Metorial } from 'metorial';
 
-const metorial = new Metorial({
+let metorial = new Metorial({
   apiKey: 'your-api-key'
 });
 ```
