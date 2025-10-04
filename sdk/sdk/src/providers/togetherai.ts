@@ -1,10 +1,11 @@
 import type OpenAI from 'openai';
 import { metorialTogetherAi } from '@metorial/togetherai';
+import type { MetorialMcpSessionInitServerDeployments } from '@metorial/mcp-session';
 import type { WithProviderSessionFunction, RunResult } from './types';
 
 let runWithTogetherAI = async (config: {
   message: string;
-  serverDeployments: string | string[];
+  serverDeployments: string | MetorialMcpSessionInitServerDeployments;
   client: OpenAI;
   model: string;
   maxSteps?: number;

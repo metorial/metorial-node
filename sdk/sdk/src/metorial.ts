@@ -21,6 +21,11 @@ import { runWithTogetherAI } from './providers/togetherai';
 import { RunResult } from './providers/types';
 
 export type { RunResult } from './providers/types';
+export type {
+  MetorialMcpSession,
+  MetorialMcpSessionInit,
+  MetorialMcpSessionInitServerDeployments
+} from '@metorial/mcp-session';
 
 export class Metorial implements MetorialCoreSDK {
   private readonly sdk: MetorialCoreSDK;
@@ -115,56 +120,58 @@ export class Metorial implements MetorialCoreSDK {
     });
   }
 
-  private inferProvider(model: string): 'openai' | 'anthropic' | 'deepseek' | 'google' | 'mistral' | 'xai' | 'togetherai' {
-    const modelLower = model.toLowerCase();
-    
+  private inferProvider(
+    model: string
+  ): 'openai' | 'anthropic' | 'deepseek' | 'google' | 'mistral' | 'xai' | 'togetherai' {
+    let modelLower = model.toLowerCase();
+
     if (modelLower.startsWith('claude-')) {
       return 'anthropic';
     }
-    
+
     if (modelLower.startsWith('gpt-') || modelLower.startsWith('o1-')) {
       return 'openai';
     }
-    
+
     if (modelLower.includes('deepseek')) {
       return 'deepseek';
     }
-    
+
     if (modelLower.startsWith('gemini-') || modelLower.includes('google')) {
       return 'google';
     }
-    
+
     if (modelLower.startsWith('mistral-') || modelLower.includes('mistral')) {
       return 'mistral';
     }
-    
+
     if (modelLower.startsWith('x-') || modelLower === 'grok-beta') {
       return 'xai';
     }
-    
-    if (modelLower.includes('together') || 
-        modelLower.includes('llama') || 
-        modelLower.includes('mixtral') ||
-        modelLower.includes('qwen') ||
-        modelLower.includes('/')) {
+
+    if (
+      modelLower.includes('together') ||
+      modelLower.includes('llama') ||
+      modelLower.includes('mixtral') ||
+      modelLower.includes('qwen') ||
+      modelLower.includes('/')
+    ) {
       return 'togetherai';
     }
-    
-    throw new Error(
-      `Unable to infer provider from model "${model}".`
-    );
+
+    throw new Error(`Unable to infer provider from model "${model}".`);
   }
 
   async run(config: {
     message: string;
-    serverDeployments: string | string[];
+    serverDeployments: string | MetorialMcpSessionInitServerDeployments;
     model: string;
     maxSteps?: number;
     tools?: string[];
     [key: string]: any;
   }): Promise<RunResult> {
-    const provider = this.inferProvider(config.model);
-    
+    let provider = this.inferProvider(config.model);
+
     switch (provider) {
       case 'openai':
         return runWithOpenAI({
@@ -172,49 +179,49 @@ export class Metorial implements MetorialCoreSDK {
           client: config.client as OpenAI,
           withProviderSession: this.withProviderSession.bind(this)
         });
-        
+
       case 'anthropic':
         return runWithAnthropic({
           ...config,
           client: config.client as Anthropic,
           withProviderSession: this.withProviderSession.bind(this)
         });
-        
+
       case 'deepseek':
         return runWithDeepSeek({
           ...config,
           client: config.client as OpenAI,
           withProviderSession: this.withProviderSession.bind(this)
         });
-        
+
       case 'google':
         return runWithGoogle({
           ...config,
           client: config.client as GoogleGenAI,
           withProviderSession: this.withProviderSession.bind(this)
         });
-        
+
       case 'mistral':
         return runWithMistral({
           ...config,
           client: config.client as Mistral,
           withProviderSession: this.withProviderSession.bind(this)
         });
-        
+
       case 'xai':
         return runWithXAI({
           ...config,
           client: config.client as OpenAI,
           withProviderSession: this.withProviderSession.bind(this)
         });
-        
+
       case 'togetherai':
         return runWithTogetherAI({
           ...config,
           client: config.client as OpenAI,
           withProviderSession: this.withProviderSession.bind(this)
         });
-        
+
       default:
         throw new Error(`Unsupported provider: ${provider}`);
     }

@@ -1,5 +1,6 @@
 import type Anthropic from '@anthropic-ai/sdk';
 import { metorialAnthropic } from '@metorial/anthropic';
+import type { MetorialMcpSessionInitServerDeployments } from '@metorial/mcp-session';
 import type { WithProviderSessionFunction, RunResult } from './types';
 
 interface ToolResultBlock {
@@ -15,7 +16,7 @@ interface ToolResponseMessage {
 
 let runWithAnthropic = async (config: {
   message: string;
-  serverDeployments: string | string[];
+  serverDeployments: string | MetorialMcpSessionInitServerDeployments;
   client: Anthropic;
   model: string;
   maxSteps?: number;

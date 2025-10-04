@@ -1,10 +1,11 @@
 import type OpenAI from 'openai';
 import { metorialDeepseek } from '@metorial/deepseek';
+import type { MetorialMcpSessionInitServerDeployments } from '@metorial/mcp-session';
 import type { WithProviderSessionFunction, RunResult } from './types';
 
 let runWithDeepSeek = async (config: {
   message: string;
-  serverDeployments: string | string[];
+  serverDeployments: string | MetorialMcpSessionInitServerDeployments;
   client: OpenAI; // DeepSeek uses OpenAI-compatible client
   model: string;
   maxSteps?: number;
