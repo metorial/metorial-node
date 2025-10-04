@@ -1,5 +1,6 @@
 import type { Mistral } from '@mistralai/mistralai';
 import { metorialMistral } from '@metorial/mistral';
+import type { MetorialMcpSessionInitServerDeployments } from '@metorial/mcp-session';
 import type { WithProviderSessionFunction, RunResult } from './types';
 
 let extractTextFromContent = (content: unknown): string => {
@@ -19,7 +20,7 @@ let extractTextFromContent = (content: unknown): string => {
 
 let runWithMistral = async (config: {
   message: string;
-  serverDeployments: string | string[];
+  serverDeployments: string | MetorialMcpSessionInitServerDeployments;
   client: Mistral;
   model: string;
   maxSteps?: number;

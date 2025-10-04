@@ -1,10 +1,11 @@
 import type { GoogleGenAI } from '@google/genai';
 import { metorialGoogle } from '@metorial/google';
+import type { MetorialMcpSessionInitServerDeployments } from '@metorial/mcp-session';
 import type { WithProviderSessionFunction, RunResult } from './types';
 
 let runWithGoogle = async (config: {
   message: string;
-  serverDeployments: string | string[];
+  serverDeployments: string | MetorialMcpSessionInitServerDeployments;
   client: GoogleGenAI;
   model: string;
   maxSteps?: number;
