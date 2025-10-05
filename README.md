@@ -62,6 +62,70 @@ let result = await metorial.run({
 });
 ```
 
+## OAuth Integration
+
+When working with services that require user authentication (like Google Calendar, Slack, etc.), Metorial provides OAuth session management to handle the authentication flow:
+
+```typescript
+import { Metorial } from 'metorial';
+import Anthropic from '@anthropic-ai/sdk';
+
+let metorial = new Metorial({ apiKey: 'your-metorial-api-key' });
+let anthropic = new Anthropic({ apiKey: 'your-anthropic-api-key' });
+
+// Create OAuth sessions for services that require user authentication
+let [googleCalOAuthSession, slackOAuthSession] = await Promise.all([
+  metorial.oauth.sessions.create({ 
+    serverDeploymentId: 'your-google-calendar-server-deployment-id' 
+  }),
+  metorial.oauth.sessions.create({ 
+    serverDeploymentId: 'your-slack-server-deployment-id' 
+  })
+]);
+
+// Give user OAuth URLs for authentication
+console.log('OAuth URLs for user authentication:');
+console.log(`   Google Calendar: ${googleCalOAuthSession.url}`);
+console.log(`   Slack: ${slackOAuthSession.url}`);
+
+// Wait for user to complete OAuth flow
+await metorial.oauth.waitForCompletion([googleCalOAuthSession, slackOAuthSession]);
+
+console.log('OAuth sessions completed!');
+
+// Now use the authenticated sessions in your run
+let result = await metorial.run({
+  message: `Look in Slack for mentions of potential partners. Use Exa to research their background, 
+  company, and email. Schedule a 30-minute intro call with them for an open slot on Dec 13th, 2025 
+  SF time and send me the calendar link. Proceed without asking for any confirmations.`,
+
+  serverDeployments: [
+    { 
+      serverDeploymentId: 'your-google-calendar-server-deployment-id', 
+      oauthSessionId: googleCalOAuthSession.id 
+    },
+    { 
+      serverDeploymentId: 'your-slack-server-deployment-id', 
+      oauthSessionId: slackOAuthSession.id 
+    },
+    { 
+      serverDeploymentId: 'your-exa-server-deployment-id' // No OAuth needed for Exa
+    }
+  ],
+  client: anthropic,
+  model: 'claude-3-5-sonnet-20241022'
+});
+
+console.log(result.text);
+```
+
+### OAuth Flow Explained
+
+1. **Create OAuth Sessions**: Call `metorial.oauth.sessions.create()` for each service requiring user authentication
+2. **Send URLs**: Show the OAuth URLs to users so they can authenticate in their browser
+3. **Wait for Completion**: Use `metorial.oauth.waitForCompletion()` to wait for users to complete the OAuth flow
+4. **Use Authenticated Sessions**: Pass the `oauthSessionId` when configuring `serverDeployments`
+
 ## Examples
 
 Check out the `examples/` directory for more comprehensive examples:
