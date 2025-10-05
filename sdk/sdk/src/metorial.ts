@@ -50,8 +50,19 @@ export class Metorial implements MetorialCoreSDK {
     return this.sdk.sessions;
   }
 
-  get oauth() {
-    return this.sdk.oauth;
+  get oauth(): typeof this.sdk.oauth & {
+    waitForCompletion: (
+      sessions: Array<{ id: string }>,
+      options?: {
+        pollInterval?: number;
+        timeout?: number;
+      }
+    ) => Promise<void>;
+  } {
+    return {
+      ...this.sdk.oauth,
+      waitForCompletion: this.waitForOAuthCompletion.bind(this)
+    };
   }
 
   get _config() {
@@ -160,6 +171,58 @@ export class Metorial implements MetorialCoreSDK {
     }
 
     throw new Error(`Unable to infer provider from model "${model}".`);
+  }
+
+  async waitForOAuthCompletion(
+    sessions: Array<{ id: string }>,
+    options?: {
+      pollInterval?: number;
+      timeout?: number;
+    }
+  ): Promise<void> {
+    let pollInterval = Math.max(options?.pollInterval ?? 5000, 2000); // minimum 2 seconds
+    let timeout = options?.timeout ?? 600000; // 10 minutes
+    let startTime = Date.now();
+
+    if (sessions.length === 0) {
+      return;
+    }
+
+    while (true) {
+      if (Date.now() - startTime > timeout) {
+        throw new Error(`OAuth authentication timeout after ${timeout / 1000} seconds`);
+      }
+
+      try {
+        let statuses = await Promise.all(
+          sessions.map(session => this.oauth.sessions.get(session.id))
+        );
+
+        let allCompleted = statuses.every(status => status.status === 'completed');
+        if (allCompleted) {
+          return;
+        }
+
+        let failedSessions = statuses.filter(status => status.status === 'failed');
+        if (failedSessions.length > 0) {
+          throw new Error(
+            `OAuth authentication failed for ${failedSessions.length} session(s)`
+          );
+        }
+
+        await new Promise(resolve => setTimeout(resolve, pollInterval));
+      } catch (error) {
+        if (
+          error instanceof Error &&
+          (error.message.includes('OAuth authentication failed') ||
+            error.message.includes('OAuth authentication timeout'))
+        ) {
+          throw error;
+        }
+
+        await new Promise(resolve => setTimeout(resolve, pollInterval));
+      }
+    }
   }
 
   async run(config: {
