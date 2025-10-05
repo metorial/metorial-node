@@ -1,7 +1,7 @@
 {
   "name": "@metorial/json-schema",
-  "version": "1.0.0-rc.6",
-  "author": "Tobias Herber",
+  "version": "1.0.0",
+  "author": "Metorial Inc.",
   "license": "MIT",
   "type": "module",
   "main": "dist/index.cjs",
