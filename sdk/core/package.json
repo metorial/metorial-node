@@ -1,7 +1,7 @@
 {
   "name": "@metorial/core",
-  "version": "1.0.0-rc.6",
-  "author": "Tobias Herber",
+  "version": "1.0.0",
+  "author": "Metorial Inc.",
   "license": "MIT",
   "type": "module",
   "main": "dist/index.cjs",
@@ -25,8 +25,8 @@
     "dist"
   ],
   "dependencies": {
-    "@metorial/generated": "^1.0.0-rc.6",
-    "@metorial/util-endpoint": "^1.0.0-rc.6"
+    "@metorial/generated": "^1.0.0",
+    "@metorial/util-endpoint": "^1.0.0"
   },
   "devDependencies": {
     "@types/isomorphic-fetch": "^0.0.39",
