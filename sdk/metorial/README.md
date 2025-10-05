@@ -1,6 +1,139 @@
-# metorial
+# Metorial Node.js SDK
 
-The main TypeScript/JavaScript SDK for Metorial - AI-powered tool calling and session management. This is the primary entry point for most users.
+The official Node.js/TypeScript SDK for [Metorial](https://metorial.com) - The open source integration platform for agentic AI
+
+## Complete API Documentation
+
+**[API Documentation](https://metorial.com/api)** - Complete API reference and guides
+
+## Multi-Provider Support
+
+Use the same tools across different AI providers
+
+| Provider   | Model Examples                                                                  | Client Required    |
+| ---------- | ------------------------------------------------------------------------------- | ------------------ |
+| OpenAI     | `gpt-4o`, `gpt-4`, `gpt-3.5-turbo`                                              | `openaiClient`     |
+| Anthropic  | `claude-3-5-sonnet-20241022`, `claude-3-haiku-20240307`                         | `anthropicClient`  |
+| Google     | `gemini-pro`, `gemini-1.5-pro`, `gemini-flash`                                  | `googleClient`     |
+| DeepSeek   | `deepseek-chat`, `deepseek-coder`                                               | `deepseekClient`   |
+| Mistral    | `mistral-large-latest`, `mistral-small-latest`                                  | `mistralClient`    |
+| XAI        | `grok-beta`, `grok-vision-beta`                                                 | `xaiClient`        |
+| TogetherAI | `meta-llama/Llama-2-70b-chat-hf`, `NousResearch/Nous-Hermes-2-Mixtral-8x7B-DPO` | `togetheraiClient` |
+
+## Quick Start
+
+The simplest way to get started is with the `.run()` method, which handles session management and conversation loops automatically:
+
+```typescript
+import { Metorial } from 'metorial';
+import OpenAI from 'openai';
+
+let metorial = new Metorial({ apiKey: 'your-metorial-api-key' });
+let openai = new OpenAI({ apiKey: 'your-openai-api-key' });
+
+let result = await metorial.run({
+  message: 'Scan my slack messages for meetings and put them on my google calendar.',
+  serverDeployments: ['google-calendar-server', 'slack-server'],
+  model: 'gpt-4o',
+  client: openai,
+  maxSteps: 10 // Optional: limit conversation steps
+});
+
+console.log(`Response (completed in ${result.steps} steps):`);
+console.log(result.text);
+```
+
+### Advanced Usage
+
+```typescript
+// With tool filtering and provider-specific options
+let result = await metorial.run({
+  message: 'Analyze this codebase and create a summary',
+  serverDeployments: ['deployment-1', 'deployment-2'],
+  model: 'claude-3-5-sonnet-20241022',
+  client: anthropic,
+  maxSteps: 15,
+
+  tools: ['github-search', 'file-reader'], // Optional: limit to specific tools
+
+  // Provider specific options
+  temperature: 0.7,
+  max_tokens: 2000
+});
+```
+
+## OAuth Integration
+
+When working with services that require user authentication (like Google Calendar, Slack, etc.), Metorial provides OAuth session management to handle the authentication flow:
+
+```typescript
+import { Metorial } from 'metorial';
+import Anthropic from '@anthropic-ai/sdk';
+
+let metorial = new Metorial({ apiKey: 'your-metorial-api-key' });
+let anthropic = new Anthropic({ apiKey: 'your-anthropic-api-key' });
+
+// Create OAuth sessions for services that require user authentication
+let [googleCalOAuthSession, slackOAuthSession] = await Promise.all([
+  metorial.oauth.sessions.create({
+    serverDeploymentId: 'your-google-calendar-server-deployment-id'
+  }),
+  metorial.oauth.sessions.create({
+    serverDeploymentId: 'your-slack-server-deployment-id'
+  })
+]);
+
+// Give user OAuth URLs for authentication
+console.log('OAuth URLs for user authentication:');
+console.log(`   Google Calendar: ${googleCalOAuthSession.url}`);
+console.log(`   Slack: ${slackOAuthSession.url}`);
+
+// Wait for user to complete OAuth flow
+await metorial.oauth.waitForCompletion([googleCalOAuthSession, slackOAuthSession]);
+
+console.log('OAuth sessions completed!');
+
+// Now use the authenticated sessions in your run
+let result = await metorial.run({
+  message: `Look in Slack for mentions of potential partners. Use Exa to research their background, 
+  company, and email. Schedule a 30-minute intro call with them for an open slot on Dec 13th, 2025 
+  SF time and send me the calendar link. Proceed without asking for any confirmations.`,
+
+  serverDeployments: [
+    {
+      serverDeploymentId: 'your-google-calendar-server-deployment-id',
+      oauthSessionId: googleCalOAuthSession.id
+    },
+    {
+      serverDeploymentId: 'your-slack-server-deployment-id',
+      oauthSessionId: slackOAuthSession.id
+    },
+    {
+      serverDeploymentId: 'your-exa-server-deployment-id' // No OAuth needed for Exa
+    }
+  ],
+  client: anthropic,
+  model: 'claude-3-5-sonnet-20241022'
+});
+
+console.log(result.text);
+```
+
+### OAuth Flow Explained
+
+1. **Create OAuth Sessions**: Call `metorial.oauth.sessions.create()` for each service requiring user authentication
+2. **Send URLs**: Show the OAuth URLs to users so they can authenticate in their browser
+3. **Wait for Completion**: Use `metorial.oauth.waitForCompletion()` to wait for users to complete the OAuth flow
+4. **Use Authenticated Sessions**: Pass the `oauthSessionId` when configuring `serverDeployments`
+
+## Examples
+
+Check out the `examples/` directory for more comprehensive examples:
+
+- [`examples/typescript-openai-run/`](examples/typescript-openai-run/) - **Simple `.run()` method example**
+- [`examples/typescript-openai/`](examples/typescript-openai/) - Manual OpenAI integration
+- [`examples/typescript-anthropic/`](examples/typescript-anthropic/) - Anthropic integration
+- [`examples/typescript-ai-sdk/`](examples/typescript-ai-sdk/) - AI SDK integration
 
 ## Installation
 
@@ -14,121 +147,70 @@ pnpm add metorial
 bun add metorial
 ```
 
-## Usage
+## Manual Integration (More Control)
 
-### Basic SDK Initialization
-
-```typescript
-import { Metorial } from 'metorial';
-
-// Initialize the main SDK
-let metorial = new Metorial({
-  apiKey: 'your-metorial-api-key',
-  apiHost: 'https://api.metorial.com', // optional
-  mcpHost: 'https://mcp.metorial.com' // optional
-});
-
-// Access SDK components
-let instance = metorial.instance; // Instance management
-let secrets = metorial.secrets; // Secrets management
-let servers = metorial.servers; // Server management
-let sessions = metorial.sessions; // Session management
-let mcp = metorial.mcp; // MCP-specific methods
-```
-
-### MCP Session Management
-
-```typescript
-import { Metorial } from 'metorial';
-
-let metorial = new Metorial({
-  apiKey: 'your-metorial-api-key'
-});
-
-// Create a basic MCP session
-await metorial.mcp.withSession(
-  {
-    serverDeployments: ['your-server-deployment-id']
-  },
-  async session => {
-    // Get session information
-    let sessionInfo = await session.getSession();
-    console.log('Session:', sessionInfo);
-
-    // Get available tools
-    let toolManager = await session.getToolManager();
-    let tools = toolManager.getTools();
-    console.log(
-      'Available tools:',
-      tools.map(t => t.name)
-    );
-
-    // Get server capabilities
-    let capabilities = await session.getCapabilities();
-    console.log('Capabilities:', capabilities);
-
-    // Get server deployments
-    let deployments = await session.getServerDeployments();
-    console.log('Deployments:', deployments);
-  }
-);
-```
-
-### AI Provider Integration
-
-#### OpenAI Integration
-
-```bash
-npm install @metorial/openai openai
-```
+### OpenAI Example
 
 ```typescript
 import { Metorial } from 'metorial';
 import { metorialOpenAI } from '@metorial/openai';
 import OpenAI from 'openai';
 
-let metorial = new Metorial({
-  apiKey: 'your-metorial-api-key'
-});
+let main = async () => {
+  // Initialize clients
+  let metorial = new Metorial({
+    apiKey: 'your-metorial-api-key'
+  });
 
-let openai = new OpenAI({
-  apiKey: 'your-openai-api-key'
-});
+  let openai = new OpenAI({ apiKey: 'your-openai-api-key' });
 
-// Use with OpenAI
-await metorial.mcp.withProviderSession(
-  metorialOpenAI.chatCompletions,
-  {
-    serverDeployments: ['your-server-deployment-id']
-  },
-  async session => {
-    // session.tools contains the tools formatted for OpenAI
-    let response = await openai.chat.completions.create({
-      model: 'gpt-4o',
-      messages: [
-        {
-          role: 'user',
-          content: 'Search for information about AI developments'
+  // Use Metorial tools with OpenAI
+  await metorial.withProviderSession(
+    metorialOpenAI.chatCompletions,
+    { serverDeployments: ['your-server-deployment-id'] },
+    async session => {
+      let messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
+        { role: 'user', content: 'What are the latest commits?' }
+      ];
+
+      for (let i = 0; i < 10; i++) {
+        // Call OpenAI with Metorial tools
+        let response = await openai.chat.completions.create({
+          model: 'gpt-4o',
+          messages,
+          tools: session.tools
+        });
+
+        let choice = response.choices[0]!;
+        let toolCalls = choice.message.tool_calls;
+
+        if (!toolCalls) {
+          console.log(choice.message.content);
+          return;
         }
-      ],
-      tools: session.tools
-    });
 
-    let choice = response.choices[0];
-    if (choice.message.tool_calls) {
-      // Execute tool calls
-      let toolResponses = await session.callTools(choice.message.tool_calls);
-      console.log('Tool responses:', toolResponses);
+        // Execute tools through Metorial
+        let toolResponses = await session.callTools(toolCalls);
+
+        // Add to conversation
+        messages.push(
+          {
+            role: 'assistant',
+            tool_calls: choice.message.tool_calls
+          },
+          ...toolResponses
+        );
+      }
     }
-  }
-);
+  );
+};
+
+main();
 ```
 
-#### Anthropic Integration
+## Provider Examples
 
-```bash
-npm install @metorial/anthropic @anthropic-ai/sdk
-```
+### Anthropic (Claude)
 
 ```typescript
 import { Metorial } from 'metorial';
@@ -143,39 +225,38 @@ let anthropic = new Anthropic({
   apiKey: 'your-anthropic-api-key'
 });
 
-// Use with Anthropic
-await metorial.mcp.withProviderSession(
-  metorialAnthropic.messages,
-  {
-    serverDeployments: ['your-server-deployment-id']
-  },
+await metorial.withProviderSession(
+  metorialAnthropic,
+  { serverDeployments: ['your-server-deployment-id'] },
   async session => {
+    let messages: Anthropic.Messages.MessageParam[] = [
+      { role: 'user', content: 'Help me with this GitHub task: ...' }
+    ];
+
+    // Dedupe tools by name
+    let uniqueTools = Array.from(new Map(session.tools.map(t => [t.name, t])).values());
+
     let response = await anthropic.messages.create({
       model: 'claude-3-5-sonnet-20241022',
-      max_tokens: 1000,
-      messages: [
-        {
-          role: 'user',
-          content: 'Search for information about AI developments'
-        }
-      ],
-      tools: session.tools
+      max_tokens: 1024,
+      messages,
+      tools: uniqueTools
     });
 
-    if (response.content[0].type === 'tool_use') {
-      // Execute tool calls
-      let toolResponses = await session.callTools([response.content[0]]);
-      console.log('Tool responses:', toolResponses);
+    // Handle tool calls
+    let toolCalls = response.content.filter(
+      (c): c is Anthropic.Messages.ToolUseBlock => c.type === 'tool_use'
+    );
+
+    if (toolCalls.length > 0) {
+      let toolResponses = await session.callTools(toolCalls);
+      messages.push({ role: 'assistant', content: response.content as any }, toolResponses);
     }
   }
 );
 ```
 
-#### Google AI Integration
-
-```bash
-npm install @metorial/google @google/generative-ai
-```
+### Google (Gemini)
 
 ```typescript
 import { Metorial } from 'metorial';
@@ -188,272 +269,137 @@ let metorial = new Metorial({
 
 let genAI = new GoogleGenerativeAI('your-google-api-key');
 
-// Use with Google AI
-await metorial.mcp.withProviderSession(
-  metorialGoogle.generateContent,
-  {
-    serverDeployments: ['your-server-deployment-id']
-  },
+await metorial.withProviderSession(
+  metorialGoogle,
+  { serverDeployments: ['your-server-deployment-id'] },
   async session => {
-    let model = genAI.getGenerativeModel({ model: 'gemini-1.5-pro' });
-
-    let result = await model.generateContent({
-      contents: [
-        {
-          role: 'user',
-          parts: [{ text: 'Search for information about AI developments' }]
-        }
-      ],
+    let model = genAI.getGenerativeModel({
+      model: 'gemini-pro',
       tools: session.tools
     });
 
-    let response = result.response;
-    if (response.candidates[0].content.parts[0].functionCall) {
-      // Execute function calls
-      let toolResponses = await session.callTools([response.candidates[0].content.parts[0]]);
-      console.log('Tool responses:', toolResponses);
-    }
+    let response = await model.generateContent('What can you help me with?');
+
+    // Handle function calls if present
+    // ... tool call handling logic
   }
 );
 ```
 
-#### AI SDK (Vercel) Integration
-
-```bash
-npm install @metorial/ai-sdk ai
-```
+### OpenAI-Compatible (DeepSeek, TogetherAI, XAI)
 
 ```typescript
 import { Metorial } from 'metorial';
-import { metorialAISDK } from '@metorial/ai-sdk';
-import { generateText } from 'ai';
-import { openai } from '@ai-sdk/openai';
+import { metorialDeepSeek } from '@metorial/deepseek';
+import OpenAI from 'openai';
+
+// Works with any OpenAI-compatible API
+let deepseekClient = new OpenAI({
+  apiKey: 'your-deepseek-key',
+  baseURL: 'https://api.deepseek.com'
+});
 
 let metorial = new Metorial({
   apiKey: 'your-metorial-api-key'
 });
 
-// Use with AI SDK
-await metorial.mcp.withProviderSession(
-  metorialAISDK.generateText,
-  {
-    serverDeployments: ['your-server-deployment-id']
-  },
+await metorial.withProviderSession(
+  metorialDeepSeek.chatCompletions,
+  { serverDeployments: ['your-server-deployment-id'] },
   async session => {
-    let { text, toolCalls } = await generateText({
-      model: openai('gpt-4o'),
-      prompt: 'Search for information about AI developments',
+    let response = await deepseekClient.chat.completions.create({
+      model: 'deepseek-chat',
+      messages: [{ role: 'user', content: 'Help me code' }],
       tools: session.tools
     });
-
-    if (toolCalls) {
-      // Execute tool calls
-      let toolResponses = await session.callTools(toolCalls);
-      console.log('Tool responses:', toolResponses);
-    }
+    // ... handle response
   }
 );
 ```
 
-### Direct MCP Connection
+## Available Providers
+
+| Provider   | Import                 | Format                       | Description                   |
+| ---------- | ---------------------- | ---------------------------- | ----------------------------- |
+| OpenAI     | `@metorial/openai`     | OpenAI function calling      | GPT-4, GPT-3.5, etc.          |
+| Anthropic  | `@metorial/anthropic`  | Claude tool format           | Claude 3.5, Claude 3, etc.    |
+| Google     | `@metorial/google`     | Gemini function declarations | Gemini Pro, Gemini Flash      |
+| Mistral    | `@metorial/mistral`    | Mistral function calling     | Mistral Large, Codestral      |
+| DeepSeek   | `@metorial/deepseek`   | OpenAI-compatible            | DeepSeek Chat, DeepSeek Coder |
+| TogetherAI | `@metorial/togetherai` | OpenAI-compatible            | Llama, Mixtral, etc.          |
+| XAI        | `@metorial/xai`        | OpenAI-compatible            | Grok models                   |
+| AI SDK     | `@metorial/ai-sdk`     | Framework tools              | Vercel AI SDK, etc.           |
+
+## Core API
+
+### Metorial Class
 
 ```typescript
 import { Metorial } from 'metorial';
 
 let metorial = new Metorial({
-  apiKey: 'your-metorial-api-key'
+  apiKey: 'your-api-key'
 });
-
-// Create a direct MCP connection
-let connection = await metorial.mcp.createConnection('your-server-deployment-id');
-
-// Use the connection for direct MCP communication
-let tools = await connection.listTools();
-console.log('Available tools:', tools);
-
-let result = await connection.callTool('searchContext', {
-  query: 'metorial AI tools',
-  maxResults: 5
-});
-console.log('Search result:', result);
-```
-
-### Server Management
-
-```typescript
-import { Metorial } from 'metorial';
-
-let metorial = new Metorial({
-  apiKey: 'your-metorial-api-key'
-});
-
-// List all servers
-let servers = await metorial.servers.list();
-console.log('Available servers:', servers);
-
-// Get specific server
-let server = await metorial.servers.get('server-id');
-console.log('Server details:', server);
-
-// List server deployments
-let deployments = await metorial.servers.deployments.list();
-console.log('Deployments:', deployments);
-
-// Create a new deployment
-let newDeployment = await metorial.servers.deployments.create({
-  serverId: 'server-id',
-  variantId: 'variant-id',
-  versionId: 'version-id'
-});
-console.log('New deployment:', newDeployment);
-
-// Update deployment
-let updatedDeployment = await metorial.servers.deployments.update('deployment-id', {
-  name: 'Updated Deployment Name'
-});
-console.log('Updated deployment:', updatedDeployment);
-
-// Delete deployment
-await metorial.servers.deployments.delete('deployment-id');
 ```
 
 ### Session Management
 
 ```typescript
-import { Metorial } from 'metorial';
+// Provider session (recommended)
+await metorial.withProviderSession(
+  provider.chatCompletions,
+  { serverDeployments: ['deployment-id'] },
+  async session => {
+    // Your session logic here
+  }
+);
 
-let metorial = new Metorial({
-  apiKey: 'your-metorial-api-key'
+// Direct session management
+await metorial.withSession(['deployment-id'], async session => {
+  // Your session logic here
 });
-
-// List all sessions
-let sessions = await metorial.sessions.list();
-console.log('Active sessions:', sessions);
-
-// Get specific session
-let session = await metorial.sessions.get('session-id');
-console.log('Session details:', session);
-
-// Create a new session
-let newSession = await metorial.sessions.create({
-  serverDeploymentId: 'deployment-id'
-});
-console.log('New session:', newSession);
-
-// Delete session
-await metorial.sessions.delete('session-id');
-
-// Get session messages
-let messages = await metorial.sessions.messages.list('session-id');
-console.log('Session messages:', messages);
-
-// Get session connections
-let connections = await metorial.sessions.connections.list('session-id');
-console.log('Session connections:', connections);
 ```
-
-### Secrets Management
-
-```typescript
-import { Metorial } from 'metorial';
-
-let metorial = new Metorial({
-  apiKey: 'your-metorial-api-key'
-});
-
-// List all secrets
-let secrets = await metorial.secrets.list();
-console.log('Available secrets:', secrets);
-
-// Get specific secret
-let secret = await metorial.secrets.get('secret-id');
-console.log('Secret details:', secret);
-
-// Create a new secret
-let newSecret = await metorial.secrets.create({
-  name: 'my-api-key',
-  value: 'secret-value',
-  description: 'API key for external service'
-});
-console.log('New secret:', newSecret);
-```
-
-## API Reference
-
-### `Metorial` Class
-
-#### Constructor
-
-```typescript
-new Metorial(config: {
-  apiKey: string;
-  apiHost?: string;
-  mcpHost?: string;
-  apiVersion?: string;
-  headers?: Record<string, string>;
-})
-```
-
-#### Properties
-
-- `instance`: Instance management endpoint
-- `secrets`: Secrets management endpoint
-- `servers`: Server management endpoint
-- `sessions`: Session management endpoint
-- `mcp`: MCP-specific methods
-
-#### MCP Methods
-
-- `mcp.createSession(init)`: Create a new MCP session
-- `mcp.withSession(init, action)`: Execute action with session lifecycle management
-- `mcp.withProviderSession(provider, init, action)`: Execute action with provider integration
-- `mcp.createConnection(deploymentId)`: Create direct MCP connection
 
 ### Session Object
 
-The session object provides the following methods:
-
-- `getSession()`: Get session information
-- `getCapabilities()`: Get server capabilities
-- `getServerDeployments()`: Get server deployments
-- `getToolManager()`: Get tool manager
-- `getClient(deploymentId)`: Get MCP client for specific deployment
-- `callTools(toolCalls)`: Execute tool calls
-- `close()`: Close the session
-
-### Error Handling
-
-All SDK methods throw `MetorialSDKError` for API errors:
+The session object passed to your callback provides:
 
 ```typescript
+interface Session {
+  // Tool definitions formatted for your provider
+  tools: any[];
+
+  // Execute tools and get responses
+  callTools(toolCalls: any[]): Promise<any[]>;
+
+  // Advanced access
+  toolManager: MetorialMcpToolManager; // Direct tool management
+  session: MetorialMcpSession; // Raw MCP session
+}
+```
+
+## Error Handling
+
+```typescript
+import { MetorialAPIError } from 'metorial';
+
 try {
-  await metorial.servers.get('invalid-id');
+  await metorial.withProviderSession(/* ... */);
 } catch (error) {
-  if (error instanceof MetorialSDKError) {
-    console.log('API Error:', error.message);
-    console.log('Status:', error.status);
-    console.log('Code:', error.code);
+  if (error instanceof MetorialAPIError) {
+    console.error(`API Error: ${error.message} (Status: ${error.status})`);
+  } else {
+    console.error(`Unexpected error:`, error);
   }
 }
 ```
 
-### Configuration Options
-
-The SDK supports various configuration options:
-
-```typescript
-let metorial = new Metorial({
-  apiKey: 'your-metorial-api-key',
-  apiHost: 'https://api.metorial.com', // Custom API host
-  mcpHost: 'https://mcp.metorial.com', // Custom MCP host
-  apiVersion: '2025-01-01-pulsar', // API version
-  headers: {
-    // Custom headers
-    'User-Agent': 'MyApp/1.0.0'
-  }
-});
-```
-
 ## License
 
-MIT License - see [LICENSE](../../LICENSE) file for details.
+MIT License - see [LICENSE](LICENSE) file for details.
+
+## Support
+
+- 📖 [Documentation](https://metorial.com/docs)
+- 🐛 [GitHub Issues](https://github.com/metorial/metorial-node/issues)
+- 📧 [Email Support](mailto:support@metorial.com)
