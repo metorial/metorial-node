@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/metorial-metorial-node-badge.png)](https://mseep.ai/app/metorial-metorial-node)
+
 # Metorial Node.js SDK
 
 The official Node.js/TypeScript SDK for [Metorial](https://metorial.com) - The open source integration platform for agentic AI
