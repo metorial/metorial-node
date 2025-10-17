@@ -27,7 +27,7 @@ export class MetorialMcpSession {
     this.#sessionPromise = this.sdk.sessions.create(init);
   }
 
-  async getSession() {
+  async getSession(): Promise<MetorialSDK.Session> {
     return await this.#sessionPromise;
   }
 
