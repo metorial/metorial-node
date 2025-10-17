@@ -7,7 +7,7 @@ export let metorialAiSdk = async (session: MetorialMcpSession) => {
 
   for (let t of toolManager.getTools()) {
     let parameters = t.getParametersAs('json-schema') as any;
-    
+  
     if (parameters && typeof parameters === 'object' && !parameters.type) {
       parameters.type = 'object';
     }
