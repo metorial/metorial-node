@@ -1,6 +1,6 @@
 {
   "name": "@metorial/sdk",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "author": "Metorial Inc.",
   "license": "MIT",
   "type": "module",
@@ -40,14 +40,30 @@
     "@metorial/xai": "^1.0.1"
   },
   "peerDependenciesMeta": {
-    "@metorial/anthropic": { "optional": true },
-    "@metorial/deepseek": { "optional": true },
-    "@metorial/google": { "optional": true },
-    "@metorial/mistral": { "optional": true },
-    "@metorial/openai": { "optional": true },
-    "@metorial/openai-compatible": { "optional": true },
-    "@metorial/togetherai": { "optional": true },
-    "@metorial/xai": { "optional": true }
+    "@metorial/anthropic": {
+      "optional": true
+    },
+    "@metorial/deepseek": {
+      "optional": true
+    },
+    "@metorial/google": {
+      "optional": true
+    },
+    "@metorial/mistral": {
+      "optional": true
+    },
+    "@metorial/openai": {
+      "optional": true
+    },
+    "@metorial/openai-compatible": {
+      "optional": true
+    },
+    "@metorial/togetherai": {
+      "optional": true
+    },
+    "@metorial/xai": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@anthropic-ai/sdk": "^0.30.0",

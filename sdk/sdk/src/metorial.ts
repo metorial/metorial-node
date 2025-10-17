@@ -104,7 +104,7 @@ export class Metorial implements MetorialCoreSDK {
 
   async withProviderSession<P, T>(
     provider: (session: MetorialMcpSession) => Promise<P>,
-    init: MetorialMcpSessionInit,
+    init: MetorialMcpSessionInit & { streaming?: boolean },
     action: (
       input: P & {
         session: MetorialMcpSession;
@@ -116,6 +116,10 @@ export class Metorial implements MetorialCoreSDK {
       }
     ) => Promise<T>
   ): Promise<T> {
+    if (init.streaming) {
+      return this.withStreamingSession(provider, init, action);
+    }
+
     return this.withSession(init, async session => {
       let providerData = await provider(session);
 
@@ -129,6 +133,60 @@ export class Metorial implements MetorialCoreSDK {
         getToolManager: session.getToolManager.bind(session)
       });
     });
+  }
+
+  private async withStreamingSession<P, T>(
+    provider: (session: MetorialMcpSession) => Promise<P>,
+    init: MetorialMcpSessionInit,
+    action: (
+      input: P & {
+        session: MetorialMcpSession;
+        getSession: MetorialMcpSession['getSession'];
+        getCapabilities: MetorialMcpSession['getCapabilities'];
+        getClient: MetorialMcpSession['getClient'];
+        getServerDeployments: MetorialMcpSession['getServerDeployments'];
+        getToolManager: MetorialMcpSession['getToolManager'];
+        closeSession: () => Promise<void>;
+      }
+    ) => Promise<T>
+  ): Promise<T> {
+    let session = new MetorialMcpSession(this.sdk, init);
+    let sessionClosed = false;
+
+    const closeSession = async () => {
+      if (!sessionClosed) {
+        sessionClosed = true;
+        console.log('[Metorial] Closing streaming session');
+        await session.close();
+      }
+    };
+
+    try {
+      let providerData = await provider(session);
+
+      let result = await action({
+        ...providerData,
+        session,
+        getSession: session.getSession.bind(session),
+        getCapabilities: session.getCapabilities.bind(session),
+        getClient: session.getClient.bind(session),
+        getServerDeployments: session.getServerDeployments.bind(session),
+        getToolManager: session.getToolManager.bind(session),
+        closeSession
+      });
+
+      setTimeout(async () => {
+        if (!sessionClosed) {
+          console.log('[Metorial] Streaming timeout reached - auto-closing session');
+          await closeSession();
+        }
+      }, 60000); // 1 minute timeout
+
+      return result;
+    } catch (error) {
+      await closeSession();
+      throw error;
+    }
   }
 
   private inferProvider(
