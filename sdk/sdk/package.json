@@ -27,15 +27,27 @@
   "dependencies": {
     "@metorial/core": "^1.0.0",
     "@metorial/mcp-session": "^1.0.0",
-    "@metorial/util-endpoint": "^1.0.0",
-    "@metorial/anthropic": "^1.0.0",
-    "@metorial/deepseek": "^1.0.0",
-    "@metorial/google": "^1.0.0",
-    "@metorial/mistral": "^1.0.0",
-    "@metorial/openai": "^1.0.0",
-    "@metorial/openai-compatible": "^1.0.0",
-    "@metorial/togetherai": "^1.0.0",
-    "@metorial/xai": "^1.0.0"
+    "@metorial/util-endpoint": "^1.0.0"
+  },
+  "peerDependencies": {
+    "@metorial/anthropic": "^1.0.1",
+    "@metorial/deepseek": "^1.0.1",
+    "@metorial/google": "^1.0.1",
+    "@metorial/mistral": "^1.0.1",
+    "@metorial/openai": "^1.0.1",
+    "@metorial/openai-compatible": "^1.0.1",
+    "@metorial/togetherai": "^1.0.1",
+    "@metorial/xai": "^1.0.1"
+  },
+  "peerDependenciesMeta": {
+    "@metorial/anthropic": { "optional": true },
+    "@metorial/deepseek": { "optional": true },
+    "@metorial/google": { "optional": true },
+    "@metorial/mistral": { "optional": true },
+    "@metorial/openai": { "optional": true },
+    "@metorial/openai-compatible": { "optional": true },
+    "@metorial/togetherai": { "optional": true },
+    "@metorial/xai": { "optional": true }
   },
   "devDependencies": {
     "@types/isomorphic-fetch": "^0.0.39",
