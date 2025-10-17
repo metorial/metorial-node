@@ -8,8 +8,8 @@
   },
   "dependencies": {
     "ai": "^5.0.0",
-    "@Metorial/ai-sdk": "^1.1.0",
-    "metorial": "^1.0.1",
+    "@metorial/ai-sdk": "latest",
+    "metorial": "latest",
     "@ai-sdk/anthropic": "^2.0.0"
   },
   "devDependencies": {
