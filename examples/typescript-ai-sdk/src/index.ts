@@ -3,12 +3,12 @@ import { metorialAiSdk } from '@metorial/ai-sdk';
 import { Metorial } from '@metorial/sdk';
 import { stepCountIs, streamText } from 'ai';
 
-let metorial = new Metorial({ apiKey: '...metorial-api-key...' });
+let metorial = new Metorial({ apiKey: 'your-metorial-api-key' });
 
 let result = await metorial.withProviderSession(
   metorialAiSdk,
   {
-    serverDeployments: ['...server-deployment-id...'],
+    serverDeployments: ['your-server-deployment-id'],
     streaming: true // add this flag for streaming with tool calls!
   },
   async ({ tools, closeSession }: any) => {
