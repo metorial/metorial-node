@@ -201,7 +201,7 @@
     },
     "mcp/ai-sdk": {
       "name": "@metorial/ai-sdk",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "dependencies": {
         "@metorial/core": "^1.0.0",
         "@metorial/mcp-sdk-utils": "^1.0.0",
@@ -221,7 +221,7 @@
     },
     "mcp/anthropic": {
       "name": "@metorial/anthropic",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "dependencies": {
         "@metorial/core": "^1.0.0",
         "@metorial/mcp-sdk-utils": "^1.0.0",
@@ -241,7 +241,7 @@
     },
     "mcp/deepseek": {
       "name": "@metorial/deepseek",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "dependencies": {
         "@metorial/core": "^1.0.0",
         "@metorial/mcp-sdk-utils": "^1.0.0",
@@ -258,7 +258,7 @@
     },
     "mcp/google": {
       "name": "@metorial/google",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "dependencies": {
         "@metorial/core": "^1.0.0",
         "@metorial/mcp-sdk-utils": "^1.0.0",
@@ -278,9 +278,10 @@
     },
     "mcp/mcp-session": {
       "name": "@metorial/mcp-session",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "dependencies": {
         "@metorial/core": "^1.0.0",
+        "@metorial/generated": "^1.0.0",
         "@metorial/json-schema": "^1.0.0",
         "@metorial/util-endpoint": "^1.0.0",
         "@modelcontextprotocol/sdk": "^1.12.1",
@@ -293,7 +294,7 @@
     },
     "mcp/mistral": {
       "name": "@metorial/mistral",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "dependencies": {
         "@metorial/core": "^1.0.0",
         "@metorial/mcp-sdk-utils": "^1.0.0",
@@ -312,7 +313,7 @@
     },
     "mcp/openai": {
       "name": "@metorial/openai",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "dependencies": {
         "@metorial/core": "^1.0.0",
         "@metorial/mcp-sdk-utils": "^1.0.0",
@@ -332,7 +333,7 @@
     },
     "mcp/openai-compatible": {
       "name": "@metorial/openai-compatible",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "dependencies": {
         "@metorial/core": "^1.0.0",
         "@metorial/mcp-sdk-utils": "^1.0.0",
@@ -347,7 +348,7 @@
     },
     "mcp/togetherai": {
       "name": "@metorial/togetherai",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "dependencies": {
         "@metorial/core": "^1.0.0",
         "@metorial/mcp-sdk-utils": "^1.0.0",
@@ -364,7 +365,7 @@
     },
     "mcp/xai": {
       "name": "@metorial/xai",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "dependencies": {
         "@metorial/core": "^1.0.0",
         "@metorial/mcp-sdk-utils": "^1.0.0",
@@ -405,7 +406,7 @@
     },
     "packages/mcp-sdk-utils": {
       "name": "@metorial/mcp-sdk-utils",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "dependencies": {
         "@metorial/core": "^1.0.0",
         "@metorial/mcp-session": "^1.0.0",
@@ -556,27 +557,43 @@
     },
     "sdk/sdk": {
       "name": "@metorial/sdk",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "dependencies": {
-        "@metorial/anthropic": "^1.0.0",
         "@metorial/core": "^1.0.0",
-        "@metorial/deepseek": "^1.0.0",
-        "@metorial/google": "^1.0.0",
-        "@metorial/mcp-session": "^1.0.0",
-        "@metorial/mistral": "^1.0.0",
-        "@metorial/openai": "^1.0.0",
-        "@metorial/openai-compatible": "^1.0.0",
-        "@metorial/togetherai": "^1.0.0",
+        "@metorial/mcp-session": "^1.0.1",
         "@metorial/util-endpoint": "^1.0.0",
-        "@metorial/xai": "^1.0.0",
       },
       "devDependencies": {
+        "@anthropic-ai/sdk": "^0.30.0",
+        "@google/genai": "^0.8.0",
+        "@mistralai/mistralai": "^1.0.0",
         "@types/isomorphic-fetch": "^0.0.39",
         "@types/ws": "^8.5.13",
+        "openai": "^4.75.0",
         "tsup": "^7.1.0",
         "typescript": "^5.1.6",
         "vitest": "^0.34.6",
       },
+      "peerDependencies": {
+        "@metorial/anthropic": "^1.0.1",
+        "@metorial/deepseek": "^1.0.1",
+        "@metorial/google": "^1.0.1",
+        "@metorial/mistral": "^1.0.1",
+        "@metorial/openai": "^1.0.1",
+        "@metorial/openai-compatible": "^1.0.1",
+        "@metorial/togetherai": "^1.0.1",
+        "@metorial/xai": "^1.0.1",
+      },
+      "optionalPeers": [
+        "@metorial/anthropic",
+        "@metorial/deepseek",
+        "@metorial/google",
+        "@metorial/mistral",
+        "@metorial/openai",
+        "@metorial/openai-compatible",
+        "@metorial/togetherai",
+        "@metorial/xai",
+      ],
     },
   },
   "packages": {
@@ -1652,6 +1669,12 @@
 
     "@metorial/mcp-sdk-utils/ai": ["ai@4.3.19", "", { "dependencies": { "@ai-sdk/provider": "1.1.3", "@ai-sdk/provider-utils": "2.2.8", "@ai-sdk/react": "1.2.12", "@ai-sdk/ui-utils": "1.2.11", "@opentelemetry/api": "1.9.0", "jsondiffpatch": "0.6.0" }, "peerDependencies": { "react": "^18 || ^19 || ^19.0.0-rc", "zod": "^3.23.8" }, "optionalPeers": ["react"] }, "sha512-dIE2bfNpqHN3r6IINp9znguYdhIOheKW2LDigAMrgt/upT3B8eBGPSCblENvaZGoq+hxaN9fSMzjWpbqloP+7Q=="],
 
+    "@metorial/sdk/@anthropic-ai/sdk": ["@anthropic-ai/sdk@0.30.1", "", { "dependencies": { "@types/node": "^18.11.18", "@types/node-fetch": "^2.6.4", "abort-controller": "^3.0.0", "agentkeepalive": "^4.2.1", "form-data-encoder": "1.7.2", "formdata-node": "^4.3.2", "node-fetch": "^2.6.7" } }, "sha512-nuKvp7wOIz6BFei8WrTdhmSsx5mwnArYyJgh4+vYu3V4J0Ltb8Xm3odPm51n1aSI0XxNCrDl7O88cxCtUdAkaw=="],
+
+    "@metorial/sdk/@google/genai": ["@google/genai@0.8.0", "", { "dependencies": { "google-auth-library": "^9.14.2", "ws": "^8.18.0" } }, "sha512-Zs+OGyZKyMbFofGJTR9/jTQSv8kITh735N3tEuIZj4VlMQXTC0soCFahysJ9NaeenRlD7xGb6fyqmX+FwrpU6Q=="],
+
+    "@metorial/sdk/openai": ["openai@4.104.0", "", { "dependencies": { "@types/node": "^18.11.18", "@types/node-fetch": "^2.6.4", "abort-controller": "^3.0.0", "agentkeepalive": "^4.2.1", "form-data-encoder": "1.7.2", "formdata-node": "^4.3.2", "node-fetch": "^2.6.7" }, "peerDependencies": { "ws": "^8.18.0", "zod": "^3.23.8" }, "optionalPeers": ["ws", "zod"], "bin": { "openai": "bin/cli" } }, "sha512-p99EFNsA/yX6UhVO93f5kJsDRLAg+CTA2RBqdHK4RtK8u5IJw32Hyb2dTGKbnnFmnuoBv5r7Z2CURI9sGZpSuA=="],
+
     "@types/node-fetch/@types/node": ["@types/node@24.0.15", "", { "dependencies": { "undici-types": "~7.8.0" } }, "sha512-oaeTSbCef7U/z7rDeJA138xpG3NuKc64/rZ2qmUFkFJmnMsAPaluIifqyWd8hSSMxyP9oie3dLAqYPblag9KgA=="],
 
     "@types/ws/@types/node": ["@types/node@24.0.15", "", { "dependencies": { "undici-types": "~7.8.0" } }, "sha512-oaeTSbCef7U/z7rDeJA138xpG3NuKc64/rZ2qmUFkFJmnMsAPaluIifqyWd8hSSMxyP9oie3dLAqYPblag9KgA=="],
@@ -1990,7 +2013,11 @@
 
     "@metorial-examples/typescript-google/@metorial/ai-sdk/@metorial/mcp-session/@metorial/util-endpoint": ["@metorial/util-endpoint@1.0.0-rc.5", "", { "dependencies": { "@metorial/util-async-iterator": "^1.0.0-rc.5", "@types/qs": "^6.14.0", "cross-fetch": "^4.1.0", "qs": "^6.13.1" } }, "sha512-SAIPJO8H4gmciunnxT1O8RCW1OoRtZMMTMfmJtalipghaWwKhpE+/mGGIKgpcpHoKF342DWxh+u/pcg3JfUiWA=="],
 
-    "@metorial-examples/typescript-google/@metorial/google/@metorial/sdk/@metorial/google": ["@metorial/google@workspace:mcp/google"],
+    "@metorial-examples/typescript-google/@metorial/google/@metorial/sdk/@anthropic-ai/sdk": ["@anthropic-ai/sdk@0.30.1", "", { "dependencies": { "@types/node": "^18.11.18", "@types/node-fetch": "^2.6.4", "abort-controller": "^3.0.0", "agentkeepalive": "^4.2.1", "form-data-encoder": "1.7.2", "formdata-node": "^4.3.2", "node-fetch": "^2.6.7" } }, "sha512-nuKvp7wOIz6BFei8WrTdhmSsx5mwnArYyJgh4+vYu3V4J0Ltb8Xm3odPm51n1aSI0XxNCrDl7O88cxCtUdAkaw=="],
+
+    "@metorial-examples/typescript-google/@metorial/google/@metorial/sdk/@google/genai": ["@google/genai@0.8.0", "", { "dependencies": { "google-auth-library": "^9.14.2", "ws": "^8.18.0" } }, "sha512-Zs+OGyZKyMbFofGJTR9/jTQSv8kITh735N3tEuIZj4VlMQXTC0soCFahysJ9NaeenRlD7xGb6fyqmX+FwrpU6Q=="],
+
+    "@metorial-examples/typescript-google/@metorial/google/@metorial/sdk/openai": ["openai@4.104.0", "", { "dependencies": { "@types/node": "^18.11.18", "@types/node-fetch": "^2.6.4", "abort-controller": "^3.0.0", "agentkeepalive": "^4.2.1", "form-data-encoder": "1.7.2", "formdata-node": "^4.3.2", "node-fetch": "^2.6.7" }, "peerDependencies": { "ws": "^8.18.0", "zod": "^3.23.8" }, "optionalPeers": ["ws", "zod"], "bin": { "openai": "bin/cli" } }, "sha512-p99EFNsA/yX6UhVO93f5kJsDRLAg+CTA2RBqdHK4RtK8u5IJw32Hyb2dTGKbnnFmnuoBv5r7Z2CURI9sGZpSuA=="],
 
     "@metorial-examples/typescript-google/@metorial/sdk/@metorial/core/@metorial/generated": ["@metorial/generated@1.0.0-rc.5", "", { "dependencies": { "@metorial/util-endpoint": "^1.0.0-rc.5", "@metorial/util-resource-mapper": "^1.0.0-rc.5", "jose": "^5.9.6" } }, "sha512-oP6Bt0a9PIhnVHc+pU3J+z2iOnpz8EPguNC751O9GFygd81E1XP3iHSGMKU//h3c3RN/m6RBbcZyMiUa6pPPwQ=="],
 
@@ -2026,7 +2053,11 @@
 
     "@metorial-examples/typescript-mistral/@metorial/ai-sdk/@metorial/mcp-session/@metorial/util-endpoint": ["@metorial/util-endpoint@1.0.0-rc.5", "", { "dependencies": { "@metorial/util-async-iterator": "^1.0.0-rc.5", "@types/qs": "^6.14.0", "cross-fetch": "^4.1.0", "qs": "^6.13.1" } }, "sha512-SAIPJO8H4gmciunnxT1O8RCW1OoRtZMMTMfmJtalipghaWwKhpE+/mGGIKgpcpHoKF342DWxh+u/pcg3JfUiWA=="],
 
-    "@metorial-examples/typescript-mistral/@metorial/mistral/@metorial/sdk/@metorial/mistral": ["@metorial/mistral@workspace:mcp/mistral"],
+    "@metorial-examples/typescript-mistral/@metorial/mistral/@metorial/sdk/@anthropic-ai/sdk": ["@anthropic-ai/sdk@0.30.1", "", { "dependencies": { "@types/node": "^18.11.18", "@types/node-fetch": "^2.6.4", "abort-controller": "^3.0.0", "agentkeepalive": "^4.2.1", "form-data-encoder": "1.7.2", "formdata-node": "^4.3.2", "node-fetch": "^2.6.7" } }, "sha512-nuKvp7wOIz6BFei8WrTdhmSsx5mwnArYyJgh4+vYu3V4J0Ltb8Xm3odPm51n1aSI0XxNCrDl7O88cxCtUdAkaw=="],
+
+    "@metorial-examples/typescript-mistral/@metorial/mistral/@metorial/sdk/@google/genai": ["@google/genai@0.8.0", "", { "dependencies": { "google-auth-library": "^9.14.2", "ws": "^8.18.0" } }, "sha512-Zs+OGyZKyMbFofGJTR9/jTQSv8kITh735N3tEuIZj4VlMQXTC0soCFahysJ9NaeenRlD7xGb6fyqmX+FwrpU6Q=="],
+
+    "@metorial-examples/typescript-mistral/@metorial/mistral/@metorial/sdk/openai": ["openai@4.104.0", "", { "dependencies": { "@types/node": "^18.11.18", "@types/node-fetch": "^2.6.4", "abort-controller": "^3.0.0", "agentkeepalive": "^4.2.1", "form-data-encoder": "1.7.2", "formdata-node": "^4.3.2", "node-fetch": "^2.6.7" }, "peerDependencies": { "ws": "^8.18.0", "zod": "^3.23.8" }, "optionalPeers": ["ws", "zod"], "bin": { "openai": "bin/cli" } }, "sha512-p99EFNsA/yX6UhVO93f5kJsDRLAg+CTA2RBqdHK4RtK8u5IJw32Hyb2dTGKbnnFmnuoBv5r7Z2CURI9sGZpSuA=="],
 
     "@metorial-examples/typescript-mistral/@metorial/sdk/@metorial/core/@metorial/generated": ["@metorial/generated@1.0.0-rc.5", "", { "dependencies": { "@metorial/util-endpoint": "^1.0.0-rc.5", "@metorial/util-resource-mapper": "^1.0.0-rc.5", "jose": "^5.9.6" } }, "sha512-oP6Bt0a9PIhnVHc+pU3J+z2iOnpz8EPguNC751O9GFygd81E1XP3iHSGMKU//h3c3RN/m6RBbcZyMiUa6pPPwQ=="],
 
@@ -2082,7 +2113,11 @@
 
     "@metorial-examples/typescript-togetherai/@metorial/sdk/@metorial/util-endpoint/@metorial/util-async-iterator": ["@metorial/util-async-iterator@1.0.0-rc.5", "", {}, "sha512-ogBv5VjzSJGcpf3x2uF/nY8k4Mgj/KA2BOllmxTwxutXQzCtvPWvSVYOmMN0H0CJq0M3IsfzeZdSfkpm5woFXg=="],
 
-    "@metorial-examples/typescript-togetherai/@metorial/togetherai/@metorial/sdk/@metorial/togetherai": ["@metorial/togetherai@workspace:mcp/togetherai"],
+    "@metorial-examples/typescript-togetherai/@metorial/togetherai/@metorial/sdk/@anthropic-ai/sdk": ["@anthropic-ai/sdk@0.30.1", "", { "dependencies": { "@types/node": "^18.11.18", "@types/node-fetch": "^2.6.4", "abort-controller": "^3.0.0", "agentkeepalive": "^4.2.1", "form-data-encoder": "1.7.2", "formdata-node": "^4.3.2", "node-fetch": "^2.6.7" } }, "sha512-nuKvp7wOIz6BFei8WrTdhmSsx5mwnArYyJgh4+vYu3V4J0Ltb8Xm3odPm51n1aSI0XxNCrDl7O88cxCtUdAkaw=="],
+
+    "@metorial-examples/typescript-togetherai/@metorial/togetherai/@metorial/sdk/@google/genai": ["@google/genai@0.8.0", "", { "dependencies": { "google-auth-library": "^9.14.2", "ws": "^8.18.0" } }, "sha512-Zs+OGyZKyMbFofGJTR9/jTQSv8kITh735N3tEuIZj4VlMQXTC0soCFahysJ9NaeenRlD7xGb6fyqmX+FwrpU6Q=="],
+
+    "@metorial-examples/typescript-togetherai/@metorial/togetherai/@metorial/sdk/openai": ["openai@4.104.0", "", { "dependencies": { "@types/node": "^18.11.18", "@types/node-fetch": "^2.6.4", "abort-controller": "^3.0.0", "agentkeepalive": "^4.2.1", "form-data-encoder": "1.7.2", "formdata-node": "^4.3.2", "node-fetch": "^2.6.7" }, "peerDependencies": { "ws": "^8.18.0", "zod": "^3.23.8" }, "optionalPeers": ["ws", "zod"], "bin": { "openai": "bin/cli" } }, "sha512-p99EFNsA/yX6UhVO93f5kJsDRLAg+CTA2RBqdHK4RtK8u5IJw32Hyb2dTGKbnnFmnuoBv5r7Z2CURI9sGZpSuA=="],
 
     "@metorial-examples/typescript-togetherai/@types/bun/bun-types/@types/node": ["@types/node@24.0.15", "", { "dependencies": { "undici-types": "~7.8.0" } }, "sha512-oaeTSbCef7U/z7rDeJA138xpG3NuKc64/rZ2qmUFkFJmnMsAPaluIifqyWd8hSSMxyP9oie3dLAqYPblag9KgA=="],
 
@@ -2102,7 +2137,11 @@
 
     "@metorial-examples/typescript-xai/@metorial/sdk/@metorial/util-endpoint/@metorial/util-async-iterator": ["@metorial/util-async-iterator@1.0.0-rc.5", "", {}, "sha512-ogBv5VjzSJGcpf3x2uF/nY8k4Mgj/KA2BOllmxTwxutXQzCtvPWvSVYOmMN0H0CJq0M3IsfzeZdSfkpm5woFXg=="],
 
-    "@metorial-examples/typescript-xai/@metorial/xai/@metorial/sdk/@metorial/xai": ["@metorial/xai@workspace:mcp/xai"],
+    "@metorial-examples/typescript-xai/@metorial/xai/@metorial/sdk/@anthropic-ai/sdk": ["@anthropic-ai/sdk@0.30.1", "", { "dependencies": { "@types/node": "^18.11.18", "@types/node-fetch": "^2.6.4", "abort-controller": "^3.0.0", "agentkeepalive": "^4.2.1", "form-data-encoder": "1.7.2", "formdata-node": "^4.3.2", "node-fetch": "^2.6.7" } }, "sha512-nuKvp7wOIz6BFei8WrTdhmSsx5mwnArYyJgh4+vYu3V4J0Ltb8Xm3odPm51n1aSI0XxNCrDl7O88cxCtUdAkaw=="],
+
+    "@metorial-examples/typescript-xai/@metorial/xai/@metorial/sdk/@google/genai": ["@google/genai@0.8.0", "", { "dependencies": { "google-auth-library": "^9.14.2", "ws": "^8.18.0" } }, "sha512-Zs+OGyZKyMbFofGJTR9/jTQSv8kITh735N3tEuIZj4VlMQXTC0soCFahysJ9NaeenRlD7xGb6fyqmX+FwrpU6Q=="],
+
+    "@metorial-examples/typescript-xai/@metorial/xai/@metorial/sdk/openai": ["openai@4.104.0", "", { "dependencies": { "@types/node": "^18.11.18", "@types/node-fetch": "^2.6.4", "abort-controller": "^3.0.0", "agentkeepalive": "^4.2.1", "form-data-encoder": "1.7.2", "formdata-node": "^4.3.2", "node-fetch": "^2.6.7" }, "peerDependencies": { "ws": "^8.18.0", "zod": "^3.23.8" }, "optionalPeers": ["ws", "zod"], "bin": { "openai": "bin/cli" } }, "sha512-p99EFNsA/yX6UhVO93f5kJsDRLAg+CTA2RBqdHK4RtK8u5IJw32Hyb2dTGKbnnFmnuoBv5r7Z2CURI9sGZpSuA=="],
 
     "@metorial-examples/typescript-xai/@types/bun/bun-types/@types/node": ["@types/node@24.0.15", "", { "dependencies": { "undici-types": "~7.8.0" } }, "sha512-oaeTSbCef7U/z7rDeJA138xpG3NuKc64/rZ2qmUFkFJmnMsAPaluIifqyWd8hSSMxyP9oie3dLAqYPblag9KgA=="],
 

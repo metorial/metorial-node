@@ -20,6 +20,8 @@ export default defineConfig({
     '@metorial/xai',
     '@metorial/ai-sdk',
     'openai',
-    '@anthropic-ai/sdk'
+    '@anthropic-ai/sdk',
+    '@google/genai',
+    '@mistralai/mistralai'
   ]
 });
