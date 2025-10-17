@@ -1,15 +1,29 @@
-import { createMcpSdk } from '@metorial/mcp-sdk-utils';
-import { jsonSchema, Tool, tool } from 'ai';
+import { MetorialMcpSession } from '@metorial/mcp-session';
+import { jsonSchema, tool } from 'ai';
 
-export let metorialAiSdk = createMcpSdk()(async ({ tools }) => ({
-  tools: Object.fromEntries([
-    ...tools.getTools().map(t => [
-      t.id,
-      tool({
-        description: t.description ?? undefined,
-        parameters: jsonSchema(t.getParametersAs('json-schema') as any),
-        execute: async (params: any) => t.call(params)
-      })
-    ])
-  ]) as Record<string, Tool>
-}));
+export let metorialAiSdk = async (session: MetorialMcpSession) => {
+  let toolManager = await session.getToolManager();
+  let toolMap: Record<string, any> = {};
+
+  for (let t of toolManager.getTools()) {
+    let parameters = t.getParametersAs('json-schema') as any;
+    
+    if (parameters && typeof parameters === 'object' && !parameters.type) {
+      parameters.type = 'object';
+    }
+    
+    if (!parameters) {
+      parameters = { type: 'object', properties: {} };
+    }
+
+    toolMap[t.id] = tool({
+      description: t.description ?? undefined,
+      inputSchema: jsonSchema(parameters),
+      execute: async (params: any) => {
+        return await t.call(params);
+      }
+    });
+  }
+
+  return { tools: toolMap };
+};

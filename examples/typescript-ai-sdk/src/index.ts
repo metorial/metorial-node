@@ -1,21 +1,23 @@
-import { openai } from '@ai-sdk/openai';
+import { anthropic } from '@ai-sdk/anthropic';
 import { metorialAiSdk } from '@metorial/ai-sdk';
 import { Metorial } from '@metorial/sdk';
-import { generateText } from 'ai';
+import { generateText, stepCountIs } from 'ai';
+
+// Set global provider with API key in .env
+globalThis.AI_SDK_DEFAULT_PROVIDER = anthropic;
 
 let metorial = new Metorial({ apiKey: '...your-metorial-api-key...' });
 
 metorial.withProviderSession(
   metorialAiSdk,
   {
-    serverDeployments: ['...server-deployment-id...']
+    serverDeployments: ['...your-server-deployment-id...']
   },
   async session => {
     let result = await generateText({
-      model: openai('gpt-4o'),
-      prompt:
-        'Summarize the README.md file of the metorial/websocket-explorer repository on GitHub?',
-      maxSteps: 10,
+      model: 'claude-3-haiku-20240307',
+      prompt: 'Research what makes Metorial so special.',
+      stopWhen: stepCountIs(10),
       tools: session.tools
     });
 
