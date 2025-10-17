@@ -18,8 +18,10 @@ export let metorialAiSdk = createMcpSdk()(async ({ tools }) => ({
         t.id,
         tool({
           description: t.description ?? undefined,
-          parameters: jsonSchema(parameters),
-          execute: async (params: any) => t.call(params)
+          inputSchema: jsonSchema(parameters),
+          execute: async (params: any) => {
+            return await t.call(params);
+          }
         })
       ];
     })
