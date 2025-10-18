@@ -11,13 +11,6 @@ export default defineConfig({
   treeshake: true,
   noExternal: ['@metorial/generated'],
   external: [
-    '@metorial/openai',
-    '@metorial/anthropic',
-    '@metorial/deepseek',
-    '@metorial/google',
-    '@metorial/mistral',
-    '@metorial/togetherai',
-    '@metorial/xai',
     '@metorial/ai-sdk',
     'openai',
     '@anthropic-ai/sdk',
