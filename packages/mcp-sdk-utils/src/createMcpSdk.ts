@@ -3,7 +3,12 @@ import {
   MetorialMcpSessionInit,
   MetorialMcpToolManager
 } from '@metorial/mcp-session';
-import { Metorial } from '@metorial/sdk';
+
+interface McpSDK {
+  mcp: {
+    createSession(init: MetorialMcpSessionInit): MetorialMcpSession;
+  };
+}
 
 export let createMcpSdk =
   <I = void>() =>
@@ -24,7 +29,7 @@ export let createMcpSdk =
       });
     };
 
-    let ofSdk = async (sdk: Metorial, init: MetorialMcpSessionInit, input: I) => {
+    let ofSdk = async (sdk: McpSDK, init: MetorialMcpSessionInit, input: I) => {
       let session = sdk.mcp.createSession(init);
       return ofSession(session, input as I);
     };
