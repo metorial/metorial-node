@@ -4,7 +4,7 @@ import {
   MetorialMcpToolManager
 } from '@metorial/mcp-session';
 
-interface McpSDK {
+export interface McpSDK {
   mcp: {
     createSession(init: MetorialMcpSessionInit): MetorialMcpSession;
   };
