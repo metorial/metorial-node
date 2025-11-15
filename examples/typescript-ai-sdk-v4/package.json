@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "@ai-sdk/openai": "0.0.66",
-    "@metorial/ai-sdk": "^1.1.0",
+    "@metorial/ai-sdk": "^1.1.2",
     "ai": "^4.3.16",
     "metorial": "latest"
   },
