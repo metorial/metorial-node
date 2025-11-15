@@ -19,7 +19,9 @@ let result = await metorial.withProviderSession(
       tools: tools,
       onStepFinish: (step: any) => {
         if (step.toolCalls) {
-          console.log(`🔧 Using tools: ${step.toolCalls.map((tc: any) => tc.toolName).join(', ')}`);
+          console.log(
+            `🔧 Using tools: ${step.toolCalls.map((tc: any) => tc.toolName).join(', ')}`
+          );
         }
       },
       onFinish: async () => {

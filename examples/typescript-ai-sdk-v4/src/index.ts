@@ -1,7 +1,7 @@
+import { openai } from '@ai-sdk/openai';
 import { metorialAiSdk } from '@metorial/ai-sdk/v4';
 import { Metorial } from '@metorial/sdk';
 import { generateText } from 'ai';
-import { openai } from '@ai-sdk/openai';
 
 let metorial = new Metorial({ apiKey: '...your-metorial-api-key...' });
 
