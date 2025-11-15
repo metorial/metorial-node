@@ -11,7 +11,7 @@ let result = await metorial.withProviderSession(
     serverDeployments: ['your-server-deployment-id'],
     streaming: true // add this flag for streaming with tool calls!
   },
-  async ({ tools, closeSession }: any) => {
+  async ({ tools }) => {
     let result = streamText({
       model: anthropic('claude-sonnet-4-5'),
       prompt: 'Research what makes Metorial so special.',
@@ -23,10 +23,6 @@ let result = await metorial.withProviderSession(
             `🔧 Using tools: ${step.toolCalls.map((tc: any) => tc.toolName).join(', ')}`
           );
         }
-      },
-      onFinish: async () => {
-        console.log('\n🎯 Stream completed!');
-        await closeSession();
       }
     });
 
