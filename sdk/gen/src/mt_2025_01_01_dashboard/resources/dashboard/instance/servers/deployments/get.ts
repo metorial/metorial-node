@@ -14,11 +14,27 @@ export type DashboardInstanceServersDeploymentsGetOutput = {
     description: string | null;
     metadata: Record<string, any>;
     provider: { id: string; name: string; url: string; imageUrl: string };
-    config: Record<string, any>;
-    scopes: string[];
+    config:
+      | { type: 'json'; config: Record<string, any>; scopes: string[] }
+      | { type: 'custom' };
     clientId: string;
     instanceId: string;
     templateId: string | null;
+    createdAt: Date;
+    updatedAt: Date;
+  } | null;
+  callback: {
+    object: 'callback';
+    id: string;
+    url: string | null;
+    name: string | null;
+    description: string | null;
+    type: 'webhook_managed' | 'polling' | 'webhook_manual';
+    schedule: {
+      object: 'callback.schedule';
+      intervalSeconds: number;
+      nextRunAt: Date;
+    };
     createdAt: Date;
     updatedAt: Date;
   } | null;
@@ -74,6 +90,11 @@ export type DashboardInstanceServersDeploymentsGetOutput = {
     createdAt: Date;
     updatedAt: Date;
   };
+  access: {
+    ipAllowlist:
+      | { status: 'enabled'; ipWhitelist: string[]; ipBlacklist: string[] }
+      | { status: 'disabled' };
+  } | null;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -103,11 +124,49 @@ export let mapDashboardInstanceServersDeploymentsGetOutput =
             imageUrl: mtMap.objectField('image_url', mtMap.passthrough())
           })
         ),
-        config: mtMap.objectField('config', mtMap.passthrough()),
-        scopes: mtMap.objectField('scopes', mtMap.array(mtMap.passthrough())),
+        config: mtMap.objectField(
+          'config',
+          mtMap.union([
+            mtMap.unionOption(
+              'object',
+              mtMap.object({
+                type: mtMap.objectField('type', mtMap.passthrough()),
+                config: mtMap.objectField('config', mtMap.passthrough()),
+                scopes: mtMap.objectField(
+                  'scopes',
+                  mtMap.array(mtMap.passthrough())
+                )
+              })
+            )
+          ])
+        ),
         clientId: mtMap.objectField('client_id', mtMap.passthrough()),
         instanceId: mtMap.objectField('instance_id', mtMap.passthrough()),
         templateId: mtMap.objectField('template_id', mtMap.passthrough()),
+        createdAt: mtMap.objectField('created_at', mtMap.date()),
+        updatedAt: mtMap.objectField('updated_at', mtMap.date())
+      })
+    ),
+    callback: mtMap.objectField(
+      'callback',
+      mtMap.object({
+        object: mtMap.objectField('object', mtMap.passthrough()),
+        id: mtMap.objectField('id', mtMap.passthrough()),
+        url: mtMap.objectField('url', mtMap.passthrough()),
+        name: mtMap.objectField('name', mtMap.passthrough()),
+        description: mtMap.objectField('description', mtMap.passthrough()),
+        type: mtMap.objectField('type', mtMap.passthrough()),
+        schedule: mtMap.objectField(
+          'schedule',
+          mtMap.object({
+            object: mtMap.objectField('object', mtMap.passthrough()),
+            intervalSeconds: mtMap.objectField(
+              'interval_seconds',
+              mtMap.passthrough()
+            ),
+            nextRunAt: mtMap.objectField('next_run_at', mtMap.date())
+          })
+        ),
         createdAt: mtMap.objectField('created_at', mtMap.date()),
         updatedAt: mtMap.objectField('updated_at', mtMap.date())
       })
@@ -210,6 +269,30 @@ export let mapDashboardInstanceServersDeploymentsGetOutput =
         ),
         createdAt: mtMap.objectField('created_at', mtMap.date()),
         updatedAt: mtMap.objectField('updated_at', mtMap.date())
+      })
+    ),
+    access: mtMap.objectField(
+      'access',
+      mtMap.object({
+        ipAllowlist: mtMap.objectField(
+          'ip_allowlist',
+          mtMap.union([
+            mtMap.unionOption(
+              'object',
+              mtMap.object({
+                status: mtMap.objectField('status', mtMap.passthrough()),
+                ipWhitelist: mtMap.objectField(
+                  'ip_whitelist',
+                  mtMap.array(mtMap.passthrough())
+                ),
+                ipBlacklist: mtMap.objectField(
+                  'ip_blacklist',
+                  mtMap.array(mtMap.passthrough())
+                )
+              })
+            )
+          ])
+        )
       })
     ),
     createdAt: mtMap.objectField('created_at', mtMap.date()),

@@ -35,22 +35,42 @@ export type CustomServersVersionsCreateOutput = {
       object: 'custom_server.remote_server';
       id: string;
       remoteUrl: string;
-      providerOauth: { config: Record<string, any>; scopes: string[] } | null;
+      remoteProtocol: 'sse' | 'streamable_http';
+      providerOauth:
+        | { type: 'custom' }
+        | { type: 'json'; config: Record<string, any>; scopes: string[] }
+        | null;
       createdAt: Date;
       updatedAt: Date;
     } | null;
     managedServer: {
       object: 'custom_server.managed_server';
       id: string;
-      providerOauth: { config: Record<string, any>; scopes: string[] } | null;
+      providerOauth:
+        | { type: 'custom' }
+        | { type: 'json'; config: Record<string, any>; scopes: string[] }
+        | null;
       createdAt: Date;
       updatedAt: Date;
     } | null;
   };
   customServerId: string;
+  deploymentId: string | null;
   createdAt: Date;
   updatedAt: Date;
-} & { versionHash: string; deploymentId: string | null };
+} & {
+  versionHash: string;
+  push: {
+    object: 'custom_server.version.push';
+    id: string;
+    branch: string;
+    commitSha: string;
+    commitMessage: string;
+    authorEmail: string;
+    authorName: string;
+    createdAt: Date;
+  } | null;
+};
 
 export let mapCustomServersVersionsCreateOutput = mtMap.union([
   mtMap.unionOption(
@@ -130,15 +150,25 @@ export let mapCustomServersVersionsCreateOutput = mtMap.union([
               object: mtMap.objectField('object', mtMap.passthrough()),
               id: mtMap.objectField('id', mtMap.passthrough()),
               remoteUrl: mtMap.objectField('remote_url', mtMap.passthrough()),
+              remoteProtocol: mtMap.objectField(
+                'remote_protocol',
+                mtMap.passthrough()
+              ),
               providerOauth: mtMap.objectField(
                 'provider_oauth',
-                mtMap.object({
-                  config: mtMap.objectField('config', mtMap.passthrough()),
-                  scopes: mtMap.objectField(
-                    'scopes',
-                    mtMap.array(mtMap.passthrough())
+                mtMap.union([
+                  mtMap.unionOption(
+                    'object',
+                    mtMap.object({
+                      type: mtMap.objectField('type', mtMap.passthrough()),
+                      config: mtMap.objectField('config', mtMap.passthrough()),
+                      scopes: mtMap.objectField(
+                        'scopes',
+                        mtMap.array(mtMap.passthrough())
+                      )
+                    })
                   )
-                })
+                ])
               ),
               createdAt: mtMap.objectField('created_at', mtMap.date()),
               updatedAt: mtMap.objectField('updated_at', mtMap.date())
@@ -151,13 +181,19 @@ export let mapCustomServersVersionsCreateOutput = mtMap.union([
               id: mtMap.objectField('id', mtMap.passthrough()),
               providerOauth: mtMap.objectField(
                 'provider_oauth',
-                mtMap.object({
-                  config: mtMap.objectField('config', mtMap.passthrough()),
-                  scopes: mtMap.objectField(
-                    'scopes',
-                    mtMap.array(mtMap.passthrough())
+                mtMap.union([
+                  mtMap.unionOption(
+                    'object',
+                    mtMap.object({
+                      type: mtMap.objectField('type', mtMap.passthrough()),
+                      config: mtMap.objectField('config', mtMap.passthrough()),
+                      scopes: mtMap.objectField(
+                        'scopes',
+                        mtMap.array(mtMap.passthrough())
+                      )
+                    })
                   )
-                })
+                ])
               ),
               createdAt: mtMap.objectField('created_at', mtMap.date()),
               updatedAt: mtMap.objectField('updated_at', mtMap.date())
@@ -169,10 +205,26 @@ export let mapCustomServersVersionsCreateOutput = mtMap.union([
         'custom_server_id',
         mtMap.passthrough()
       ),
+      deploymentId: mtMap.objectField('deployment_id', mtMap.passthrough()),
       createdAt: mtMap.objectField('created_at', mtMap.date()),
       updatedAt: mtMap.objectField('updated_at', mtMap.date()),
       versionHash: mtMap.objectField('version_hash', mtMap.passthrough()),
-      deploymentId: mtMap.objectField('deployment_id', mtMap.passthrough())
+      push: mtMap.objectField(
+        'push',
+        mtMap.object({
+          object: mtMap.objectField('object', mtMap.passthrough()),
+          id: mtMap.objectField('id', mtMap.passthrough()),
+          branch: mtMap.objectField('branch', mtMap.passthrough()),
+          commitSha: mtMap.objectField('commit_sha', mtMap.passthrough()),
+          commitMessage: mtMap.objectField(
+            'commit_message',
+            mtMap.passthrough()
+          ),
+          authorEmail: mtMap.objectField('author_email', mtMap.passthrough()),
+          authorName: mtMap.objectField('author_name', mtMap.passthrough()),
+          createdAt: mtMap.objectField('created_at', mtMap.date())
+        })
+      )
     })
   )
 ]);
@@ -183,6 +235,7 @@ export type CustomServersVersionsCreateBody = {
         type: 'remote';
         remoteServer: {
           remoteUrl: string;
+          remoteProtocol: 'sse' | 'streamable_http';
           oauthConfig?:
             | { config: Record<string, any>; scopes: string[] }
             | null
@@ -199,6 +252,10 @@ export type CustomServersVersionsCreateBody = {
               oauthConfig?:
                 | { config: Record<string, any>; scopes: string[] }
                 | null
+                | undefined;
+              repository?: { repositoryId: string; path: string } | undefined;
+              files?:
+                | { data: string; encoding: 'utf-8' | 'base64'; path: string }[]
                 | undefined;
             }
           | undefined;
@@ -221,6 +278,10 @@ export let mapCustomServersVersionsCreateBody =
               'remote_server',
               mtMap.object({
                 remoteUrl: mtMap.objectField('remote_url', mtMap.passthrough()),
+                remoteProtocol: mtMap.objectField(
+                  'remote_protocol',
+                  mtMap.passthrough()
+                ),
                 oauthConfig: mtMap.objectField(
                   'oauth_config',
                   mtMap.object({
@@ -255,6 +316,29 @@ export let mapCustomServersVersionsCreateBody =
                       mtMap.array(mtMap.passthrough())
                     )
                   })
+                ),
+                repository: mtMap.objectField(
+                  'repository',
+                  mtMap.object({
+                    repositoryId: mtMap.objectField(
+                      'repository_id',
+                      mtMap.passthrough()
+                    ),
+                    path: mtMap.objectField('path', mtMap.passthrough())
+                  })
+                ),
+                files: mtMap.objectField(
+                  'files',
+                  mtMap.array(
+                    mtMap.object({
+                      data: mtMap.objectField('data', mtMap.passthrough()),
+                      encoding: mtMap.objectField(
+                        'encoding',
+                        mtMap.passthrough()
+                      ),
+                      path: mtMap.objectField('path', mtMap.passthrough())
+                    })
+                  )
                 )
               })
             )

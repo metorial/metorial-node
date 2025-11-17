@@ -30,7 +30,7 @@ export type SessionsCreateOutput = {
       createdAt: Date;
       updatedAt: Date;
     };
-    connectionUrls: { sse: string; streamableHttp: string; websocket: string };
+    connectionUrls: { sse: string; streamableHttp: string };
   }[];
   usage: {
     totalProductiveMessageCount: number;
@@ -105,8 +105,7 @@ export let mapSessionsCreateOutput = mtMap.union([
                 streamableHttp: mtMap.objectField(
                   'streamable_http',
                   mtMap.passthrough()
-                ),
-                websocket: mtMap.objectField('websocket', mtMap.passthrough())
+                )
               })
             )
           })
@@ -151,27 +150,40 @@ export let mapSessionsCreateOutput = mtMap.union([
 
 export type SessionsCreateBody = {
   serverDeployments: (
-    | (({
+    | ((({
         name?: string | undefined;
         description?: string | undefined;
         metadata?: Record<string, any> | undefined;
-        config: Record<string, any>;
         oauthConfig?: { clientId: string; clientSecret: string } | undefined;
-      } & (
-        | {
-            serverImplementation: {
-              name?: string | undefined;
-              description?: string | undefined;
-              metadata?: Record<string, any> | undefined;
-              getLaunchParams?: string | undefined;
-            } & ({ serverId: string } | { serverVariantId: string });
-          }
-        | { serverImplementationId: string }
-        | { serverVariantId: string }
-        | { serverId: string }
-      )) & { oauthSessionId?: string | undefined })
+        access?:
+          | {
+              ipAllowlist: {
+                ipWhitelist: string[];
+                ipBlacklist: string[];
+              } | null;
+            }
+          | undefined;
+      } & ({ config: Record<string, any> } | { serverConfigVaultId: string })) &
+        (
+          | {
+              serverImplementation: {
+                name?: string | undefined;
+                description?: string | undefined;
+                metadata?: Record<string, any> | undefined;
+                getLaunchParams?: string | undefined;
+              } & ({ serverId: string } | { serverVariantId: string });
+            }
+          | { serverImplementationId: string }
+          | { serverVariantId: string }
+          | { serverId: string }
+        )) &
+        ({ oauthSessionId: string } | { tokenImportId: string } | {}))
     | string
-    | { serverDeploymentId: string; oauthSessionId?: string | undefined }
+    | ({ serverDeploymentId: string } & (
+        | { oauthSessionId: string }
+        | { tokenImportId: string }
+        | {}
+      ))
   )[];
 };
 
@@ -186,7 +198,6 @@ export let mapSessionsCreateBody = mtMap.object<SessionsCreateBody>({
             name: mtMap.objectField('name', mtMap.passthrough()),
             description: mtMap.objectField('description', mtMap.passthrough()),
             metadata: mtMap.objectField('metadata', mtMap.passthrough()),
-            config: mtMap.objectField('config', mtMap.passthrough()),
             oauthConfig: mtMap.objectField(
               'oauth_config',
               mtMap.object({
@@ -196,6 +207,29 @@ export let mapSessionsCreateBody = mtMap.object<SessionsCreateBody>({
                   mtMap.passthrough()
                 )
               })
+            ),
+            access: mtMap.objectField(
+              'access',
+              mtMap.object({
+                ipAllowlist: mtMap.objectField(
+                  'ip_allowlist',
+                  mtMap.object({
+                    ipWhitelist: mtMap.objectField(
+                      'ip_whitelist',
+                      mtMap.array(mtMap.passthrough())
+                    ),
+                    ipBlacklist: mtMap.objectField(
+                      'ip_blacklist',
+                      mtMap.array(mtMap.passthrough())
+                    )
+                  })
+                )
+              })
+            ),
+            config: mtMap.objectField('config', mtMap.passthrough()),
+            serverConfigVaultId: mtMap.objectField(
+              'server_config_vault_id',
+              mtMap.passthrough()
             ),
             serverImplementation: mtMap.objectField(
               'server_implementation',
@@ -239,6 +273,10 @@ export let mapSessionsCreateBody = mtMap.object<SessionsCreateBody>({
             serverId: mtMap.objectField('server_id', mtMap.passthrough()),
             oauthSessionId: mtMap.objectField(
               'oauth_session_id',
+              mtMap.passthrough()
+            ),
+            tokenImportId: mtMap.objectField(
+              'token_import_id',
               mtMap.passthrough()
             ),
             serverDeploymentId: mtMap.objectField(

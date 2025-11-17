@@ -36,22 +36,42 @@ export type DashboardInstanceCustomServersVersionsListOutput = {
         object: 'custom_server.remote_server';
         id: string;
         remoteUrl: string;
-        providerOauth: { config: Record<string, any>; scopes: string[] } | null;
+        remoteProtocol: 'sse' | 'streamable_http';
+        providerOauth:
+          | { type: 'custom' }
+          | { type: 'json'; config: Record<string, any>; scopes: string[] }
+          | null;
         createdAt: Date;
         updatedAt: Date;
       } | null;
       managedServer: {
         object: 'custom_server.managed_server';
         id: string;
-        providerOauth: { config: Record<string, any>; scopes: string[] } | null;
+        providerOauth:
+          | { type: 'custom' }
+          | { type: 'json'; config: Record<string, any>; scopes: string[] }
+          | null;
         createdAt: Date;
         updatedAt: Date;
       } | null;
     };
     customServerId: string;
+    deploymentId: string | null;
     createdAt: Date;
     updatedAt: Date;
-  } & { versionHash: string; deploymentId: string | null })[];
+  } & {
+    versionHash: string;
+    push: {
+      object: 'custom_server.version.push';
+      id: string;
+      branch: string;
+      commitSha: string;
+      commitMessage: string;
+      authorEmail: string;
+      authorName: string;
+      createdAt: Date;
+    } | null;
+  })[];
   pagination: { hasMoreBefore: boolean; hasMoreAfter: boolean };
 };
 
@@ -153,18 +173,31 @@ export let mapDashboardInstanceCustomServersVersionsListOutput =
                         'remote_url',
                         mtMap.passthrough()
                       ),
+                      remoteProtocol: mtMap.objectField(
+                        'remote_protocol',
+                        mtMap.passthrough()
+                      ),
                       providerOauth: mtMap.objectField(
                         'provider_oauth',
-                        mtMap.object({
-                          config: mtMap.objectField(
-                            'config',
-                            mtMap.passthrough()
-                          ),
-                          scopes: mtMap.objectField(
-                            'scopes',
-                            mtMap.array(mtMap.passthrough())
+                        mtMap.union([
+                          mtMap.unionOption(
+                            'object',
+                            mtMap.object({
+                              type: mtMap.objectField(
+                                'type',
+                                mtMap.passthrough()
+                              ),
+                              config: mtMap.objectField(
+                                'config',
+                                mtMap.passthrough()
+                              ),
+                              scopes: mtMap.objectField(
+                                'scopes',
+                                mtMap.array(mtMap.passthrough())
+                              )
+                            })
                           )
-                        })
+                        ])
                       ),
                       createdAt: mtMap.objectField('created_at', mtMap.date()),
                       updatedAt: mtMap.objectField('updated_at', mtMap.date())
@@ -177,16 +210,25 @@ export let mapDashboardInstanceCustomServersVersionsListOutput =
                       id: mtMap.objectField('id', mtMap.passthrough()),
                       providerOauth: mtMap.objectField(
                         'provider_oauth',
-                        mtMap.object({
-                          config: mtMap.objectField(
-                            'config',
-                            mtMap.passthrough()
-                          ),
-                          scopes: mtMap.objectField(
-                            'scopes',
-                            mtMap.array(mtMap.passthrough())
+                        mtMap.union([
+                          mtMap.unionOption(
+                            'object',
+                            mtMap.object({
+                              type: mtMap.objectField(
+                                'type',
+                                mtMap.passthrough()
+                              ),
+                              config: mtMap.objectField(
+                                'config',
+                                mtMap.passthrough()
+                              ),
+                              scopes: mtMap.objectField(
+                                'scopes',
+                                mtMap.array(mtMap.passthrough())
+                              )
+                            })
                           )
-                        })
+                        ])
                       ),
                       createdAt: mtMap.objectField('created_at', mtMap.date()),
                       updatedAt: mtMap.objectField('updated_at', mtMap.date())
@@ -198,15 +240,40 @@ export let mapDashboardInstanceCustomServersVersionsListOutput =
                 'custom_server_id',
                 mtMap.passthrough()
               ),
+              deploymentId: mtMap.objectField(
+                'deployment_id',
+                mtMap.passthrough()
+              ),
               createdAt: mtMap.objectField('created_at', mtMap.date()),
               updatedAt: mtMap.objectField('updated_at', mtMap.date()),
               versionHash: mtMap.objectField(
                 'version_hash',
                 mtMap.passthrough()
               ),
-              deploymentId: mtMap.objectField(
-                'deployment_id',
-                mtMap.passthrough()
+              push: mtMap.objectField(
+                'push',
+                mtMap.object({
+                  object: mtMap.objectField('object', mtMap.passthrough()),
+                  id: mtMap.objectField('id', mtMap.passthrough()),
+                  branch: mtMap.objectField('branch', mtMap.passthrough()),
+                  commitSha: mtMap.objectField(
+                    'commit_sha',
+                    mtMap.passthrough()
+                  ),
+                  commitMessage: mtMap.objectField(
+                    'commit_message',
+                    mtMap.passthrough()
+                  ),
+                  authorEmail: mtMap.objectField(
+                    'author_email',
+                    mtMap.passthrough()
+                  ),
+                  authorName: mtMap.objectField(
+                    'author_name',
+                    mtMap.passthrough()
+                  ),
+                  createdAt: mtMap.objectField('created_at', mtMap.date())
+                })
               )
             })
           )
