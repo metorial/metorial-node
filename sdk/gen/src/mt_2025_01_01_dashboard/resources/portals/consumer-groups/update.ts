@@ -1,6 +1,6 @@
 import { mtMap } from '@metorial/util-resource-mapper';
 
-export type ManagementInstancePortalsConsumerGroupsCreateOutput = {
+export type PortalsConsumerGroupsUpdateOutput = {
   object: 'consumer.group';
   id: string;
   status: 'active' | 'inactive';
@@ -12,8 +12,8 @@ export type ManagementInstancePortalsConsumerGroupsCreateOutput = {
   updatedAt: Date;
 };
 
-export let mapManagementInstancePortalsConsumerGroupsCreateOutput =
-  mtMap.object<ManagementInstancePortalsConsumerGroupsCreateOutput>({
+export let mapPortalsConsumerGroupsUpdateOutput =
+  mtMap.object<PortalsConsumerGroupsUpdateOutput>({
     object: mtMap.objectField('object', mtMap.passthrough()),
     id: mtMap.objectField('id', mtMap.passthrough()),
     status: mtMap.objectField('status', mtMap.passthrough()),
@@ -28,15 +28,15 @@ export let mapManagementInstancePortalsConsumerGroupsCreateOutput =
     updatedAt: mtMap.objectField('updated_at', mtMap.date())
   });
 
-export type ManagementInstancePortalsConsumerGroupsCreateBody = {
-  name: string;
+export type PortalsConsumerGroupsUpdateBody = {
+  name?: string | undefined;
   description?: string | undefined;
   ssoGroupIds?: string[] | undefined;
   isDefault?: boolean | undefined;
 };
 
-export let mapManagementInstancePortalsConsumerGroupsCreateBody =
-  mtMap.object<ManagementInstancePortalsConsumerGroupsCreateBody>({
+export let mapPortalsConsumerGroupsUpdateBody =
+  mtMap.object<PortalsConsumerGroupsUpdateBody>({
     name: mtMap.objectField('name', mtMap.passthrough()),
     description: mtMap.objectField('description', mtMap.passthrough()),
     ssoGroupIds: mtMap.objectField(
