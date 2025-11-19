@@ -1,21 +1,20 @@
 import { mtMap } from '@metorial/util-resource-mapper';
 
-export type DashboardInstancePortalsConsumerProfilesListOutput = {
+export type ServersListingsCollectionsListOutput = {
   items: {
-    object: 'consumer.profile';
+    object: 'server_listing.collection';
     id: string;
     name: string;
-    email: string;
-    imageUrl: string;
-    consumerId: string;
-    ssoUserId: string | null;
+    slug: string;
+    description: string;
     createdAt: Date;
+    updatedAt: Date;
   }[];
   pagination: { hasMoreBefore: boolean; hasMoreAfter: boolean };
 };
 
-export let mapDashboardInstancePortalsConsumerProfilesListOutput =
-  mtMap.object<DashboardInstancePortalsConsumerProfilesListOutput>({
+export let mapServersListingsCollectionsListOutput =
+  mtMap.object<ServersListingsCollectionsListOutput>({
     items: mtMap.objectField(
       'items',
       mtMap.array(
@@ -23,11 +22,10 @@ export let mapDashboardInstancePortalsConsumerProfilesListOutput =
           object: mtMap.objectField('object', mtMap.passthrough()),
           id: mtMap.objectField('id', mtMap.passthrough()),
           name: mtMap.objectField('name', mtMap.passthrough()),
-          email: mtMap.objectField('email', mtMap.passthrough()),
-          imageUrl: mtMap.objectField('image_url', mtMap.passthrough()),
-          consumerId: mtMap.objectField('consumer_id', mtMap.passthrough()),
-          ssoUserId: mtMap.objectField('sso_user_id', mtMap.passthrough()),
-          createdAt: mtMap.objectField('created_at', mtMap.date())
+          slug: mtMap.objectField('slug', mtMap.passthrough()),
+          description: mtMap.objectField('description', mtMap.passthrough()),
+          createdAt: mtMap.objectField('created_at', mtMap.date()),
+          updatedAt: mtMap.objectField('updated_at', mtMap.date())
         })
       )
     ),
@@ -43,7 +41,7 @@ export let mapDashboardInstancePortalsConsumerProfilesListOutput =
     )
   });
 
-export type DashboardInstancePortalsConsumerProfilesListQuery = {
+export type ServersListingsCollectionsListQuery = {
   limit?: number | undefined;
   after?: string | undefined;
   before?: string | undefined;
@@ -51,7 +49,7 @@ export type DashboardInstancePortalsConsumerProfilesListQuery = {
   order?: 'asc' | 'desc' | undefined;
 } & {};
 
-export let mapDashboardInstancePortalsConsumerProfilesListQuery = mtMap.union([
+export let mapServersListingsCollectionsListQuery = mtMap.union([
   mtMap.unionOption(
     'object',
     mtMap.object({
