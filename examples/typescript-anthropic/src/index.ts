@@ -1,62 +1,106 @@
-import { metorialAnthropic } from '@metorial/anthropic';
-import { Metorial } from 'metorial';
-import Anthropic from '@anthropic-ai/sdk';
+import { metorialAnthropic } from "@metorial/anthropic";
+import { Metorial } from "metorial";
+import Anthropic from "@anthropic-ai/sdk";
 
-// Initialize Metorial
+// Initialize Metorial client
+// Get your API key at https://app.metorial.com
 let metorial = new Metorial({
-  apiKey: '...metorial-api-key...'
+  apiKey: "your-metorial-api-key",
 });
 
 // Initialize Anthropic
 let anthropic = new Anthropic({
-  apiKey: '...anthropic-api-key...'
+  apiKey: "your-anthropic-api-key",
 });
+
+// Server deployment IDs - create these at https://app.metorial.com
+// Normal server deployment (e.g., Exa or Tavily for web search)
+let normalServerDeploymentId = "your-normal-server-deployment-id";
+// OAuth-enabled server deployment (e.g., Slack, GitHub, SAP, etc.)
+let oauthServerDeploymentId = "your-oauth-server-deployment-id";
+
+// Create OAuth session for the OAuth-enabled server
+// this just needs to be done once per user
+let oauthSession = await metorial.oauth.sessions.create({
+  serverDeploymentId: oauthServerDeploymentId,
+  // Optional: callback URL after OAuth completion
+  // callbackUri: "https://your-app.com/oauth/callback",
+});
+
+console.log("🔑 OAuth URL - Complete authorization:", oauthSession.url);
+
+// Wait for user to complete OAuth authorization
+await metorial.oauth.waitForCompletion([oauthSession]);
+console.log("✅ OAuth authorization completed!");
 
 // Create a Metorial session with the Anthropic provider
 await metorial.withProviderSession(
   metorialAnthropic,
-  { serverDeployments: ['...server-deployment-id...'] },
-  async session => {
+  {
+    serverDeployments: [
+      // Normal server deployment
+      { serverDeploymentId: normalServerDeploymentId },
+      // OAuth server deployment with session
+      {
+        serverDeploymentId: oauthServerDeploymentId,
+        oauthSessionId: oauthSession.id,
+      },
+    ],
+  },
+  async (session) => {
     // Build initial message history
     let messages: Anthropic.Messages.MessageParam[] = [
       {
-        role: 'user',
-        content: 'Summarize the notion page with id page_id ...page-id... in my workspace.'
-      }
+        role: "user",
+        content: `
+          1. Research Metorial
+          2. Summarize the findings
+          3. Post them in the #general channel
+        `,
+      },
     ];
 
     // Dedupe tools by name
-    let uniqueTools = Array.from(new Map(session.tools.map(t => [t.name, t])).values());
+    let uniqueTools = Array.from(
+      new Map(session.tools.map((t) => [t.name, t])).values()
+    );
 
     for (let i = 0; i < 10; i++) {
       // Ask Anthropic, passing only unique tools
       let response = await anthropic.messages.create({
-        model: 'claude-3-5-sonnet-20241022',
+        model: "claude-sonnet-4-20250514",
         max_tokens: 1024,
         messages,
-        tools: uniqueTools
+        tools: uniqueTools,
       });
 
       // Extract any tool calls from the response
       let toolCalls = response.content.filter(
-        (c): c is Anthropic.Messages.ToolUseBlock => c.type === 'tool_use'
+        (c): c is Anthropic.Messages.ToolUseBlock => c.type === "tool_use"
       );
 
-      // If no more tools to call, print the assistant’s reply and exit
+      // If no more tools to call, print the assistant's reply and exit
       if (toolCalls.length === 0) {
         let finalText = response.content
-          .filter((c): c is Anthropic.Messages.TextBlock => c.type === 'text')
-          .map(c => c.text)
-          .join('');
+          .filter((c): c is Anthropic.Messages.TextBlock => c.type === "text")
+          .map((c) => c.text)
+          .join("");
+        console.log("🤖 AI Response:\n");
         console.log(finalText);
         return;
       }
 
       // Otherwise, invoke them via Metorial and append to history
+      console.log(
+        `🔧 Using tools: ${toolCalls.map((tc) => tc.name).join(", ")}`
+      );
       let toolResponses = await session.callTools(toolCalls);
-      messages.push({ role: 'assistant', content: response.content as any }, toolResponses);
+      messages.push(
+        { role: "assistant", content: response.content as any },
+        toolResponses
+      );
     }
 
-    throw new Error('No final response received after 10 iterations');
+    throw new Error("No final response received after 10 iterations");
   }
 );

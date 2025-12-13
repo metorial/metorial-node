@@ -1,36 +1,77 @@
-import { anthropic } from '@ai-sdk/anthropic';
-import { metorialAiSdk } from '@metorial/ai-sdk';
-import { Metorial } from '@metorial/sdk';
-import { stepCountIs, streamText } from 'ai';
+import { anthropic } from "@ai-sdk/anthropic";
+import { metorialAiSdk } from "@metorial/ai-sdk";
+import { Metorial } from "@metorial/sdk";
+import { stepCountIs, streamText } from "ai";
 
-let metorial = new Metorial({ apiKey: 'your-metorial-api-key' });
+// Initialize Metorial client
+// Get your API key at https://app.metorial.com
+let metorial = new Metorial({
+  apiKey: "your-metorial-api-key",
+});
 
+// Server deployment IDs - create these at https://app.metorial.com
+// Normal server deployment (e.g., Exa or Tavily for web search)
+let normalServerDeploymentId = "your-normal-server-deployment-id";
+// OAuth-enabled server deployment (e.g., Slack, GitHub, SAP, etc.)
+let oauthServerDeploymentId = "your-oauth-server-deployment-id";
+
+// Create OAuth session for the OAuth-enabled server
+// this just needs to be done once per user
+let oauthSession = await metorial.oauth.sessions.create({
+  serverDeploymentId: oauthServerDeploymentId,
+  // Optional: callback URL after OAuth completion
+  // callbackUri: "https://your-app.com/oauth/callback",
+});
+
+console.log("🔑 OAuth URL - Complete authorization:", oauthSession.url);
+
+// Wait for user to complete OAuth authorization
+await metorial.oauth.waitForCompletion([oauthSession]);
+console.log("✅ OAuth authorization completed!");
+
+// Start session with both normal and OAuth server deployments
 let result = await metorial.withProviderSession(
   metorialAiSdk,
   {
-    serverDeployments: ['your-server-deployment-id'],
-    streaming: true // add this flag for streaming with tool calls!
+    serverDeployments: [
+      // Normal server deployment
+      { serverDeploymentId: normalServerDeploymentId },
+      // OAuth server deployment with session
+      {
+        serverDeploymentId: oauthServerDeploymentId,
+        oauthSessionId: oauthSession.id,
+      },
+    ],
+    streaming: true, // Required for streaming with tool calls
   },
-  async ({ tools }) => {
+  async ({ tools, closeSession }) => {
     let result = streamText({
-      model: anthropic('claude-sonnet-4-5'),
-      prompt: 'Research what makes Metorial so special.',
+      model: anthropic("claude-sonnet-4-5"),
+      prompt: `
+        1. Research Metorial
+        2. Summarize the findings
+        3. Post them in the #general channel
+      `,
       stopWhen: stepCountIs(25),
       tools: tools,
       onStepFinish: (step: any) => {
         if (step.toolCalls) {
           console.log(
-            `🔧 Using tools: ${step.toolCalls.map((tc: any) => tc.toolName).join(', ')}`
+            `🔧 Using tools: ${step.toolCalls.map((tc: any) => tc.toolName).join(", ")}`
           );
         }
-      }
+      },
+      onFinish: async () => {
+        console.log("\n🎯 Stream completed!");
+        await closeSession();
+      },
     });
 
-    return result; // return StreamText result for nice consumption
+    return result;
   }
 );
 
-console.log('🤖 AI Response:\n');
+console.log("🤖 AI Response:\n");
 for await (const textPart of result.textStream) {
   process.stdout.write(textPart);
 }

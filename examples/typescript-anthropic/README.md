@@ -1,20 +1,63 @@
 # Metorial + Anthropic (TypeScript) Example
 
-This example shows how to use the [Metorial SDK](https://www.npmjs.com/package/metorial) with [Anthropic](https://www.npmjs.com/package/@anthropic-ai/sdk) in a TypeScript project. It demonstrates how to power Anthropic's `messages.create` with dynamic tool calling using Metorial’s `@metorial/anthropic` bindings.
+This example shows how to use the [Metorial SDK](https://www.npmjs.com/package/metorial) with [Anthropic](https://www.npmjs.com/package/@anthropic-ai/sdk) in a TypeScript project, including OAuth-enabled servers.
 
-> 🔧 This is a minimal, self-contained project to help you understand how Metorial can extend Anthropic workflows with custom tools.
+## Setting Up Server Deployments
+
+Server deployments are configured at [app.metorial.com](https://app.metorial.com). When you create a session from a deployment, we spin up an isolated serverless instance isolated to that user.
+
+### Types of Deployments
+
+1. **Standard Deployments** (e.g., Exa or Tavily for web search)
+   - API key-based authentication
+   - Can be shared across all users
+
+2. **OAuth-Enabled Deployments** (e.g., Slack, GitHub, SAP)
+   - Requires user authorization
+   - Each user completes OAuth once
+   - Session is isolated per user
+
+### Enterprise: Bring Your Own (BYO) Credentials
+
+For enterprise deployments with custom OAuth credentials:
+
+- **Shared deployment**: Deploy once and share with all users
+- **BYO OAuth**: Bring your own OAuth app credentials for services like SAP
+- **Dynamic deployments**: Create deployments programmatically via the [Server Deployment API](http://metorial.com/api/server-deployment)
+
+## Session Options
+
+### Streaming Mode
+
+When using streaming with tool calls, enable the `streaming` flag:
+
+```typescript
+{
+  serverDeployments: [...],
+  streaming: true, // Optional: enable for streaming with tool calls
+}
+```
+
+### Closing Sessions
+
+Always close your session when done to free up resources. Use the `closeSession` callback:
+
+```typescript
+async ({ tools, callTools, closeSession }) => {
+  // Use tools...
+  await closeSession(); // Close when done
+}
+```
 
 ## What's Included
 
 - **Metorial SDK** — Core integration with `metorial` and the `@metorial/anthropic` helper for Anthropic-compatible tool interfaces.
 - **Anthropic SDK** — For invoking `messages.create` with support for tool calling (`tool_use` blocks).
-- **Example session loop** — A full example of how to iterate on tool-augmented completions until a final response is returned.
+- **OAuth Flow** — Demonstrates how to handle OAuth-enabled servers.
 
 ## Getting Started
 
 ### 1. Install Dependencies
-
-This project uses [Bun](https://bun.sh). Install dependencies with:
 
 ```bash
 bun install
@@ -22,93 +65,85 @@ bun install
 
 ### 2. Set Your API Keys
 
-Replace placeholders in `index.ts`:
+Replace placeholders in `src/index.ts`:
 
 ```ts
-let metorial = new Metorial({ apiKey: '...your-metorial-api-key...' });
-let anthropic = new Anthropic({ apiKey: '...your-anthropic-api-key...' });
+// Get your API key at https://app.metorial.com
+let metorial = new Metorial({ apiKey: "your-metorial-api-key" });
+let anthropic = new Anthropic({ apiKey: "your-anthropic-api-key" });
 ```
 
-You'll also need to provide a valid `serverDeploymentId` when initializing the session:
+### 3. Configure Server Deployments
 
 ```ts
-serverDeployments: ['...server-deployment-id...'];
+// Server deployment IDs - create these at https://app.metorial.com
+// Normal server deployment (e.g., Exa or Tavily for web search)
+let normalServerDeploymentId = "your-normal-server-deployment-id";
+// OAuth-enabled server deployment (e.g., Slack, GitHub, SAP, etc.)
+let oauthServerDeploymentId = "your-oauth-server-deployment-id";
 ```
 
-### 3. Run the Example
+### 4. Run the Example
 
 ```bash
 bun start
 ```
 
-This will:
-
-1. Start a chat with Anthropic (using a Claude model).
-2. Inject Metorial-compatible tools via the `@metorial/anthropic` integration.
-3. Automatically call tools returned by Anthropic.
-4. Iterate through the conversation until a final response is received.
-
 ## Code Walkthrough
 
-The core logic is inside a `withProviderSession` call:
-
 ```ts
+// Create OAuth session (once per user)
+let oauthSession = await metorial.oauth.sessions.create({
+  serverDeploymentId: oauthServerDeploymentId,
+  // Optional: callback URL after OAuth completion
+  // callbackUri: "https://your-app.com/oauth/callback",
+});
+
+await metorial.oauth.waitForCompletion([oauthSession]);
+
 await metorial.withProviderSession(
   metorialAnthropic,
-  { serverDeployments: ['...server-deployment-id...'] },
-  async session => {
-    // Build initial message history
-    const messages: Anthropic.Messages.MessageParam[] = [
-      {
-        role: 'user',
-        content: 'Summarize the notion page with id page_id ...page-id... in my workspace.'
-      }
+  {
+    serverDeployments: [
+      { serverDeploymentId: normalServerDeploymentId },
+      { serverDeploymentId: oauthServerDeploymentId, oauthSessionId: oauthSession.id },
+    ],
+    // streaming: true, // Optional: enable for streaming with tool calls
+  },
+  async ({ tools, callTools, closeSession }) => {
+    let messages: Anthropic.Messages.MessageParam[] = [
+      { role: "user", content: "Your prompt here" }
     ];
 
-    // Dedupe tools by name
-    const uniqueTools = Array.from(new Map(session.tools.map(t => [t.name, t])).values());
-
     for (let i = 0; i < 10; i++) {
-      // Ask Anthropic, passing only unique tools
-      const response = await anthropic.messages.create({
-        model: 'claude-3-5-sonnet-20241022',
+      let response = await anthropic.messages.create({
+        model: "claude-sonnet-4-5",
         max_tokens: 1024,
         messages,
-        tools: uniqueTools
+        tools: tools,
       });
 
-      // Extract any tool calls from the response
-      const toolCalls = response.content.filter(
-        (c): c is Anthropic.Messages.ToolUseBlock => c.type === 'tool_use'
-      );
+      let toolCalls = response.content.filter(c => c.type === "tool_use");
 
-      // If no more tools to call, print the assistant’s reply and exit
       if (toolCalls.length === 0) {
-        const finalText = response.content
-          .filter((c): c is Anthropic.Messages.TextBlock => c.type === 'text')
-          .map(c => c.text)
-          .join('');
-        console.log(finalText);
+        // Final response
+        await closeSession(); // Close session when done
         return;
       }
 
-      // Otherwise, invoke them via Metorial and append to history
-      const toolResponses = await session.callTools(toolCalls);
-      messages.push({ role: 'assistant', content: response.content as any }, toolResponses);
+      let toolResponses = await callTools(toolCalls);
+      messages.push({ role: "assistant", content: response.content }, toolResponses);
     }
 
-    throw new Error('No final response received after 10 iterations');
+    await closeSession(); // Close session when done
   }
 );
 ```
 
-> 🧠 The loop lets Anthropic invoke any tools you've deployed via Metorial until the assistant can answer directly.
-
 ## Requirements
 
 - [Bun](https://bun.sh) (v1.0+)
-- Node-compatible environment
-- Metorial account + deployment ID
+- Metorial account + deployment IDs
 - Anthropic API key (Claude access)
 
 ## License

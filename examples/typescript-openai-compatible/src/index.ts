@@ -1,68 +1,108 @@
-import { createOpenAICompatibleMcpSdk } from '@metorial/openai-compatible';
-import { Metorial } from 'metorial';
-import OpenAI from 'openai';
+import { createOpenAICompatibleMcpSdk } from "@metorial/openai-compatible";
+import { Metorial } from "metorial";
+import OpenAI from "openai";
 
+// Initialize Metorial client
+// Get your API key at https://app.metorial.com
 let metorial = new Metorial({
-  apiKey: '...your-metorial-api-key...'
+  apiKey: "your-metorial-api-key",
 });
 
-// Note: You need to provide your own OpenAI API key here
-// Get one from: https://platform.openai.com/account/api-keys
+// Initialize OpenAI (or any OpenAI-compatible provider)
 let openai = new OpenAI({
-  apiKey: 'sk-your-openai-api-key-here' // Replace with your actual OpenAI API key
+  apiKey: "your-openai-api-key",
 });
 
+// Server deployment IDs - create these at https://app.metorial.com
+// Normal server deployment (e.g., Exa or Tavily for web search)
+let normalServerDeploymentId = "your-normal-server-deployment-id";
+// OAuth-enabled server deployment (e.g., Slack, GitHub, SAP, etc.)
+let oauthServerDeploymentId = "your-oauth-server-deployment-id";
+
+// Create OAuth session for the OAuth-enabled server
+// this just needs to be done once per user
+let oauthSession = await metorial.oauth.sessions.create({
+  serverDeploymentId: oauthServerDeploymentId,
+  // Optional: callback URL after OAuth completion
+  // callbackUri: "https://your-app.com/oauth/callback",
+});
+
+console.log("🔑 OAuth URL - Complete authorization:", oauthSession.url);
+
+// Wait for user to complete OAuth authorization
+await metorial.oauth.waitForCompletion([oauthSession]);
+console.log("✅ OAuth authorization completed!");
+
+// Create the OpenAI-compatible MCP SDK
 let metorialOpenAICompatible = createOpenAICompatibleMcpSdk({});
 
+// Create a Metorial session with the OpenAI-compatible provider
 await metorial.withProviderSession(
   metorialOpenAICompatible,
   {
-    serverDeployments: ['...server-deployment-id...']
+    serverDeployments: [
+      // Normal server deployment
+      { serverDeploymentId: normalServerDeploymentId },
+      // OAuth server deployment with session
+      {
+        serverDeploymentId: oauthServerDeploymentId,
+        oauthSessionId: oauthSession.id,
+      },
+    ],
   },
-  async session => {
+  async (session) => {
     // Message history for the chat completion
     let messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
       {
-        role: 'user',
-        content:
-          'Summarize the README.md file of the metorial/websocket-explorer repository on GitHub?'
-      }
+        role: "user",
+        content: `
+          1. Research Metorial
+          2. Summarize the findings
+          3. Post them in the #general channel
+        `,
+      },
     ];
 
     try {
-      // Get next response from OpenAI
-      let response = await openai.chat.completions.create({
-        model: 'gpt-4o-mini',
-        messages,
-        tools: session.tools as any
-      });
-      let choice = response.choices[0]!;
+      for (let i = 0; i < 10; i++) {
+        // Get next response from OpenAI
+        let response = await openai.chat.completions.create({
+          model: "gpt-4o",
+          messages,
+          tools: session.tools as any,
+        });
+        let choice = response.choices[0]!;
 
-      let toolCalls = choice.message.tool_calls;
+        let toolCalls = choice.message.tool_calls;
 
-      // No more tool calls -> we have the final response
-      if (!toolCalls || toolCalls.length === 0) {
-        console.log('✅ Final response received!');
-        console.log(choice.message.content);
-        return;
+        // No more tool calls -> we have the final response
+        if (!toolCalls || toolCalls.length === 0) {
+          console.log("🤖 AI Response:\n");
+          console.log(choice.message.content);
+          return;
+        }
+
+        // Pass tool calls to Metorial
+        console.log(
+          `🔧 Using tools: ${toolCalls.map((tc) => tc.function.name).join(", ")}`
+        );
+        let toolResponses = await session.callTools(toolCalls);
+
+        // Save the tool call and tool responses to the message history
+        messages.push(
+          {
+            role: "assistant",
+            tool_calls: choice.message.tool_calls,
+          },
+          ...toolResponses
+        );
       }
 
-      // Pass tool calls to Metorial
-      let toolResponses = await session.callTools(toolCalls);
-
-      // Save the tool call and tool responses to the message history
-      messages.push(
-        {
-          role: 'assistant',
-          tool_calls: choice.message.tool_calls
-        },
-        ...toolResponses
-      );
-    } catch (error) {
-      console.log('⚠️ OpenAI API error:', error.message);
-      console.log("💡 This is expected if you haven't provided a valid OpenAI API key.");
+      throw new Error("No final response received after 10 iterations");
+    } catch (error: any) {
+      console.log("⚠️ OpenAI API error:", error.message);
       if (error.response) {
-        console.log('Error details:', error.response.data);
+        console.log("Error details:", error.response.data);
       }
     }
   }

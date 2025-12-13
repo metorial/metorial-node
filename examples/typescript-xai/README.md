@@ -1,6 +1,6 @@
-# Metorial + AI SDK v4 Example
+# Metorial + xAI (TypeScript) Example
 
-Shows how to use Metorial tools with Vercel AI SDK v4 and OpenAI, including OAuth-enabled servers.
+This example shows how to use the [Metorial SDK](https://www.npmjs.com/package/metorial) with [xAI](https://x.ai/) (Grok) in a TypeScript project, including OAuth-enabled servers.
 
 ## Setting Up Server Deployments
 
@@ -43,40 +43,49 @@ When using streaming with tool calls, enable the `streaming` flag:
 Always close your session when done to free up resources. Use the `closeSession` callback:
 
 ```typescript
-async ({ tools, closeSession }) => {
+async ({ tools, callTools, closeSession }) => {
   // Use tools...
   await closeSession(); // Close when done
 }
 ```
 
-## Setup
+## Getting Started
 
-1. **Install**: `bun install`
+### 1. Install Dependencies
 
-2. **API Keys**: Set in `.env`:
-```env
-OPENAI_API_KEY=your-key-here
+```bash
+bun install
 ```
 
-3. **Configure**: Update `src/index.ts` with your Metorial API key and server deployment IDs
-
-4. **Run**: `bun start`
-
-## Code
+### 2. Set Your API Keys
 
 ```ts
-import { openai } from "@ai-sdk/openai";
-import { metorialAiSdk } from "@metorial/ai-sdk/v4";
-import { Metorial } from "@metorial/sdk";
-import { generateText } from "ai";
-
 // Get your API key at https://app.metorial.com
 let metorial = new Metorial({ apiKey: "your-metorial-api-key" });
 
+let xai = new OpenAI({
+  apiKey: "your-xai-api-key",
+  baseURL: "https://api.x.ai/v1",
+});
+```
+
+### 3. Configure Server Deployments
+
+```ts
 // Server deployment IDs - create these at https://app.metorial.com
 let normalServerDeploymentId = "your-normal-server-deployment-id";
 let oauthServerDeploymentId = "your-oauth-server-deployment-id";
+```
 
+### 4. Run the Example
+
+```bash
+bun start
+```
+
+## Code Walkthrough
+
+```ts
 // Create OAuth session (once per user)
 let oauthSession = await metorial.oauth.sessions.create({
   serverDeploymentId: oauthServerDeploymentId,
@@ -87,7 +96,7 @@ let oauthSession = await metorial.oauth.sessions.create({
 await metorial.oauth.waitForCompletion([oauthSession]);
 
 await metorial.withProviderSession(
-  metorialAiSdk,
+  metorialXai,
   {
     serverDeployments: [
       { serverDeploymentId: normalServerDeploymentId },
@@ -95,39 +104,49 @@ await metorial.withProviderSession(
     ],
     // streaming: true, // Optional: enable for streaming with tool calls
   },
-  async ({ tools, closeSession }) => {
-    let result = await generateText({
-      model: openai("gpt-4o"),
-      prompt: "Your prompt here",
-      maxSteps: 10,
-      tools: tools,
-    });
+  async ({ tools, callTools, closeSession }) => {
+    let messages = [{ role: "user", content: "Your prompt here" }];
 
-    console.log(result.text);
+    // Dedupe tools by name
+    let uniqueTools = Array.from(
+      new Map(tools.map((t) => [t.function.name, t])).values()
+    );
+
+    for (let i = 0; i < 10; i++) {
+      let response = await xai.chat.completions.create({
+        model: "grok-3",
+        messages,
+        tools: uniqueTools,
+      });
+
+      let toolCalls = response.choices[0].message.tool_calls;
+
+      if (!toolCalls || toolCalls.length === 0) {
+        console.log(response.choices[0].message.content);
+        await closeSession(); // Close session when done
+        return;
+      }
+
+      let toolResponses = await callTools(toolCalls);
+      messages.push({ role: "assistant", tool_calls: toolCalls }, ...toolResponses);
+    }
+
     await closeSession(); // Close session when done
   }
 );
 ```
 
-Here's what happens:
-
-* The Metorial session is initialized with tool bindings from `@metorial/ai-sdk/v4`.
-* OAuth session is created for servers requiring user authorization.
-* `generateText()` runs a prompt with tool support enabled.
-* If the model chooses to invoke a tool, Metorial handles the call and feeds the response back.
-* `closeSession()` is called to clean up resources when done.
-
 ## Requirements
 
-* Bun (or Node-compatible runtime)
-* OpenAI API access
-* A Metorial account and server deployment IDs
+- [Bun](https://bun.sh) (v1.0+)
+- Metorial account + deployment IDs
+- xAI API key
 
 ## License
 
-MIT — feel free to use, fork, or adapt this example in your own applications.
+MIT — feel free to use and adapt this code in your own projects.
 
 ## Learn More
 
-* [Metorial Documentation](https://metorial.com/docs)
-* [Vercel AI SDK](https://ai-sdk.dev/)
+- [Metorial Documentation](https://metorial.com/docs)
+- [xAI](https://x.ai/)
