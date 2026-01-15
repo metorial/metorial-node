@@ -1,4 +1,4 @@
-import './fetch';
+// import './fetch';
 
 export * from './endpoints';
 export * from './error';
