@@ -8,6 +8,10 @@ export type DashboardOrganizationsMembersGetOutput = {
   userId: string;
   organizationId: string;
   actorId: string;
+  lastActiveAt: Date;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt: Date;
   actor: {
     object: 'organization.actor';
     id: string;
@@ -16,13 +20,17 @@ export type DashboardOrganizationsMembersGetOutput = {
     name: string;
     email: string | null;
     imageUrl: string;
+    teams: {
+      id: string;
+      name: string;
+      slug: string;
+      assignmentId: string;
+      createdAt: Date;
+      updatedAt: Date;
+    }[];
     createdAt: Date;
     updatedAt: Date;
   };
-  lastActiveAt: Date;
-  deletedAt: Date;
-  createdAt: Date;
-  updatedAt: Date;
 };
 
 export let mapDashboardOrganizationsMembersGetOutput =
@@ -34,6 +42,10 @@ export let mapDashboardOrganizationsMembersGetOutput =
     userId: mtMap.objectField('user_id', mtMap.passthrough()),
     organizationId: mtMap.objectField('organization_id', mtMap.passthrough()),
     actorId: mtMap.objectField('actor_id', mtMap.passthrough()),
+    lastActiveAt: mtMap.objectField('last_active_at', mtMap.date()),
+    createdAt: mtMap.objectField('created_at', mtMap.date()),
+    updatedAt: mtMap.objectField('updated_at', mtMap.date()),
+    deletedAt: mtMap.objectField('deleted_at', mtMap.date()),
     actor: mtMap.objectField(
       'actor',
       mtMap.object({
@@ -47,13 +59,25 @@ export let mapDashboardOrganizationsMembersGetOutput =
         name: mtMap.objectField('name', mtMap.passthrough()),
         email: mtMap.objectField('email', mtMap.passthrough()),
         imageUrl: mtMap.objectField('image_url', mtMap.passthrough()),
+        teams: mtMap.objectField(
+          'teams',
+          mtMap.array(
+            mtMap.object({
+              id: mtMap.objectField('id', mtMap.passthrough()),
+              name: mtMap.objectField('name', mtMap.passthrough()),
+              slug: mtMap.objectField('slug', mtMap.passthrough()),
+              assignmentId: mtMap.objectField(
+                'assignment_id',
+                mtMap.passthrough()
+              ),
+              createdAt: mtMap.objectField('created_at', mtMap.date()),
+              updatedAt: mtMap.objectField('updated_at', mtMap.date())
+            })
+          )
+        ),
         createdAt: mtMap.objectField('created_at', mtMap.date()),
         updatedAt: mtMap.objectField('updated_at', mtMap.date())
       })
-    ),
-    lastActiveAt: mtMap.objectField('last_active_at', mtMap.date()),
-    deletedAt: mtMap.objectField('deleted_at', mtMap.date()),
-    createdAt: mtMap.objectField('created_at', mtMap.date()),
-    updatedAt: mtMap.objectField('updated_at', mtMap.date())
+    )
   });
 

@@ -18,11 +18,9 @@ export type DashboardBootOutput = {
   organizations: ({
     object: 'organization';
     id: string;
-    status: 'active' | 'deleted';
     type: 'default';
     slug: string;
     name: string;
-    organizationId: string;
     imageUrl: string;
     createdAt: Date;
     updatedAt: Date;
@@ -35,6 +33,10 @@ export type DashboardBootOutput = {
       userId: string;
       organizationId: string;
       actorId: string;
+      lastActiveAt: Date;
+      createdAt: Date;
+      updatedAt: Date;
+      deletedAt: Date;
       actor: {
         object: 'organization.actor';
         id: string;
@@ -43,13 +45,17 @@ export type DashboardBootOutput = {
         name: string;
         email: string | null;
         imageUrl: string;
+        teams: {
+          id: string;
+          name: string;
+          slug: string;
+          assignmentId: string;
+          createdAt: Date;
+          updatedAt: Date;
+        }[];
         createdAt: Date;
         updatedAt: Date;
       };
-      lastActiveAt: Date;
-      deletedAt: Date;
-      createdAt: Date;
-      updatedAt: Date;
     };
   })[];
   projects: ({
@@ -65,11 +71,9 @@ export type DashboardBootOutput = {
     organization: {
       object: 'organization';
       id: string;
-      status: 'active' | 'deleted';
       type: 'default';
       slug: string;
       name: string;
-      organizationId: string;
       imageUrl: string;
       createdAt: Date;
       updatedAt: Date;
@@ -78,11 +82,12 @@ export type DashboardBootOutput = {
   instances: ({
     object: 'organization.instance';
     id: string;
-    status: 'active' | 'deleted';
     slug: string;
     name: string;
-    type: 'development' | 'production';
     organizationId: string;
+    type: 'development' | 'production';
+    createdAt: Date;
+    updatedAt: Date;
     project: {
       object: 'organization.project';
       id: string;
@@ -93,17 +98,13 @@ export type DashboardBootOutput = {
       createdAt: Date;
       updatedAt: Date;
     };
-    createdAt: Date;
-    updatedAt: Date;
   } & {
     organization: {
       object: 'organization';
       id: string;
-      status: 'active' | 'deleted';
       type: 'default';
       slug: string;
       name: string;
-      organizationId: string;
       imageUrl: string;
       createdAt: Date;
       updatedAt: Date;
@@ -138,14 +139,9 @@ export let mapDashboardBootOutput = mtMap.object<DashboardBootOutput>({
           mtMap.object({
             object: mtMap.objectField('object', mtMap.passthrough()),
             id: mtMap.objectField('id', mtMap.passthrough()),
-            status: mtMap.objectField('status', mtMap.passthrough()),
             type: mtMap.objectField('type', mtMap.passthrough()),
             slug: mtMap.objectField('slug', mtMap.passthrough()),
             name: mtMap.objectField('name', mtMap.passthrough()),
-            organizationId: mtMap.objectField(
-              'organization_id',
-              mtMap.passthrough()
-            ),
             imageUrl: mtMap.objectField('image_url', mtMap.passthrough()),
             createdAt: mtMap.objectField('created_at', mtMap.date()),
             updatedAt: mtMap.objectField('updated_at', mtMap.date()),
@@ -162,6 +158,10 @@ export let mapDashboardBootOutput = mtMap.object<DashboardBootOutput>({
                   mtMap.passthrough()
                 ),
                 actorId: mtMap.objectField('actor_id', mtMap.passthrough()),
+                lastActiveAt: mtMap.objectField('last_active_at', mtMap.date()),
+                createdAt: mtMap.objectField('created_at', mtMap.date()),
+                updatedAt: mtMap.objectField('updated_at', mtMap.date()),
+                deletedAt: mtMap.objectField('deleted_at', mtMap.date()),
                 actor: mtMap.objectField(
                   'actor',
                   mtMap.object({
@@ -178,14 +178,32 @@ export let mapDashboardBootOutput = mtMap.object<DashboardBootOutput>({
                       'image_url',
                       mtMap.passthrough()
                     ),
+                    teams: mtMap.objectField(
+                      'teams',
+                      mtMap.array(
+                        mtMap.object({
+                          id: mtMap.objectField('id', mtMap.passthrough()),
+                          name: mtMap.objectField('name', mtMap.passthrough()),
+                          slug: mtMap.objectField('slug', mtMap.passthrough()),
+                          assignmentId: mtMap.objectField(
+                            'assignment_id',
+                            mtMap.passthrough()
+                          ),
+                          createdAt: mtMap.objectField(
+                            'created_at',
+                            mtMap.date()
+                          ),
+                          updatedAt: mtMap.objectField(
+                            'updated_at',
+                            mtMap.date()
+                          )
+                        })
+                      )
+                    ),
                     createdAt: mtMap.objectField('created_at', mtMap.date()),
                     updatedAt: mtMap.objectField('updated_at', mtMap.date())
                   })
-                ),
-                lastActiveAt: mtMap.objectField('last_active_at', mtMap.date()),
-                deletedAt: mtMap.objectField('deleted_at', mtMap.date()),
-                createdAt: mtMap.objectField('created_at', mtMap.date()),
-                updatedAt: mtMap.objectField('updated_at', mtMap.date())
+                )
               })
             )
           })
@@ -216,14 +234,9 @@ export let mapDashboardBootOutput = mtMap.object<DashboardBootOutput>({
               mtMap.object({
                 object: mtMap.objectField('object', mtMap.passthrough()),
                 id: mtMap.objectField('id', mtMap.passthrough()),
-                status: mtMap.objectField('status', mtMap.passthrough()),
                 type: mtMap.objectField('type', mtMap.passthrough()),
                 slug: mtMap.objectField('slug', mtMap.passthrough()),
                 name: mtMap.objectField('name', mtMap.passthrough()),
-                organizationId: mtMap.objectField(
-                  'organization_id',
-                  mtMap.passthrough()
-                ),
                 imageUrl: mtMap.objectField('image_url', mtMap.passthrough()),
                 createdAt: mtMap.objectField('created_at', mtMap.date()),
                 updatedAt: mtMap.objectField('updated_at', mtMap.date())
@@ -243,14 +256,15 @@ export let mapDashboardBootOutput = mtMap.object<DashboardBootOutput>({
           mtMap.object({
             object: mtMap.objectField('object', mtMap.passthrough()),
             id: mtMap.objectField('id', mtMap.passthrough()),
-            status: mtMap.objectField('status', mtMap.passthrough()),
             slug: mtMap.objectField('slug', mtMap.passthrough()),
             name: mtMap.objectField('name', mtMap.passthrough()),
-            type: mtMap.objectField('type', mtMap.passthrough()),
             organizationId: mtMap.objectField(
               'organization_id',
               mtMap.passthrough()
             ),
+            type: mtMap.objectField('type', mtMap.passthrough()),
+            createdAt: mtMap.objectField('created_at', mtMap.date()),
+            updatedAt: mtMap.objectField('updated_at', mtMap.date()),
             project: mtMap.objectField(
               'project',
               mtMap.object({
@@ -267,21 +281,14 @@ export let mapDashboardBootOutput = mtMap.object<DashboardBootOutput>({
                 updatedAt: mtMap.objectField('updated_at', mtMap.date())
               })
             ),
-            createdAt: mtMap.objectField('created_at', mtMap.date()),
-            updatedAt: mtMap.objectField('updated_at', mtMap.date()),
             organization: mtMap.objectField(
               'organization',
               mtMap.object({
                 object: mtMap.objectField('object', mtMap.passthrough()),
                 id: mtMap.objectField('id', mtMap.passthrough()),
-                status: mtMap.objectField('status', mtMap.passthrough()),
                 type: mtMap.objectField('type', mtMap.passthrough()),
                 slug: mtMap.objectField('slug', mtMap.passthrough()),
                 name: mtMap.objectField('name', mtMap.passthrough()),
-                organizationId: mtMap.objectField(
-                  'organization_id',
-                  mtMap.passthrough()
-                ),
                 imageUrl: mtMap.objectField('image_url', mtMap.passthrough()),
                 createdAt: mtMap.objectField('created_at', mtMap.date()),
                 updatedAt: mtMap.objectField('updated_at', mtMap.date())
