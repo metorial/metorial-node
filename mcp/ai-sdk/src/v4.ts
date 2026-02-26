@@ -1,5 +1,5 @@
 import { createMcpSdk } from '@metorial/mcp-sdk-utils';
-import { jsonSchema, tool, ToolSet } from 'ai';
+import { jsonSchema } from 'ai';
 
 export let metorialAiSdk = createMcpSdk()(async ({ tools }) => ({
   tools: Object.fromEntries([
@@ -16,14 +16,14 @@ export let metorialAiSdk = createMcpSdk()(async ({ tools }) => ({
 
       return [
         t.id,
-        tool({
+        {
           description: t.description ?? undefined,
-          inputSchema: jsonSchema(parameters),
-          execute: async (params: any) => {
+          parameters: jsonSchema(parameters),
+          execute: async (params: Record<string, unknown>) => {
             return await t.call(params);
           }
-        })
+        }
       ];
     })
-  ]) as ToolSet
+  ])
 }));

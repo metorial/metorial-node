@@ -1,5 +1,11 @@
 # @metorial/ai-sdk
 
+## 2.0.1
+
+### Patch Changes
+
+- Fix v4 vercel ai sdk tool conversion
+
 ## 2.0.0
 
 ### Major Changes
