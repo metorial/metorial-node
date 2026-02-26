@@ -1,5 +1,13 @@
 # @metorial/sdk
 
+## 2.0.1
+
+### Patch Changes
+
+- Registered all generated endpoints
+- Updated dependencies
+  - @metorial/core@2.0.1
+
 ## 2.0.0
 
 ### Major Changes

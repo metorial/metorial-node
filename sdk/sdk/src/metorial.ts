@@ -50,12 +50,10 @@ export class Metorial {
 
   get providerDeployments() {
     let deployments = this.magnetarSdk.providerDeployments;
-    return {
-      ...deployments,
-      setupSessions: Object.assign(deployments.setupSessions, {
-        waitForCompletion: this.waitForSetupSession.bind(this)
-      })
-    };
+    Object.assign(deployments.setupSessions, {
+      waitForCompletion: this.waitForSetupSession.bind(this)
+    });
+    return deployments;
   }
 
   get sessions() {
@@ -72,6 +70,38 @@ export class Metorial {
 
   get instance() {
     return this.magnetarSdk.instance;
+  }
+
+  get publishers() {
+    return this.magnetarSdk.publishers;
+  }
+
+  get providerCategories() {
+    return this.magnetarSdk.providerCategories;
+  }
+
+  get providerCollections() {
+    return this.magnetarSdk.providerCollections;
+  }
+
+  get providerGroups() {
+    return this.magnetarSdk.providerGroups;
+  }
+
+  get providerListings() {
+    return this.magnetarSdk.providerListings;
+  }
+
+  get providerSetupSessions() {
+    return this.magnetarSdk.providerSetupSessions;
+  }
+
+  get toolCalls() {
+    return this.magnetarSdk.toolCalls;
+  }
+
+  get customProviders() {
+    return this.magnetarSdk.customProviders;
   }
 
   // ── Backward compat (Pulsar endpoints at top level) ──────────────

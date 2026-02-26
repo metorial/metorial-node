@@ -1,14 +1,21 @@
 import {
   MetorialInstanceEndpoint as MagnetarInstanceEndpoint,
+  MetorialPublishersEndpoint,
   MetorialProvidersEndpoint,
   MetorialProvidersVersionsEndpoint,
   MetorialProvidersToolsEndpoint,
   MetorialProvidersAuthMethodsEndpoint,
   MetorialProvidersSpecificationsEndpoint,
+  MetorialProviderCategoriesEndpoint,
+  MetorialProviderCollectionsEndpoint,
+  MetorialProviderGroupsEndpoint,
+  MetorialProviderListingsEndpoint,
   MetorialProviderDeploymentsEndpoint,
   MetorialProviderDeploymentsConfigsEndpoint,
   MetorialProviderDeploymentsConfigVaultsEndpoint,
   MetorialProviderDeploymentsAuthConfigsEndpoint,
+  MetorialProviderDeploymentsAuthConfigsImportsEndpoint,
+  MetorialProviderDeploymentsAuthConfigsExportsEndpoint,
   MetorialProviderDeploymentsAuthCredentialsEndpoint,
   MetorialProviderDeploymentsSetupSessionsEndpoint,
   MetorialSessionsEndpoint as MagnetarSessionsEndpoint,
@@ -21,7 +28,13 @@ import {
   MetorialSessionsErrorGroupsEndpoint,
   MetorialSessionTemplatesEndpoint,
   MetorialSessionTemplatesProvidersEndpoint,
-  MetorialProviderRunsEndpoint
+  MetorialProviderRunsEndpoint,
+  MetorialToolCallsEndpoint,
+  MetorialCustomProvidersEndpoint,
+  MetorialCustomProvidersVersionsEndpoint,
+  MetorialCustomProvidersDeploymentsEndpoint,
+  MetorialCustomProvidersEnvironmentsEndpoint,
+  MetorialCustomProvidersCommitsEndpoint
 } from '@metorial/generated/src/mt_2026_01_01_magnetar';
 import { MetorialKeyPrefix, magnetarSdkBuilder } from './magnetarBuilder';
 
@@ -43,6 +56,8 @@ export let createMetorialMagnetarCoreSDK = magnetarSdkBuilder.build(
 )(manager => ({
   instance: new MagnetarInstanceEndpoint(manager),
 
+  publishers: new MetorialPublishersEndpoint(manager),
+
   providers: Object.assign(new MetorialProvidersEndpoint(manager), {
     versions: new MetorialProvidersVersionsEndpoint(manager),
     tools: new MetorialProvidersToolsEndpoint(manager),
@@ -50,13 +65,23 @@ export let createMetorialMagnetarCoreSDK = magnetarSdkBuilder.build(
     specifications: new MetorialProvidersSpecificationsEndpoint(manager)
   }),
 
+  providerCategories: new MetorialProviderCategoriesEndpoint(manager),
+  providerCollections: new MetorialProviderCollectionsEndpoint(manager),
+  providerGroups: new MetorialProviderGroupsEndpoint(manager),
+  providerListings: new MetorialProviderListingsEndpoint(manager),
+
   providerDeployments: Object.assign(new MetorialProviderDeploymentsEndpoint(manager), {
     configs: new MetorialProviderDeploymentsConfigsEndpoint(manager),
     configVaults: new MetorialProviderDeploymentsConfigVaultsEndpoint(manager),
-    authConfigs: new MetorialProviderDeploymentsAuthConfigsEndpoint(manager),
+    authConfigs: Object.assign(new MetorialProviderDeploymentsAuthConfigsEndpoint(manager), {
+      imports: new MetorialProviderDeploymentsAuthConfigsImportsEndpoint(manager),
+      exports: new MetorialProviderDeploymentsAuthConfigsExportsEndpoint(manager)
+    }),
     authCredentials: new MetorialProviderDeploymentsAuthCredentialsEndpoint(manager),
     setupSessions: new MetorialProviderDeploymentsSetupSessionsEndpoint(manager)
   }),
+
+  providerSetupSessions: new MetorialProviderDeploymentsSetupSessionsEndpoint(manager),
 
   sessions: Object.assign(new MagnetarSessionsEndpoint(manager), {
     messages: new MagnetarSessionsMessagesEndpoint(manager),
@@ -72,7 +97,16 @@ export let createMetorialMagnetarCoreSDK = magnetarSdkBuilder.build(
     providers: new MetorialSessionTemplatesProvidersEndpoint(manager)
   }),
 
-  providerRuns: new MetorialProviderRunsEndpoint(manager)
+  providerRuns: new MetorialProviderRunsEndpoint(manager),
+
+  toolCalls: new MetorialToolCallsEndpoint(manager),
+
+  customProviders: Object.assign(new MetorialCustomProvidersEndpoint(manager), {
+    versions: new MetorialCustomProvidersVersionsEndpoint(manager),
+    deployments: new MetorialCustomProvidersDeploymentsEndpoint(manager),
+    environments: new MetorialCustomProvidersEnvironmentsEndpoint(manager),
+    commits: new MetorialCustomProvidersCommitsEndpoint(manager)
+  })
 }));
 
 export type MetorialMagnetarCoreSDK = ReturnType<typeof createMetorialMagnetarCoreSDK>;
