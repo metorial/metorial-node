@@ -1,6 +1,6 @@
 import { Metorial } from '../metorial';
 
-export type WithProviderSessionFunction = Metorial['withProviderSession'];
+export type WithProviderSessionFunction = Metorial['_pulsarWithProviderSession'];
 
 export interface RunResult {
   text: string;

@@ -1,5 +1,19 @@
 # @metorial/mcp-session
 
+## 2.0.0
+
+### Major Changes
+
+- Major version bump for all packages
+
+### Patch Changes
+
+- Updated dependencies
+  - @metorial/core@2.0.0
+  - @metorial/generated@2.0.0
+  - @metorial/json-schema@2.0.0
+  - @metorial/util-endpoint@2.0.0
+
 ## 1.0.1
 
 ### Patch Changes

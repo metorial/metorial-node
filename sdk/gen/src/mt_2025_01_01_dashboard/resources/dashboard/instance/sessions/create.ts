@@ -10,7 +10,7 @@ export type DashboardInstanceSessionsCreateOutput = {
   connectionUrl: string;
   usage: {
     totalProductiveClientMessageCount: number;
-    totalProductiveProviderMessageCount: number;
+    totalProductiveServerMessageCount: number;
   };
   providers: {
     object: 'session.provider';
@@ -18,7 +18,7 @@ export type DashboardInstanceSessionsCreateOutput = {
     status: string;
     usage: {
       totalProductiveClientMessageCount: number;
-      totalProductiveProviderMessageCount: number;
+      totalProductiveServerMessageCount: number;
     };
     toolFilter:
       | { type: 'v1.allow_all' }
@@ -86,8 +86,8 @@ export let mapDashboardInstanceSessionsCreateOutput =
           'total_productive_client_message_count',
           mtMap.passthrough()
         ),
-        totalProductiveProviderMessageCount: mtMap.objectField(
-          'total_productive_provider_message_count',
+        totalProductiveServerMessageCount: mtMap.objectField(
+          'total_productive_server_message_count',
           mtMap.passthrough()
         )
       })
@@ -106,8 +106,8 @@ export let mapDashboardInstanceSessionsCreateOutput =
                 'total_productive_client_message_count',
                 mtMap.passthrough()
               ),
-              totalProductiveProviderMessageCount: mtMap.objectField(
-                'total_productive_provider_message_count',
+              totalProductiveServerMessageCount: mtMap.objectField(
+                'total_productive_server_message_count',
                 mtMap.passthrough()
               )
             })

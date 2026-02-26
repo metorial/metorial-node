@@ -1,56 +1,90 @@
-import { MetorialCoreSDK, createMetorialCoreSDK } from '@metorial/core';
+import {
+  MetorialPulsarCoreSDK,
+  createMetorialPulsarCoreSDK,
+  MetorialMagnetarCoreSDK,
+  createMetorialMagnetarCoreSDK
+} from '@metorial/core';
 import {
   MetorialMcpSession,
   MetorialMcpSessionInit,
-  MetorialMcpSessionInitServerDeployments
+  MetorialMcpSessionInitServerDeployments,
+  MetorialMagnetarMcpSession,
+  MetorialMagnetarMcpSessionInit,
+  MetorialMagnetarMcpSessionTemplateInit
 } from '@metorial/mcp-session';
 
-import type OpenAI from 'openai';
-import type Anthropic from '@anthropic-ai/sdk';
-import type { GoogleGenAI } from '@google/genai';
-import type { Mistral } from '@mistralai/mistralai';
-
-import { runWithOpenAI } from './providers/openai';
-import { runWithAnthropic } from './providers/anthropic';
-import { runWithDeepSeek } from './providers/deepseek';
-import { runWithGoogle } from './providers/google';
-import { runWithMistral } from './providers/mistral';
-import { runWithXAI } from './providers/xai';
-import { runWithTogetherAI } from './providers/togetherai';
-
-import { RunResult } from './providers/types';
-
-export type { RunResult } from './providers/types';
 export type {
   MetorialMcpSession,
   MetorialMcpSessionInit,
-  MetorialMcpSessionInitServerDeployments
+  MetorialMcpSessionInitServerDeployments,
+  MetorialMagnetarMcpSession,
+  MetorialMagnetarMcpSessionInit,
+  MetorialMagnetarMcpSessionTemplateInit
 } from '@metorial/mcp-session';
 
-export class Metorial implements MetorialCoreSDK {
-  private readonly sdk: MetorialCoreSDK;
+export class Metorial {
+  private readonly pulsarSdk: MetorialPulsarCoreSDK;
+  private readonly magnetarSdk: MetorialMagnetarCoreSDK;
 
-  constructor(init: Parameters<typeof createMetorialCoreSDK>[0]) {
-    this.sdk = createMetorialCoreSDK(init);
+  constructor(init: Omit<Parameters<typeof createMetorialPulsarCoreSDK>[0], 'apiVersion'>) {
+    let apiHost = init.apiHost;
+    let mcpHost = init.mcpHost;
+
+    // Derive apiHost from mcpHost if only mcpHost is provided
+    if (mcpHost && !apiHost) {
+      apiHost = mcpHost.replace('://connect.', '://api.');
+    }
+
+    // v1 (pulsar): mcp.<domain> pattern — let mcpSession.ts derive it from apiHost
+    this.pulsarSdk = createMetorialPulsarCoreSDK({ ...init, apiHost });
+
+    // v2 (magnetar): connect.<domain> pattern
+    this.magnetarSdk = createMetorialMagnetarCoreSDK({ ...init, apiHost, mcpHost });
   }
 
-  get instance() {
-    return this.sdk.instance;
+  // ── Magnetar (default) ───────────────────────────────────────────
+
+  get providers() {
+    return this.magnetarSdk.providers;
   }
 
-  get secrets() {
-    return this.sdk.secrets;
-  }
-
-  get servers() {
-    return this.sdk.servers;
+  get providerDeployments() {
+    let deployments = this.magnetarSdk.providerDeployments;
+    return {
+      ...deployments,
+      setupSessions: Object.assign(deployments.setupSessions, {
+        waitForCompletion: this.waitForSetupSession.bind(this)
+      })
+    };
   }
 
   get sessions() {
-    return this.sdk.sessions;
+    return this.magnetarSdk.sessions;
   }
 
-  get oauth(): typeof this.sdk.oauth & {
+  get sessionTemplates() {
+    return this.magnetarSdk.sessionTemplates;
+  }
+
+  get providerRuns() {
+    return this.magnetarSdk.providerRuns;
+  }
+
+  get instance() {
+    return this.magnetarSdk.instance;
+  }
+
+  // ── Backward compat (Pulsar endpoints at top level) ──────────────
+
+  get servers() {
+    return this.pulsarSdk.servers;
+  }
+
+  get secrets() {
+    return this.pulsarSdk.secrets;
+  }
+
+  get oauth(): typeof this.pulsarSdk.oauth & {
     waitForCompletion: (
       sessions: Array<{ id: string }>,
       options?: {
@@ -60,26 +94,173 @@ export class Metorial implements MetorialCoreSDK {
     ) => Promise<void>;
   } {
     return {
-      ...this.sdk.oauth,
+      ...this.pulsarSdk.oauth,
       waitForCompletion: this.waitForOAuthCompletion.bind(this)
     };
   }
 
   get _config() {
-    return this.sdk._config;
+    return this.pulsarSdk._config;
   }
+
+  // ── v1 namespace (legacy Pulsar) ─────────────────────────────────
+
+  get v1() {
+    let pulsarSdk = this.pulsarSdk;
+    let self = this;
+    return {
+      get instance() {
+        return pulsarSdk.instance;
+      },
+      get secrets() {
+        return pulsarSdk.secrets;
+      },
+      get servers() {
+        return pulsarSdk.servers;
+      },
+      get sessions() {
+        return pulsarSdk.sessions;
+      },
+      get oauth() {
+        return self.oauth;
+      },
+      get _config() {
+        return pulsarSdk._config;
+      },
+      mcp: {
+        createSession: (init: MetorialMcpSessionInit) =>
+          new MetorialMcpSession(pulsarSdk, init),
+        withSession: self._pulsarWithSession.bind(self),
+        withProviderSession: self._pulsarWithProviderSession.bind(self),
+        createConnection: self._pulsarCreateMcpConnection.bind(self)
+      },
+      withSession: self._pulsarWithSession.bind(self),
+      withProviderSession: self._pulsarWithProviderSession.bind(self),
+      createMcpConnection: self._pulsarCreateMcpConnection.bind(self)
+    };
+  }
+
+  // ── MCP (Magnetar default) ───────────────────────────────────────
 
   get mcp() {
     return {
-      createSession: (init: MetorialMcpSessionInit) => new MetorialMcpSession(this.sdk, init),
+      createSession: (init: MetorialMagnetarMcpSessionInit | MetorialMagnetarMcpSessionTemplateInit) =>
+        new MetorialMagnetarMcpSession(this.magnetarSdk, init),
       withSession: this.withSession.bind(this),
       withProviderSession: this.withProviderSession.bind(this),
       createConnection: this.createMcpConnection.bind(this)
     };
   }
 
-  async createMcpConnection(init: MetorialMcpSessionInitServerDeployments[number]) {
-    let session = new MetorialMcpSession(this.sdk, {
+  session(
+    init: MetorialMagnetarMcpSessionInit | MetorialMagnetarMcpSessionTemplateInit
+  ): MetorialMagnetarMcpSession {
+    return new MetorialMagnetarMcpSession(this.magnetarSdk, init);
+  }
+
+  async createMcpConnection(
+    init: MetorialMagnetarMcpSessionInit | MetorialMagnetarMcpSessionTemplateInit
+  ) {
+    let session = new MetorialMagnetarMcpSession(this.magnetarSdk, init);
+    return await session.getClient();
+  }
+
+  async withSession<T>(
+    init: MetorialMagnetarMcpSessionInit | MetorialMagnetarMcpSessionTemplateInit,
+    action: (session: MetorialMagnetarMcpSession) => Promise<T>
+  ): Promise<T> {
+    let session = new MetorialMagnetarMcpSession(this.magnetarSdk, init);
+    try {
+      return await action(session);
+    } finally {
+      await session.close();
+    }
+  }
+
+  async withProviderSession<P, T>(
+    provider: (session: MetorialMagnetarMcpSession) => Promise<P>,
+    init: (MetorialMagnetarMcpSessionInit | MetorialMagnetarMcpSessionTemplateInit) & { streaming?: boolean },
+    action: (
+      input: P & {
+        session: MetorialMagnetarMcpSession;
+        getSession: MetorialMagnetarMcpSession['getSession'];
+        getCapabilities: MetorialMagnetarMcpSession['getCapabilities'];
+        getToolManager: MetorialMagnetarMcpSession['getToolManager'];
+        closeSession: () => Promise<void>;
+      }
+    ) => Promise<T>
+  ): Promise<T> {
+    if (init.streaming) {
+      return this.withMagnetarStreamingSession(provider, init, action);
+    }
+
+    return this.withSession(init, async session => {
+      let providerData = await provider(session);
+
+      return action({
+        ...providerData,
+        session,
+        getSession: session.getSession.bind(session),
+        getCapabilities: session.getCapabilities.bind(session),
+        getToolManager: session.getToolManager.bind(session),
+        closeSession: async () => {}
+      });
+    });
+  }
+
+  private async withMagnetarStreamingSession<P, T>(
+    provider: (session: MetorialMagnetarMcpSession) => Promise<P>,
+    init: MetorialMagnetarMcpSessionInit | MetorialMagnetarMcpSessionTemplateInit,
+    action: (
+      input: P & {
+        session: MetorialMagnetarMcpSession;
+        getSession: MetorialMagnetarMcpSession['getSession'];
+        getCapabilities: MetorialMagnetarMcpSession['getCapabilities'];
+        getToolManager: MetorialMagnetarMcpSession['getToolManager'];
+        closeSession: () => Promise<void>;
+      }
+    ) => Promise<T>
+  ): Promise<T> {
+    let session = new MetorialMagnetarMcpSession(this.magnetarSdk, init);
+    let sessionClosed = false;
+
+    const closeSession = async () => {
+      if (!sessionClosed) {
+        sessionClosed = true;
+        await session.close();
+      }
+    };
+
+    try {
+      let providerData = await provider(session);
+
+      let result = await action({
+        ...providerData,
+        session,
+        getSession: session.getSession.bind(session),
+        getCapabilities: session.getCapabilities.bind(session),
+        getToolManager: session.getToolManager.bind(session),
+        closeSession
+      });
+
+      let timeout = setTimeout(async () => {
+        if (!sessionClosed) {
+          await closeSession();
+        }
+      }, 60000);
+      timeout.unref();
+
+      return result;
+    } catch (error) {
+      await closeSession();
+      throw error;
+    }
+  }
+
+  // ── Pulsar MCP helpers (used by v1) ──────────────────────────────
+
+  async _pulsarCreateMcpConnection(init: MetorialMcpSessionInitServerDeployments[number]) {
+    let session = new MetorialMcpSession(this.pulsarSdk, {
       serverDeployments: [init]
     });
 
@@ -90,11 +271,11 @@ export class Metorial implements MetorialCoreSDK {
     });
   }
 
-  async withSession<T>(
+  async _pulsarWithSession<T>(
     init: MetorialMcpSessionInit,
     action: (session: MetorialMcpSession) => Promise<T>
   ): Promise<T> {
-    let session = new MetorialMcpSession(this.sdk, init);
+    let session = new MetorialMcpSession(this.pulsarSdk, init);
     try {
       return await action(session);
     } finally {
@@ -102,7 +283,7 @@ export class Metorial implements MetorialCoreSDK {
     }
   }
 
-  async withProviderSession<P, T>(
+  async _pulsarWithProviderSession<P, T>(
     provider: (session: MetorialMcpSession) => Promise<P>,
     init: MetorialMcpSessionInit & { streaming?: boolean },
     action: (
@@ -120,7 +301,7 @@ export class Metorial implements MetorialCoreSDK {
       return this.withStreamingSession(provider, init, action);
     }
 
-    return this.withSession(init, async session => {
+    return this._pulsarWithSession(init, async session => {
       let providerData = await provider(session);
 
       return action({
@@ -150,13 +331,12 @@ export class Metorial implements MetorialCoreSDK {
       }
     ) => Promise<T>
   ): Promise<T> {
-    let session = new MetorialMcpSession(this.sdk, init);
+    let session = new MetorialMcpSession(this.pulsarSdk, init);
     let sessionClosed = false;
 
     const closeSession = async () => {
       if (!sessionClosed) {
         sessionClosed = true;
-        console.log('[Metorial] Closing streaming session');
         await session.close();
       }
     };
@@ -175,12 +355,12 @@ export class Metorial implements MetorialCoreSDK {
         closeSession
       });
 
-      setTimeout(async () => {
+      let timeout = setTimeout(async () => {
         if (!sessionClosed) {
-          console.log('[Metorial] Streaming timeout reached - auto-closing session');
           await closeSession();
         }
-      }, 60000); // 1 minute timeout
+      }, 60000);
+      timeout.unref();
 
       return result;
     } catch (error) {
@@ -189,46 +369,55 @@ export class Metorial implements MetorialCoreSDK {
     }
   }
 
-  private inferProvider(
-    model: string
-  ): 'openai' | 'anthropic' | 'deepseek' | 'google' | 'mistral' | 'xai' | 'togetherai' {
-    let modelLower = model.toLowerCase();
+  async waitForSetupSession(
+    sessions: { id: string } | Array<{ id: string }>,
+    options?: {
+      pollInterval?: number;
+      timeout?: number;
+    }
+  ) {
+    let sessionList = Array.isArray(sessions) ? sessions : [sessions];
+    let pollInterval = Math.max(options?.pollInterval ?? 5000, 2000);
+    let timeout = options?.timeout ?? 600000;
+    let startTime = Date.now();
 
-    if (modelLower.startsWith('claude-')) {
-      return 'anthropic';
+    if (sessionList.length === 0) {
+      return [];
     }
 
-    if (modelLower.startsWith('gpt-') || modelLower.startsWith('o1-')) {
-      return 'openai';
-    }
+    while (true) {
+      if (Date.now() - startTime > timeout) {
+        throw new Error(`Setup session timed out after ${timeout / 1000} seconds`);
+      }
 
-    if (modelLower.includes('deepseek')) {
-      return 'deepseek';
-    }
+      try {
+        let statuses = await Promise.all(
+          sessionList.map(s => this.magnetarSdk.providerDeployments.setupSessions.get(s.id))
+        );
 
-    if (modelLower.startsWith('gemini-') || modelLower.includes('google')) {
-      return 'google';
-    }
+        let failed = statuses.filter(s => s.status === 'failed');
+        if (failed.length > 0) {
+          throw new Error(`${failed.length} setup session(s) failed`);
+        }
 
-    if (modelLower.startsWith('mistral-') || modelLower.includes('mistral')) {
-      return 'mistral';
-    }
+        let allCompleted = statuses.every(s => s.status === 'completed');
+        if (allCompleted) {
+          return statuses;
+        }
 
-    if (modelLower.startsWith('x-') || modelLower === 'grok-beta') {
-      return 'xai';
-    }
+        await new Promise(resolve => setTimeout(resolve, pollInterval));
+      } catch (error) {
+        if (
+          error instanceof Error &&
+          (error.message.includes('setup session') &&
+            (error.message.includes('failed') || error.message.includes('timed out')))
+        ) {
+          throw error;
+        }
 
-    if (
-      modelLower.includes('together') ||
-      modelLower.includes('llama') ||
-      modelLower.includes('mixtral') ||
-      modelLower.includes('qwen') ||
-      modelLower.includes('/')
-    ) {
-      return 'togetherai';
+        await new Promise(resolve => setTimeout(resolve, pollInterval));
+      }
     }
-
-    throw new Error(`Unable to infer provider from model "${model}".`);
   }
 
   async waitForOAuthCompletion(
@@ -283,68 +472,4 @@ export class Metorial implements MetorialCoreSDK {
     }
   }
 
-  async run(config: {
-    message: string;
-    serverDeployments: string | MetorialMcpSessionInitServerDeployments;
-    model: string;
-    maxSteps?: number;
-    tools?: string[];
-    [key: string]: any;
-  }): Promise<RunResult> {
-    let provider = this.inferProvider(config.model);
-
-    switch (provider) {
-      case 'openai':
-        return runWithOpenAI({
-          ...config,
-          client: config.client as OpenAI,
-          withProviderSession: this.withProviderSession.bind(this)
-        });
-
-      case 'anthropic':
-        return runWithAnthropic({
-          ...config,
-          client: config.client as Anthropic,
-          withProviderSession: this.withProviderSession.bind(this)
-        });
-
-      case 'deepseek':
-        return runWithDeepSeek({
-          ...config,
-          client: config.client as OpenAI,
-          withProviderSession: this.withProviderSession.bind(this)
-        });
-
-      case 'google':
-        return runWithGoogle({
-          ...config,
-          client: config.client as GoogleGenAI,
-          withProviderSession: this.withProviderSession.bind(this)
-        });
-
-      case 'mistral':
-        return runWithMistral({
-          ...config,
-          client: config.client as Mistral,
-          withProviderSession: this.withProviderSession.bind(this)
-        });
-
-      case 'xai':
-        return runWithXAI({
-          ...config,
-          client: config.client as OpenAI,
-          withProviderSession: this.withProviderSession.bind(this)
-        });
-
-      case 'togetherai':
-        return runWithTogetherAI({
-          ...config,
-          client: config.client as OpenAI,
-          withProviderSession: this.withProviderSession.bind(this)
-        });
-
-      default:
-        throw new Error(`Unsupported provider: ${provider}`);
-    }
-  }
 }

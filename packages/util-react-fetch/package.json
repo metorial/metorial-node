@@ -1,6 +1,6 @@
 {
   "name": "@metorial/util-react-fetch",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "author": "Metorial Inc.",
   "license": "MIT",
   "type": "module",
@@ -29,8 +29,8 @@
     "react-dom": "^19.0.0"
   },
   "dependencies": {
-    "@metorial/util-endpoint": "^1.0.0",
-    "@metorial/util-memo": "^1.0.0",
+    "@metorial/util-endpoint": "^2.0.0",
+    "@metorial/util-memo": "^2.0.0",
     "@types/react": "^19.1.8"
   },
   "devDependencies": {

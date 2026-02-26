@@ -1,0 +1,19 @@
+{
+  "name": "@metorial-examples/typescript-mcp-session-v2",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "start": "bun ./src/index.ts"
+  },
+  "dependencies": {
+    "@metorial/sdk": "latest",
+    "@metorial/mcp-session": "latest"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}

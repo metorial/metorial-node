@@ -4,6 +4,10 @@ import {
   MetorialMcpToolManager
 } from '@metorial/mcp-session';
 
+export interface McpSessionLike {
+  getToolManager(): Promise<MetorialMcpToolManager>;
+}
+
 export interface McpSDK {
   mcp: {
     createSession(init: MetorialMcpSessionInit): MetorialMcpSession;
@@ -14,12 +18,12 @@ export let createMcpSdk =
   <I = void>() =>
   <T>(
     handler: (d: {
-      session: MetorialMcpSession;
+      session: McpSessionLike;
       tools: MetorialMcpToolManager;
       input: I;
     }) => Promise<T>
   ) => {
-    let ofSession = async (session: MetorialMcpSession, input: I) => {
+    let ofSession = async (session: McpSessionLike, input: I) => {
       let tools = await session.getToolManager();
 
       return handler({

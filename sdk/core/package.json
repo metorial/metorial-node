@@ -1,6 +1,6 @@
 {
   "name": "@metorial/core",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "author": "Metorial Inc.",
   "license": "MIT",
   "type": "module",
@@ -25,8 +25,8 @@
     "dist"
   ],
   "dependencies": {
-    "@metorial/generated": "^1.0.0",
-    "@metorial/util-endpoint": "^1.0.0"
+    "@metorial/generated": "^2.0.0",
+    "@metorial/util-endpoint": "^2.0.0"
   },
   "devDependencies": {
     "@types/isomorphic-fetch": "^0.0.39",

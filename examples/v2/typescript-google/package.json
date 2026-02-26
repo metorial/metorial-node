@@ -1,0 +1,20 @@
+{
+  "name": "@metorial-examples/typescript-google-v2",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "start": "bun ./src/index.ts"
+  },
+  "dependencies": {
+    "@metorial/google": "latest",
+    "metorial": "latest",
+    "@google/genai": "^1.13.0"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}

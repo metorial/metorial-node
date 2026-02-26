@@ -1,4 +1,4 @@
-import { MetorialCoreSDK, MetorialSDK } from '@metorial/core';
+import { MetorialPulsarCoreSDK, MetorialSDK } from '@metorial/core';
 import { DashboardInstanceSessionsCreateBody } from '@metorial/generated';
 import { MetorialMcpClient } from './mcpClient';
 import { Capability } from './mcpTool';
@@ -21,7 +21,7 @@ export class MetorialMcpSession {
   #clientPromises = new Map<string, Promise<MetorialMcpClient>>();
 
   constructor(
-    private readonly sdk: MetorialCoreSDK,
+    private readonly sdk: MetorialPulsarCoreSDK,
     private readonly init: MetorialMcpSessionInit
   ) {
     this.#sessionPromise = this.sdk.sessions.create(init);

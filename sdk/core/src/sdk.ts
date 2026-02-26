@@ -19,7 +19,7 @@ import {
 } from '@metorial/generated';
 import { MetorialKeyPrefix, sdkBuilder } from './builder';
 
-export let createMetorialCoreSDK = sdkBuilder.build(
+export let createMetorialPulsarCoreSDK = sdkBuilder.build(
   (soft: {
     apiKey: `${MetorialKeyPrefix}${string}` | string;
     apiVersion?: '2025-01-01-pulsar';
@@ -70,4 +70,4 @@ export let createMetorialCoreSDK = sdkBuilder.build(
   // })
 }));
 
-export type MetorialCoreSDK = ReturnType<typeof createMetorialCoreSDK>;
+export type MetorialPulsarCoreSDK = ReturnType<typeof createMetorialPulsarCoreSDK>;

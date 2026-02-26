@@ -1,0 +1,20 @@
+{
+  "name": "@metorial-examples/typescript-mistral-v2",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "start": "bun ./src/index.ts"
+  },
+  "dependencies": {
+    "@metorial/mistral": "latest",
+    "metorial": "latest",
+    "@mistralai/mistralai": "^1.7.2"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}

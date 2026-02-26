@@ -1,4 +1,8 @@
 export * from './sdk';
+export { createMetorialMagnetarCoreSDK } from './magnetar';
+export type { MetorialMagnetarCoreSDK } from './magnetar';
+export { magnetarSdkBuilder } from './magnetarBuilder';
+export type { MetorialMagnetarSDKConfig } from './magnetarBuilder';
 
 export type {
   InstanceGetOutput,
@@ -18,6 +22,7 @@ export type {
 } from '@metorial/generated';
 
 import type * as MetorialGenerated from '@metorial/generated';
+import type * as MagnetarGenerated from '@metorial/generated/src/mt_2026_01_01_magnetar';
 
 export namespace MetorialSDK {
   export type SecretsGetOutput = MetorialGenerated.SecretsGetOutput;
@@ -86,4 +91,24 @@ export namespace MetorialSDK {
   export type SessionServerSession = MetorialGenerated.SessionsConnectionsGetOutput;
   export type SessionConnectionsListOutput = MetorialGenerated.SessionsConnectionsListOutput;
   export type SessionConnectionsListQuery = MetorialGenerated.SessionsConnectionsListQuery;
+}
+
+export namespace MetorialMagnetarSDK {
+  export type SessionsCreateBody = MagnetarGenerated.SessionsCreateBody;
+  export type SessionsCreateOutput = MagnetarGenerated.SessionsCreateOutput;
+  export type SessionsGetOutput = MagnetarGenerated.SessionsGetOutput;
+  export type Session = MagnetarGenerated.SessionsGetOutput;
+  export type SessionsListOutput = MagnetarGenerated.SessionsListOutput;
+  export type ProvidersGetOutput = MagnetarGenerated.ProvidersGetOutput;
+  export type Provider = MagnetarGenerated.ProvidersGetOutput;
+  export type ProvidersListOutput = MagnetarGenerated.ProvidersListOutput;
+  export type ProviderDeploymentsGetOutput = MagnetarGenerated.ProviderDeploymentsGetOutput;
+  export type ProviderDeployment = MagnetarGenerated.ProviderDeploymentsGetOutput;
+  export type ProviderDeploymentsListOutput = MagnetarGenerated.ProviderDeploymentsListOutput;
+  export type SessionTemplatesGetOutput = MagnetarGenerated.SessionTemplatesGetOutput;
+  export type SessionTemplate = MagnetarGenerated.SessionTemplatesGetOutput;
+  export type SessionTemplatesListOutput = MagnetarGenerated.SessionTemplatesListOutput;
+  export type ProviderRunsGetOutput = MagnetarGenerated.ProviderRunsGetOutput;
+  export type ProviderRun = MagnetarGenerated.ProviderRunsGetOutput;
+  export type ProviderRunsListOutput = MagnetarGenerated.ProviderRunsListOutput;
 }
