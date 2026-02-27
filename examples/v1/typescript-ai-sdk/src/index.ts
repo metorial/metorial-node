@@ -15,7 +15,7 @@ let oauthServerDeploymentId = process.env.OAUTH_SERVER_DEPLOYMENT_ID!;
 
 // Create OAuth session for the OAuth-enabled server
 // this just needs to be done once per user
-let oauthSession = await metorial.oauth.sessions.create({
+let oauthSession = await metorial.v1.oauth.sessions.create({
   serverDeploymentId: oauthServerDeploymentId,
   // Optional: callback URL after OAuth completion
   // callbackUri: "https://your-app.com/oauth/callback",
@@ -24,11 +24,11 @@ let oauthSession = await metorial.oauth.sessions.create({
 console.log("🔑 OAuth URL - Complete authorization:", oauthSession.url);
 
 // Wait for user to complete OAuth authorization
-await metorial.oauth.waitForCompletion([oauthSession]);
+await metorial.v1.oauth.waitForCompletion([oauthSession]);
 console.log("✅ OAuth authorization completed!");
 
 // Start session with both normal and OAuth server deployments
-let result = await metorial.withProviderSession(
+let result = await metorial.v1.withProviderSession(
   metorialAiSdk,
   {
     serverDeployments: [
