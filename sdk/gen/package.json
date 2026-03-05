@@ -7,6 +7,10 @@
   "main": "dist/mt_2025_01_01_pulsar/index.cjs",
   "types": "dist/mt_2025_01_01_pulsar/index.d.ts",
   "module": "dist/mt_2025_01_01_pulsar/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/metorial/metorial-node"
+  },
   "exports": {
     ".": {
       "types": "./dist/mt_2025_01_01_pulsar/index.d.ts",
