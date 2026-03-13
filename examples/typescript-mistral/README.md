@@ -11,38 +11,40 @@ Uses the [Mistral SDK](https://docs.mistral.ai/) with [Metorial](https://metoria
 
 ```bash
 bun install
-METORIAL_API_KEY=... MISTRAL_API_KEY=... bun start
+bun start
 ```
 
 ## How it works
 
-Initialize clients and create a Metorial Search deployment:
-
 ```typescript
-import { metorialMistral } from "@metorial/mistral";
-import { Metorial } from "metorial";
-import { Mistral } from "@mistralai/mistralai";
+import { metorialMistral } from '@metorial/mistral';
+import { Metorial } from 'metorial';
+import { Mistral } from '@mistralai/mistralai';
 
+// Initialize clients and create a Metorial Search deployment.
 let metorial = new Metorial({ apiKey: process.env.METORIAL_API_KEY! });
 let mistral = new Mistral({ apiKey: process.env.MISTRAL_API_KEY! });
 
 let deployment = await metorial.providerDeployments.create({
-  name: "Metorial Search",
-  providerId: "metorial-search",
+  name: 'Metorial Search',
+  providerId: 'metorial-search'
 });
-```
 
-Mistral requires `additionalProperties: false` on all object schemas in tool definitions, or it rejects the request. This code patches each tool's parameters before passing them to the API — other LLMs don't need this:
-
-```typescript
-    let fixedTools = session.tools.map((tool) => {
+await metorial.withProviderSession(
+  metorialMistral,
+  { providers: [{ providerDeploymentId: deployment.id }] },
+  async session => {
+    // Mistral requires `additionalProperties: false` on all object schemas in tool definitions,
+    // or it rejects the request. This code patches each tool's parameters before passing them
+    // to the API — other LLMs don't need this.
+    let fixedTools = session.tools.map(tool => {
       if (tool.function?.parameters) {
         let fixedParams = { ...tool.function.parameters };
         fixedParams.additionalProperties = false;
 
         if (fixedParams.properties) {
           Object.values(fixedParams.properties).forEach((prop: any) => {
-            if (prop && typeof prop === "object" && prop.type === "object") {
+            if (prop && typeof prop === 'object' && prop.type === 'object') {
               prop.additionalProperties = false;
             }
           });
@@ -52,16 +54,16 @@ Mistral requires `additionalProperties: false` on all object schemas in tool def
       }
       return tool;
     });
-```
 
-The tool call loop uses `mistral.chat.complete()` instead of OpenAI's `chat.completions.create()`. Note the Mistral-specific differences: tool calls are at `choice.message.toolCalls` (camelCase, not `tool_calls`), and the assistant message format uses `{ role: "assistant", toolCalls }`:
-
-```typescript
+    // The tool call loop uses `mistral.chat.complete()` instead of OpenAI's
+    // `chat.completions.create()`. Note the Mistral-specific differences: tool calls are at
+    // `choice.message.toolCalls` (camelCase, not `tool_calls`), and the assistant message
+    // format uses `{ role: "assistant", toolCalls }`.
     for (let i = 0; i < 10; i++) {
       let response = await mistral.chat.complete({
-        model: "mistral-large-latest",
+        model: 'mistral-large-latest',
         messages,
-        tools: fixedTools,
+        tools: fixedTools
       });
 
       let choice = response.choices[0]!;
@@ -73,11 +75,10 @@ The tool call loop uses `mistral.chat.complete()` instead of OpenAI's `chat.comp
       }
 
       let toolResponses = await session.callTools(toolCalls);
-      messages.push(
-        { role: "assistant" as const, toolCalls },
-        ...toolResponses
-      );
+      messages.push({ role: 'assistant' as const, toolCalls }, ...toolResponses);
     }
+  }
+);
 ```
 
 ## Adding OAuth providers

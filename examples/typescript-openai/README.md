@@ -11,18 +11,17 @@ Uses the [OpenAI SDK](https://platform.openai.com/docs) with [Metorial](https://
 
 ```bash
 bun install
-METORIAL_API_KEY=... OPENAI_API_KEY=... bun start
+bun start
 ```
 
 ## How it works
-
-Initialize clients and create a Metorial Search deployment:
 
 ```typescript
 import { metorialOpenAI } from '@metorial/openai';
 import { Metorial } from 'metorial';
 import OpenAI from 'openai';
 
+// Initialize clients and create a Metorial Search deployment.
 let metorial = new Metorial({ apiKey: process.env.METORIAL_API_KEY! });
 let openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY! });
 
@@ -30,20 +29,17 @@ let deployment = await metorial.providerDeployments.create({
   name: 'Metorial Search',
   providerId: 'metorial-search'
 });
-```
 
-Open a session with `metorialOpenAI.chatCompletions`, which formats MCP tools in OpenAI's function calling format. Note the `.chatCompletions` — this tells the adapter to produce tools shaped for the chat completions API:
-
-```typescript
+// Open a session with `metorialOpenAI.chatCompletions`, which formats MCP tools in OpenAI's
+// function calling format. Note the `.chatCompletions` — this tells the adapter to produce
+// tools shaped for the chat completions API.
 await metorial.withProviderSession(
   metorialOpenAI.chatCompletions,
   { providers: [{ providerDeploymentId: deployment.id }] },
-  async (session) => {
-```
-
-The tool call loop: send messages to GPT-4o with `session.tools`, check for `tool_calls` in the response, execute them via `session.callTools()`, and append everything to the message history. When the model responds without tool calls, print the result:
-
-```typescript
+  async session => {
+    // Tool call loop: send messages to GPT-4o with `session.tools`, check for `tool_calls`
+    // in the response, execute them via `session.callTools()`, and append everything to the
+    // message history. When the model responds without tool calls, print the result.
     for (let i = 0; i < 10; i++) {
       let response = await openai.chat.completions.create({
         model: 'gpt-4o',
@@ -58,15 +54,17 @@ The tool call loop: send messages to GPT-4o with `session.tools`, check for `too
         return;
       }
 
+      // OpenAI tool responses are spread into the messages array (`...toolResponses`) because
+      // each tool result is a separate message, unlike Anthropic where they're bundled.
       let toolResponses = await session.callTools(toolCalls);
       messages.push(
         { role: 'assistant', tool_calls: choice.message.tool_calls },
         ...toolResponses
       );
     }
+  }
+);
 ```
-
-Note: OpenAI tool responses are spread into the messages array (`...toolResponses`) because each tool result is a separate message, unlike Anthropic where they're bundled.
 
 ## Adding OAuth providers
 

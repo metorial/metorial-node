@@ -266,8 +266,8 @@ let deployment = await metorial.providerDeployments.create({
 Check out the `examples/` directory for more comprehensive examples:
 
 - [`typescript-quick-start`](examples/typescript-quick-start/) - Quick start with Metorial Search
-- [`typescript-ai-sdk`](examples/typescript-ai-sdk/) - AI SDK + Anthropic (v6)
-- [`typescript-ai-sdk-v4`](examples/typescript-ai-sdk-v4/) - AI SDK + Anthropic (v4/v5)
+- [`typescript-ai-sdk`](examples/typescript-ai-sdk/) - AI SDK + Anthropic (v5/v6)
+- [`typescript-ai-sdk-v4`](examples/typescript-ai-sdk-v4/) - AI SDK + Anthropic (v4)
 - [`typescript-anthropic`](examples/typescript-anthropic/) - Anthropic SDK
 - [`typescript-openai`](examples/typescript-openai/) - OpenAI
 - [`typescript-openai-compatible`](examples/typescript-openai-compatible/) - Any OpenAI-compatible API

@@ -11,33 +11,31 @@ Uses [TogetherAI](https://www.together.ai/)-hosted models with [Metorial](https:
 
 ```bash
 bun install
-METORIAL_API_KEY=... TOGETHERAI_API_KEY=... bun start
+bun start
 ```
 
 ## How it works
 
-Initialize the TogetherAI client as an OpenAI client with Together's base URL:
-
 ```typescript
-import { metorialTogetherAi } from "@metorial/togetherai";
-import { Metorial } from "metorial";
-import OpenAI from "openai";
+import { metorialTogetherAi } from '@metorial/togetherai';
+import { Metorial } from 'metorial';
+import OpenAI from 'openai';
 
+// Initialize the TogetherAI client as an OpenAI client with Together's base URL.
 let metorial = new Metorial({ apiKey: process.env.METORIAL_API_KEY! });
 
 let togetherai = new OpenAI({
   apiKey: process.env.TOGETHERAI_API_KEY!,
-  baseURL: "https://api.together.xyz/v1",
+  baseURL: 'https://api.together.xyz/v1'
 });
-```
 
-The session and tool call loop follow the same pattern as OpenAI. The `metorialTogetherAi` adapter formats tools for Together's API. This example uses `mistralai/Mistral-7B-Instruct-v0.2`, but you can swap in any Together-hosted model that supports function calling:
-
-```typescript
+// The session and tool call loop follow the same pattern as OpenAI. The `metorialTogetherAi`
+// adapter formats tools for Together's API. This example uses `mistralai/Mistral-7B-Instruct-v0.2`,
+// but you can swap in any Together-hosted model that supports function calling.
 let response = await togetherai.chat.completions.create({
-  model: "mistralai/Mistral-7B-Instruct-v0.2",
+  model: 'mistralai/Mistral-7B-Instruct-v0.2',
   messages,
-  tools: session.tools,
+  tools: session.tools
 });
 ```
 

@@ -11,37 +11,32 @@ Uses [xAI](https://x.ai/)'s Grok models with [Metorial](https://metorial.com) MC
 
 ```bash
 bun install
-METORIAL_API_KEY=... XAI_API_KEY=... bun start
+bun start
 ```
 
 ## How it works
 
-Initialize the xAI client as an OpenAI client with xAI's base URL:
-
 ```typescript
-import { metorialXai } from "@metorial/xai";
-import { Metorial } from "metorial";
-import OpenAI from "openai";
+import { metorialXai } from '@metorial/xai';
+import { Metorial } from 'metorial';
+import OpenAI from 'openai';
 
+// Initialize the xAI client as an OpenAI client with xAI's base URL.
 let metorial = new Metorial({ apiKey: process.env.METORIAL_API_KEY! });
 
 let xai = new OpenAI({
   apiKey: process.env.XAI_API_KEY!,
-  baseURL: "https://api.x.ai/v1",
+  baseURL: 'https://api.x.ai/v1'
 });
-```
 
-The session and tool call loop follow the same pattern as OpenAI. Tools are deduplicated by function name before being passed to Grok, and `session.callTools()` handles execution:
-
-```typescript
-let uniqueTools = Array.from(
-  new Map(session.tools.map((t) => [t.function.name, t])).values()
-);
+// The session and tool call loop follow the same pattern as OpenAI. Tools are deduplicated
+// by function name before being passed to Grok, and `session.callTools()` handles execution.
+let uniqueTools = Array.from(new Map(session.tools.map(t => [t.function.name, t])).values());
 
 let response = await xai.chat.completions.create({
-  model: "grok-2-latest",
+  model: 'grok-2-latest',
   messages,
-  tools: uniqueTools,
+  tools: uniqueTools
 });
 
 // ... check for tool_calls, execute via session.callTools(), loop

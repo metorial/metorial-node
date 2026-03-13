@@ -11,44 +11,42 @@ Uses any OpenAI-compatible API with [Metorial](https://metorial.com) MCP tools v
 
 ```bash
 bun install
-METORIAL_API_KEY=... OPENAI_API_KEY=... bun start
+bun start
 ```
 
 ## How it works
 
-The key difference from the other examples is the adapter. Instead of a provider-specific adapter like `metorialOpenAI`, you create a generic one with `createOpenAICompatibleMcpSdk({})`:
-
 ```typescript
-import { createOpenAICompatibleMcpSdk } from "@metorial/openai-compatible";
-import { Metorial } from "metorial";
-import OpenAI from "openai";
+import { createOpenAICompatibleMcpSdk } from '@metorial/openai-compatible';
+import { Metorial } from 'metorial';
+import OpenAI from 'openai';
 
 let metorial = new Metorial({ apiKey: process.env.METORIAL_API_KEY! });
 let openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY! });
 
+// The key difference from the other examples is the adapter. Instead of a provider-specific
+// adapter like `metorialOpenAI`, you create a generic one with `createOpenAICompatibleMcpSdk({})`.
 let metorialOpenAICompatible = createOpenAICompatibleMcpSdk({});
-```
 
-Use this adapter exactly like any other — pass it to `withProviderSession()` and the rest is the same:
-
-```typescript
 let deployment = await metorial.providerDeployments.create({
-  name: "Metorial Search",
-  providerId: "metorial-search",
+  name: 'Metorial Search',
+  providerId: 'metorial-search'
 });
 
+// Use this adapter exactly like any other — pass it to `withProviderSession()` and the rest
+// is the same.
 await metorial.withProviderSession(
   metorialOpenAICompatible,
   { providers: [{ providerDeploymentId: deployment.id }] },
-  async (session) => {
+  async session => {
     // session.tools is in OpenAI function calling format
     // session.callTools() executes tool calls and returns results
 
     for (let i = 0; i < 10; i++) {
       let response = await openai.chat.completions.create({
-        model: "gpt-4o",
+        model: 'gpt-4o',
         messages,
-        tools: session.tools as any,
+        tools: session.tools as any
       });
       // ... same tool call loop as the OpenAI example
     }

@@ -10,7 +10,7 @@ Only `METORIAL_API_KEY` and `OPENAI_API_KEY` are needed to run example 1. Uncomm
 
 ```bash
 bun install
-METORIAL_API_KEY=... OPENAI_API_KEY=... bun start
+bun start
 ```
 
 ## Example 1: Metorial Search (runs by default)
@@ -19,14 +19,14 @@ Creates a deployment programmatically for the built-in `metorial-search` provide
 
 ```typescript
 let deployment = await metorial.providerDeployments.create({
-  name: "Metorial Search",
-  providerId: "metorial-search",
+  name: 'Metorial Search',
+  providerId: 'metorial-search'
 });
 
 await metorial.withProviderSession(
   metorialOpenAI.chatCompletions,
   { providers: [{ providerDeploymentId: deployment.id }] },
-  async (session) => {
+  async session => {
     // session.tools contains the search tools, formatted for OpenAI
   }
 );
@@ -37,7 +37,7 @@ await metorial.withProviderSession(
 Reference a deployment created in the [dashboard](https://platform.metorial.com) (e.g. Exa, Tavily). The API key is configured in the dashboard, so no auth code is needed:
 
 ```typescript
-providers: [{ providerDeploymentId: process.env.PROVIDER_DEPLOYMENT_ID! }]
+providers: [{ providerDeploymentId: process.env.PROVIDER_DEPLOYMENT_ID! }];
 ```
 
 ## Example 3: Auth config ID
@@ -45,10 +45,12 @@ providers: [{ providerDeploymentId: process.env.PROVIDER_DEPLOYMENT_ID! }]
 Reference an already-authenticated connection by ID. Auth configs are created when a user completes an OAuth flow, or manually in the dashboard:
 
 ```typescript
-providers: [{
-  providerDeploymentId: process.env.PROVIDER_DEPLOYMENT_ID!,
-  providerAuthConfigId: process.env.PROVIDER_AUTH_CONFIG_ID!,
-}]
+providers: [
+  {
+    providerDeploymentId: process.env.PROVIDER_DEPLOYMENT_ID!,
+    providerAuthConfigId: process.env.PROVIDER_AUTH_CONFIG_ID!
+  }
+];
 ```
 
 ## Example 4: Inline auth config
@@ -56,13 +58,15 @@ providers: [{
 Pass credentials directly in code without pre-creating them in the dashboard. Useful for server-to-server integrations:
 
 ```typescript
-providers: [{
-  providerDeploymentId: process.env.PROVIDER_DEPLOYMENT_ID!,
-  providerAuthConfig: {
-    providerAuthMethodId: process.env.PROVIDER_AUTH_METHOD_ID!,
-    credentials: { access_token: process.env.PROVIDER_ACCESS_TOKEN! },
-  },
-}]
+providers: [
+  {
+    providerDeploymentId: process.env.PROVIDER_DEPLOYMENT_ID!,
+    providerAuthConfig: {
+      providerAuthMethodId: process.env.PROVIDER_AUTH_METHOD_ID!,
+      credentials: { access_token: process.env.PROVIDER_ACCESS_TOKEN! }
+    }
+  }
+];
 ```
 
 ## Example 5: Tool filters
@@ -70,10 +74,12 @@ providers: [{
 Limit which MCP tools are exposed to the LLM. Useful when a provider has many tools but you only need a few:
 
 ```typescript
-providers: [{
-  providerDeploymentId: process.env.PROVIDER_DEPLOYMENT_ID!,
-  toolFilters: [{ type: "tool_keys", keys: ["search", "read_file"] }],
-}]
+providers: [
+  {
+    providerDeploymentId: process.env.PROVIDER_DEPLOYMENT_ID!,
+    toolFilters: [{ type: 'tool_keys', keys: ['search', 'read_file'] }]
+  }
+];
 ```
 
 ## Example 6: Multiple providers
@@ -85,16 +91,16 @@ providers: [
   { providerDeploymentId: process.env.SEARCH_PROVIDER_DEPLOYMENT_ID! },
   {
     providerDeploymentId: process.env.SLACK_PROVIDER_DEPLOYMENT_ID!,
-    providerAuthConfigId: process.env.SLACK_AUTH_CONFIG_ID!,
+    providerAuthConfigId: process.env.SLACK_AUTH_CONFIG_ID!
   },
   {
     providerDeploymentId: process.env.GITHUB_PROVIDER_DEPLOYMENT_ID!,
     providerAuthConfig: {
       providerAuthMethodId: process.env.GITHUB_AUTH_METHOD_ID!,
-      credentials: { access_token: process.env.GITHUB_ACCESS_TOKEN! },
-    },
-  },
-]
+      credentials: { access_token: process.env.GITHUB_ACCESS_TOKEN! }
+    }
+  }
+];
 ```
 
 ## Example 7: Session template
@@ -105,6 +111,8 @@ Reference a pre-configured template from the dashboard. Templates bundle provide
 await metorial.withProviderSession(
   metorialOpenAI.chatCompletions,
   { sessionTemplate: process.env.SESSION_TEMPLATE_ID! },
-  async (session) => { /* ... */ }
+  async session => {
+    /* ... */
+  }
 );
 ```

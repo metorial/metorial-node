@@ -11,52 +11,47 @@ Uses [DeepSeek](https://www.deepseek.com/) with [Metorial](https://metorial.com)
 
 ```bash
 bun install
-METORIAL_API_KEY=... DEEPSEEK_API_KEY=... bun start
+bun start
 ```
 
 ## How it works
 
-Initialize the DeepSeek client as a standard OpenAI client with a custom base URL:
-
 ```typescript
-import { metorialDeepseek } from "@metorial/deepseek";
-import { Metorial } from "metorial";
-import OpenAI from "openai";
+import { metorialDeepseek } from '@metorial/deepseek';
+import { Metorial } from 'metorial';
+import OpenAI from 'openai';
 
+// Initialize the DeepSeek client as a standard OpenAI client with a custom base URL.
 let metorial = new Metorial({ apiKey: process.env.METORIAL_API_KEY! });
 
 let deepseek = new OpenAI({
   apiKey: process.env.DEEPSEEK_API_KEY!,
-  baseURL: "https://api.deepseek.com",
+  baseURL: 'https://api.deepseek.com'
 });
-```
 
-Create a Metorial Search deployment and open a session with `metorialDeepseek`. This adapter is similar to `metorialOpenAI` but tuned for DeepSeek's function calling behavior:
-
-```typescript
+// Create a Metorial Search deployment and open a session with `metorialDeepseek`.
+// This adapter is similar to `metorialOpenAI` but tuned for DeepSeek's function calling behavior.
 let deployment = await metorial.providerDeployments.create({
-  name: "Metorial Search",
-  providerId: "metorial-search",
+  name: 'Metorial Search',
+  providerId: 'metorial-search'
 });
 
 await metorial.withProviderSession(
   metorialDeepseek,
   { providers: [{ providerDeploymentId: deployment.id }] },
-  async (session) => {
-```
-
-The tool call loop follows the same pattern as OpenAI — check `tool_calls`, execute via `session.callTools()`, append to history. Tools are deduplicated by function name since some providers may expose overlapping names:
-
-```typescript
+  async session => {
+    // Tools are deduplicated by function name since some providers may expose overlapping names.
     let uniqueTools = Array.from(
-      new Map(session.tools.map((t) => [t.function.name, t])).values()
+      new Map(session.tools.map(t => [t.function.name, t])).values()
     );
 
+    // The tool call loop follows the same pattern as OpenAI — check `tool_calls`, execute
+    // via `session.callTools()`, append to history.
     for (let i = 0; i < 10; i++) {
       let response = await deepseek.chat.completions.create({
-        model: "deepseek-chat",
+        model: 'deepseek-chat',
         messages,
-        tools: uniqueTools,
+        tools: uniqueTools
       });
 
       let choice = response.choices[0]!;
@@ -68,8 +63,10 @@ The tool call loop follows the same pattern as OpenAI — check `tool_calls`, ex
       }
 
       let toolResponses = await session.callTools(toolCalls);
-      messages.push({ role: "assistant", tool_calls: toolCalls }, ...toolResponses);
+      messages.push({ role: 'assistant', tool_calls: toolCalls }, ...toolResponses);
     }
+  }
+);
 ```
 
 ## Adding OAuth providers

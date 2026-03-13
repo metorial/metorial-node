@@ -18,8 +18,8 @@ bun start
 | Example | LLM | Description |
 |---------|-----|-------------|
 | [`typescript-quick-start`](typescript-quick-start/) | AI SDK + Anthropic | Minimal example — start here |
-| [`typescript-ai-sdk`](typescript-ai-sdk/) | AI SDK + Anthropic (v6) | Streaming with tool logging |
-| [`typescript-ai-sdk-v4`](typescript-ai-sdk-v4/) | AI SDK + Anthropic (v4/v5) | For older AI SDK versions |
+| [`typescript-ai-sdk`](typescript-ai-sdk/) | AI SDK + Anthropic (v5/v6) | Streaming with tool logging |
+| [`typescript-ai-sdk-v4`](typescript-ai-sdk-v4/) | AI SDK + Anthropic (v4) | For older AI SDK versions |
 | [`typescript-anthropic`](typescript-anthropic/) | Anthropic SDK | Manual tool call loop |
 | [`typescript-openai`](typescript-openai/) | OpenAI | GPT-4o with tool calls |
 | [`typescript-openai-compatible`](typescript-openai-compatible/) | Any OpenAI-compatible | Works with any compatible API |
