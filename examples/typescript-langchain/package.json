@@ -1,0 +1,23 @@
+{
+  "name": "@metorial-examples/typescript-langchain",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "start": "bun ./src/index.ts"
+  },
+  "dependencies": {
+    "@metorial/langchain": "latest",
+    "metorial": "latest",
+    "langchain": "^1.0.0",
+    "@langchain/anthropic": "^0.3.0",
+    "@langchain/langgraph": "^0.2.0",
+    "@langchain/core": "^0.3.0"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}

@@ -25,18 +25,18 @@ bun add metorial
 
 This SDK provides adapter packages that format MCP tools for each LLM. You can also use the API directly.
 
-| LLM Integration   | Import                        | Format                       | Models (non-exhaustive)                    |
-| ----------------- | ----------------------------- | ---------------------------- | ------------------------------------------ |
-| AI SDK            | `@metorial/ai-sdk`            | Framework tools              | Any model via Vercel AI SDK                |
-| OpenAI            | `@metorial/openai`            | OpenAI function calling      | `gpt-4.1`, `gpt-4o`, `o1`, `o3`            |
-| Anthropic         | `@metorial/anthropic`         | Claude tool format           | `claude-sonnet-4-5`, `claude-opus-4`       |
-| Google            | `@metorial/google`            | Gemini function declarations | `gemini-2.5-pro`, `gemini-2.5-flash`       |
-| Mistral           | `@metorial/mistral`           | Mistral function calling     | `mistral-large-latest`, `codestral-latest` |
-| DeepSeek          | `@metorial/deepseek`          | OpenAI-compatible            | `deepseek-chat`, `deepseek-reasoner`       |
-| TogetherAI        | `@metorial/togetherai`        | OpenAI-compatible            | `Llama-4`, `Qwen-3`                        |
-| XAI               | `@metorial/xai`               | OpenAI-compatible            | `grok-3`, `grok-3-mini`                    |
-| LangChain         | `@metorial/langchain`         | LangChain tools              | Any model via LangChain                    |
-| OpenAI-Compatible | `@metorial/openai-compatible` | OpenAI-compatible            | Any OpenAI-compatible API                  |
+| LLM Integration   | Import                        | Format                       | Models (non-exhaustive)                    | Example                                                              |
+| ----------------- | ----------------------------- | ---------------------------- | ------------------------------------------ | -------------------------------------------------------------------- |
+| AI SDK            | `@metorial/ai-sdk`            | Framework tools              | Any model via Vercel AI SDK                | [`typescript-ai-sdk`](examples/typescript-ai-sdk/)                   |
+| OpenAI            | `@metorial/openai`            | OpenAI function calling      | `gpt-4.1`, `gpt-4o`, `o1`, `o3`            | [`typescript-openai`](examples/typescript-openai/)                   |
+| Anthropic         | `@metorial/anthropic`         | Claude tool format           | `claude-sonnet-4-5`, `claude-opus-4`       | [`typescript-anthropic`](examples/typescript-anthropic/)             |
+| Google            | `@metorial/google`            | Gemini function declarations | `gemini-2.5-pro`, `gemini-2.5-flash`       | [`typescript-google`](examples/typescript-google/)                   |
+| Mistral           | `@metorial/mistral`           | Mistral function calling     | `mistral-large-latest`, `codestral-latest` | [`typescript-mistral`](examples/typescript-mistral/)                 |
+| DeepSeek          | `@metorial/deepseek`          | OpenAI-compatible            | `deepseek-chat`, `deepseek-reasoner`       | [`typescript-deepseek`](examples/typescript-deepseek/)               |
+| TogetherAI        | `@metorial/togetherai`        | OpenAI-compatible            | `Llama-4`, `Qwen-3`                        | [`typescript-togetherai`](examples/typescript-togetherai/)           |
+| XAI               | `@metorial/xai`               | OpenAI-compatible            | `grok-3`, `grok-3-mini`                    | [`typescript-xai`](examples/typescript-xai/)                         |
+| LangChain         | `@metorial/langchain`         | LangChain tools              | Any model via LangChain                    | [`typescript-langchain`](examples/typescript-langchain/)             |
+| OpenAI-Compatible | `@metorial/openai-compatible` | OpenAI-compatible            | Any OpenAI-compatible API                  | [`typescript-openai-compatible`](examples/typescript-openai-compatible/) |
 
 ## Quick Start
 
@@ -276,6 +276,7 @@ Check out the `examples/` directory for more comprehensive examples:
 - [`typescript-mistral`](examples/typescript-mistral/) - Mistral
 - [`typescript-togetherai`](examples/typescript-togetherai/) - TogetherAI
 - [`typescript-xai`](examples/typescript-xai/) - xAI (Grok)
+- [`typescript-langchain`](examples/typescript-langchain/) - LangChain + LangGraph
 - [`typescript-provider-config`](examples/typescript-provider-config/) - Provider configuration patterns
 
 ## LLM Integration Examples

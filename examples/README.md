@@ -28,6 +28,7 @@ bun start
 | [`typescript-mistral`](typescript-mistral/) | Mistral | Mistral with schema fixes |
 | [`typescript-togetherai`](typescript-togetherai/) | TogetherAI | Together AI models |
 | [`typescript-xai`](typescript-xai/) | xAI (Grok) | Grok with tool calls |
+| [`typescript-langchain`](typescript-langchain/) | LangChain + Anthropic | LangGraph ReAct agent |
 | [`typescript-provider-config`](typescript-provider-config/) | OpenAI | Auth configs, templates, filters |
 
 Legacy v1 examples are in [`legacy/`](legacy/).
