@@ -39,7 +39,7 @@ export type ManagementInstanceIdentitiesDelegationConfigsUpdateBody = {
   name?: string | undefined;
   description?: string | undefined;
   metadata?: Record<string, any> | undefined;
-  subDelegationBehavior: 'allow' | 'deny' | 'require_consent';
+  subDelegationBehavior?: 'allow' | 'deny' | 'require_consent' | undefined;
   subDelegationDepth?: number | undefined;
 };
 
