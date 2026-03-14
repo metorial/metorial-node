@@ -39,22 +39,12 @@ export type DashboardInstanceIdentitiesDelegationConfigsUpdateBody = {
   name?: string | undefined;
   description?: string | undefined;
   metadata?: Record<string, any> | undefined;
-  subDelegationBehavior?: 'allow' | 'deny' | 'require_consent' | undefined;
-  subDelegationDepth?: number | undefined;
 };
 
 export let mapDashboardInstanceIdentitiesDelegationConfigsUpdateBody =
   mtMap.object<DashboardInstanceIdentitiesDelegationConfigsUpdateBody>({
     name: mtMap.objectField('name', mtMap.passthrough()),
     description: mtMap.objectField('description', mtMap.passthrough()),
-    metadata: mtMap.objectField('metadata', mtMap.passthrough()),
-    subDelegationBehavior: mtMap.objectField(
-      'sub_delegation_behavior',
-      mtMap.passthrough()
-    ),
-    subDelegationDepth: mtMap.objectField(
-      'sub_delegation_depth',
-      mtMap.passthrough()
-    )
+    metadata: mtMap.objectField('metadata', mtMap.passthrough())
   });
 
