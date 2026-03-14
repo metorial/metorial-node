@@ -20,7 +20,12 @@ export let metorialLangchain = createMcpSdk()(async ({ tools }) => ({
       {
         name: t.name,
         description: t.description ?? undefined,
-        schema: parameters
+        schema: (() => {
+          if (typeof parameters === 'boolean') {
+            throw new Error(`Tool "${t.name}" has an unsupported boolean JSON Schema value`);
+          }
+          return parameters;
+        })()
       }
     );
   })

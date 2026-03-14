@@ -1,13 +1,13 @@
-import { metorialOpenAI } from "@metorial/openai";
-import { Metorial } from "metorial";
-import OpenAI from "openai";
+import { metorialOpenAI } from '@metorial/openai';
+import { Metorial } from 'metorial';
+import OpenAI from 'openai';
 
 let metorial = new Metorial({
-  apiKey: process.env.METORIAL_API_KEY!,
+  apiKey: process.env.METORIAL_API_KEY!
 });
 
 let openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY!,
+  apiKey: process.env.OPENAI_API_KEY!
 });
 
 // ── Example 1: Metorial Search (runs out of the box) ────────────────
@@ -15,40 +15,41 @@ let openai = new OpenAI({
 // No auth or dashboard setup needed — just METORIAL_API_KEY + OPENAI_API_KEY.
 
 let deployment = await metorial.providerDeployments.create({
-  name: "Metorial Search",
-  providerId: "metorial-search",
+  name: 'Metorial Search',
+  providerId: 'metorial-search'
 });
 
 await metorial.withProviderSession(
   metorialOpenAI.chatCompletions,
   {
-    providers: [{ providerDeploymentId: deployment.id }],
+    providers: [{ providerDeploymentId: deployment.id }]
   },
-  async (session) => {
+  async session => {
     let messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
-      { role: "user", content: "Search the web for the latest news about AI agents and summarize the top 3 stories." },
+      {
+        role: 'user',
+        content:
+          'Search the web for the latest news about AI agents and summarize the top 3 stories.'
+      }
     ];
 
     for (let i = 0; i < 10; i++) {
       let response = await openai.chat.completions.create({
-        model: "gpt-4o",
+        model: 'gpt-4o',
         messages,
-        tools: session.tools,
+        tools: session.tools
       });
       let choice = response.choices[0]!;
       let toolCalls = choice.message.tool_calls;
 
       if (!toolCalls) {
-        console.log("Example 1:", choice.message.content);
+        console.log('Example 1:', choice.message.content);
         break;
       }
 
-      console.log(`🔧 Using tools: ${toolCalls.map((tc) => tc.function.name).join(", ")}`);
+      console.log(`🔧 Using tools: ${toolCalls.map(tc => tc.function.name).join(', ')}`);
       let toolResponses = await session.callTools(toolCalls);
-      messages.push(
-        { role: "assistant", tool_calls: toolCalls },
-        ...toolResponses
-      );
+      messages.push({ role: 'assistant', tool_calls: toolCalls }, ...toolResponses);
     }
   }
 );
@@ -187,7 +188,9 @@ await metorial.withProviderSession(
 // await metorial.withProviderSession(
 //   metorialOpenAI.chatCompletions,
 //   {
-//     sessionTemplate: process.env.SESSION_TEMPLATE_ID!,
+//     providers: [
+//       { sessionTemplateId: process.env.SESSION_TEMPLATE_ID! },
+//     ],
 //   },
 //   async (session) => {
 //     let response = await openai.chat.completions.create({

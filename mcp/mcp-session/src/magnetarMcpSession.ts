@@ -14,14 +14,6 @@ export type MetorialMagnetarMcpSessionInit = {
   };
 };
 
-export type MetorialMagnetarMcpSessionTemplateInit = {
-  sessionTemplate: string;
-  client?: {
-    name?: string;
-    version?: string;
-  };
-};
-
 type MagnetarSession = Awaited<ReturnType<MetorialMagnetarCoreSDK['sessions']['create']>>;
 type MagnetarSessionProvider = MagnetarSession['providers'][number];
 type MagnetarProviderDeployment = MagnetarSessionProvider['deployment'];
@@ -32,37 +24,13 @@ export class MetorialMagnetarMcpSession {
 
   constructor(
     private readonly sdk: MetorialMagnetarCoreSDK,
-    private readonly init:
-      | MetorialMagnetarMcpSessionInit
-      | MetorialMagnetarMcpSessionTemplateInit
+    private readonly init: MetorialMagnetarMcpSessionInit
   ) {
     this.#sessionPromise = this.#createSession();
   }
 
   async #createSession(): Promise<MagnetarSession> {
-    let providers: MetorialMagnetarMcpSessionInitProviders;
-
-    if ('sessionTemplate' in this.init) {
-      let templateInit = this.init as MetorialMagnetarMcpSessionTemplateInit;
-      let templateProviders = await this.sdk.sessionTemplates.providers.list({
-        sessionTemplateId: templateInit.sessionTemplate
-      });
-
-      providers = templateProviders.items
-        .filter(p => p.deployment?.id)
-        .map(p => ({
-          providerDeployment: p.deployment!.id,
-          sessionTemplateId: templateInit.sessionTemplate
-        }));
-
-      if (providers.length === 0) {
-        throw new Error('Session template has no provider deployments');
-      }
-    } else {
-      providers = this.init.providers;
-    }
-
-    return this.sdk.sessions.create({ providers });
+    return this.sdk.sessions.create({ providers: this.init.providers });
   }
 
   async getSession(): Promise<MagnetarSession> {

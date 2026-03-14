@@ -9,8 +9,7 @@ import {
   MetorialMcpSessionInit,
   MetorialMcpSessionInitServerDeployments,
   MetorialMagnetarMcpSession,
-  MetorialMagnetarMcpSessionInit,
-  MetorialMagnetarMcpSessionTemplateInit
+  MetorialMagnetarMcpSessionInit
 } from '@metorial/mcp-session';
 
 export type {
@@ -18,8 +17,7 @@ export type {
   MetorialMcpSessionInit,
   MetorialMcpSessionInitServerDeployments,
   MetorialMagnetarMcpSession,
-  MetorialMagnetarMcpSessionInit,
-  MetorialMagnetarMcpSessionTemplateInit
+  MetorialMagnetarMcpSessionInit
 } from '@metorial/mcp-session';
 
 export class Metorial {
@@ -174,7 +172,7 @@ export class Metorial {
 
   get mcp() {
     return {
-      createSession: (init: MetorialMagnetarMcpSessionInit | MetorialMagnetarMcpSessionTemplateInit) =>
+      createSession: (init: MetorialMagnetarMcpSessionInit) =>
         new MetorialMagnetarMcpSession(this.magnetarSdk, init),
       withSession: this.withSession.bind(this),
       withProviderSession: this.withProviderSession.bind(this),
@@ -183,20 +181,20 @@ export class Metorial {
   }
 
   session(
-    init: MetorialMagnetarMcpSessionInit | MetorialMagnetarMcpSessionTemplateInit
+    init: MetorialMagnetarMcpSessionInit
   ): MetorialMagnetarMcpSession {
     return new MetorialMagnetarMcpSession(this.magnetarSdk, init);
   }
 
   async createMcpConnection(
-    init: MetorialMagnetarMcpSessionInit | MetorialMagnetarMcpSessionTemplateInit
+    init: MetorialMagnetarMcpSessionInit
   ) {
     let session = new MetorialMagnetarMcpSession(this.magnetarSdk, init);
     return await session.getClient();
   }
 
   async withSession<T>(
-    init: MetorialMagnetarMcpSessionInit | MetorialMagnetarMcpSessionTemplateInit,
+    init: MetorialMagnetarMcpSessionInit,
     action: (session: MetorialMagnetarMcpSession) => Promise<T>
   ): Promise<T> {
     let session = new MetorialMagnetarMcpSession(this.magnetarSdk, init);
@@ -209,7 +207,7 @@ export class Metorial {
 
   async withProviderSession<P, T>(
     provider: (session: MetorialMagnetarMcpSession) => Promise<P>,
-    init: (MetorialMagnetarMcpSessionInit | MetorialMagnetarMcpSessionTemplateInit) & { streaming?: boolean },
+    init: (MetorialMagnetarMcpSessionInit) & { streaming?: boolean },
     action: (
       input: P & {
         session: MetorialMagnetarMcpSession;
@@ -240,7 +238,7 @@ export class Metorial {
 
   private async withMagnetarStreamingSession<P, T>(
     provider: (session: MetorialMagnetarMcpSession) => Promise<P>,
-    init: MetorialMagnetarMcpSessionInit | MetorialMagnetarMcpSessionTemplateInit,
+    init: MetorialMagnetarMcpSessionInit,
     action: (
       input: P & {
         session: MetorialMagnetarMcpSession;
