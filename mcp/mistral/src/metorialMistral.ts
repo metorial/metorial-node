@@ -5,34 +5,15 @@ export let metorialMistral = createMcpSdk()(async ({ tools }) => {
   let toolList = tools.getTools();
 
   return {
-    tools: toolList.map(t => {
-      let parameters = t.getParametersAs('json-schema') as any;
-
-      // Ensure additionalProperties: false is set for Mistral compatibility
-      if (parameters && typeof parameters === 'object') {
-        // Set additionalProperties: false on the root schema
-        parameters.additionalProperties = false;
-
-        // Also ensure nested objects have additionalProperties: false
-        if (parameters.properties) {
-          Object.values(parameters.properties).forEach((prop: any) => {
-            if (prop && typeof prop === 'object' && prop.type === 'object') {
-              prop.additionalProperties = false;
-            }
-          });
-        }
+    tools: toolList.map(t => ({
+      type: 'function' as const,
+      function: {
+        name: t.id,
+        description: t.description ?? undefined,
+        parameters: t.getParametersAs('strict-json-schema') as Record<string, unknown>,
+        strict: true
       }
-
-      return {
-        type: 'function' as const,
-        function: {
-          name: t.id,
-          description: t.description ?? undefined,
-          parameters,
-          strict: true
-        }
-      } satisfies Tool;
-    }) as Tool[],
+    }) satisfies Tool) as Tool[],
 
     callTools: async (calls: ToolCall[]): Promise<ToolMessage[]> =>
       Promise.all(

@@ -1,5 +1,13 @@
 # @metorial/openai-compatible
 
+## 2.0.1
+
+### Patch Changes
+
+- Support `strict-json-schema` format via `withStrict` option for providers that require strict mode
+- Updated dependencies
+  - @metorial/mcp-session@2.0.2
+
 ## 2.0.0
 
 ### Major Changes

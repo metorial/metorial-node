@@ -24,6 +24,46 @@ export type Capability =
       serverDeployment: SmallServerDeployment;
     };
 
+type JsonSchemaRecord = Record<string, unknown>;
+
+let stripMetaKeywords = (schema: JsonSchema): JsonSchema => {
+  if (!schema || typeof schema !== 'object') return schema;
+  let { $schema, $id, $defs, definitions, ...rest } = schema as JsonSchemaRecord;
+  if (rest.properties) {
+    rest.properties = Object.fromEntries(
+      Object.entries(rest.properties as Record<string, JsonSchema>).map(([k, v]) => [
+        k,
+        stripMetaKeywords(v)
+      ])
+    );
+  }
+  if (rest.items) rest.items = stripMetaKeywords(rest.items as JsonSchema);
+  if (rest.allOf) rest.allOf = (rest.allOf as JsonSchema[]).map(stripMetaKeywords);
+  if (rest.anyOf) rest.anyOf = (rest.anyOf as JsonSchema[]).map(stripMetaKeywords);
+  if (rest.oneOf) rest.oneOf = (rest.oneOf as JsonSchema[]).map(stripMetaKeywords);
+  return rest as JsonSchema;
+};
+
+let enforceStrictSchema = (schema: JsonSchema): JsonSchema => {
+  if (!schema || typeof schema !== 'object') return schema;
+  let { format, ...result } = schema as JsonSchemaRecord;
+  if (result.type === 'object') {
+    result.additionalProperties = false;
+    if (result.properties) {
+      let props = result.properties as Record<string, JsonSchema>;
+      result.required = Object.keys(props);
+      result.properties = Object.fromEntries(
+        Object.entries(props).map(([k, v]) => [k, enforceStrictSchema(v)])
+      );
+    }
+  }
+  if (result.items) result.items = enforceStrictSchema(result.items as JsonSchema);
+  if (result.allOf) result.allOf = (result.allOf as JsonSchema[]).map(enforceStrictSchema);
+  if (result.anyOf) result.anyOf = (result.anyOf as JsonSchema[]).map(enforceStrictSchema);
+  if (result.oneOf) result.oneOf = (result.oneOf as JsonSchema[]).map(enforceStrictSchema);
+  return result as JsonSchema;
+};
+
 const MAX_RETRIES = 10;
 
 let runWithRetries = async <T>(
@@ -85,8 +125,20 @@ export class MetorialMcpTool {
     return await this.action(args);
   }
 
-  getParametersAs(as: 'json-schema' | 'openapi-3.0.0' | 'openapi-3.1.0' = 'json-schema') {
-    if (as == 'json-schema') return this.#parameters;
+  getParametersAs(
+    as:
+      | 'json-schema'
+      | 'strict-json-schema'
+      | 'openapi-3.0.0'
+      | 'openapi-3.1.0' = 'json-schema'
+  ) {
+    if (as == 'json-schema') {
+      return stripMetaKeywords(this.#parameters);
+    }
+
+    if (as == 'strict-json-schema') {
+      return enforceStrictSchema(stripMetaKeywords(this.#parameters));
+    }
 
     if (as == 'openapi-3.0.0' || as == 'openapi-3.1.0') {
       return jsonSchemaToOpenApi(this.#parameters, {

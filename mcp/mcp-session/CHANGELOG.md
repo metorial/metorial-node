@@ -1,5 +1,14 @@
 # @metorial/mcp-session
 
+## 2.0.2
+
+### Patch Changes
+
+- Add `strict-json-schema` format to `getParametersAs` for strict mode schema enforcement (sets `additionalProperties: false`, marks all properties as required, strips `format`)
+- Strip JSON Schema meta keywords (`$schema`, `$id`, `$defs`, `definitions`) when returning `json-schema` format
+- Improve type safety in `stripMetaKeywords` and `enforceStrictSchema` by replacing `any` with `JsonSchema` types
+- Fix `getTools()` returning duplicates due to tools being keyed by both id and name in a single map
+
 ## 2.0.1
 
 ### Patch Changes

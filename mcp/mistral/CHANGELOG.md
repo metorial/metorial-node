@@ -1,5 +1,13 @@
 # @metorial/mistral
 
+## 2.0.1
+
+### Patch Changes
+
+- Use `strict-json-schema` format from `getParametersAs` instead of manually enforcing `additionalProperties: false`
+- Updated dependencies
+  - @metorial/mcp-session@2.0.2
+
 ## 2.0.0
 
 ### Major Changes

@@ -1,5 +1,13 @@
 # @metorial/langchain
 
+## 2.0.2
+
+### Patch Changes
+
+- Throw an explicit error when a tool has an unsupported boolean JSON Schema value instead of silently failing
+- Updated dependencies
+  - @metorial/mcp-session@2.0.2
+
 ## 2.0.1
 
 ### Patch Changes

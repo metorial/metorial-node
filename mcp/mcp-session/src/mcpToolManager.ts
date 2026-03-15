@@ -2,15 +2,17 @@ import { MetorialMcpSession } from './mcpSession';
 import { Capability, MetorialMcpTool } from './mcpTool';
 
 export class MetorialMcpToolManager {
-  #tools = new Map<string, MetorialMcpTool>();
+  #toolList: MetorialMcpTool[];
+  #toolsByKey = new Map<string, MetorialMcpTool>();
 
   private constructor(
     private readonly session: MetorialMcpSession,
     tools: MetorialMcpTool[]
   ) {
+    this.#toolList = tools;
     for (let tool of tools) {
-      this.#tools.set(tool.id, tool);
-      this.#tools.set(tool.name, tool);
+      this.#toolsByKey.set(tool.id, tool);
+      this.#toolsByKey.set(tool.name, tool);
     }
   }
 
@@ -22,11 +24,11 @@ export class MetorialMcpToolManager {
   }
 
   getTool(idOrName: string): MetorialMcpTool | undefined {
-    return this.#tools.get(idOrName);
+    return this.#toolsByKey.get(idOrName);
   }
 
   getTools(): MetorialMcpTool[] {
-    return Array.from(this.#tools.values());
+    return this.#toolList;
   }
 
   callTool(idOrName: string, args: any): Promise<any> {
