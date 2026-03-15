@@ -38,7 +38,7 @@ await metorial.withProviderSession(
   metorialLangchain,
   {
     providers: [
-      { providerDeploymentId: deployment.id },
+      { providerDeploymentId: deployment.id }
       // Add OAuth provider:
       // {
       //   providerDeploymentId: oauthProviderDeploymentId,
@@ -52,16 +52,14 @@ await metorial.withProviderSession(
       apiKey: process.env.ANTHROPIC_API_KEY!
     });
 
-    // Dedupe tools by name — some MCP providers may expose overlapping tool names
-    let uniqueTools = Array.from(new Map(tools.map(t => [t.name, t])).values());
-
-    let agent = createReactAgent({ llm, tools: uniqueTools });
+    let agent = createReactAgent({ llm, tools });
 
     let stream = await agent.stream({
       messages: [
         {
           role: 'user',
-          content: 'Search the web for the latest news about AI agents and summarize the top 3 stories.'
+          content:
+            'Search the web for the latest news about AI agents and summarize the top 3 stories.'
         }
       ]
     });

@@ -1,13 +1,13 @@
-import { metorialMistral } from "@metorial/mistral";
-import { Metorial } from "metorial";
-import { Mistral } from "@mistralai/mistralai";
+import { metorialMistral } from '@metorial/mistral';
+import { Metorial } from 'metorial';
+import { Mistral } from '@mistralai/mistralai';
 
 let metorial = new Metorial({
-  apiKey: process.env.METORIAL_API_KEY!,
+  apiKey: process.env.METORIAL_API_KEY!
 });
 
 let mistral = new Mistral({
-  apiKey: process.env.MISTRAL_API_KEY!,
+  apiKey: process.env.MISTRAL_API_KEY!
 });
 
 // Create a deployment for Metorial Search — built-in web search, no auth needed.
@@ -15,8 +15,8 @@ let mistral = new Mistral({
 // https://platform.metorial.com and replace this with:
 //   let providerDeploymentId = process.env.PROVIDER_DEPLOYMENT_ID!;
 let deployment = await metorial.providerDeployments.create({
-  name: "Metorial Search",
-  providerId: "metorial-search",
+  name: 'Metorial Search',
+  providerId: 'metorial-search'
 });
 
 // ── (Optional) Setup session for an OAuth provider like GitHub or Slack ──
@@ -41,52 +41,28 @@ await metorial.withProviderSession(
   metorialMistral,
   {
     providers: [
-      { providerDeploymentId: deployment.id },
+      { providerDeploymentId: deployment.id }
       // Add OAuth provider:
       // {
       //   providerDeploymentId: oauthProviderDeploymentId,
       //   providerAuthConfigId: completedSession.authConfig!.id
       // }
-    ],
+    ]
   },
-  async (session) => {
+  async session => {
     let messages: any[] = [
       {
-        role: "user",
-        content: "Search the web for the latest news about AI agents and summarize the top 3 stories.",
-      },
-    ];
-
-    // Align the schema to include additionalProperties: false for Mistral compatibility
-    let fixedTools = session.tools.map((tool) => {
-      if (tool.function?.parameters) {
-        let fixedParams = { ...tool.function.parameters };
-        fixedParams.additionalProperties = false;
-
-        if (fixedParams.properties) {
-          Object.values(fixedParams.properties).forEach((prop: any) => {
-            if (prop && typeof prop === "object" && prop.type === "object") {
-              prop.additionalProperties = false;
-            }
-          });
-        }
-
-        return {
-          ...tool,
-          function: {
-            ...tool.function,
-            parameters: fixedParams,
-          },
-        };
+        role: 'user',
+        content:
+          'Search the web for the latest news about AI agents and summarize the top 3 stories.'
       }
-      return tool;
-    });
+    ];
 
     for (let i = 0; i < 10; i++) {
       let response = await mistral.chat.complete({
-        model: "mistral-large-latest",
+        model: 'mistral-large-latest',
         messages,
-        tools: fixedTools,
+        tools: session.tools
       });
 
       let choice = response.choices[0]!;
@@ -97,16 +73,11 @@ await metorial.withProviderSession(
         return;
       }
 
-      console.log(
-        `🔧 Using tools: ${toolCalls.map((tc) => tc.function.name).join(", ")}`
-      );
+      console.log(`🔧 Using tools: ${toolCalls.map(tc => tc.function.name).join(', ')}`);
       let toolResponses = await session.callTools(toolCalls);
-      messages.push(
-        { role: "assistant" as const, toolCalls },
-        ...toolResponses
-      );
+      messages.push({ role: 'assistant' as const, toolCalls }, ...toolResponses);
     }
 
-    throw new Error("No final response received after 10 iterations");
+    throw new Error('No final response received after 10 iterations');
   }
 );
