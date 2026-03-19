@@ -1,6 +1,6 @@
 {
   "name": "@metorial/openai",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "author": "Metorial Inc.",
   "license": "MIT",
   "type": "module",
@@ -29,10 +29,10 @@
     "dist"
   ],
   "dependencies": {
-    "@metorial/core": "^2.0.0",
-    "@metorial/mcp-sdk-utils": "^2.0.0",
-    "@metorial/mcp-session": "^2.0.0",
-    "@metorial/openai-compatible": "^2.0.0"
+    "@metorial/core": "^2.1.0",
+    "@metorial/mcp-sdk-utils": "^2.1.0",
+    "@metorial/mcp-session": "^2.1.0",
+    "@metorial/openai-compatible": "^2.1.0"
   },
   "peerDependencies": {
     "openai": "*"

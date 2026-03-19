@@ -3,7 +3,6 @@ import { DashboardInstanceSessionsCreateBody } from '@metorial/generated';
 import { MetorialMcpClient } from './mcpClient';
 import { Capability } from './mcpTool';
 import { MetorialMcpToolManager } from './mcpToolManager';
-
 export type MetorialMcpSessionInitServerDeployments = (DashboardInstanceSessionsCreateBody & {
   serverDeploymentIds?: never;
 })['serverDeployments'];

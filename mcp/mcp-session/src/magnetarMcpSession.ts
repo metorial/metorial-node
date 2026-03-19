@@ -3,7 +3,6 @@ import { SessionsCreateBody } from '@metorial/generated/src/mt_2026_01_01_magnet
 import { MetorialMcpClient } from './mcpClient';
 import { Capability } from './mcpTool';
 import { MetorialMcpToolManager } from './mcpToolManager';
-
 export type MetorialMagnetarMcpSessionInitProviders = SessionsCreateBody['providers'];
 
 export type MetorialMagnetarMcpSessionInit = {
@@ -21,6 +20,13 @@ type MagnetarProviderDeployment = MagnetarSessionProvider['deployment'];
 export class MetorialMagnetarMcpSession {
   #sessionPromise: Promise<MagnetarSession>;
   #clientPromise: Promise<MetorialMcpClient> | null = null;
+
+  static async create(
+    sdk: MetorialMagnetarCoreSDK,
+    init: MetorialMagnetarMcpSessionInit
+  ): Promise<MetorialMagnetarMcpSession> {
+    return new MetorialMagnetarMcpSession(sdk, init);
+  }
 
   constructor(
     private readonly sdk: MetorialMagnetarCoreSDK,
@@ -90,14 +96,11 @@ export class MetorialMagnetarMcpSession {
   }
 
   async getToolManager() {
-    return MetorialMcpToolManager.fromCapabilities(this as any, await this.getCapabilities());
+    return MetorialMcpToolManager.fromCapabilities(this, await this.getCapabilities());
   }
 
   async close() {
-    if (this.#clientPromise) {
-      let client = await this.#clientPromise;
-      await client.close();
-    }
+    // noop — session cleanup is handled by the server
   }
 
   private get mcpHost() {

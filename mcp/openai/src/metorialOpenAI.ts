@@ -10,8 +10,8 @@ import type { FunctionParameters } from 'openai/resources/shared';
 export let metorialOpenAI = {
   chatCompletions: createOpenAICompatibleMcpSdk({ withStrict: true }),
 
-  responses: createMcpSdk()(async ({ session, tools }) => ({
-    tools: tools.getTools().map(t => ({
+  responses: createMcpSdk(async ({ tools }) => ({
+    tools: () => tools.getTools().map(t => ({
       type: 'function' as const,
       name: t.id,
       description: t.description ?? undefined,

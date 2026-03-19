@@ -6,8 +6,8 @@ import {
 } from '@anthropic-ai/sdk/resources/messages';
 import { createMcpSdk } from '@metorial/mcp-sdk-utils';
 
-export let metorialAnthropic = createMcpSdk()(async ({ tools }) => ({
-  tools: tools.getTools().map(
+export let metorialAnthropic = createMcpSdk(async ({ tools }) => ({
+  tools: () => tools.getTools().map(
     t =>
       ({
         name: t.id,

@@ -1,8 +1,8 @@
 import { Content, FunctionCall, FunctionDeclaration, Part, ToolUnion } from '@google/genai';
 import { createMcpSdk } from '@metorial/mcp-sdk-utils';
 
-export let metorialGoogle = createMcpSdk()(async ({ tools }) => ({
-  tools: [
+export let metorialGoogle = createMcpSdk(async ({ tools }) => ({
+  tools: () => [
     {
       functionDeclarations: tools.getTools().map(
         t =>
