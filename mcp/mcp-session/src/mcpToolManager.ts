@@ -1,4 +1,9 @@
 import { Capability, MetorialMcpTool } from './mcpTool';
+import { MetorialMcpClient } from './mcpClient';
+
+type McpSession = {
+  getClient(opts: { deploymentId: string }): Promise<MetorialMcpClient>;
+};
 
 export class MetorialMcpToolManager {
   #toolList: MetorialMcpTool[];
@@ -12,7 +17,7 @@ export class MetorialMcpToolManager {
     }
   }
 
-  static async fromCapabilities(session: any, capabilities: Capability[]) {
+  static async fromCapabilities(session: McpSession, capabilities: Capability[]) {
     return new MetorialMcpToolManager(
       capabilities.map(c => MetorialMcpTool.fromCapability(session, c))
     );

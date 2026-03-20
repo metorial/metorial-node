@@ -33,7 +33,8 @@
     "@metorial/core": "^2.1.0",
     "@metorial/generated": "^2.1.0",
     "@metorial/util-endpoint": "^2.1.0",
-    "@modelcontextprotocol/sdk": "^1.12.1"
+    "@modelcontextprotocol/sdk": "^1.12.1",
+    "eventsource-parser": "^3.0.0"
   },
   "devDependencies": {
     "tsup": "^7.1.0",
