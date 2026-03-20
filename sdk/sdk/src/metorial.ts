@@ -110,12 +110,13 @@ export class Metorial {
 
   /** @deprecated Use `metorial.connect()` instead. */
   async withProviderSession<P, T>(
-    adapter: MetorialAdapter<P>,
+    adapter: MetorialAdapter<P> | (() => MetorialAdapter<P>),
     init: MetorialMcpSessionInit & { streaming?: boolean },
     action: (input: P & { closeSession: () => Promise<void> }) => Promise<T>
   ): Promise<T> {
     let session = await MetorialMcpSession.create(this.sdk, init);
-    let adapterResult = await adapter.__resolve(session);
+    let resolved = typeof adapter === 'function' ? adapter() : adapter;
+    let adapterResult = await resolved.__resolve(session);
     return action({ ...adapterResult, closeSession: async () => {} });
   }
 

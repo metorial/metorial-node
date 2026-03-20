@@ -1,5 +1,11 @@
 # metorial
 
+## 2.1.1
+
+### Patch Changes
+
+- Fix withProviderSession to work with adapter resolve method
+
 ## 2.1.0
 
 ### Minor Changes
