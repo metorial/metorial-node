@@ -103,24 +103,14 @@ export class MetorialMcpSession {
     // noop — session cleanup is handled by the server
   }
 
-  private get mcpHost() {
-    let config = this.sdk._config;
-    if (config.mcpHost) return config.mcpHost;
-    let apiHost = config.apiHost ?? 'https://api.metorial.com';
-    return apiHost.replace('://api.', '://connect.');
-  }
-
   async getClient(opts?: { deploymentId?: string }) {
     if (!this.#clientPromise) {
       let session = await this.getSession();
-      let connectionUrl = `${this.mcpHost}/mcp/${session.id}`;
+      let connectionUrl = `${session.connectionUrl}?key=${session.clientSecret}`;
 
       this.#clientPromise = MetorialMcpClient.createFromUrl(connectionUrl, {
         clientName: this.init.client?.name,
-        clientVersion: this.init.client?.version,
-        headers: {
-          Authorization: `Bearer ${this.sdk._config.apiKey}`
-        }
+        clientVersion: this.init.client?.version
       });
     }
 
