@@ -1,17 +1,16 @@
-import { MetorialMcpSession } from '@metorial/mcp-session';
+import { createMcpSdk } from '@metorial/mcp-sdk-utils';
 import { jsonSchema, tool } from 'ai';
 
-export let metorialAiSdk = async (session: MetorialMcpSession) => {
-  let toolManager = await session.getToolManager();
+export let metorialAiSdk = createMcpSdk(async ({ tools }) => {
   let toolMap: Record<string, any> = {};
 
-  for (let t of toolManager.getTools()) {
+  for (let t of tools.getTools()) {
     let parameters = t.getParametersAs('json-schema') as any;
-  
+
     if (parameters && typeof parameters === 'object' && !parameters.type) {
       parameters.type = 'object';
     }
-    
+
     if (!parameters) {
       parameters = { type: 'object', properties: {} };
     }
@@ -25,5 +24,5 @@ export let metorialAiSdk = async (session: MetorialMcpSession) => {
     });
   }
 
-  return { tools: toolMap };
-};
+  return { tools: () => toolMap };
+});

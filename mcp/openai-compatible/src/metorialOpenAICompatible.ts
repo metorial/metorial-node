@@ -26,8 +26,8 @@ export interface MetorialOpenAiCompatibleToolResult {
 }
 
 export let createOpenAICompatibleMcpSdk = (opts?: { withStrict?: boolean }) =>
-  createMcpSdk()(async ({ tools }) => ({
-    tools: tools.getTools().map(
+  createMcpSdk(async ({ tools }) => ({
+    tools: () => tools.getTools().map(
       t =>
         ({
           type: 'function' as const,

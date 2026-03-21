@@ -1,14 +1,15 @@
-import { MetorialMcpSession } from './mcpSession';
 import { Capability, MetorialMcpTool } from './mcpTool';
+import { MetorialMcpClient } from './mcpClient';
+
+type McpSession = {
+  getClient(opts: { deploymentId: string }): Promise<MetorialMcpClient>;
+};
 
 export class MetorialMcpToolManager {
   #toolList: MetorialMcpTool[];
   #toolsByKey = new Map<string, MetorialMcpTool>();
 
-  private constructor(
-    private readonly session: MetorialMcpSession,
-    tools: MetorialMcpTool[]
-  ) {
+  private constructor(tools: MetorialMcpTool[]) {
     this.#toolList = tools;
     for (let tool of tools) {
       this.#toolsByKey.set(tool.id, tool);
@@ -16,9 +17,8 @@ export class MetorialMcpToolManager {
     }
   }
 
-  static async fromCapabilities(session: MetorialMcpSession, capabilities: Capability[]) {
+  static async fromCapabilities(session: McpSession, capabilities: Capability[]) {
     return new MetorialMcpToolManager(
-      session,
       capabilities.map(c => MetorialMcpTool.fromCapability(session, c))
     );
   }

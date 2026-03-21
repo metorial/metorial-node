@@ -1,5 +1,17 @@
 # @metorial/mcp-session
 
+## 2.1.1
+
+### Patch Changes
+
+- Fix connection url
+
+## 2.1.0
+
+### Minor Changes
+
+- Change withProviderSession flow to direct session use
+
 ## 2.0.2
 
 ### Patch Changes

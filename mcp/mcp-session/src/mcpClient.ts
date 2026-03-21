@@ -1,7 +1,5 @@
-import { MetorialSDK } from '@metorial/core';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
-import { SSEClientTransport } from '@modelcontextprotocol/sdk/client/sse.js';
-import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
+import { MetorialMcpTransport } from './transport';
 import { RequestOptions } from '@modelcontextprotocol/sdk/shared/protocol.js';
 import {
   CallToolRequest,
@@ -30,32 +28,6 @@ import {
 export class MetorialMcpClient {
   private constructor(private readonly client: Client) {}
 
-  static async create(
-    session: MetorialSDK.Session,
-    opts: {
-      host: string;
-      deploymentId: string;
-      clientName?: string;
-      clientVersion?: string;
-    }
-  ) {
-    let client = new Client({
-      name: opts?.clientName ?? 'metorial-js-client',
-      version: opts?.clientVersion ?? '1.0.0'
-    });
-
-    let transport = new SSEClientTransport(
-      new URL(
-        `/mcp/${session.id}/${opts.deploymentId}/sse?key=${session.clientSecret.secret}`,
-        opts.host
-      )
-    );
-
-    await client.connect(transport);
-
-    return new MetorialMcpClient(client);
-  }
-
   static async createFromUrl(
     connectionUrl: string,
     opts?: {
@@ -69,7 +41,7 @@ export class MetorialMcpClient {
       version: opts?.clientVersion ?? '1.0.0'
     });
 
-    let transport = new StreamableHTTPClientTransport(new URL(connectionUrl), {
+    let transport = new MetorialMcpTransport(new URL(connectionUrl), {
       requestInit: opts?.headers ? { headers: opts.headers } : undefined
     });
 

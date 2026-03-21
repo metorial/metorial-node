@@ -1,53 +1,43 @@
-import {
-  MetorialPulsarCoreSDK,
-  createMetorialPulsarCoreSDK,
-  MetorialMagnetarCoreSDK,
-  createMetorialMagnetarCoreSDK
-} from '@metorial/core';
+import { MetorialCoreSDK, createMetorialCoreSDK } from '@metorial/core';
 import {
   MetorialMcpSession,
   MetorialMcpSessionInit,
-  MetorialMcpSessionInitServerDeployments,
-  MetorialMagnetarMcpSession,
-  MetorialMagnetarMcpSessionInit
+  MetorialMcpSessionInitProviders,
+  MetorialMcpToolManager
 } from '@metorial/mcp-session';
 
 export type {
   MetorialMcpSession,
   MetorialMcpSessionInit,
-  MetorialMcpSessionInitServerDeployments,
-  MetorialMagnetarMcpSession,
-  MetorialMagnetarMcpSessionInit
+  MetorialMcpSessionInitProviders
 } from '@metorial/mcp-session';
 
-export class Metorial {
-  private readonly pulsarSdk: MetorialPulsarCoreSDK;
-  private readonly magnetarSdk: MetorialMagnetarCoreSDK;
+type MetorialSession = { getToolManager(): Promise<MetorialMcpToolManager> };
 
-  constructor(init: Omit<Parameters<typeof createMetorialPulsarCoreSDK>[0], 'apiVersion'>) {
+export interface MetorialAdapter<T> {
+  __resolve(session: MetorialSession): Promise<T>;
+}
+
+export class Metorial {
+  private readonly sdk: MetorialCoreSDK;
+
+  constructor(init: Omit<Parameters<typeof createMetorialCoreSDK>[0], 'apiVersion'>) {
     let apiHost = init.apiHost;
     let mcpHost = init.mcpHost;
 
-    // Derive apiHost from mcpHost if only mcpHost is provided
     if (mcpHost && !apiHost) {
       apiHost = mcpHost.replace('://connect.', '://api.');
     }
 
-    // v1 (pulsar): mcp.<domain> pattern — let mcpSession.ts derive it from apiHost
-    this.pulsarSdk = createMetorialPulsarCoreSDK({ ...init, apiHost });
-
-    // v2 (magnetar): connect.<domain> pattern
-    this.magnetarSdk = createMetorialMagnetarCoreSDK({ ...init, apiHost, mcpHost });
+    this.sdk = createMetorialCoreSDK({ ...init, apiHost, mcpHost });
   }
 
-  // ── Magnetar (default) ───────────────────────────────────────────
-
   get providers() {
-    return this.magnetarSdk.providers;
+    return this.sdk.providers;
   }
 
   get providerDeployments() {
-    let deployments = this.magnetarSdk.providerDeployments;
+    let deployments = this.sdk.providerDeployments;
     Object.assign(deployments.setupSessions, {
       waitForCompletion: this.waitForSetupSession.bind(this)
     });
@@ -55,346 +45,86 @@ export class Metorial {
   }
 
   get sessions() {
-    return this.magnetarSdk.sessions;
+    return this.sdk.sessions;
   }
 
   get sessionTemplates() {
-    return this.magnetarSdk.sessionTemplates;
+    return this.sdk.sessionTemplates;
   }
 
   get providerRuns() {
-    return this.magnetarSdk.providerRuns;
+    return this.sdk.providerRuns;
   }
 
   get instance() {
-    return this.magnetarSdk.instance;
+    return this.sdk.instance;
   }
 
   get publishers() {
-    return this.magnetarSdk.publishers;
+    return this.sdk.publishers;
   }
 
   get providerCategories() {
-    return this.magnetarSdk.providerCategories;
+    return this.sdk.providerCategories;
   }
 
   get providerCollections() {
-    return this.magnetarSdk.providerCollections;
+    return this.sdk.providerCollections;
   }
 
   get providerGroups() {
-    return this.magnetarSdk.providerGroups;
+    return this.sdk.providerGroups;
   }
 
   get providerListings() {
-    return this.magnetarSdk.providerListings;
+    return this.sdk.providerListings;
   }
 
   get providerSetupSessions() {
-    return this.magnetarSdk.providerSetupSessions;
+    return this.sdk.providerSetupSessions;
   }
 
   get toolCalls() {
-    return this.magnetarSdk.toolCalls;
+    return this.sdk.toolCalls;
   }
 
   get customProviders() {
-    return this.magnetarSdk.customProviders;
+    return this.sdk.customProviders;
   }
 
-  // ── Backward compat (Pulsar endpoints at top level) ──────────────
+  async connect<T>(options: {
+    adapter: MetorialAdapter<T>;
+    providers: MetorialMcpSessionInitProviders;
+    client?: { name?: string; version?: string };
+  }): Promise<T> {
+    let session = await MetorialMcpSession.create(this.sdk, {
+      providers: options.providers,
+      client: options.client
+    });
 
-  get servers() {
-    return this.pulsarSdk.servers;
+    return options.adapter.__resolve(session);
   }
 
-  get secrets() {
-    return this.pulsarSdk.secrets;
-  }
-
-  get oauth(): typeof this.pulsarSdk.oauth & {
-    waitForCompletion: (
-      sessions: Array<{ id: string }>,
-      options?: {
-        pollInterval?: number;
-        timeout?: number;
-      }
-    ) => Promise<void>;
-  } {
-    return {
-      ...this.pulsarSdk.oauth,
-      waitForCompletion: this.waitForOAuthCompletion.bind(this)
-    };
-  }
-
-  get _config() {
-    return this.pulsarSdk._config;
-  }
-
-  // ── v1 namespace (legacy Pulsar) ─────────────────────────────────
-
-  get v1() {
-    let pulsarSdk = this.pulsarSdk;
-    let self = this;
-    return {
-      get instance() {
-        return pulsarSdk.instance;
-      },
-      get secrets() {
-        return pulsarSdk.secrets;
-      },
-      get servers() {
-        return pulsarSdk.servers;
-      },
-      get sessions() {
-        return pulsarSdk.sessions;
-      },
-      get oauth() {
-        return self.oauth;
-      },
-      get _config() {
-        return pulsarSdk._config;
-      },
-      mcp: {
-        createSession: (init: MetorialMcpSessionInit) =>
-          new MetorialMcpSession(pulsarSdk, init),
-        withSession: self._pulsarWithSession.bind(self),
-        withProviderSession: self._pulsarWithProviderSession.bind(self),
-        createConnection: self._pulsarCreateMcpConnection.bind(self)
-      },
-      withSession: self._pulsarWithSession.bind(self),
-      withProviderSession: self._pulsarWithProviderSession.bind(self),
-      createMcpConnection: self._pulsarCreateMcpConnection.bind(self)
-    };
-  }
-
-  // ── MCP (Magnetar default) ───────────────────────────────────────
-
-  get mcp() {
-    return {
-      createSession: (init: MetorialMagnetarMcpSessionInit) =>
-        new MetorialMagnetarMcpSession(this.magnetarSdk, init),
-      withSession: this.withSession.bind(this),
-      withProviderSession: this.withProviderSession.bind(this),
-      createConnection: this.createMcpConnection.bind(this)
-    };
-  }
-
-  session(
-    init: MetorialMagnetarMcpSessionInit
-  ): MetorialMagnetarMcpSession {
-    return new MetorialMagnetarMcpSession(this.magnetarSdk, init);
-  }
-
-  async createMcpConnection(
-    init: MetorialMagnetarMcpSessionInit
-  ) {
-    let session = new MetorialMagnetarMcpSession(this.magnetarSdk, init);
-    return await session.getClient();
-  }
-
-  async withSession<T>(
-    init: MetorialMagnetarMcpSessionInit,
-    action: (session: MetorialMagnetarMcpSession) => Promise<T>
-  ): Promise<T> {
-    let session = new MetorialMagnetarMcpSession(this.magnetarSdk, init);
-    try {
-      return await action(session);
-    } finally {
-      await session.close();
-    }
-  }
-
+  /** @deprecated Use `metorial.connect()` instead. */
   async withProviderSession<P, T>(
-    provider: (session: MetorialMagnetarMcpSession) => Promise<P>,
-    init: (MetorialMagnetarMcpSessionInit) & { streaming?: boolean },
-    action: (
-      input: P & {
-        session: MetorialMagnetarMcpSession;
-        getSession: MetorialMagnetarMcpSession['getSession'];
-        getCapabilities: MetorialMagnetarMcpSession['getCapabilities'];
-        getToolManager: MetorialMagnetarMcpSession['getToolManager'];
-        closeSession: () => Promise<void>;
-      }
-    ) => Promise<T>
-  ): Promise<T> {
-    if (init.streaming) {
-      return this.withMagnetarStreamingSession(provider, init, action);
-    }
-
-    return this.withSession(init, async session => {
-      let providerData = await provider(session);
-
-      return action({
-        ...providerData,
-        session,
-        getSession: session.getSession.bind(session),
-        getCapabilities: session.getCapabilities.bind(session),
-        getToolManager: session.getToolManager.bind(session),
-        closeSession: async () => {}
-      });
-    });
-  }
-
-  private async withMagnetarStreamingSession<P, T>(
-    provider: (session: MetorialMagnetarMcpSession) => Promise<P>,
-    init: MetorialMagnetarMcpSessionInit,
-    action: (
-      input: P & {
-        session: MetorialMagnetarMcpSession;
-        getSession: MetorialMagnetarMcpSession['getSession'];
-        getCapabilities: MetorialMagnetarMcpSession['getCapabilities'];
-        getToolManager: MetorialMagnetarMcpSession['getToolManager'];
-        closeSession: () => Promise<void>;
-      }
-    ) => Promise<T>
-  ): Promise<T> {
-    let session = new MetorialMagnetarMcpSession(this.magnetarSdk, init);
-    let sessionClosed = false;
-
-    const closeSession = async () => {
-      if (!sessionClosed) {
-        sessionClosed = true;
-        await session.close();
-      }
-    };
-
-    try {
-      let providerData = await provider(session);
-
-      let result = await action({
-        ...providerData,
-        session,
-        getSession: session.getSession.bind(session),
-        getCapabilities: session.getCapabilities.bind(session),
-        getToolManager: session.getToolManager.bind(session),
-        closeSession
-      });
-
-      let timeout = setTimeout(async () => {
-        if (!sessionClosed) {
-          await closeSession();
-        }
-      }, 60000);
-      timeout.unref();
-
-      return result;
-    } catch (error) {
-      await closeSession();
-      throw error;
-    }
-  }
-
-  // ── Pulsar MCP helpers (used by v1) ──────────────────────────────
-
-  async _pulsarCreateMcpConnection(init: MetorialMcpSessionInitServerDeployments[number]) {
-    let session = new MetorialMcpSession(this.pulsarSdk, {
-      serverDeployments: [init]
-    });
-
-    let deployments = await session.getServerDeployments();
-
-    return await session.getClient({
-      deploymentId: deployments[0].id
-    });
-  }
-
-  async _pulsarWithSession<T>(
-    init: MetorialMcpSessionInit,
-    action: (session: MetorialMcpSession) => Promise<T>
-  ): Promise<T> {
-    let session = new MetorialMcpSession(this.pulsarSdk, init);
-    try {
-      return await action(session);
-    } finally {
-      await session.close();
-    }
-  }
-
-  async _pulsarWithProviderSession<P, T>(
-    provider: (session: MetorialMcpSession) => Promise<P>,
+    adapter: MetorialAdapter<P> | (() => MetorialAdapter<P>),
     init: MetorialMcpSessionInit & { streaming?: boolean },
-    action: (
-      input: P & {
-        session: MetorialMcpSession;
-        getSession: MetorialMcpSession['getSession'];
-        getCapabilities: MetorialMcpSession['getCapabilities'];
-        getClient: MetorialMcpSession['getClient'];
-        getServerDeployments: MetorialMcpSession['getServerDeployments'];
-        getToolManager: MetorialMcpSession['getToolManager'];
-      }
-    ) => Promise<T>
+    action: (input: P & { closeSession: () => Promise<void> }) => Promise<T>
   ): Promise<T> {
-    if (init.streaming) {
-      return this.withStreamingSession(provider, init, action);
+    let session = await MetorialMcpSession.create(this.sdk, init);
+    let resolved = typeof adapter === 'function' ? adapter() : adapter;
+    let adapterResult = await resolved.__resolve(session) as Record<string, unknown>;
+
+    if (
+      adapterResult &&
+      typeof adapterResult === 'object' &&
+      'tools' in adapterResult &&
+      typeof adapterResult.tools === 'function'
+    ) {
+      adapterResult.tools = (adapterResult.tools as () => unknown)();
     }
 
-    return this._pulsarWithSession(init, async session => {
-      let providerData = await provider(session);
-
-      return action({
-        ...providerData,
-        session,
-        getSession: session.getSession.bind(session),
-        getCapabilities: session.getCapabilities.bind(session),
-        getClient: session.getClient.bind(session),
-        getServerDeployments: session.getServerDeployments.bind(session),
-        getToolManager: session.getToolManager.bind(session)
-      });
-    });
-  }
-
-  private async withStreamingSession<P, T>(
-    provider: (session: MetorialMcpSession) => Promise<P>,
-    init: MetorialMcpSessionInit,
-    action: (
-      input: P & {
-        session: MetorialMcpSession;
-        getSession: MetorialMcpSession['getSession'];
-        getCapabilities: MetorialMcpSession['getCapabilities'];
-        getClient: MetorialMcpSession['getClient'];
-        getServerDeployments: MetorialMcpSession['getServerDeployments'];
-        getToolManager: MetorialMcpSession['getToolManager'];
-        closeSession: () => Promise<void>;
-      }
-    ) => Promise<T>
-  ): Promise<T> {
-    let session = new MetorialMcpSession(this.pulsarSdk, init);
-    let sessionClosed = false;
-
-    const closeSession = async () => {
-      if (!sessionClosed) {
-        sessionClosed = true;
-        await session.close();
-      }
-    };
-
-    try {
-      let providerData = await provider(session);
-
-      let result = await action({
-        ...providerData,
-        session,
-        getSession: session.getSession.bind(session),
-        getCapabilities: session.getCapabilities.bind(session),
-        getClient: session.getClient.bind(session),
-        getServerDeployments: session.getServerDeployments.bind(session),
-        getToolManager: session.getToolManager.bind(session),
-        closeSession
-      });
-
-      let timeout = setTimeout(async () => {
-        if (!sessionClosed) {
-          await closeSession();
-        }
-      }, 60000);
-      timeout.unref();
-
-      return result;
-    } catch (error) {
-      await closeSession();
-      throw error;
-    }
+    return action({ ...adapterResult as P, closeSession: async () => {} });
   }
 
   async waitForSetupSession(
@@ -420,7 +150,7 @@ export class Metorial {
 
       try {
         let statuses = await Promise.all(
-          sessionList.map(s => this.magnetarSdk.providerDeployments.setupSessions.get(s.id))
+          sessionList.map(s => this.sdk.providerDeployments.setupSessions.get(s.id))
         );
 
         let failed = statuses.filter(s => s.status === 'failed');
@@ -437,8 +167,8 @@ export class Metorial {
       } catch (error) {
         if (
           error instanceof Error &&
-          (error.message.includes('setup session') &&
-            (error.message.includes('failed') || error.message.includes('timed out')))
+          error.message.includes('setup session') &&
+          (error.message.includes('failed') || error.message.includes('timed out'))
         ) {
           throw error;
         }
@@ -447,57 +177,6 @@ export class Metorial {
       }
     }
   }
-
-  async waitForOAuthCompletion(
-    sessions: Array<{ id: string }>,
-    options?: {
-      pollInterval?: number;
-      timeout?: number;
-    }
-  ): Promise<void> {
-    let pollInterval = Math.max(options?.pollInterval ?? 5000, 2000); // minimum 2 seconds
-    let timeout = options?.timeout ?? 600000; // 10 minutes
-    let startTime = Date.now();
-
-    if (sessions.length === 0) {
-      return;
-    }
-
-    while (true) {
-      if (Date.now() - startTime > timeout) {
-        throw new Error(`OAuth authentication timeout after ${timeout / 1000} seconds`);
-      }
-
-      try {
-        let statuses = await Promise.all(
-          sessions.map(session => this.oauth.sessions.get(session.id))
-        );
-
-        let allCompleted = statuses.every(status => status.status === 'completed');
-        if (allCompleted) {
-          return;
-        }
-
-        let failedSessions = statuses.filter(status => status.status === 'failed');
-        if (failedSessions.length > 0) {
-          throw new Error(
-            `OAuth authentication failed for ${failedSessions.length} session(s)`
-          );
-        }
-
-        await new Promise(resolve => setTimeout(resolve, pollInterval));
-      } catch (error) {
-        if (
-          error instanceof Error &&
-          (error.message.includes('OAuth authentication failed') ||
-            error.message.includes('OAuth authentication timeout'))
-        ) {
-          throw error;
-        }
-
-        await new Promise(resolve => setTimeout(resolve, pollInterval));
-      }
-    }
-  }
-
 }
+
+export default Metorial;

@@ -2,7 +2,11 @@ import { MetorialSDK } from '@metorial/core';
 import { JsonSchema, jsonSchemaToOpenApi } from '@metorial/json-schema';
 import { McpUriTemplate } from './lib/mcpUri';
 import { slugify } from './lib/slugify';
-import { MetorialMcpSession } from './mcpSession';
+import { MetorialMcpClient } from './mcpClient';
+
+type McpSession = {
+  getClient(opts: { deploymentId: string }): Promise<MetorialMcpClient>;
+};
 
 type SmallServerDeployment =
   MetorialSDK.ServerCapabilities['mcpServers'][number]['serverDeployment'];
@@ -90,7 +94,7 @@ export class MetorialMcpTool {
   #parameters: JsonSchema;
 
   private constructor(
-    private readonly session: MetorialMcpSession,
+    private readonly session: McpSession,
     opts: {
       id: string;
       name: string;
@@ -151,7 +155,7 @@ export class MetorialMcpTool {
     throw new Error(`[METORIAL MCP]: Unknown parameters format: ${as}`);
   }
 
-  static fromTool(session: MetorialMcpSession, capability: Capability) {
+  static fromTool(session: McpSession, capability: Capability) {
     if (capability.type !== 'tool') {
       throw new Error(
         `[METORIAL MCP]: Expected capability type to be 'tool', got '${capability.type}'`
@@ -184,7 +188,7 @@ export class MetorialMcpTool {
     );
   }
 
-  static fromResourceTemplate(session: MetorialMcpSession, capability: Capability) {
+  static fromResourceTemplate(session: McpSession, capability: Capability) {
     if (capability.type !== 'resource-template') {
       throw new Error(
         `[METORIAL MCP]: Expected capability type to be 'resource-template', got '${capability.type}'`
@@ -230,7 +234,7 @@ export class MetorialMcpTool {
     );
   }
 
-  static fromCapability(session: MetorialMcpSession, capability: Capability): MetorialMcpTool {
+  static fromCapability(session: McpSession, capability: Capability): MetorialMcpTool {
     if (capability.type === 'tool') {
       return MetorialMcpTool.fromTool(session, capability);
     }

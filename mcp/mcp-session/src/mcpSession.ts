@@ -1,132 +1,98 @@
-import { MetorialPulsarCoreSDK, MetorialSDK } from '@metorial/core';
-import { DashboardInstanceSessionsCreateBody } from '@metorial/generated';
+import { MetorialCoreSDK } from '@metorial/core';
+import { SessionsCreateBody } from '@metorial/generated/src/mt_2026_01_01_magnetar';
 import { MetorialMcpClient } from './mcpClient';
 import { Capability } from './mcpTool';
 import { MetorialMcpToolManager } from './mcpToolManager';
-
-export type MetorialMcpSessionInitServerDeployments = (DashboardInstanceSessionsCreateBody & {
-  serverDeploymentIds?: never;
-})['serverDeployments'];
+export type MetorialMcpSessionInitProviders = SessionsCreateBody['providers'];
 
 export type MetorialMcpSessionInit = {
-  serverDeployments: MetorialMcpSessionInitServerDeployments;
+  providers: MetorialMcpSessionInitProviders;
   client?: {
     name?: string;
     version?: string;
   };
 };
 
-export class MetorialMcpSession {
-  #sessionPromise: Promise<MetorialSDK.Session>;
-  #clientPromises = new Map<string, Promise<MetorialMcpClient>>();
+type MetorialSession = Awaited<ReturnType<MetorialCoreSDK['sessions']['create']>>;
+type MetorialSessionProvider = MetorialSession['providers'][number];
+type MetorialProviderDeployment = MetorialSessionProvider['deployment'];
 
-  constructor(
-    private readonly sdk: MetorialPulsarCoreSDK,
-    private readonly init: MetorialMcpSessionInit
-  ) {
-    this.#sessionPromise = this.sdk.sessions.create(init);
+export class MetorialMcpSession {
+  #sessionPromise: Promise<MetorialSession>;
+  #clientPromise: Promise<MetorialMcpClient> | null = null;
+
+  static async create(
+    sdk: MetorialCoreSDK,
+    init: MetorialMcpSessionInit
+  ): Promise<MetorialMcpSession> {
+    return new MetorialMcpSession(sdk, init);
   }
 
-  async getSession(): Promise<MetorialSDK.Session> {
+  constructor(
+    private readonly sdk: MetorialCoreSDK,
+    private readonly init: MetorialMcpSessionInit
+  ) {
+    this.#sessionPromise = this.#createSession();
+  }
+
+  async #createSession(): Promise<MetorialSession> {
+    return this.sdk.sessions.create({ providers: this.init.providers });
+  }
+
+  async getSession(): Promise<MetorialSession> {
     return await this.#sessionPromise;
   }
 
-  async getServerDeployments() {
+  async getProviderDeployments() {
     let session = await this.getSession();
-    return session.serverDeployments;
+    return session.providers
+      .map(provider => provider.deployment)
+      .filter((deployment): deployment is MetorialProviderDeployment => !!deployment?.id);
   }
 
-  async getCapabilities() {
-    let deployments = await this.getServerDeployments();
+  async getCapabilities(): Promise<Capability[]> {
+    let client = await this.getClient();
+    let capabilities: Capability[] = [];
 
-    let capabilities = await this.sdk.servers.capabilities.list({
-      serverDeploymentId: deployments.map(d => d.id)
-    });
+    let deployments = await this.getProviderDeployments();
 
-    let serversMap = new Map(capabilities.mcpServers.map(server => [server.id, server]));
+    try {
+      let tools = await client.listTools();
 
-    let capabilitiesByDeploymentId = new Map<string, Capability[]>();
-    for (let capability of capabilities.tools) {
-      let server = serversMap.get(capability.mcpServerId);
-      if (!server || !server.serverDeployment) continue;
-
-      let current = capabilitiesByDeploymentId.get(server.serverDeployment.id) || [];
-      current.push({
-        type: 'tool',
-        tool: capability,
-        serverDeployment: server.serverDeployment
-      });
-
-      capabilitiesByDeploymentId.set(server.serverDeployment.id, current);
+      capabilities.push(
+        ...tools.tools.map(tool => ({
+          type: 'tool' as const,
+          tool: {
+            name: tool.name,
+            description: tool.description,
+            inputSchema: tool.inputSchema
+          },
+          serverDeployment: deployments[0] as any
+        }))
+      );
+    } catch (error) {
+      // Server may not support tool listing
     }
 
-    for (let capability of capabilities.resourceTemplates) {
-      let server = serversMap.get(capability.mcpServerId);
-      if (!server || !server.serverDeployment) continue;
+    try {
+      let resourceTemplates = await client.listResourceTemplates();
 
-      let current = capabilitiesByDeploymentId.get(server.serverDeployment.id) || [];
-      current.push({
-        type: 'resource-template',
-        resourceTemplate: capability,
-        serverDeployment: server.serverDeployment
-      });
-
-      capabilitiesByDeploymentId.set(server.serverDeployment.id, current);
+      capabilities.push(
+        ...resourceTemplates.resourceTemplates.map(resourceTemplate => ({
+          type: 'resource-template' as const,
+          resourceTemplate: {
+            name: resourceTemplate.name,
+            description: resourceTemplate.description,
+            uriTemplate: resourceTemplate.uriTemplate
+          },
+          serverDeployment: deployments[0] as any
+        }))
+      );
+    } catch (error) {
+      // Server may not support resource templates
     }
 
-    let deploymentCapabilities = await Promise.all(
-      deployments.map(async deployment => {
-        let capabilities = capabilitiesByDeploymentId.get(deployment.id);
-        if (!capabilities) capabilities = [];
-
-        // Metorial has auto-discovered capabilities, so we
-        // don't need to do it again.
-        if (capabilities.length) return capabilities;
-
-        // Get a client to manually fetch capabilities using MCP
-        let client = await this.getClient({ deploymentId: deployment.id });
-
-        try {
-          let tools = await client.listTools();
-
-          capabilities.push(
-            ...tools.tools.map(tool => ({
-              type: 'tool' as const,
-              tool: {
-                name: tool.name,
-                description: tool.description,
-                inputSchema: tool.inputSchema
-              },
-              serverDeployment: deployment as any
-            }))
-          );
-        } catch (error) {
-          // Maybe the server doesn't support tool listing.
-        }
-
-        try {
-          let resourceTemplates = await client.listResourceTemplates();
-
-          capabilities.push(
-            ...resourceTemplates.resourceTemplates.map(resourceTemplate => ({
-              type: 'resource-template' as const,
-              resourceTemplate: {
-                name: resourceTemplate.name,
-                description: resourceTemplate.description,
-                uriTemplate: resourceTemplate.uriTemplate
-              },
-              serverDeployment: deployment as any
-            }))
-          );
-        } catch (error) {
-          // Maybe the server doesn't support resource templates.
-        }
-
-        return capabilities;
-      })
-    );
-
-    return Array.from(deploymentCapabilities.values()).flat();
+    return capabilities;
   }
 
   async getToolManager() {
@@ -134,42 +100,20 @@ export class MetorialMcpSession {
   }
 
   async close() {
-    await Promise.all(
-      Array.from(this.#clientPromises.values()).map(clientPromise =>
-        clientPromise.then(client => client.close())
-      )
-    );
+    // noop — session cleanup is handled by the server
   }
 
-  async getClient(opts: { deploymentId: string }) {
-    if (!this.#clientPromises.has(opts.deploymentId)) {
+  async getClient(opts?: { deploymentId?: string }) {
+    if (!this.#clientPromise) {
       let session = await this.getSession();
+      let connectionUrl = `${session.connectionUrl}?key=${session.clientSecret}`;
 
-      this.#clientPromises.set(
-        opts.deploymentId,
-        MetorialMcpClient.create(session, {
-          host: this.mcpHost,
-          deploymentId: opts.deploymentId,
-          clientName: this.init.client?.name,
-          clientVersion: this.init.client?.version
-        })
-      );
+      this.#clientPromise = MetorialMcpClient.createFromUrl(connectionUrl, {
+        clientName: this.init.client?.name,
+        clientVersion: this.init.client?.version
+      });
     }
 
-    return await this.#clientPromises.get(opts.deploymentId)!;
-  }
-
-  private get mcpHost() {
-    if (this.sdk._config.mcpHost) return this.sdk._config.mcpHost;
-
-    let host = this.sdk._config.apiHost ?? 'https://api.metorial.com';
-
-    if (host.startsWith('https://api.metorial')) {
-      return host.replace('https://api.metorial', 'https://mcp.metorial');
-    }
-
-    let url = new URL(host);
-    url.port = '3311';
-    return url.toString();
+    return await this.#clientPromise;
   }
 }

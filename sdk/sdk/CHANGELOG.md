@@ -1,5 +1,23 @@
 # @metorial/sdk
 
+## 2.1.2
+
+### Patch Changes
+
+- Return tools as object in withProviderSession for backwards compatibility
+
+## 2.1.1
+
+### Patch Changes
+
+- Fix withProviderSession to handle adapter functions from createMcpSdk
+
+## 2.1.0
+
+### Minor Changes
+
+- Change withProviderSession flow to direct session use
+
 ## 2.0.2
 
 ### Patch Changes

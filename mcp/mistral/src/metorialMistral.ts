@@ -1,11 +1,11 @@
 import { createMcpSdk } from '@metorial/mcp-sdk-utils';
 import { Tool, ToolCall, ToolMessage } from '@mistralai/mistralai/models/components';
 
-export let metorialMistral = createMcpSdk()(async ({ tools }) => {
+export let metorialMistral = createMcpSdk(async ({ tools }) => {
   let toolList = tools.getTools();
 
   return {
-    tools: toolList.map(t => ({
+    tools: () => toolList.map(t => ({
       type: 'function' as const,
       function: {
         name: t.id,
