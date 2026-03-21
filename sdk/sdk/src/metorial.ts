@@ -1,7 +1,4 @@
-import {
-  MetorialCoreSDK,
-  createMetorialCoreSDK
-} from '@metorial/core';
+import { MetorialCoreSDK, createMetorialCoreSDK } from '@metorial/core';
 import {
   MetorialMcpSession,
   MetorialMcpSessionInit,
@@ -116,8 +113,18 @@ export class Metorial {
   ): Promise<T> {
     let session = await MetorialMcpSession.create(this.sdk, init);
     let resolved = typeof adapter === 'function' ? adapter() : adapter;
-    let adapterResult = await resolved.__resolve(session);
-    return action({ ...adapterResult, closeSession: async () => {} });
+    let adapterResult = await resolved.__resolve(session) as Record<string, unknown>;
+
+    if (
+      adapterResult &&
+      typeof adapterResult === 'object' &&
+      'tools' in adapterResult &&
+      typeof adapterResult.tools === 'function'
+    ) {
+      adapterResult.tools = (adapterResult.tools as () => unknown)();
+    }
+
+    return action({ ...adapterResult as P, closeSession: async () => {} });
   }
 
   async waitForSetupSession(
@@ -160,8 +167,8 @@ export class Metorial {
       } catch (error) {
         if (
           error instanceof Error &&
-          (error.message.includes('setup session') &&
-            (error.message.includes('failed') || error.message.includes('timed out')))
+          error.message.includes('setup session') &&
+          (error.message.includes('failed') || error.message.includes('timed out'))
         ) {
           throw error;
         }

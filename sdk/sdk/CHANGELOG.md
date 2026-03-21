@@ -1,5 +1,11 @@
 # @metorial/sdk
 
+## 2.1.2
+
+### Patch Changes
+
+- Return tools as object in withProviderSession for backwards compatibility
+
 ## 2.1.1
 
 ### Patch Changes
