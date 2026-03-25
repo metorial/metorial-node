@@ -1,8 +1,8 @@
 import { createMcpSdk } from '@metorial/mcp-sdk-utils';
 import { tool } from 'langchain';
 
-export let metorialLangchain = createMcpSdk()(async ({ tools }) => ({
-  tools: tools.getTools().map(t => {
+export let metorialLangchain = createMcpSdk(async ({ tools }) => ({
+  tools: () => tools.getTools().map(t => {
     let parameters = t.getParametersAs('json-schema');
 
     if (parameters && typeof parameters === 'object' && !parameters.type) {

@@ -1,45 +1,19 @@
-import {
-  MetorialMcpSession,
-  MetorialMcpSessionInit,
-  MetorialMcpToolManager
-} from '@metorial/mcp-session';
+import { MetorialMcpToolManager } from '@metorial/mcp-session';
 
-export interface McpSessionLike {
-  getToolManager(): Promise<MetorialMcpToolManager>;
-}
+type MetorialSession = { getToolManager(): Promise<MetorialMcpToolManager> };
 
-export interface McpSDK {
-  mcp: {
-    createSession(init: MetorialMcpSessionInit): MetorialMcpSession;
-  };
+export interface MetorialAdapter<T> {
+  __resolve(session: MetorialSession): Promise<T>;
 }
 
 export let createMcpSdk =
-  <I = void>() =>
   <T>(
-    handler: (d: {
-      session: McpSessionLike;
-      tools: MetorialMcpToolManager;
-      input: I;
-    }) => Promise<T>
-  ) => {
-    let ofSession = async (session: McpSessionLike, input: I) => {
+    handler: (d: { tools: MetorialMcpToolManager }) => Promise<T>
+  ): (() => MetorialAdapter<T>) => {
+    let resolve = async (session: MetorialSession) => {
       let tools = await session.getToolManager();
-
-      return handler({
-        session,
-        tools,
-        input
-      });
+      return handler({ tools });
     };
 
-    let ofSdk = async (sdk: McpSDK, init: MetorialMcpSessionInit, input: I) => {
-      let session = sdk.mcp.createSession(init);
-      return ofSession(session, input as I);
-    };
-
-    return Object.assign(ofSession, {
-      ofSession,
-      ofSdk
-    });
+    return () => ({ __resolve: resolve });
   };

@@ -1,6 +1,6 @@
 {
   "name": "@metorial/ai-sdk",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "author": "Metorial Inc.",
   "license": "MIT",
   "type": "module",
@@ -35,9 +35,9 @@
     "dist"
   ],
   "dependencies": {
-    "@metorial/core": "^2.0.0",
-    "@metorial/mcp-session": "^2.0.0",
-    "@metorial/mcp-sdk-utils": "^2.0.0",
+    "@metorial/core": "^2.1.0",
+    "@metorial/mcp-session": "^2.1.0",
+    "@metorial/mcp-sdk-utils": "^2.1.0",
     "zod": "^3.22.4"
   },
   "peerDependencies": {

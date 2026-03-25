@@ -1,8 +1,7 @@
-export * from './sdk';
-export { createMetorialMagnetarCoreSDK } from './magnetar';
-export type { MetorialMagnetarCoreSDK } from './magnetar';
-export { magnetarSdkBuilder } from './magnetarBuilder';
-export type { MetorialMagnetarSDKConfig } from './magnetarBuilder';
+export { createMetorialCoreSDK } from './magnetar';
+export type { MetorialCoreSDK } from './magnetar';
+export { magnetarSdkBuilder as metorialSdkBuilder } from './magnetarBuilder';
+export type { MetorialMagnetarSDKConfig as MetorialSDKConfig } from './magnetarBuilder';
 
 export type {
   InstanceGetOutput,
@@ -93,7 +92,7 @@ export namespace MetorialSDK {
   export type SessionConnectionsListQuery = MetorialGenerated.SessionsConnectionsListQuery;
 }
 
-export namespace MetorialMagnetarSDK {
+export namespace MetorialTypes {
   export type SessionsCreateBody = MagnetarGenerated.SessionsCreateBody;
   export type SessionsCreateOutput = MagnetarGenerated.SessionsCreateOutput;
   export type SessionsGetOutput = MagnetarGenerated.SessionsGetOutput;

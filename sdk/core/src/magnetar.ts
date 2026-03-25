@@ -38,7 +38,7 @@ import {
 } from '@metorial/generated/src/mt_2026_01_01_magnetar';
 import { MetorialKeyPrefix, magnetarSdkBuilder } from './magnetarBuilder';
 
-export let createMetorialMagnetarCoreSDK = magnetarSdkBuilder.build(
+export let createMetorialCoreSDK = magnetarSdkBuilder.build(
   (soft: {
     apiKey: `${MetorialKeyPrefix}${string}` | string;
     apiVersion?: '2026-01-01-magnetar';
@@ -109,4 +109,4 @@ export let createMetorialMagnetarCoreSDK = magnetarSdkBuilder.build(
   })
 }));
 
-export type MetorialMagnetarCoreSDK = ReturnType<typeof createMetorialMagnetarCoreSDK>;
+export type MetorialCoreSDK = ReturnType<typeof createMetorialCoreSDK>;

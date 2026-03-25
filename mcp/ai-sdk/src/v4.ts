@@ -1,8 +1,8 @@
 import { createMcpSdk } from '@metorial/mcp-sdk-utils';
 import { jsonSchema } from 'ai';
 
-export let metorialAiSdk = createMcpSdk()(async ({ tools }) => ({
-  tools: Object.fromEntries([
+export let metorialAiSdk = createMcpSdk(async ({ tools }) => ({
+  tools: () => Object.fromEntries([
     ...tools.getTools().map(t => {
       let parameters = t.getParametersAs('json-schema') as any;
 
