@@ -56,6 +56,7 @@ export type ManagementInstanceProviderDeploymentsSetupSessionsGetOutput = {
     id: string;
     type: 'oauth';
     isDefault: boolean;
+    isManaged: boolean;
     name: string | null;
     description: string | null;
     metadata: Record<string, any> | null;
@@ -90,6 +91,7 @@ export type ManagementInstanceProviderDeploymentsSetupSessionsGetOutput = {
       id: string;
       type: 'oauth';
       isDefault: boolean;
+      isManaged: boolean;
       name: string | null;
       description: string | null;
       metadata: Record<string, any> | null;
@@ -168,7 +170,7 @@ export type ManagementInstanceProviderDeploymentsSetupSessionsGetOutput = {
     createdAt: Date;
     updatedAt: Date;
   } | null;
-  uiMode: string;
+  uiMode: 'metorial_elements' | 'dashboard_embeddable';
   redirectUrl: string | null;
   createdAt: Date;
   updatedAt: Date;
@@ -252,6 +254,7 @@ export let mapManagementInstanceProviderDeploymentsSetupSessionsGetOutput =
         id: mtMap.objectField('id', mtMap.passthrough()),
         type: mtMap.objectField('type', mtMap.passthrough()),
         isDefault: mtMap.objectField('is_default', mtMap.passthrough()),
+        isManaged: mtMap.objectField('is_managed', mtMap.passthrough()),
         name: mtMap.objectField('name', mtMap.passthrough()),
         description: mtMap.objectField('description', mtMap.passthrough()),
         metadata: mtMap.objectField('metadata', mtMap.passthrough()),
@@ -294,6 +297,7 @@ export let mapManagementInstanceProviderDeploymentsSetupSessionsGetOutput =
             id: mtMap.objectField('id', mtMap.passthrough()),
             type: mtMap.objectField('type', mtMap.passthrough()),
             isDefault: mtMap.objectField('is_default', mtMap.passthrough()),
+            isManaged: mtMap.objectField('is_managed', mtMap.passthrough()),
             name: mtMap.objectField('name', mtMap.passthrough()),
             description: mtMap.objectField('description', mtMap.passthrough()),
             metadata: mtMap.objectField('metadata', mtMap.passthrough()),
