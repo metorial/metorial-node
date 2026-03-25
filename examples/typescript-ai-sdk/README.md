@@ -1,11 +1,11 @@
 # Metorial + Vercel AI SDK (v5/v6)
 
-Uses the [Vercel AI SDK](https://sdk.vercel.ai/) with Anthropic Claude to stream AI responses with MCP tool calls via [Metorial](https://metorial.com). Works with both AI SDK v5 and v6 (same `inputSchema` tool format). Includes commented-out OAuth code you can enable to add providers like GitHub or Slack.
+Uses the [Vercel AI SDK](https://sdk.vercel.ai/) with OpenAI to stream AI responses with MCP tool calls via [Metorial](https://metorial.com). Works with both AI SDK v5 and v6 (same `inputSchema` tool format). Includes commented-out OAuth code you can enable to add providers like GitHub or Slack.
 
 ## Environment variables
 
 - `METORIAL_API_KEY` — get one at [platform.metorial.com](https://platform.metorial.com)
-- `ANTHROPIC_API_KEY` — from [console.anthropic.com](https://console.anthropic.com)
+- `OPENAI_API_KEY` — from [platform.openai.com](https://platform.openai.com)
 
 ## Run
 
@@ -17,7 +17,7 @@ bun start
 ## How it works
 
 ```typescript
-import { anthropic } from '@ai-sdk/anthropic';
+import { openai } from '@ai-sdk/openai';
 import { metorialAiSdk } from '@metorial/ai-sdk';
 import { Metorial } from 'metorial';
 import { streamText, stepCountIs } from 'ai';
@@ -54,11 +54,11 @@ let result = await metorial.withProviderSession(
     streaming: true
   },
   async ({ tools, closeSession }) => {
-    // `streamText()` handles the tool call loop automatically. When Claude wants to use a tool,
+    // `streamText()` handles the tool call loop automatically. When the model wants to use a tool,
     // the AI SDK calls it and feeds the result back. `onStepFinish` logs which tools were called
     // at each step. Always call `closeSession()` when done to free server-side resources.
     let result = streamText({
-      model: anthropic('claude-sonnet-4-20250514'),
+      model: openai('gpt-4o-mini'),
       prompt:
         'Search the web for the latest news about AI agents and summarize the top 3 stories.',
       stopWhen: stepCountIs(10),

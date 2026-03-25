@@ -19,7 +19,7 @@ AI SDK v4 uses `parameters` in tool definitions, while v5+ uses `inputSchema`. T
 ## Environment variables
 
 - `METORIAL_API_KEY` — get one at [platform.metorial.com](https://platform.metorial.com)
-- `ANTHROPIC_API_KEY` — from [console.anthropic.com](https://console.anthropic.com)
+- `OPENAI_API_KEY` — from [platform.openai.com](https://platform.openai.com)
 
 ## Run
 

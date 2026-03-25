@@ -7,12 +7,12 @@
     "start": "bun ./src/index.ts"
   },
   "dependencies": {
-    "@metorial/langchain": "latest",
-    "metorial": "latest",
-    "langchain": "^1.0.0",
-    "@langchain/anthropic": "^0.3.0",
+    "@langchain/core": "^0.3.0",
     "@langchain/langgraph": "^0.2.0",
-    "@langchain/core": "^0.3.0"
+    "@langchain/openai": "^1.3.1",
+    "@metorial/langchain": "latest",
+    "langchain": "^1.0.0",
+    "metorial": "latest"
   },
   "devDependencies": {
     "@types/bun": "latest"
