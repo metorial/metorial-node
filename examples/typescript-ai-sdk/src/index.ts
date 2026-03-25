@@ -1,4 +1,4 @@
-import { anthropic } from '@ai-sdk/anthropic';
+import { openai } from '@ai-sdk/openai';
 import { metorialAiSdk } from '@metorial/ai-sdk';
 import Metorial from 'metorial';
 import { streamText, stepCountIs } from 'ai';
@@ -19,7 +19,7 @@ let session = await metorial.connect({
 });
 
 let result = streamText({
-  model: anthropic('claude-sonnet-4-20250514'),
+  model: openai('gpt-4o-mini'),
   prompt:
     'Search the web for the latest news about AI agents and summarize the top 3 stories.',
   stopWhen: stepCountIs(10),

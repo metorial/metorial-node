@@ -63,31 +63,23 @@ let deployment = await metorial.providerDeployments.create({
   providerId: 'metorial-search'
 });
 
-let result = await metorial.withProviderSession(
-  metorialAiSdk,
-  {
-    providers: [{ providerDeploymentId: deployment.id }],
-    streaming: true
-  },
-  async ({ tools, closeSession }) => {
-    let result = streamText({
-      model: anthropic('claude-sonnet-4-20250514'),
-      prompt:
-        'Search the web for the latest news about AI agents and summarize the top 3 stories.',
-      stopWhen: stepCountIs(10),
-      tools,
-      onStepFinish: step => {
-        if (step.toolCalls?.length) {
-          console.log(step.toolCalls.map(tc => tc.toolName).join(', '));
-        }
-      },
-      onFinish: async () => {
-        await closeSession();
-      }
-    });
-    return result;
+let session = await metorial.connect({
+  adapter: metorialAiSdk(),
+  providers: [{ providerDeploymentId: deployment.id }]
+});
+
+let result = streamText({
+  model: anthropic('claude-sonnet-4-20250514'),
+  prompt:
+    'Search the web for the latest news about AI agents and summarize the top 3 stories.',
+  stopWhen: stepCountIs(10),
+  tools: session.tools(),
+  onStepFinish: step => {
+    if (step.toolCalls?.length) {
+      console.log(step.toolCalls.map(tc => tc.toolName).join(', '));
+    }
   }
-);
+});
 
 for await (let part of result.textStream) {
   process.stdout.write(part);
@@ -169,21 +161,18 @@ let completed = await metorial.providerDeployments.setupSessions.waitForCompleti
   setupSession
 ]);
 
-// 4. Use the auth config in a session
-await metorial.withProviderSession(
-  metorialAiSdk,
-  {
-    providers: [
-      {
-        providerDeploymentId: 'your-slack-deployment-id',
-        providerAuthConfigId: completed[0].authConfig!.id
-      }
-    ]
-  },
-  async ({ tools }) => {
-    // Use tools...
-  }
-);
+// 4. Use the auth config in a connected session
+let session = await metorial.connect({
+  adapter: metorialAiSdk(),
+  providers: [
+    {
+      providerDeploymentId: 'your-slack-deployment-id',
+      providerAuthConfigId: completed[0]!.authConfig!.id
+    }
+  ]
+});
+
+// Pass session.tools() to your model SDK
 ```
 
 For a multi-provider OAuth example, see [`examples/typescript-ai-sdk/`](examples/typescript-ai-sdk/).
@@ -214,14 +203,12 @@ providers: [
 Pre-configure provider combinations on the [dashboard](https://platform.metorial.com), then reference them by ID. This is useful when you want to manage which providers and auth configs are used without changing code — for example, bundling Metorial Search + GitHub + Slack into a single template that your team can reuse:
 
 ```typescript
-await metorial.withProviderSession(
-  metorialAiSdk,
-  { sessionTemplate: 'your-template-id' },
-  async ({ tools, closeSession }) => {
-    // All providers from the template are available as tools
-    /* ... */
-  }
-);
+let session = await metorial.connect({
+  adapter: metorialAiSdk(),
+  providers: [{ sessionTemplateId: 'your-template-id' }]
+});
+
+// All providers from the template are available via session.tools()
 ```
 
 See [`examples/typescript-provider-config/`](examples/typescript-provider-config/) for a full example of session templates and other provider configuration patterns.
@@ -257,9 +244,9 @@ let deployment = await metorial.providerDeployments.create({
 
 ## Session Options
 
-- **Streaming**: Pass `streaming: true` in the session options when using streaming APIs (like AI SDK's `streamText`). See the Quick Start for a full example.
-- **Closing sessions**: Always call `closeSession()` when done to free resources. For streaming, call it in the `onFinish` callback.
-- **Direct sessions**: Use `metorial.withSession()` instead of `withProviderSession()` for raw MCP access without an LLM adapter.
+- **Streaming**: Pass `session.tools()` into streaming APIs like AI SDK's `streamText()`. See the Quick Start for a full example.
+- **Templates**: You can include `{ sessionTemplateId: '...' }` in the `providers` array to load a dashboard-managed session template.
+- **Raw MCP access**: If you need lower-level MCP session lifecycle control instead of an adapter-backed `connect()` session, see the lower-level SDK docs.
 
 ## Examples
 
@@ -281,7 +268,7 @@ Check out the `examples/` directory for more comprehensive examples:
 
 ## LLM Integration Examples
 
-All LLM integrations follow the same `withProviderSession` pattern. See [`examples/`](examples/) for complete examples with every supported LLM.
+All LLM integrations follow the same `metorial.connect({ adapter, providers })` pattern. See [`examples/`](examples/) for complete examples with every supported LLM.
 
 ### Anthropic (Claude)
 
@@ -291,26 +278,23 @@ import Anthropic from '@anthropic-ai/sdk';
 
 let anthropic = new Anthropic();
 
-await metorial.withProviderSession(
-  metorialAnthropic,
-  { providers: [{ providerDeploymentId: deployment.id }] },
-  async ({ tools, callTools, closeSession }) => {
-    let response = await anthropic.messages.create({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 4096,
-      messages: [{ role: 'user', content: 'Search for the latest AI news.' }],
-      tools
-    });
+let session = await metorial.connect({
+  adapter: metorialAnthropic(),
+  providers: [{ providerDeploymentId: deployment.id }]
+});
 
-    let toolCalls = response.content.filter(c => c.type === 'tool_use');
-    if (toolCalls.length > 0) {
-      let toolResponses = await callTools(toolCalls);
-      // continue the conversation with tool results...
-    }
+let response = await anthropic.messages.create({
+  model: 'claude-sonnet-4-20250514',
+  max_tokens: 4096,
+  messages: [{ role: 'user', content: 'Search for the latest AI news.' }],
+  tools: session.tools()
+});
 
-    await closeSession();
-  }
-);
+let toolCalls = response.content.filter(c => c.type === 'tool_use');
+if (toolCalls.length > 0) {
+  let toolResponses = await session.callTools(toolCalls);
+  // continue the conversation with tool results...
+}
 ```
 
 ### OpenAI-Compatible (DeepSeek, TogetherAI, XAI)
@@ -325,20 +309,18 @@ let client = new OpenAI({
   baseURL: 'https://api.deepseek.com'
 });
 
-await metorial.withProviderSession(
-  metorialDeepseek,
-  { providers: [{ providerDeploymentId: deployment.id }] },
-  async ({ tools, closeSession }) => {
-    let response = await client.chat.completions.create({
-      model: 'deepseek-chat',
-      messages: [{ role: 'user', content: 'Search for the latest AI news.' }],
-      tools
-    });
-    // ... handle tool_calls from response
+let session = await metorial.connect({
+  adapter: metorialDeepseek(),
+  providers: [{ providerDeploymentId: deployment.id }]
+});
 
-    await closeSession();
-  }
-);
+let response = await client.chat.completions.create({
+  model: 'deepseek-chat',
+  messages: [{ role: 'user', content: 'Search for the latest AI news.' }],
+  tools: session.tools()
+});
+
+// ... handle tool_calls from response via session.callTools()
 ```
 
 <details>
@@ -359,10 +341,14 @@ The v1 API is still accessible via `metorial.v1.*`.
 ## Error Handling
 
 ```typescript
+import { metorialAiSdk } from '@metorial/ai-sdk';
 import { MetorialAPIError } from 'metorial';
 
 try {
-  await metorial.withProviderSession(/* ... */);
+  await metorial.connect({
+    adapter: metorialAiSdk(),
+    providers: [{ providerDeploymentId: 'your-deployment-id' }]
+  });
 } catch (error) {
   if (error instanceof MetorialAPIError) {
     console.error(`API Error: ${error.message} (Status: ${error.status})`);

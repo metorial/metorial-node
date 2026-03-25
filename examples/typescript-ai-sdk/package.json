@@ -7,10 +7,10 @@
     "start": "bun ./src/index.ts"
   },
   "dependencies": {
+    "@ai-sdk/openai": "^3.0.48",
     "@metorial/ai-sdk": "latest",
-    "metorial": "latest",
-    "@ai-sdk/anthropic": "^3.0.0",
-    "ai": "^6.0.0"
+    "ai": "^6.0.0",
+    "metorial": "latest"
   },
   "devDependencies": {
     "@types/bun": "latest"
