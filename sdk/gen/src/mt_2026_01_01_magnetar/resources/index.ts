@@ -1,3 +1,4 @@
+export * from './callbacks';
 export * from './consumer';
 export * from './custom-providers';
 export * from './dashboard';
@@ -6,7 +7,6 @@ export * from './files';
 export * from './identities';
 export * from './identity-actors';
 export * from './instance';
-export * from './instances';
 export * from './magic-mcp-groups';
 export * from './magic-mcp-servers';
 export * from './magic-mcp-sessions';
@@ -24,5 +24,4 @@ export * from './providers';
 export * from './publishers';
 export * from './session-templates';
 export * from './sessions';
-export * from './token';
 export * from './tool-calls';
