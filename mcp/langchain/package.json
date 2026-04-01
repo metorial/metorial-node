@@ -1,6 +1,6 @@
 {
   "name": "@metorial/langchain",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "author": "Metorial Inc.",
   "license": "MIT",
   "type": "module",
@@ -35,9 +35,9 @@
     "dist"
   ],
   "dependencies": {
-    "@metorial/core": "^2.1.0",
-    "@metorial/mcp-sdk-utils": "^2.1.0",
-    "@metorial/mcp-session": "^2.1.0",
+    "@metorial/core": "^2.1.1",
+    "@metorial/mcp-sdk-utils": "^2.1.1",
+    "@metorial/mcp-session": "^2.1.2",
     "zod": "^3.22.4"
   },
   "peerDependencies": {

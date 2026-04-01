@@ -1,6 +1,6 @@
 {
   "name": "@metorial/mcp-session",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "author": "Metorial Inc.",
   "license": "MIT",
   "type": "module",
@@ -29,10 +29,10 @@
     "dist"
   ],
   "dependencies": {
-    "@metorial/json-schema": "^2.1.0",
-    "@metorial/core": "^2.1.0",
-    "@metorial/generated": "^2.1.0",
-    "@metorial/util-endpoint": "^2.1.0",
+    "@metorial/json-schema": "^2.1.1",
+    "@metorial/core": "^2.1.1",
+    "@metorial/generated": "^2.1.1",
+    "@metorial/util-endpoint": "^2.1.1",
     "@modelcontextprotocol/sdk": "^1.12.1",
     "eventsource-parser": "^3.0.0"
   },

@@ -1,6 +1,6 @@
 {
   "name": "@metorial/generated",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "author": "Metorial Inc.",
   "license": "MIT",
   "type": "module",
@@ -42,7 +42,7 @@
   ],
   "dependencies": {
     "jose": "^5.9.6",
-    "@metorial/util-endpoint": "^2.1.0",
+    "@metorial/util-endpoint": "^2.1.1",
     "@metorial/util-resource-mapper": "^2.1.0"
   },
   "devDependencies": {

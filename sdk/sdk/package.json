@@ -1,6 +1,6 @@
 {
   "name": "@metorial/sdk",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "author": "Metorial Inc.",
   "license": "MIT",
   "type": "module",
@@ -29,17 +29,17 @@
     "dist"
   ],
   "dependencies": {
-    "@metorial/core": "^2.1.0",
-    "@metorial/mcp-session": "^2.1.0",
-    "@metorial/util-endpoint": "^2.1.0",
-    "@metorial/anthropic": "^2.1.0",
-    "@metorial/deepseek": "^2.1.0",
-    "@metorial/google": "^2.1.0",
-    "@metorial/mistral": "^2.1.0",
-    "@metorial/openai": "^2.1.0",
-    "@metorial/openai-compatible": "^2.1.0",
-    "@metorial/togetherai": "^2.1.0",
-    "@metorial/xai": "^2.1.0"
+    "@metorial/core": "^2.1.1",
+    "@metorial/mcp-session": "^2.1.2",
+    "@metorial/util-endpoint": "^2.1.1",
+    "@metorial/anthropic": "^2.1.1",
+    "@metorial/deepseek": "^2.1.1",
+    "@metorial/google": "^2.1.1",
+    "@metorial/mistral": "^2.1.1",
+    "@metorial/openai": "^2.1.1",
+    "@metorial/openai-compatible": "^2.1.1",
+    "@metorial/togetherai": "^2.1.1",
+    "@metorial/xai": "^2.1.1"
   },
   "devDependencies": {
     "@anthropic-ai/sdk": "^0.30.0",
