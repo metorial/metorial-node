@@ -25,8 +25,8 @@ bun add @metorial/togetherai
 ## Usage
 
 ```typescript
-import { metorialTogetherAI } from '@metorial/togetherai';
-import { Metorial } from 'metorial';
+import { metorialTogetherAi } from '@metorial/togetherai';
+import Metorial from 'metorial';
 import OpenAI from 'openai';
 
 let metorial = new Metorial({
@@ -38,37 +38,34 @@ let togetherai = new OpenAI({
   baseURL: 'https://api.together.xyz/v1'
 });
 
-await metorial.withProviderSession(
-  metorialTogetherAI,
+let session = await metorial.connect({
+  adapter: metorialTogetherAi(),
+  providers: [{ providerDeploymentId: 'your-provider-deployment-id' }]
+});
+
+let messages = [
   {
-    serverDeployments: ['your-server-deployment-id']
-  },
-  async session => {
-    let messages = [
-      {
-        role: 'user',
-        content:
-          'Summarize the README.md file of the metorial/websocket-explorer repository on GitHub?'
-      }
-    ];
-
-    let response = await togetherai.chat.completions.create({
-      model: 'mistralai/Mistral-7B-Instruct-v0.2',
-      messages,
-      tools: session.tools
-    });
-
-    let choice = response.choices[0]!;
-    let toolCalls = choice.message.tool_calls;
-
-    if (toolCalls && toolCalls.length > 0) {
-      let toolResponses = await session.callTools(toolCalls);
-      console.log('Tool responses:', toolResponses);
-    } else {
-      console.log(choice.message.content);
-    }
+    role: 'user',
+    content:
+      'Summarize the README.md file of the metorial/websocket-explorer repository on GitHub?'
   }
-);
+];
+
+let response = await togetherai.chat.completions.create({
+  model: 'Qwen/Qwen3.5-397B-A17B',
+  messages,
+  tools: session.tools()
+});
+
+let choice = response.choices[0]!;
+let toolCalls = choice.message.tool_calls;
+
+if (toolCalls && toolCalls.length > 0) {
+  let toolResponses = await session.callTools(toolCalls);
+  console.log('Tool responses:', toolResponses);
+} else {
+  console.log(choice.message.content);
+}
 ```
 
 ## Dependencies

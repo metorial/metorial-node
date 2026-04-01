@@ -1,7 +1,7 @@
 import { openai } from '@ai-sdk/openai';
 import { metorialAiSdk } from '@metorial/ai-sdk/v4';
 import Metorial from 'metorial';
-import { streamText, stepCountIs } from 'ai';
+import { streamText } from 'ai';
 
 let metorial = new Metorial({
   apiKey: process.env.METORIAL_API_KEY!,
@@ -24,7 +24,7 @@ let session = await metorial.connect({
 let result = streamText({
   model: openai('gpt-4o-mini'),
   prompt: 'Search the web for the latest news about AI agents and summarize the top 3 stories.',
-  stopWhen: stepCountIs(10),
+  maxSteps: 10,
   tools: session.tools(),
   onStepFinish: (step) => {
     if (step.toolCalls?.length) {

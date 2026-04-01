@@ -14,7 +14,7 @@ import { metorialAiSdk } from '@metorial/ai-sdk';
 import { metorialAiSdk } from '@metorial/ai-sdk/v4';
 ```
 
-AI SDK v4 uses `parameters` in tool definitions, while v5+ uses `inputSchema`. The default adapter targets v5+/v6. Use this `/v4` subpath if your project is on AI SDK v4. Everything else — `streamText()`, `stepCountIs()`, session management, OAuth — is identical.
+AI SDK v4 uses `parameters` in tool definitions, while v5+ uses `inputSchema`. The default adapter targets v5+/v6. Use this `/v4` subpath if your project is on AI SDK v4. The example still uses `streamText()`, but the step limit is configured with `maxSteps` instead of the newer `stepCountIs()` helper.
 
 ## Environment variables
 

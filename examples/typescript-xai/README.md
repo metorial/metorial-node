@@ -29,14 +29,12 @@ let xai = new OpenAI({
   baseURL: 'https://api.x.ai/v1'
 });
 
-// The session and tool call loop follow the same pattern as OpenAI. Tools are deduplicated
-// by function name before being passed to Grok, and `session.callTools()` handles execution.
-let uniqueTools = Array.from(new Map(session.tools.map(t => [t.function.name, t])).values());
-
+// The session and tool call loop follow the same pattern as OpenAI, and
+// `session.callTools()` handles tool execution.
 let response = await xai.chat.completions.create({
-  model: 'grok-2-latest',
+  model: 'grok-3-mini-fast',
   messages,
-  tools: uniqueTools
+  tools: session.tools()
 });
 
 // ... check for tool_calls, execute via session.callTools(), loop
