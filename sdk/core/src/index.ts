@@ -1,7 +1,7 @@
-export { createMetorialCoreSDK } from './magnetar';
-export type { MetorialCoreSDK } from './magnetar';
-export { magnetarSdkBuilder as metorialSdkBuilder } from './magnetarBuilder';
-export type { MetorialMagnetarSDKConfig as MetorialSDKConfig } from './magnetarBuilder';
+export { createMetorialCoreSDK } from './core';
+export type { MetorialCoreSDK } from './core';
+export { coreSdkBuilder as metorialSdkBuilder } from './coreBuilder';
+export type { MetorialCoreSDKConfig as MetorialSDKConfig } from './coreBuilder';
 
 export type {
   InstanceGetOutput,

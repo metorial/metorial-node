@@ -1,5 +1,25 @@
 # @metorial/sdk
 
+## 2.1.3
+
+### Patch Changes
+
+- ff8b90e: Change withProviderSession flow to direct session use
+- Removes the mcpHost configuration path and related host-derivation logic in the core/sdk constructors
+- Updated dependencies [ff8b90e]
+- Updated dependencies
+  - @metorial/util-endpoint@2.1.1
+  - @metorial/openai-compatible@2.1.1
+  - @metorial/mcp-session@2.1.2
+  - @metorial/togetherai@2.1.1
+  - @metorial/anthropic@2.1.1
+  - @metorial/deepseek@2.1.1
+  - @metorial/mistral@2.1.1
+  - @metorial/google@2.1.1
+  - @metorial/openai@2.1.1
+  - @metorial/core@2.1.1
+  - @metorial/xai@2.1.1
+
 ## 2.1.2
 
 ### Patch Changes

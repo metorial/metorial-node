@@ -1,5 +1,14 @@
 # metorial
 
+## 2.1.2
+
+### Patch Changes
+
+- ff8b90e: Change withProviderSession flow to direct session use
+- Updated dependencies [ff8b90e]
+- Updated dependencies
+  - @metorial/sdk@2.1.3
+
 ## 2.1.1
 
 ### Patch Changes

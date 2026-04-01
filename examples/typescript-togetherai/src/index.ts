@@ -7,7 +7,7 @@ let metorial = new Metorial({
 });
 
 let togetherai = new OpenAI({
-  apiKey: process.env.TOGETHERAI_API_KEY!,
+  apiKey: process.env.TOGETHERAI_API_KEY || process.env.TOGETHER_API_KEY!,
   baseURL: "https://api.together.xyz/v1",
 });
 
@@ -34,7 +34,7 @@ let messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
 
 for (let i = 0; i < 10; i++) {
   let response = await togetherai.chat.completions.create({
-    model: "mistralai/Mistral-7B-Instruct-v0.2",
+    model: "Qwen/Qwen3.5-397B-A17B",
     messages,
     tools: session.tools(),
   });

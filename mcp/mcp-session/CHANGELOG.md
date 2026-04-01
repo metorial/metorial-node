@@ -1,5 +1,17 @@
 # @metorial/mcp-session
 
+## 2.1.2
+
+### Patch Changes
+
+- ff8b90e: Change withProviderSession flow to direct session use
+- Updated dependencies [ff8b90e]
+- Updated dependencies
+  - @metorial/util-endpoint@2.1.1
+  - @metorial/json-schema@2.1.1
+  - @metorial/core@2.1.1
+  - @metorial/generated@2.1.1
+
 ## 2.1.1
 
 ### Patch Changes

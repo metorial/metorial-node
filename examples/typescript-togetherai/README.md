@@ -5,7 +5,7 @@ Uses [TogetherAI](https://www.together.ai/)-hosted models with [Metorial](https:
 ## Environment variables
 
 - `METORIAL_API_KEY` — get one at [platform.metorial.com](https://platform.metorial.com)
-- `TOGETHERAI_API_KEY` — from [api.together.ai](https://api.together.ai/)
+- `TOGETHERAI_API_KEY` or `TOGETHER_API_KEY` — from [api.together.ai](https://api.together.ai/)
 
 ## Run
 
@@ -25,17 +25,17 @@ import OpenAI from 'openai';
 let metorial = new Metorial({ apiKey: process.env.METORIAL_API_KEY! });
 
 let togetherai = new OpenAI({
-  apiKey: process.env.TOGETHERAI_API_KEY!,
+  apiKey: process.env.TOGETHERAI_API_KEY || process.env.TOGETHER_API_KEY!,
   baseURL: 'https://api.together.xyz/v1'
 });
 
 // The session and tool call loop follow the same pattern as OpenAI. The `metorialTogetherAi`
-// adapter formats tools for Together's API. This example uses `mistralai/Mistral-7B-Instruct-v0.2`,
+// adapter formats tools for Together's API. This example uses `Qwen/Qwen3.5-397B-A17B`,
 // but you can swap in any Together-hosted model that supports function calling.
 let response = await togetherai.chat.completions.create({
-  model: 'mistralai/Mistral-7B-Instruct-v0.2',
+  model: 'Qwen/Qwen3.5-397B-A17B',
   messages,
-  tools: session.tools
+  tools: session.tools()
 });
 ```
 

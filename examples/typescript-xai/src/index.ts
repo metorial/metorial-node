@@ -35,7 +35,7 @@ let messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
 
 for (let i = 0; i < 10; i++) {
   let response = await xai.chat.completions.create({
-    model: 'grok-2-latest',
+    model: 'grok-3-mini-fast',
     messages,
     tools: session.tools()
   });

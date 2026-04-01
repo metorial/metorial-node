@@ -30,39 +30,33 @@ let deployment = await metorial.providerDeployments.create({
   providerId: 'metorial-search'
 });
 
-// Open a session with `metorialLangchain`, which formats MCP tools as LangChain
-// StructuredTool objects. These are compatible with LangGraph's createReactAgent.
-await metorial.withProviderSession(
-  metorialLangchain,
-  { providers: [{ providerDeploymentId: deployment.id }] },
-  async ({ tools }) => {
-    let llm = new ChatAnthropic({
-      model: 'claude-sonnet-4-20250514',
-      apiKey: process.env.ANTHROPIC_API_KEY!
-    });
+let session = await metorial.connect({
+  adapter: metorialLangchain(),
+  providers: [{ providerDeploymentId: deployment.id }]
+});
 
-    // Dedupe tools by name — some MCP providers may expose overlapping tool names.
-    let uniqueTools = Array.from(new Map(tools.map(t => [t.name, t])).values());
+let llm = new ChatAnthropic({
+  model: 'claude-sonnet-4-20250514',
+  apiKey: process.env.ANTHROPIC_API_KEY!
+});
 
-    // createReactAgent builds a LangGraph agent that automatically handles the
-    // tool call loop — it calls tools, feeds results back, and repeats until done.
-    let agent = createReactAgent({ llm, tools: uniqueTools });
+// createReactAgent builds a LangGraph agent that automatically handles the
+// tool call loop — it calls tools, feeds results back, and repeats until done.
+let agent = createReactAgent({ llm, tools: session.tools() });
 
-    // Stream the agent's output. The 'agent' events contain the model's messages.
-    let stream = await agent.stream({
-      messages: [{ role: 'user', content: 'Search the web for the latest AI news.' }]
-    });
+// Stream the agent's output. The 'agent' events contain the model's messages.
+let stream = await agent.stream({
+  messages: [{ role: 'user', content: 'Search the web for the latest AI news.' }]
+});
 
-    for await (let event of stream) {
-      if ('agent' in event) {
-        let msg = event.agent.messages[event.agent.messages.length - 1];
-        if (msg && 'content' in msg && typeof msg.content === 'string') {
-          console.log(msg.content);
-        }
-      }
+for await (let event of stream) {
+  if ('agent' in event) {
+    let msg = event.agent.messages[event.agent.messages.length - 1];
+    if (msg && 'content' in msg && typeof msg.content === 'string') {
+      console.log(msg.content);
     }
   }
-);
+}
 ```
 
 ## Adding OAuth providers

@@ -1,5 +1,11 @@
 # @metorial/util-endpoint
 
+## 2.1.1
+
+### Patch Changes
+
+- ff8b90e: Change withProviderSession flow to direct session use
+
 ## 2.1.0
 
 ### Minor Changes

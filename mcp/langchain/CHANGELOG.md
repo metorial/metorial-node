@@ -1,5 +1,16 @@
 # @metorial/langchain
 
+## 2.1.1
+
+### Patch Changes
+
+- ff8b90e: Change withProviderSession flow to direct session use
+- Updated dependencies [ff8b90e]
+- Updated dependencies
+  - @metorial/mcp-sdk-utils@2.1.1
+  - @metorial/mcp-session@2.1.2
+  - @metorial/core@2.1.1
+
 ## 2.1.0
 
 ### Minor Changes
