@@ -25,12 +25,10 @@ export let createMetorialPulsarCoreSDK = sdkBuilder.build(
     apiVersion?: '2025-01-01-pulsar';
     headers?: Record<string, string>;
     apiHost?: string;
-    mcpHost?: string;
     fetch?: any;
   }) => ({
     ...soft,
     apiHost: soft.apiHost,
-    mcpHost: soft.mcpHost ?? soft.apiHost,
     apiVersion: '2025-01-01-pulsar',
     fetch: soft.fetch
   })

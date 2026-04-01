@@ -14,7 +14,6 @@ export let sdkBuilder = MetorialSDKBuilder.create<
     apiKey: `${MetorialKeyPrefix}${string}` | string;
     headers?: Record<string, string>;
     apiHost?: string;
-    mcpHost?: string;
   }
 >('metorial-public-api', '2025-01-01-pulsar')
   .setGetApiHost(config => config.apiHost ?? 'https://api.metorial.com')

@@ -36,20 +36,18 @@ import {
   MetorialCustomProvidersEnvironmentsEndpoint,
   MetorialCustomProvidersCommitsEndpoint
 } from '@metorial/generated/src/mt_2026_01_01_magnetar';
-import { MetorialKeyPrefix, magnetarSdkBuilder } from './magnetarBuilder';
+import { MetorialKeyPrefix, coreSdkBuilder } from './coreBuilder';
 
-export let createMetorialCoreSDK = magnetarSdkBuilder.build(
+export let createMetorialCoreSDK = coreSdkBuilder.build(
   (soft: {
     apiKey: `${MetorialKeyPrefix}${string}` | string;
     apiVersion?: '2026-01-01-magnetar';
     headers?: Record<string, string>;
     apiHost?: string;
-    mcpHost?: string;
     fetch?: any;
   }) => ({
     ...soft,
     apiHost: soft.apiHost,
-    mcpHost: soft.mcpHost ?? soft.apiHost,
     apiVersion: '2026-01-01-magnetar',
     fetch: soft.fetch
   })

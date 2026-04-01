@@ -22,14 +22,7 @@ export class Metorial {
   private readonly sdk: MetorialCoreSDK;
 
   constructor(init: Omit<Parameters<typeof createMetorialCoreSDK>[0], 'apiVersion'>) {
-    let apiHost = init.apiHost;
-    let mcpHost = init.mcpHost;
-
-    if (mcpHost && !apiHost) {
-      apiHost = mcpHost.replace('://connect.', '://api.');
-    }
-
-    this.sdk = createMetorialCoreSDK({ ...init, apiHost, mcpHost });
+    this.sdk = createMetorialCoreSDK(init);
   }
 
   get providers() {
