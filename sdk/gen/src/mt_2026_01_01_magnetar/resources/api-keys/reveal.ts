@@ -1,11 +1,10 @@
 import { mtMap } from '@metorial/util-resource-mapper';
 
-export type ApiKeysUpdateOutput = {
+export type ApiKeysRevealOutput = {
   object: 'machine_access.api_key';
   id: string;
   status: 'active' | 'deleted';
   secretRedacted: string;
-  secretRedactedLong: string;
   secret: string | null;
   type:
     | 'organization_management_token'
@@ -95,18 +94,13 @@ export type ApiKeysUpdateOutput = {
   expiresAt: Date | null;
   createdAt: Date;
   updatedAt: Date;
-  revealInfo: { until: Date; forever: boolean } | null;
 };
 
-export let mapApiKeysUpdateOutput = mtMap.object<ApiKeysUpdateOutput>({
+export let mapApiKeysRevealOutput = mtMap.object<ApiKeysRevealOutput>({
   object: mtMap.objectField('object', mtMap.passthrough()),
   id: mtMap.objectField('id', mtMap.passthrough()),
   status: mtMap.objectField('status', mtMap.passthrough()),
   secretRedacted: mtMap.objectField('secret_redacted', mtMap.passthrough()),
-  secretRedactedLong: mtMap.objectField(
-    'secret_redacted_long',
-    mtMap.passthrough()
-  ),
   secret: mtMap.objectField('secret', mtMap.passthrough()),
   type: mtMap.objectField('type', mtMap.passthrough()),
   name: mtMap.objectField('name', mtMap.passthrough()),
@@ -224,27 +218,6 @@ export let mapApiKeysUpdateOutput = mtMap.object<ApiKeysUpdateOutput>({
   lastUsedAt: mtMap.objectField('last_used_at', mtMap.date()),
   expiresAt: mtMap.objectField('expires_at', mtMap.date()),
   createdAt: mtMap.objectField('created_at', mtMap.date()),
-  updatedAt: mtMap.objectField('updated_at', mtMap.date()),
-  revealInfo: mtMap.objectField(
-    'reveal_info',
-    mtMap.object({
-      until: mtMap.objectField('until', mtMap.date()),
-      forever: mtMap.objectField('forever', mtMap.passthrough())
-    })
-  )
-});
-
-export type ApiKeysUpdateBody = {
-  name?: string | undefined;
-  description?: string | undefined;
-  expiresAt?: Date | undefined;
-  ipFilters?: string[] | undefined;
-};
-
-export let mapApiKeysUpdateBody = mtMap.object<ApiKeysUpdateBody>({
-  name: mtMap.objectField('name', mtMap.passthrough()),
-  description: mtMap.objectField('description', mtMap.passthrough()),
-  expiresAt: mtMap.objectField('expires_at', mtMap.date()),
-  ipFilters: mtMap.objectField('ip_filters', mtMap.array(mtMap.passthrough()))
+  updatedAt: mtMap.objectField('updated_at', mtMap.date())
 });
 

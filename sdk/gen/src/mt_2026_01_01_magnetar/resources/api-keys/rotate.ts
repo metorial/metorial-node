@@ -1,11 +1,10 @@
 import { mtMap } from '@metorial/util-resource-mapper';
 
-export type ApiKeysCreateOutput = {
+export type ApiKeysRotateOutput = {
   object: 'machine_access.api_key';
   id: string;
   status: 'active' | 'deleted';
   secretRedacted: string;
-  secretRedactedLong: string;
   secret: string | null;
   type:
     | 'organization_management_token'
@@ -95,18 +94,13 @@ export type ApiKeysCreateOutput = {
   expiresAt: Date | null;
   createdAt: Date;
   updatedAt: Date;
-  revealInfo: { until: Date; forever: boolean } | null;
 };
 
-export let mapApiKeysCreateOutput = mtMap.object<ApiKeysCreateOutput>({
+export let mapApiKeysRotateOutput = mtMap.object<ApiKeysRotateOutput>({
   object: mtMap.objectField('object', mtMap.passthrough()),
   id: mtMap.objectField('id', mtMap.passthrough()),
   status: mtMap.objectField('status', mtMap.passthrough()),
   secretRedacted: mtMap.objectField('secret_redacted', mtMap.passthrough()),
-  secretRedactedLong: mtMap.objectField(
-    'secret_redacted_long',
-    mtMap.passthrough()
-  ),
   secret: mtMap.objectField('secret', mtMap.passthrough()),
   type: mtMap.objectField('type', mtMap.passthrough()),
   name: mtMap.objectField('name', mtMap.passthrough()),
@@ -224,45 +218,12 @@ export let mapApiKeysCreateOutput = mtMap.object<ApiKeysCreateOutput>({
   lastUsedAt: mtMap.objectField('last_used_at', mtMap.date()),
   expiresAt: mtMap.objectField('expires_at', mtMap.date()),
   createdAt: mtMap.objectField('created_at', mtMap.date()),
-  updatedAt: mtMap.objectField('updated_at', mtMap.date()),
-  revealInfo: mtMap.objectField(
-    'reveal_info',
-    mtMap.object({
-      until: mtMap.objectField('until', mtMap.date()),
-      forever: mtMap.objectField('forever', mtMap.passthrough())
-    })
-  )
+  updatedAt: mtMap.objectField('updated_at', mtMap.date())
 });
 
-export type ApiKeysCreateBody = (
-  | { type: 'organization_management_token' }
-  | {
-      type:
-        | 'instance_access_token_secret'
-        | 'instance_access_token_publishable';
-      instanceId: string;
-    }
-) & {
-  name: string;
-  description?: string | undefined;
-  expiresAt?: Date | undefined;
-  ipFilters?: string[] | undefined;
-};
+export type ApiKeysRotateBody = { currentExpiresAt?: Date | undefined };
 
-export let mapApiKeysCreateBody = mtMap.union([
-  mtMap.unionOption(
-    'object',
-    mtMap.object({
-      type: mtMap.objectField('type', mtMap.passthrough()),
-      instanceId: mtMap.objectField('instance_id', mtMap.passthrough()),
-      name: mtMap.objectField('name', mtMap.passthrough()),
-      description: mtMap.objectField('description', mtMap.passthrough()),
-      expiresAt: mtMap.objectField('expires_at', mtMap.date()),
-      ipFilters: mtMap.objectField(
-        'ip_filters',
-        mtMap.array(mtMap.passthrough())
-      )
-    })
-  )
-]);
+export let mapApiKeysRotateBody = mtMap.object<ApiKeysRotateBody>({
+  currentExpiresAt: mtMap.objectField('current_expires_at', mtMap.date())
+});
 
