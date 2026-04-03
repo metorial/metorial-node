@@ -561,7 +561,7 @@ export type DashboardInstanceProviderDeploymentsSetupSessionsCreateBody = {
   identityId?: string | undefined;
   consumerId?: string | undefined;
   redirectUrl?: string | undefined;
-  type?: 'auth_only' | 'config_only' | 'auth_and_config' | undefined;
+  type?: 'auth_only' | 'config_only' | 'auth_and_config' | 'auto' | undefined;
   configuration?:
     | {
         providerSearch?:
