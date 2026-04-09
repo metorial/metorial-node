@@ -65,124 +65,167 @@ export type MagicMcpSessionsListOutput = {
   pagination: { hasMoreBefore: boolean; hasMoreAfter: boolean };
 };
 
-export let mapMagicMcpSessionsListOutput = mtMap.object<MagicMcpSessionsListOutput>({
-  items: mtMap.objectField(
-    'items',
-    mtMap.array(
+export let mapMagicMcpSessionsListOutput =
+  mtMap.object<MagicMcpSessionsListOutput>({
+    items: mtMap.objectField(
+      'items',
+      mtMap.array(
+        mtMap.object({
+          object: mtMap.objectField('object', mtMap.passthrough()),
+          id: mtMap.objectField('id', mtMap.passthrough()),
+          magicMcpServer: mtMap.objectField(
+            'magic_mcp_server',
+            mtMap.object({
+              object: mtMap.objectField('object', mtMap.passthrough()),
+              id: mtMap.objectField('id', mtMap.passthrough()),
+              status: mtMap.objectField('status', mtMap.passthrough()),
+              source: mtMap.objectField('source', mtMap.passthrough()),
+              providerTemplateId: mtMap.objectField(
+                'provider_template_id',
+                mtMap.passthrough()
+              ),
+              endpoints: mtMap.objectField(
+                'endpoints',
+                mtMap.array(
+                  mtMap.object({
+                    id: mtMap.objectField('id', mtMap.passthrough()),
+                    alias: mtMap.objectField('alias', mtMap.passthrough()),
+                    url: mtMap.objectField('url', mtMap.passthrough())
+                  })
+                )
+              ),
+              name: mtMap.objectField('name', mtMap.passthrough()),
+              description: mtMap.objectField(
+                'description',
+                mtMap.passthrough()
+              ),
+              metadata: mtMap.objectField('metadata', mtMap.passthrough()),
+              createdAt: mtMap.objectField('created_at', mtMap.date()),
+              updatedAt: mtMap.objectField('updated_at', mtMap.date())
+            })
+          ),
+          magicMcpEndpoint: mtMap.objectField(
+            'magic_mcp_endpoint',
+            mtMap.object({
+              object: mtMap.objectField('object', mtMap.passthrough()),
+              id: mtMap.objectField('id', mtMap.passthrough()),
+              status: mtMap.objectField('status', mtMap.passthrough()),
+              slug: mtMap.objectField('slug', mtMap.passthrough()),
+              url: mtMap.objectField('url', mtMap.passthrough()),
+              consumerProfileId: mtMap.objectField(
+                'consumer_profile_id',
+                mtMap.passthrough()
+              ),
+              sessionTemplateId: mtMap.objectField(
+                'session_template_id',
+                mtMap.passthrough()
+              ),
+              sessionId: mtMap.objectField('session_id', mtMap.passthrough()),
+              servers: mtMap.objectField(
+                'servers',
+                mtMap.array(
+                  mtMap.union([
+                    mtMap.unionOption(
+                      'object',
+                      mtMap.object({
+                        object: mtMap.objectField(
+                          'object',
+                          mtMap.passthrough()
+                        ),
+                        id: mtMap.objectField('id', mtMap.passthrough()),
+                        status: mtMap.objectField(
+                          'status',
+                          mtMap.passthrough()
+                        ),
+                        name: mtMap.objectField('name', mtMap.passthrough()),
+                        description: mtMap.objectField(
+                          'description',
+                          mtMap.passthrough()
+                        ),
+                        toolFilters: mtMap.objectField(
+                          'tool_filters',
+                          mtMap.union([
+                            mtMap.unionOption(
+                              'object',
+                              mtMap.object({
+                                type: mtMap.objectField(
+                                  'type',
+                                  mtMap.passthrough()
+                                ),
+                                keys: mtMap.objectField(
+                                  'keys',
+                                  mtMap.array(mtMap.passthrough())
+                                ),
+                                pattern: mtMap.objectField(
+                                  'pattern',
+                                  mtMap.passthrough()
+                                ),
+                                uris: mtMap.objectField(
+                                  'uris',
+                                  mtMap.array(mtMap.passthrough())
+                                )
+                              })
+                            ),
+                            mtMap.unionOption(
+                              'array',
+                              mtMap.union([
+                                mtMap.unionOption(
+                                  'object',
+                                  mtMap.object({
+                                    type: mtMap.objectField(
+                                      'type',
+                                      mtMap.passthrough()
+                                    ),
+                                    keys: mtMap.objectField(
+                                      'keys',
+                                      mtMap.array(mtMap.passthrough())
+                                    ),
+                                    pattern: mtMap.objectField(
+                                      'pattern',
+                                      mtMap.passthrough()
+                                    ),
+                                    uris: mtMap.objectField(
+                                      'uris',
+                                      mtMap.array(mtMap.passthrough())
+                                    )
+                                  })
+                                )
+                              ])
+                            )
+                          ])
+                        )
+                      })
+                    )
+                  ])
+                )
+              ),
+              name: mtMap.objectField('name', mtMap.passthrough()),
+              description: mtMap.objectField(
+                'description',
+                mtMap.passthrough()
+              ),
+              metadata: mtMap.objectField('metadata', mtMap.passthrough()),
+              createdAt: mtMap.objectField('created_at', mtMap.date()),
+              updatedAt: mtMap.objectField('updated_at', mtMap.date())
+            })
+          ),
+          sessionId: mtMap.objectField('session_id', mtMap.passthrough()),
+          createdAt: mtMap.objectField('created_at', mtMap.date()),
+          updatedAt: mtMap.objectField('updated_at', mtMap.date())
+        })
+      )
+    ),
+    pagination: mtMap.objectField(
+      'pagination',
       mtMap.object({
-        object: mtMap.objectField('object', mtMap.passthrough()),
-        id: mtMap.objectField('id', mtMap.passthrough()),
-        magicMcpServer: mtMap.objectField(
-          'magic_mcp_server',
-          mtMap.object({
-            object: mtMap.objectField('object', mtMap.passthrough()),
-            id: mtMap.objectField('id', mtMap.passthrough()),
-            status: mtMap.objectField('status', mtMap.passthrough()),
-            source: mtMap.objectField('source', mtMap.passthrough()),
-            providerTemplateId: mtMap.objectField('provider_template_id', mtMap.passthrough()),
-            endpoints: mtMap.objectField(
-              'endpoints',
-              mtMap.array(
-                mtMap.object({
-                  id: mtMap.objectField('id', mtMap.passthrough()),
-                  alias: mtMap.objectField('alias', mtMap.passthrough()),
-                  url: mtMap.objectField('url', mtMap.passthrough())
-                })
-              )
-            ),
-            name: mtMap.objectField('name', mtMap.passthrough()),
-            description: mtMap.objectField('description', mtMap.passthrough()),
-            metadata: mtMap.objectField('metadata', mtMap.passthrough()),
-            createdAt: mtMap.objectField('created_at', mtMap.date()),
-            updatedAt: mtMap.objectField('updated_at', mtMap.date())
-          })
+        hasMoreBefore: mtMap.objectField(
+          'has_more_before',
+          mtMap.passthrough()
         ),
-        magicMcpEndpoint: mtMap.objectField(
-          'magic_mcp_endpoint',
-          mtMap.object({
-            object: mtMap.objectField('object', mtMap.passthrough()),
-            id: mtMap.objectField('id', mtMap.passthrough()),
-            status: mtMap.objectField('status', mtMap.passthrough()),
-            slug: mtMap.objectField('slug', mtMap.passthrough()),
-            url: mtMap.objectField('url', mtMap.passthrough()),
-            consumerProfileId: mtMap.objectField('consumer_profile_id', mtMap.passthrough()),
-            sessionTemplateId: mtMap.objectField('session_template_id', mtMap.passthrough()),
-            sessionId: mtMap.objectField('session_id', mtMap.passthrough()),
-            servers: mtMap.objectField(
-              'servers',
-              mtMap.array(
-                mtMap.union([
-                  mtMap.unionOption(
-                    'object',
-                    mtMap.object({
-                      object: mtMap.objectField('object', mtMap.passthrough()),
-                      id: mtMap.objectField('id', mtMap.passthrough()),
-                      status: mtMap.objectField('status', mtMap.passthrough()),
-                      name: mtMap.objectField('name', mtMap.passthrough()),
-                      description: mtMap.objectField('description', mtMap.passthrough()),
-                      toolFilters: mtMap.objectField(
-                        'tool_filters',
-                        mtMap.union([
-                          mtMap.unionOption(
-                            'object',
-                            mtMap.object({
-                              type: mtMap.objectField('type', mtMap.passthrough()),
-                              keys: mtMap.objectField(
-                                'keys',
-                                mtMap.array(mtMap.passthrough())
-                              ),
-                              pattern: mtMap.objectField('pattern', mtMap.passthrough()),
-                              uris: mtMap.objectField('uris', mtMap.array(mtMap.passthrough()))
-                            })
-                          ),
-                          mtMap.unionOption(
-                            'array',
-                            mtMap.union([
-                              mtMap.unionOption(
-                                'object',
-                                mtMap.object({
-                                  type: mtMap.objectField('type', mtMap.passthrough()),
-                                  keys: mtMap.objectField(
-                                    'keys',
-                                    mtMap.array(mtMap.passthrough())
-                                  ),
-                                  pattern: mtMap.objectField('pattern', mtMap.passthrough()),
-                                  uris: mtMap.objectField(
-                                    'uris',
-                                    mtMap.array(mtMap.passthrough())
-                                  )
-                                })
-                              )
-                            ])
-                          )
-                        ])
-                      )
-                    })
-                  )
-                ])
-              )
-            ),
-            name: mtMap.objectField('name', mtMap.passthrough()),
-            description: mtMap.objectField('description', mtMap.passthrough()),
-            metadata: mtMap.objectField('metadata', mtMap.passthrough()),
-            createdAt: mtMap.objectField('created_at', mtMap.date()),
-            updatedAt: mtMap.objectField('updated_at', mtMap.date())
-          })
-        ),
-        sessionId: mtMap.objectField('session_id', mtMap.passthrough()),
-        createdAt: mtMap.objectField('created_at', mtMap.date()),
-        updatedAt: mtMap.objectField('updated_at', mtMap.date())
+        hasMoreAfter: mtMap.objectField('has_more_after', mtMap.passthrough())
       })
     )
-  ),
-  pagination: mtMap.objectField(
-    'pagination',
-    mtMap.object({
-      hasMoreBefore: mtMap.objectField('has_more_before', mtMap.passthrough()),
-      hasMoreAfter: mtMap.objectField('has_more_after', mtMap.passthrough())
-    })
-  )
-});
+  });
 
 export type MagicMcpSessionsListQuery = {
   limit?: number | undefined;
@@ -214,3 +257,4 @@ export let mapMagicMcpSessionsListQuery = mtMap.union([
     })
   )
 ]);
+

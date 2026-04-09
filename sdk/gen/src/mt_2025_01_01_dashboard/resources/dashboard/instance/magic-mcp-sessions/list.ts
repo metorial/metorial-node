@@ -95,7 +95,10 @@ export let mapDashboardInstanceMagicMcpSessionsListOutput =
                 )
               ),
               name: mtMap.objectField('name', mtMap.passthrough()),
-              description: mtMap.objectField('description', mtMap.passthrough()),
+              description: mtMap.objectField(
+                'description',
+                mtMap.passthrough()
+              ),
               metadata: mtMap.objectField('metadata', mtMap.passthrough()),
               createdAt: mtMap.objectField('created_at', mtMap.date()),
               updatedAt: mtMap.objectField('updated_at', mtMap.date())
@@ -109,8 +112,14 @@ export let mapDashboardInstanceMagicMcpSessionsListOutput =
               status: mtMap.objectField('status', mtMap.passthrough()),
               slug: mtMap.objectField('slug', mtMap.passthrough()),
               url: mtMap.objectField('url', mtMap.passthrough()),
-              consumerProfileId: mtMap.objectField('consumer_profile_id', mtMap.passthrough()),
-              sessionTemplateId: mtMap.objectField('session_template_id', mtMap.passthrough()),
+              consumerProfileId: mtMap.objectField(
+                'consumer_profile_id',
+                mtMap.passthrough()
+              ),
+              sessionTemplateId: mtMap.objectField(
+                'session_template_id',
+                mtMap.passthrough()
+              ),
               sessionId: mtMap.objectField('session_id', mtMap.passthrough()),
               servers: mtMap.objectField(
                 'servers',
@@ -119,23 +128,38 @@ export let mapDashboardInstanceMagicMcpSessionsListOutput =
                     mtMap.unionOption(
                       'object',
                       mtMap.object({
-                        object: mtMap.objectField('object', mtMap.passthrough()),
+                        object: mtMap.objectField(
+                          'object',
+                          mtMap.passthrough()
+                        ),
                         id: mtMap.objectField('id', mtMap.passthrough()),
-                        status: mtMap.objectField('status', mtMap.passthrough()),
+                        status: mtMap.objectField(
+                          'status',
+                          mtMap.passthrough()
+                        ),
                         name: mtMap.objectField('name', mtMap.passthrough()),
-                        description: mtMap.objectField('description', mtMap.passthrough()),
+                        description: mtMap.objectField(
+                          'description',
+                          mtMap.passthrough()
+                        ),
                         toolFilters: mtMap.objectField(
                           'tool_filters',
                           mtMap.union([
                             mtMap.unionOption(
                               'object',
                               mtMap.object({
-                                type: mtMap.objectField('type', mtMap.passthrough()),
+                                type: mtMap.objectField(
+                                  'type',
+                                  mtMap.passthrough()
+                                ),
                                 keys: mtMap.objectField(
                                   'keys',
                                   mtMap.array(mtMap.passthrough())
                                 ),
-                                pattern: mtMap.objectField('pattern', mtMap.passthrough()),
+                                pattern: mtMap.objectField(
+                                  'pattern',
+                                  mtMap.passthrough()
+                                ),
                                 uris: mtMap.objectField(
                                   'uris',
                                   mtMap.array(mtMap.passthrough())
@@ -148,12 +172,18 @@ export let mapDashboardInstanceMagicMcpSessionsListOutput =
                                 mtMap.unionOption(
                                   'object',
                                   mtMap.object({
-                                    type: mtMap.objectField('type', mtMap.passthrough()),
+                                    type: mtMap.objectField(
+                                      'type',
+                                      mtMap.passthrough()
+                                    ),
                                     keys: mtMap.objectField(
                                       'keys',
                                       mtMap.array(mtMap.passthrough())
                                     ),
-                                    pattern: mtMap.objectField('pattern', mtMap.passthrough()),
+                                    pattern: mtMap.objectField(
+                                      'pattern',
+                                      mtMap.passthrough()
+                                    ),
                                     uris: mtMap.objectField(
                                       'uris',
                                       mtMap.array(mtMap.passthrough())
@@ -170,7 +200,10 @@ export let mapDashboardInstanceMagicMcpSessionsListOutput =
                 )
               ),
               name: mtMap.objectField('name', mtMap.passthrough()),
-              description: mtMap.objectField('description', mtMap.passthrough()),
+              description: mtMap.objectField(
+                'description',
+                mtMap.passthrough()
+              ),
               metadata: mtMap.objectField('metadata', mtMap.passthrough()),
               createdAt: mtMap.objectField('created_at', mtMap.date()),
               updatedAt: mtMap.objectField('updated_at', mtMap.date())
@@ -185,7 +218,10 @@ export let mapDashboardInstanceMagicMcpSessionsListOutput =
     pagination: mtMap.objectField(
       'pagination',
       mtMap.object({
-        hasMoreBefore: mtMap.objectField('has_more_before', mtMap.passthrough()),
+        hasMoreBefore: mtMap.objectField(
+          'has_more_before',
+          mtMap.passthrough()
+        ),
         hasMoreAfter: mtMap.objectField('has_more_after', mtMap.passthrough())
       })
     )
@@ -221,3 +257,4 @@ export let mapDashboardInstanceMagicMcpSessionsListQuery = mtMap.union([
     })
   )
 ]);
+
