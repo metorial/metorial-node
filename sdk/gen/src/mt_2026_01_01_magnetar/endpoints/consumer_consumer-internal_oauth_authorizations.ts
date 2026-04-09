@@ -1,13 +1,14 @@
-import {
-  BaseMetorialEndpoint,
-  MetorialEndpointManager
-} from '@metorial/util-endpoint';
+import { MetorialEndpointManager } from '@metorial/util-endpoint';
 
 import {
   mapConsumerConsumerInternalOauthAuthorizationsAcceptOutput,
+  mapConsumerConsumerInternalOauthAuthorizationsConnectMagicMcpEndpointBody,
+  mapConsumerConsumerInternalOauthAuthorizationsConnectMagicMcpEndpointOutput,
   mapConsumerConsumerInternalOauthAuthorizationsGetOutput,
   mapConsumerConsumerInternalOauthAuthorizationsRejectOutput,
   type ConsumerConsumerInternalOauthAuthorizationsAcceptOutput,
+  type ConsumerConsumerInternalOauthAuthorizationsConnectMagicMcpEndpointBody,
+  type ConsumerConsumerInternalOauthAuthorizationsConnectMagicMcpEndpointOutput,
   type ConsumerConsumerInternalOauthAuthorizationsGetOutput,
   type ConsumerConsumerInternalOauthAuthorizationsRejectOutput
 } from '../resources';
@@ -90,6 +91,38 @@ export class MetorialConsumerConsumerInternalOauthAuthorizationsEndpoint {
 
     return this._post(request).transform(
       mapConsumerConsumerInternalOauthAuthorizationsAcceptOutput
+    );
+  }
+
+  /**
+   * @name Connect portal OAuth authorization to magic MCP endpoint
+   * @description Links a pending portal OAuth authorization request to a consumer-owned magic MCP endpoint.
+   *
+   * @param `portalAuthAttemptId` - string
+   * @param `body` - ConsumerConsumerInternalOauthAuthorizationsConnectMagicMcpEndpointBody
+   * @param `opts` - { headers?: Record<string, string> }
+   * @returns ConsumerConsumerInternalOauthAuthorizationsConnectMagicMcpEndpointOutput
+   * @see https://metorial.com/api
+   * @see https://metorial.com/docs
+   */
+  connectMagicMcpEndpoint(
+    portalAuthAttemptId: string,
+    body: ConsumerConsumerInternalOauthAuthorizationsConnectMagicMcpEndpointBody,
+    opts?: { headers?: Record<string, string> }
+  ): Promise<ConsumerConsumerInternalOauthAuthorizationsConnectMagicMcpEndpointOutput> {
+    let path = `consumer/portal-oauth-attempts/${portalAuthAttemptId}/connect-magic-mcp-endpoint`;
+
+    let request = {
+      path,
+      body: mapConsumerConsumerInternalOauthAuthorizationsConnectMagicMcpEndpointBody.transformTo(
+        body
+      ),
+
+      ...(opts?.headers ? { headers: opts.headers } : {})
+    } as any;
+
+    return this._post(request).transform(
+      mapConsumerConsumerInternalOauthAuthorizationsConnectMagicMcpEndpointOutput
     );
   }
 
