@@ -404,7 +404,7 @@ export type ConsumerProvidersListQuery = {
   before?: string | undefined;
   cursor?: string | undefined;
   order?: 'asc' | 'desc' | undefined;
-} & { search?: string | undefined };
+} & { search?: string | undefined; providerGroupId?: string | undefined };
 
 export let mapConsumerProvidersListQuery = mtMap.union([
   mtMap.unionOption(
@@ -415,7 +415,11 @@ export let mapConsumerProvidersListQuery = mtMap.union([
       before: mtMap.objectField('before', mtMap.passthrough()),
       cursor: mtMap.objectField('cursor', mtMap.passthrough()),
       order: mtMap.objectField('order', mtMap.passthrough()),
-      search: mtMap.objectField('search', mtMap.passthrough())
+      search: mtMap.objectField('search', mtMap.passthrough()),
+      providerGroupId: mtMap.objectField(
+        'provider_group_id',
+        mtMap.passthrough()
+      )
     })
   )
 ]);
