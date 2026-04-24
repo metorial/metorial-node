@@ -57,7 +57,10 @@ export type DashboardInstanceMagicMcpSessionsGetOutput = {
     createdAt: Date;
     updatedAt: Date;
   } | null;
+  consumerProfileId: string | null;
+  consumerIntegrationIds: string[];
   sessionId: string;
+  expiresAt: Date | null;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -187,7 +190,16 @@ export let mapDashboardInstanceMagicMcpSessionsGetOutput =
         updatedAt: mtMap.objectField('updated_at', mtMap.date())
       })
     ),
+    consumerProfileId: mtMap.objectField(
+      'consumer_profile_id',
+      mtMap.passthrough()
+    ),
+    consumerIntegrationIds: mtMap.objectField(
+      'consumer_integration_ids',
+      mtMap.array(mtMap.passthrough())
+    ),
     sessionId: mtMap.objectField('session_id', mtMap.passthrough()),
+    expiresAt: mtMap.objectField('expires_at', mtMap.date()),
     createdAt: mtMap.objectField('created_at', mtMap.date()),
     updatedAt: mtMap.objectField('updated_at', mtMap.date())
   });

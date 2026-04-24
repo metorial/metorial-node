@@ -18,12 +18,6 @@
       "require": "./dist/mt_2025_01_01_pulsar/index.cjs",
       "default": "./dist/mt_2025_01_01_pulsar/index.js"
     },
-    "./src/mt_2025_01_01_dashboard": {
-      "types": "./dist/mt_2025_01_01_dashboard/index.d.ts",
-      "import": "./dist/mt_2025_01_01_dashboard/index.js",
-      "require": "./dist/mt_2025_01_01_dashboard/index.cjs",
-      "default": "./dist/mt_2025_01_01_dashboard/index.js"
-    },
     "./src/mt_2026_01_01_magnetar": {
       "types": "./dist/mt_2026_01_01_magnetar/index.d.ts",
       "import": "./dist/mt_2026_01_01_magnetar/index.js",
