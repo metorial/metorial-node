@@ -1,31 +1,24 @@
-import { MetorialSDK } from '@metorial/core';
 import { JsonSchema, jsonSchemaToOpenApi } from '@metorial/json-schema';
 import { McpUriTemplate } from './lib/mcpUri';
 import { slugify } from './lib/slugify';
-import { MetorialMcpClient } from './mcpClient';
-
-type McpSession = {
-  getClient(opts: { deploymentId: string }): Promise<MetorialMcpClient>;
-};
-
-type SmallServerDeployment =
-  MetorialSDK.ServerCapabilities['mcpServers'][number]['serverDeployment'];
-type Tool = Omit<MetorialSDK.ServerCapabilities['tools'][number], 'mcpServerId'>;
-type ResourceTemplate = Omit<
-  MetorialSDK.ServerCapabilities['resourceTemplates'][number],
-  'mcpServerId'
->;
+import { MetorialMcpSession } from './mcpSession';
 
 export type Capability =
   | {
       type: 'tool';
-      tool: Tool;
-      serverDeployment: SmallServerDeployment;
+      tool: {
+        name: string;
+        description?: string | null;
+        inputSchema: any;
+      };
     }
   | {
       type: 'resource-template';
-      resourceTemplate: ResourceTemplate;
-      serverDeployment: SmallServerDeployment;
+      resourceTemplate: {
+        name: string;
+        description?: string | null;
+        uriTemplate: string;
+      };
     };
 
 type JsonSchemaRecord = Record<string, unknown>;
@@ -94,7 +87,7 @@ export class MetorialMcpTool {
   #parameters: JsonSchema;
 
   private constructor(
-    private readonly session: McpSession,
+    private readonly session: MetorialMcpSession,
     opts: {
       id: string;
       name: string;
@@ -155,14 +148,14 @@ export class MetorialMcpTool {
     throw new Error(`[METORIAL MCP]: Unknown parameters format: ${as}`);
   }
 
-  static fromTool(session: McpSession, capability: Capability) {
+  static fromTool(session: MetorialMcpSession, capability: Capability) {
     if (capability.type !== 'tool') {
       throw new Error(
         `[METORIAL MCP]: Expected capability type to be 'tool', got '${capability.type}'`
       );
     }
 
-    let { tool, serverDeployment } = capability;
+    let { tool } = capability;
 
     return new MetorialMcpTool(
       session,
@@ -174,9 +167,7 @@ export class MetorialMcpTool {
       },
       async params =>
         runWithRetries(async () => {
-          let client = await session.getClient({
-            deploymentId: serverDeployment!.id
-          });
+          let client = await session.getClient();
 
           let result = await client.callTool({
             name: tool.name,
@@ -188,14 +179,14 @@ export class MetorialMcpTool {
     );
   }
 
-  static fromResourceTemplate(session: McpSession, capability: Capability) {
+  static fromResourceTemplate(session: MetorialMcpSession, capability: Capability) {
     if (capability.type !== 'resource-template') {
       throw new Error(
         `[METORIAL MCP]: Expected capability type to be 'resource-template', got '${capability.type}'`
       );
     }
 
-    let { resourceTemplate, serverDeployment } = capability;
+    let { resourceTemplate } = capability;
 
     let uri = new McpUriTemplate(resourceTemplate.uriTemplate);
 
@@ -219,9 +210,7 @@ export class MetorialMcpTool {
       },
       async params =>
         runWithRetries(async () => {
-          let client = await session.getClient({
-            deploymentId: serverDeployment!.id
-          });
+          let client = await session.getClient();
 
           let finalUri = uri.expand(params);
 
@@ -234,7 +223,7 @@ export class MetorialMcpTool {
     );
   }
 
-  static fromCapability(session: McpSession, capability: Capability): MetorialMcpTool {
+  static fromCapability(session: MetorialMcpSession, capability: Capability): MetorialMcpTool {
     if (capability.type === 'tool') {
       return MetorialMcpTool.fromTool(session, capability);
     }

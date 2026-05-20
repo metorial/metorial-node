@@ -1,9 +1,7 @@
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
-import { MetorialMcpTransport } from './transport';
 import { RequestOptions } from '@modelcontextprotocol/sdk/shared/protocol.js';
 import {
   CallToolRequest,
-  CallToolResult,
   CallToolResultSchema,
   ClientCapabilities,
   CompatibilityCallToolResultSchema,
@@ -21,9 +19,9 @@ import {
   ListToolsResult,
   LoggingLevel,
   ReadResourceRequest,
-  ReadResourceResult,
-  SetLevelRequest
+  ReadResourceResult
 } from '@modelcontextprotocol/sdk/types.js';
+import { MetorialMcpTransport } from './transport';
 
 export class MetorialMcpClient {
   private constructor(private readonly client: Client) {}
@@ -66,7 +64,10 @@ export class MetorialMcpClient {
     return this.client.getInstructions();
   }
 
-  complete(params: CompleteRequest['params'], options?: RequestOptions): Promise<CompleteResult> {
+  complete(
+    params: CompleteRequest['params'],
+    options?: RequestOptions
+  ): Promise<CompleteResult> {
     return this.client.complete(params, options);
   }
 
@@ -74,15 +75,24 @@ export class MetorialMcpClient {
     return this.client.setLoggingLevel(level, options);
   }
 
-  getPrompt(params: GetPromptRequest['params'], options?: RequestOptions): Promise<GetPromptResult> {
+  getPrompt(
+    params: GetPromptRequest['params'],
+    options?: RequestOptions
+  ): Promise<GetPromptResult> {
     return this.client.getPrompt(params, options);
   }
 
-  listPrompts(params?: ListPromptsRequest['params'], options?: RequestOptions): Promise<ListPromptsResult> {
+  listPrompts(
+    params?: ListPromptsRequest['params'],
+    options?: RequestOptions
+  ): Promise<ListPromptsResult> {
     return this.client.listPrompts(params, options);
   }
 
-  listResources(params?: ListResourcesRequest['params'], options?: RequestOptions): Promise<ListResourcesResult> {
+  listResources(
+    params?: ListResourcesRequest['params'],
+    options?: RequestOptions
+  ): Promise<ListResourcesResult> {
     return this.client.listResources(params, options);
   }
 
@@ -93,7 +103,10 @@ export class MetorialMcpClient {
     return this.client.listResourceTemplates(params, options);
   }
 
-  readResource(params: ReadResourceRequest['params'], options?: RequestOptions): Promise<ReadResourceResult> {
+  readResource(
+    params: ReadResourceRequest['params'],
+    options?: RequestOptions
+  ): Promise<ReadResourceResult> {
     return this.client.readResource(params, options);
   }
 
@@ -107,7 +120,10 @@ export class MetorialMcpClient {
     return this.client.callTool(params, resultSchema, options);
   }
 
-  listTools(params?: ListToolsRequest['params'], options?: RequestOptions): Promise<ListToolsResult> {
+  listTools(
+    params?: ListToolsRequest['params'],
+    options?: RequestOptions
+  ): Promise<ListToolsResult> {
     return this.client.listTools(params, options);
   }
 

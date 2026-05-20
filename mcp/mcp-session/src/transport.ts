@@ -1,17 +1,14 @@
-import {
-  type FetchLike,
-  type Transport
-} from '@modelcontextprotocol/sdk/shared/transport.js';
+import { type FetchLike, type Transport } from '@modelcontextprotocol/sdk/shared/transport.js';
 import { type JSONRPCMessage, JSONRPCMessageSchema } from '@modelcontextprotocol/sdk/types.js';
 import { EventSourceParserStream } from 'eventsource-parser/stream';
 
-function normalizeHeaders(
-  headers: HeadersInit | undefined
-): Record<string, string> {
+function normalizeHeaders(headers: HeadersInit | undefined): Record<string, string> {
   if (!headers) return {};
   if (headers instanceof Headers) {
     let result: Record<string, string> = {};
-    headers.forEach((value, key) => { result[key] = value; });
+    headers.forEach((value, key) => {
+      result[key] = value;
+    });
     return result;
   }
   if (Array.isArray(headers)) {
@@ -41,7 +38,6 @@ export class MetorialMcpTransport implements Transport {
   private fetch?: FetchLike;
   private _sessionId?: string;
   private _protocolVersion?: string;
-  onclose?: () => void;
   onerror?: (error: Error) => void;
   onmessage?: (message: JSONRPCMessage) => void;
 
@@ -57,8 +53,7 @@ export class MetorialMcpTransport implements Transport {
   }
 
   async close(): Promise<void> {
-    this.abortController?.abort();
-    this.onclose?.();
+    // Transport is connectionless so no cleanup is necessary
   }
 
   async send(message: JSONRPCMessage | JSONRPCMessage[]): Promise<void> {
@@ -134,34 +129,6 @@ export class MetorialMcpTransport implements Transport {
 
   get protocolVersion(): string | undefined {
     return this._protocolVersion;
-  }
-
-  async terminateSession(): Promise<void> {
-    if (!this._sessionId) return;
-    try {
-      let headers = await this.getHeaders();
-      let init = {
-        ...this.requestInit,
-        method: 'DELETE',
-        headers,
-        signal: this.abortController?.signal
-      };
-
-      let response = await (this.fetch ?? fetch)(this.url, init);
-      await response.body?.cancel();
-
-      if (!response.ok && response.status !== 405) {
-        throw new MetorialMcpTransportError(
-          response.status,
-          `Failed to terminate session: ${response.statusText}`
-        );
-      }
-
-      this._sessionId = undefined;
-    } catch (error) {
-      this.onerror?.(error as Error);
-      throw error;
-    }
   }
 
   private async getHeaders(): Promise<Headers> {

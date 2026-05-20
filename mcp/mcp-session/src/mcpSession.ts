@@ -1,24 +1,49 @@
-import { MetorialCoreSDK } from '@metorial/core';
-import { SessionsCreateBody } from '@metorial/generated/src/mt_2026_01_01_magnetar';
+import { MetorialCoreSDK, MetorialSDK } from '@metorial/core';
+import { SessionsCreateBody } from '@metorial/generated';
+import { MetorialSDKError } from '@metorial/util-endpoint';
 import { MetorialMcpClient } from './mcpClient';
 import { Capability } from './mcpTool';
 import { MetorialMcpToolManager } from './mcpToolManager';
+
 export type MetorialMcpSessionInitProviders = SessionsCreateBody['providers'];
 
-export type MetorialMcpSessionInit = {
-  providers: MetorialMcpSessionInitProviders;
+export type MetorialMcpSessionInitInput =
+  | {
+      providers: MetorialMcpSessionInitProviders;
+    }
+  | {
+      sessionTemplateId: string;
+    }
+  | {
+      integrationInstanceId: string;
+    }
+  | {
+      integrationInstanceGroupId: string;
+    }
+  | {
+      magicMcpServerId: string;
+    };
+
+export type MetorialMcpSessionInit = MetorialMcpSessionInitInput & {
   client?: {
     name?: string;
     version?: string;
   };
 };
 
-type MetorialSession = Awaited<ReturnType<MetorialCoreSDK['sessions']['create']>>;
-type MetorialSessionProvider = MetorialSession['providers'][number];
-type MetorialProviderDeployment = MetorialSessionProvider['deployment'];
+type MetorialMcpConnectionSession =
+  | {
+      type: 'session';
+      url: string;
+      id: string;
+    }
+  | {
+      type: 'magic_mcp_server';
+      url: string;
+    };
 
 export class MetorialMcpSession {
-  #sessionPromise: Promise<MetorialSession>;
+  #sessionPromise: Promise<MetorialMcpConnectionSession>;
   #clientPromise: Promise<MetorialMcpClient> | null = null;
 
   static async create(
@@ -35,26 +60,69 @@ export class MetorialMcpSession {
     this.#sessionPromise = this.#createSession();
   }
 
-  async #createSession(): Promise<MetorialSession> {
-    return this.sdk.sessions.create({ providers: this.init.providers });
+  async #createSession(): Promise<MetorialMcpConnectionSession> {
+    if ('sessionTemplateId' in this.init) {
+      return this.encodeSession(
+        await this.sdk.sessions.create({
+          providers: [
+            {
+              sessionTemplateId: this.init.sessionTemplateId
+            }
+          ]
+        })
+      );
+    }
+
+    if ('integrationInstanceId' in this.init) {
+      return this.encodeSession(
+        await this.sdk.integrations.instances.createSession(
+          this.init.integrationInstanceId,
+          {}
+        )
+      );
+    }
+
+    if ('integrationInstanceGroupId' in this.init) {
+      return this.encodeSession(
+        await this.sdk.integrations.instanceGroups.createSession(
+          this.init.integrationInstanceGroupId,
+          {}
+        )
+      );
+    }
+
+    if ('providers' in this.init) {
+      return this.encodeSession(
+        await this.sdk.sessions.create({ providers: this.init.providers })
+      );
+    }
+
+    if ('magicMcpServerId' in this.init) {
+      return {
+        type: 'magic_mcp_server',
+        url: this.init.magicMcpServerId
+      };
+    }
+
+    throw new Error('Invalid session initialization parameters');
   }
 
-  async getSession(): Promise<MetorialSession> {
-    return await this.#sessionPromise;
-  }
+  async getSession(): Promise<MetorialSDK.Session> {
+    let session = await this.getSessionInternal();
+    if (session.type === 'magic_mcp_server') {
+      throw new MetorialSDKError({
+        status: 400,
+        code: 'invalid_session_type',
+        message: 'Session is a magic MCP server and cannot be used directly'
+      });
+    }
 
-  async getProviderDeployments() {
-    let session = await this.getSession();
-    return session.providers
-      .map(provider => provider.deployment)
-      .filter((deployment): deployment is MetorialProviderDeployment => !!deployment?.id);
+    return await this.sdk.sessions.get(session.id);
   }
 
   async getCapabilities(): Promise<Capability[]> {
     let client = await this.getClient();
     let capabilities: Capability[] = [];
-
-    let deployments = await this.getProviderDeployments();
 
     try {
       let tools = await client.listTools();
@@ -66,12 +134,11 @@ export class MetorialMcpSession {
             name: tool.name,
             description: tool.description,
             inputSchema: tool.inputSchema
-          },
-          serverDeployment: deployments[0] as any
+          }
         }))
       );
     } catch (error) {
-      // Server may not support tool listing
+      // Provider may not support tool listing
     }
 
     try {
@@ -84,12 +151,11 @@ export class MetorialMcpSession {
             name: resourceTemplate.name,
             description: resourceTemplate.description,
             uriTemplate: resourceTemplate.uriTemplate
-          },
-          serverDeployment: deployments[0] as any
+          }
         }))
       );
     } catch (error) {
-      // Server may not support resource templates
+      // Provider may not support resource templates
     }
 
     return capabilities;
@@ -100,20 +166,39 @@ export class MetorialMcpSession {
   }
 
   async close() {
-    // noop — session cleanup is handled by the server
+    // Transport is connectionless so no cleanup is necessary
   }
 
-  async getClient(opts?: { deploymentId?: string }) {
+  async getClient() {
     if (!this.#clientPromise) {
-      let session = await this.getSession();
-      let connectionUrl = `${session.connectionUrl}?key=${session.clientSecret}`;
+      let session = await this.getSessionInternal();
 
-      this.#clientPromise = MetorialMcpClient.createFromUrl(connectionUrl, {
+      this.#clientPromise = MetorialMcpClient.createFromUrl(session.url, {
         clientName: this.init.client?.name,
-        clientVersion: this.init.client?.version
+        clientVersion: this.init.client?.version,
+        headers: {
+          Authorization: `Bearer ${this.sdk._config.apiKey}`
+        }
       });
     }
 
     return await this.#clientPromise;
+  }
+
+  private async getSessionInternal(): Promise<MetorialMcpConnectionSession> {
+    return await this.#sessionPromise;
+  }
+
+  private async encodeSession(
+    session: MetorialSDK.Session
+  ): Promise<MetorialMcpConnectionSession> {
+    let url = new URL(session.connectionUrl);
+    if (session.clientSecret) url.searchParams.set('key', session.clientSecret);
+
+    return {
+      type: 'session',
+      id: session.id,
+      url: url.toString()
+    };
   }
 }

@@ -1,5 +1,19 @@
 # @metorial/mcp-session
 
+## 3.0.0
+
+### Major Changes
+
+- Register new endpoints and update mcp handling
+
+### Patch Changes
+
+- Updated dependencies
+  - @metorial/core@3.0.0
+  - @metorial/generated@3.0.0
+  - @metorial/json-schema@3.0.0
+  - @metorial/util-endpoint@3.0.0
+
 ## 2.1.2
 
 ### Patch Changes
