@@ -1,7 +1,7 @@
 import { anthropic } from '@ai-sdk/anthropic';
 import { metorialAiSdk } from '@metorial/ai-sdk';
-import Metorial from 'metorial';
 import { stepCountIs, streamText } from 'ai';
+import Metorial from 'metorial';
 
 let metorial = new Metorial({ apiKey: process.env.METORIAL_API_KEY! });
 
@@ -21,9 +21,9 @@ let result = streamText({
     'Search the web for the latest news about AI agents and summarize the top 3 stories.',
   stopWhen: stepCountIs(10),
   tools: session.tools(),
-  onStepFinish: (step) => {
+  onStepFinish: step => {
     if (step.toolCalls?.length) {
-      console.log(`\n🔧 ${step.toolCalls.map((tc) => tc.toolName).join(', ')}\n`);
+      console.log(`\n🔧 ${step.toolCalls.map(tc => tc.toolName).join(', ')}\n`);
     }
   }
 });

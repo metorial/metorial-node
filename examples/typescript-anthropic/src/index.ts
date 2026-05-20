@@ -1,6 +1,6 @@
+import Anthropic from '@anthropic-ai/sdk';
 import { metorialAnthropic } from '@metorial/anthropic';
 import Metorial from 'metorial';
-import Anthropic from '@anthropic-ai/sdk';
 
 let metorial = new Metorial({
   apiKey: process.env.METORIAL_API_KEY!
@@ -16,12 +16,9 @@ let deployment = await metorial.providerDeployments.create({
   providerId: 'metorial-search'
 });
 
-
 let session = await metorial.connect({
   adapter: metorialAnthropic(),
-  providers: [
-    { providerDeploymentId: deployment.id }
-  ]
+  providers: [{ providerDeploymentId: deployment.id }]
 });
 
 let messages: Anthropic.Messages.MessageParam[] = [

@@ -1,7 +1,7 @@
 import { openai } from '@ai-sdk/openai';
 import { metorialAiSdk } from '@metorial/ai-sdk';
+import { stepCountIs, streamText } from 'ai';
 import Metorial from 'metorial';
-import { streamText, stepCountIs } from 'ai';
 
 let metorial = new Metorial({
   apiKey: process.env.METORIAL_API_KEY!

@@ -1,6 +1,6 @@
 import { metorialMistral } from '@metorial/mistral';
-import Metorial from 'metorial';
 import { Mistral } from '@mistralai/mistralai';
+import Metorial from 'metorial';
 
 let metorial = new Metorial({
   apiKey: process.env.METORIAL_API_KEY!
@@ -16,12 +16,9 @@ let deployment = await metorial.providerDeployments.create({
   providerId: 'metorial-search'
 });
 
-
 let session = await metorial.connect({
   adapter: metorialMistral(),
-  providers: [
-    { providerDeploymentId: deployment.id }
-  ]
+  providers: [{ providerDeploymentId: deployment.id }]
 });
 
 let messages: any[] = [

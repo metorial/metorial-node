@@ -16,12 +16,9 @@ let deployment = await metorial.providerDeployments.create({
   providerId: 'metorial-search'
 });
 
-
 let session = await metorial.connect({
   adapter: metorialOpenAI.chatCompletions(),
-  providers: [
-    { providerDeploymentId: deployment.id }
-  ]
+  providers: [{ providerDeploymentId: deployment.id }]
 });
 
 let messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [

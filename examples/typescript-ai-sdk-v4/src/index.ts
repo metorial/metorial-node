@@ -1,10 +1,10 @@
 import { openai } from '@ai-sdk/openai';
 import { metorialAiSdk } from '@metorial/ai-sdk/v4';
-import Metorial from 'metorial';
 import { streamText } from 'ai';
+import Metorial from 'metorial';
 
 let metorial = new Metorial({
-  apiKey: process.env.METORIAL_API_KEY!,
+  apiKey: process.env.METORIAL_API_KEY!
 });
 
 // To use a different provider (e.g. GitHub, Slack), create a deployment at https://platform.metorial.com
@@ -13,22 +13,20 @@ let deployment = await metorial.providerDeployments.create({
   providerId: 'metorial-search'
 });
 
-
 let session = await metorial.connect({
   adapter: metorialAiSdk(),
-  providers: [
-    { providerDeploymentId: deployment.id },
-  ]
+  providers: [{ providerDeploymentId: deployment.id }]
 });
 
 let result = streamText({
   model: openai('gpt-4o-mini'),
-  prompt: 'Search the web for the latest news about AI agents and summarize the top 3 stories.',
+  prompt:
+    'Search the web for the latest news about AI agents and summarize the top 3 stories.',
   maxSteps: 10,
   tools: session.tools(),
-  onStepFinish: (step) => {
+  onStepFinish: step => {
     if (step.toolCalls?.length) {
-      console.log(`\n🔧 ${step.toolCalls.map((tc) => tc.toolName).join(', ')}\n`);
+      console.log(`\n🔧 ${step.toolCalls.map(tc => tc.toolName).join(', ')}\n`);
     }
   }
 });

@@ -1,6 +1,6 @@
-import { metorialLangchain } from '@metorial/langchain';
 import { ChatAnthropic } from '@langchain/anthropic';
-import { createReactAgent } from '@langchain/langgraph/prebuilt';
+import { metorialLangchain } from '@metorial/langchain';
+import { createAgent } from 'langchain';
 import Metorial from 'metorial';
 
 let metorial = new Metorial({
@@ -13,12 +13,9 @@ let deployment = await metorial.providerDeployments.create({
   providerId: 'metorial-search'
 });
 
-
 let session = await metorial.connect({
   adapter: metorialLangchain(),
-  providers: [
-    { providerDeploymentId: deployment.id }
-  ]
+  providers: [{ providerDeploymentId: deployment.id }]
 });
 
 let llm = new ChatAnthropic({
@@ -26,23 +23,24 @@ let llm = new ChatAnthropic({
   apiKey: process.env.ANTHROPIC_API_KEY!
 });
 
-let agent = createReactAgent({ llm, tools: session.tools() });
+let agent = createAgent({ model: llm, tools: session.tools() });
 
-let stream = await agent.stream({
+let agentInputs = {
   messages: [
     {
-      role: 'user',
+      role: 'user' as const,
       content:
         'Search the web for the latest news about AI agents and summarize the top 3 stories.'
     }
   ]
-});
+};
 
-for await (let event of stream) {
-  if ('agent' in event) {
-    let msg = event.agent.messages[event.agent.messages.length - 1];
-    if (msg && 'content' in msg && typeof msg.content === 'string') {
-      console.log(msg.content);
-    }
+let stream = await agent.stream(agentInputs, { streamMode: 'values' });
+
+for await (let step of stream) {
+  let lastMessage = step.messages.at(-1);
+  if (lastMessage?.content && typeof lastMessage.content === 'string') {
+    console.log(`[${lastMessage.type}]: ${lastMessage.content}`);
+    console.log('-----\n');
   }
 }
