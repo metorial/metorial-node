@@ -97,6 +97,10 @@ export class Metorial {
     return this.sdk.portals;
   }
 
+  get magicMcp() {
+    return this.sdk.magicMcp;
+  }
+
   async connect<T>(options: {
     adapter: MetorialAdapter<T>;
     providers: MetorialMcpSessionInitProviders;

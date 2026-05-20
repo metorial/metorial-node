@@ -97,4 +97,10 @@ export namespace MetorialSDK {
   export type CustomProvider = MetorialGenerated.CustomProvidersGetOutput;
   export type CustomProviderVersion = MetorialGenerated.CustomProvidersVersionsGetOutput;
   export type CustomProviderDeployment = MetorialGenerated.CustomProvidersDeploymentsGetOutput;
+
+  export type MagicMcpServer = MetorialGenerated.MagicMcpServersGetOutput;
+  export type MagicMcpServerProvider = MetorialGenerated.MagicMcpServersProvidersGetOutput;
+  export type MagicMcpGroup = MetorialGenerated.MagicMcpGroupsGetOutput;
+  export type MagicMcpSession = MetorialGenerated.MagicMcpSessionsGetOutput;
+  export type MagicMcpToken = MetorialGenerated.MagicMcpTokensGetOutput;
 }

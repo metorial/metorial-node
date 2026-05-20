@@ -98,9 +98,19 @@ export class MetorialMcpSession {
     }
 
     if ('magicMcpServerId' in this.init) {
+      let magicMcpServer = await this.sdk.magicMcp.servers.get(this.init.magicMcpServerId);
+      let endpoint = magicMcpServer.endpoints[0];
+      if (!endpoint) {
+        throw new MetorialSDKError({
+          status: 400,
+          code: 'no_magic_mcp_server_endpoint',
+          message: 'The specified magic MCP server does not have any endpoints'
+        });
+      }
+
       return {
         type: 'magic_mcp_server',
-        url: this.init.magicMcpServerId
+        url: endpoint.url
       };
     }
 
