@@ -6,6 +6,7 @@ export type DashboardInstanceConsumersListOutput = {
     id: string;
     name: string;
     email: string;
+    imageUrl: string;
     createdAt: Date;
     updatedAt: Date;
   }[];
@@ -22,6 +23,7 @@ export let mapDashboardInstanceConsumersListOutput =
           id: mtMap.objectField('id', mtMap.passthrough()),
           name: mtMap.objectField('name', mtMap.passthrough()),
           email: mtMap.objectField('email', mtMap.passthrough()),
+          imageUrl: mtMap.objectField('image_url', mtMap.passthrough()),
           createdAt: mtMap.objectField('created_at', mtMap.date()),
           updatedAt: mtMap.objectField('updated_at', mtMap.date())
         })
