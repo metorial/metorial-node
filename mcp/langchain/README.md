@@ -19,31 +19,33 @@ bun add @metorial/langchain
 ```typescript
 import { ChatOpenAI } from '@langchain/openai';
 import { metorialLangchain } from '@metorial/langchain';
-import { Metorial } from '@metorial/sdk';
 import { createAgent } from 'langchain';
+import Metorial from 'metorial';
 
 let metorial = new Metorial({ apiKey: 'your-metorial-api-key' });
 
-metorial.withProviderSession(
-  metorialLangchain,
-  {
-    serverDeployments: ['your-server-deployment-id']
-  },
-  async session => {
-    console.log('Session tools:', session.tools);
+let deployment = await metorial.providerDeployments.create({
+  name: 'My Provider',
+  providerId: 'your-provider-id'
+});
 
-    let agent = createAgent({
-      model: new ChatOpenAI({ model: 'gpt-5' }),
-      tools: session.tools
-    });
+let session = await metorial.connect({
+  adapter: metorialLangchain(),
+  providers: [{ providerDeploymentId: deployment.id }]
+});
 
-    let result = await agent.invoke({
-      messages: [{ role: 'user', content: 'What are the top stories on HackerNews?' }]
-    });
+console.log('Session tools:', session.tools());
 
-    console.log('Result:', JSON.stringify(result, null, 2));
-  }
-);
+let agent = createAgent({
+  model: new ChatOpenAI({ model: 'gpt-4o' }),
+  tools: session.tools()
+});
+
+let result = await agent.invoke({
+  messages: [{ role: 'user', content: 'What are the top stories on HackerNews?' }]
+});
+
+console.log('Result:', JSON.stringify(result, null, 2));
 ```
 
 ## License
