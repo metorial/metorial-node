@@ -32,37 +32,28 @@ let deployment = await metorial.providerDeployments.create({
   providerId: 'metorial-search'
 });
 
-// Open a streaming session. `withProviderSession` connects to Metorial's MCP servers and
-// provides `tools` formatted for the AI SDK. The `streaming: true` flag keeps the connection
-// alive for the duration of the stream.
-let result = await metorial.withProviderSession(
-  metorialAiSdk,
-  {
-    providers: [{ providerDeploymentId: deployment.id }],
-    streaming: true
-  },
-  async ({ tools, closeSession }) => {
-    // Call `streamText()` from the Vercel AI SDK. The AI SDK handles the tool call loop
-    // automatically — when Claude wants to search the web, it calls the MCP tools, gets
-    // results, and continues generating. `stepCountIs(10)` limits the number of tool call rounds.
-    let result = streamText({
-      model: anthropic('claude-sonnet-4-20250514'),
-      prompt:
-        'Search the web for the latest news about AI agents and summarize the top 3 stories.',
-      stopWhen: stepCountIs(10),
-      tools,
-      onStepFinish: step => {
-        if (step.toolCalls?.length) {
-          console.log(`\n🔧 ${step.toolCalls.map(tc => tc.toolName).join(', ')}\n`);
-        }
-      },
-      onFinish: async () => {
-        await closeSession();
-      }
-    });
-    return result;
+// Open a session. `connect()` connects to Metorial's MCP servers and returns an adapter
+// session with `tools()` formatted for the AI SDK.
+let session = await metorial.connect({
+  adapter: metorialAiSdk(),
+  providers: [{ providerDeploymentId: deployment.id }]
+});
+
+// Call `streamText()` from the Vercel AI SDK. The AI SDK handles the tool call loop
+// automatically — when Claude wants to search the web, it calls the MCP tools, gets
+// results, and continues generating. `stepCountIs(10)` limits the number of tool call rounds.
+let result = streamText({
+  model: anthropic('claude-sonnet-4-20250514'),
+  prompt:
+    'Search the web for the latest news about AI agents and summarize the top 3 stories.',
+  stopWhen: stepCountIs(10),
+  tools: session.tools(),
+  onStepFinish: step => {
+    if (step.toolCalls?.length) {
+      console.log(`\n🔧 ${step.toolCalls.map(tc => tc.toolName).join(', ')}\n`);
+    }
   }
-);
+});
 
 // Stream the text to stdout as it arrives.
 for await (let part of result.textStream) {

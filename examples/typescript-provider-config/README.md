@@ -23,13 +23,12 @@ let deployment = await metorial.providerDeployments.create({
   providerId: 'metorial-search'
 });
 
-await metorial.withProviderSession(
-  metorialOpenAI.chatCompletions,
-  { providers: [{ providerDeploymentId: deployment.id }] },
-  async session => {
-    // session.tools contains the search tools, formatted for OpenAI
-  }
-);
+let session = await metorial.connect({
+  adapter: metorialOpenAI.chatCompletions(),
+  providers: [{ providerDeploymentId: deployment.id }]
+});
+
+// session.tools() contains the search tools, formatted for OpenAI
 ```
 
 ## Example 2: Pre-configured deployment ID
@@ -108,11 +107,9 @@ providers: [
 Reference a pre-configured template from the dashboard. Templates bundle providers + auth configs into a reusable ID, so you can change what tools are available without updating code:
 
 ```typescript
-await metorial.withProviderSession(
-  metorialOpenAI.chatCompletions,
-  { sessionTemplate: process.env.SESSION_TEMPLATE_ID! },
-  async session => {
-    /* ... */
-  }
-);
+let session = await metorial.connect({
+  adapter: metorialOpenAI.chatCompletions(),
+  providers: [{ sessionTemplateId: process.env.SESSION_TEMPLATE_ID! }]
+});
+```
 ```

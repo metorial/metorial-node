@@ -28,44 +28,39 @@ let metorial = new Metorial({
 });
 
 // Create an OpenAI-compatible provider
-let metorialOpenAICompatible = createOpenAICompatibleMcpSdk({});
+let session = await metorial.connect({
+  adapter: createOpenAICompatibleMcpSdk()(),
+  providers: [{ providerDeploymentId: 'your-provider-deployment-id' }]
+});
 
-await metorial.withProviderSession(
-  metorialOpenAICompatible,
+// Use any OpenAI-compatible client
+let openai = new OpenAI({
+  apiKey: 'your-openai-api-key'
+});
+
+let messages = [
   {
-    serverDeployments: ['your-server-deployment-id']
-  },
-  async session => {
-    // Use any OpenAI-compatible client
-    let openai = new OpenAI({
-      apiKey: 'your-openai-api-key'
-    });
-
-    let messages = [
-      {
-        role: 'user',
-        content:
-          'Summarize the README.md file of the metorial/websocket-explorer repository on GitHub?'
-      }
-    ];
-
-    let response = await openai.chat.completions.create({
-      model: 'gpt-4o-mini',
-      messages,
-      tools: session.tools
-    });
-
-    let choice = response.choices[0]!;
-    let toolCalls = choice.message.tool_calls;
-
-    if (toolCalls && toolCalls.length > 0) {
-      let toolResponses = await session.callTools(toolCalls);
-      console.log('Tool responses:', toolResponses);
-    } else {
-      console.log(choice.message.content);
-    }
+    role: 'user',
+    content:
+      'Summarize the README.md file of the metorial/websocket-explorer repository on GitHub?'
   }
-);
+];
+
+let response = await openai.chat.completions.create({
+  model: 'gpt-4o-mini',
+  messages,
+  tools: session.tools()
+});
+
+let choice = response.choices[0]!;
+let toolCalls = choice.message.tool_calls;
+
+if (toolCalls && toolCalls.length > 0) {
+  let toolResponses = await session.callTools(toolCalls);
+  console.log('Tool responses:', toolResponses);
+} else {
+  console.log(choice.message.content);
+}
 ```
 
 ## Dependencies

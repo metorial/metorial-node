@@ -31,26 +31,25 @@ let openai = new OpenAI({
   apiKey: 'your-openai-api-key'
 });
 
-await metorial.withProviderSession(
-  metorialOpenAI.chatCompletions,
-  { serverDeployments: ['your-server-deployment-id'] },
-  async session => {
-    let messages = [{ role: 'user', content: 'What are the latest commits?' }];
+let session = await metorial.connect({
+  adapter: metorialOpenAI.chatCompletions(),
+  providers: [{ providerDeploymentId: 'your-provider-deployment-id' }]
+});
 
-    let response = await openai.chat.completions.create({
-      model: 'gpt-4o',
-      messages,
-      tools: session.tools
-    });
+let messages = [{ role: 'user', content: 'What are the latest commits?' }];
 
-    // Handle tool calls
-    let toolCalls = response.choices[0]?.message.tool_calls;
-    if (toolCalls) {
-      let toolResponses = await session.callTools(toolCalls);
-      messages.push({ role: 'assistant', tool_calls: toolCalls }, ...toolResponses);
-    }
-  }
-);
+let response = await openai.chat.completions.create({
+  model: 'gpt-4o',
+  messages,
+  tools: session.tools()
+});
+
+// Handle tool calls
+let toolCalls = response.choices[0]?.message.tool_calls;
+if (toolCalls) {
+  let toolResponses = await session.callTools(toolCalls);
+  messages.push({ role: 'assistant', tool_calls: toolCalls }, ...toolResponses);
+}
 ```
 
 ## License

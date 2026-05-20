@@ -36,37 +36,36 @@ let deployment = await metorial.providerDeployments.create({
   providerId: 'metorial-search'
 });
 
-await metorial.withProviderSession(
-  metorialDeepseek,
-  { providers: [{ providerDeploymentId: deployment.id }] },
-  async session => {
-    // Tools are deduplicated by function name since some providers may expose overlapping names.
-    let uniqueTools = Array.from(
-      new Map(session.tools.map(t => [t.function.name, t])).values()
-    );
+let session = await metorial.connect({
+  adapter: metorialDeepseek(),
+  providers: [{ providerDeploymentId: deployment.id }]
+});
 
-    // The tool call loop follows the same pattern as OpenAI — check `tool_calls`, execute
-    // via `session.callTools()`, append to history.
-    for (let i = 0; i < 10; i++) {
-      let response = await deepseek.chat.completions.create({
-        model: 'deepseek-chat',
-        messages,
-        tools: uniqueTools
-      });
-
-      let choice = response.choices[0]!;
-      let toolCalls = choice.message.tool_calls;
-
-      if (!toolCalls || toolCalls.length === 0) {
-        console.log(choice.message.content);
-        return;
-      }
-
-      let toolResponses = await session.callTools(toolCalls);
-      messages.push({ role: 'assistant', tool_calls: toolCalls }, ...toolResponses);
-    }
-  }
+// Tools are deduplicated by function name since some providers may expose overlapping names.
+let uniqueTools = Array.from(
+  new Map(session.tools().map(t => [t.function.name, t])).values()
 );
+
+// The tool call loop follows the same pattern as OpenAI — check `tool_calls`, execute
+// via `session.callTools()`, append to history.
+for (let i = 0; i < 10; i++) {
+  let response = await deepseek.chat.completions.create({
+    model: 'deepseek-chat',
+    messages,
+    tools: uniqueTools
+  });
+
+  let choice = response.choices[0]!;
+  let toolCalls = choice.message.tool_calls;
+
+  if (!toolCalls || toolCalls.length === 0) {
+    console.log(choice.message.content);
+    break;
+  }
+
+  let toolResponses = await session.callTools(toolCalls);
+  messages.push({ role: 'assistant', tool_calls: toolCalls }, ...toolResponses);
+}
 ```
 
 ## Adding OAuth providers

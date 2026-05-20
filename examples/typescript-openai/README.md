@@ -30,40 +30,39 @@ let deployment = await metorial.providerDeployments.create({
   providerId: 'metorial-search'
 });
 
-// Open a session with `metorialOpenAI.chatCompletions`, which formats MCP tools in OpenAI's
-// function calling format. Note the `.chatCompletions` — this tells the adapter to produce
-// tools shaped for the chat completions API.
-await metorial.withProviderSession(
-  metorialOpenAI.chatCompletions,
-  { providers: [{ providerDeploymentId: deployment.id }] },
-  async session => {
-    // Tool call loop: send messages to GPT-4o with `session.tools`, check for `tool_calls`
-    // in the response, execute them via `session.callTools()`, and append everything to the
-    // message history. When the model responds without tool calls, print the result.
-    for (let i = 0; i < 10; i++) {
-      let response = await openai.chat.completions.create({
-        model: 'gpt-4o',
-        messages,
-        tools: session.tools
-      });
-      let choice = response.choices[0]!;
-      let toolCalls = choice.message.tool_calls;
+// Open a session with `metorialOpenAI.chatCompletions()`, which formats MCP tools in OpenAI's
+// function calling format. Note the `.chatCompletions()` call — this tells the adapter to
+// produce tools shaped for the chat completions API.
+let session = await metorial.connect({
+  adapter: metorialOpenAI.chatCompletions(),
+  providers: [{ providerDeploymentId: deployment.id }]
+});
 
-      if (!toolCalls) {
-        console.log(choice.message.content);
-        return;
-      }
+// Tool call loop: send messages to GPT-4o with `session.tools()`, check for `tool_calls`
+// in the response, execute them via `session.callTools()`, and append everything to the
+// message history. When the model responds without tool calls, print the result.
+for (let i = 0; i < 10; i++) {
+  let response = await openai.chat.completions.create({
+    model: 'gpt-4o',
+    messages,
+    tools: session.tools()
+  });
+  let choice = response.choices[0]!;
+  let toolCalls = choice.message.tool_calls;
 
-      // OpenAI tool responses are spread into the messages array (`...toolResponses`) because
-      // each tool result is a separate message, unlike Anthropic where they're bundled.
-      let toolResponses = await session.callTools(toolCalls);
-      messages.push(
-        { role: 'assistant', tool_calls: choice.message.tool_calls },
-        ...toolResponses
-      );
-    }
+  if (!toolCalls) {
+    console.log(choice.message.content);
+    break;
   }
-);
+
+  // OpenAI tool responses are spread into the messages array (`...toolResponses`) because
+  // each tool result is a separate message, unlike Anthropic where they're bundled.
+  let toolResponses = await session.callTools(toolCalls);
+  messages.push(
+    { role: 'assistant', tool_calls: choice.message.tool_calls },
+    ...toolResponses
+  );
+}
 ```
 
 ## Adding OAuth providers

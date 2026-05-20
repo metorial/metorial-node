@@ -30,37 +30,34 @@ let anthropic = new OpenAI({
   baseURL: 'https://api.anthropic.com/v1'
 });
 
-await metorial.withProviderSession(
-  metorialAnthropic,
+let session = await metorial.connect({
+  adapter: metorialAnthropic(),
+  providers: [{ providerDeploymentId: 'your-provider-deployment-id' }]
+});
+
+let messages = [
   {
-    serverDeployments: ['your-server-deployment-id']
-  },
-  async session => {
-    let messages = [
-      {
-        role: 'user',
-        content:
-          'Summarize the README.md file of the metorial/websocket-explorer repository on GitHub?'
-      }
-    ];
-
-    let response = await anthropic.chat.completions.create({
-      model: 'claude-3-5-sonnet-20241022',
-      messages,
-      tools: session.tools
-    });
-
-    let choice = response.choices[0]!;
-    let toolCalls = choice.message.tool_calls;
-
-    if (toolCalls && toolCalls.length > 0) {
-      let toolResponses = await session.callTools(toolCalls);
-      console.log('Tool responses:', toolResponses);
-    } else {
-      console.log(choice.message.content);
-    }
+    role: 'user',
+    content:
+      'Summarize the README.md file of the metorial/websocket-explorer repository on GitHub?'
   }
-);
+];
+
+let response = await anthropic.chat.completions.create({
+  model: 'claude-3-5-sonnet-20241022',
+  messages,
+  tools: session.tools()
+});
+
+let choice = response.choices[0]!;
+let toolCalls = choice.message.tool_calls;
+
+if (toolCalls && toolCalls.length > 0) {
+  let toolResponses = await session.callTools(toolCalls);
+  console.log('Tool responses:', toolResponses);
+} else {
+  console.log(choice.message.content);
+}
 ```
 
 ## License

@@ -29,52 +29,49 @@ let genAI = new GoogleGenAI({
   apiKey: 'your-google-api-key'
 });
 
-await metorial.withProviderSession(
-  metorialGoogle,
-  {
-    serverDeployments: ['your-server-deployment-id']
-  },
-  async session => {
-    let response = await genAI.models.generateContent({
-      model: 'gemini-1.5-pro-latest',
-      contents: [
+let session = await metorial.connect({
+  adapter: metorialGoogle(),
+  providers: [{ providerDeploymentId: 'your-provider-deployment-id' }]
+});
+
+let response = await genAI.models.generateContent({
+  model: 'gemini-1.5-pro-latest',
+  contents: [
+    {
+      role: 'user',
+      parts: [
         {
-          role: 'user',
-          parts: [
-            {
-              text: 'Summarize the README.md file of the metorial/websocket-explorer repository on GitHub.'
-            }
-          ]
+          text: 'Summarize the README.md file of the metorial/websocket-explorer repository on GitHub.'
         }
-      ],
-      config: {
-        tools: session.tools
-      }
-    });
-
-    // Handle function calls and tool responses
-    let result = response.response;
-    let functionCalls = result.candidates?.[0]?.content?.parts?.filter(
-      part => part.functionCall
-    );
-
-    if (functionCalls && functionCalls.length > 0) {
-      let toolCalls = functionCalls.map(fc => ({
-        id: `call_${Date.now()}`,
-        type: 'function' as const,
-        function: {
-          name: fc.functionCall!.name,
-          arguments: fc.functionCall!.args
-        }
-      }));
-
-      let toolResponses = await session.callTools(toolCalls);
-      console.log('Tool responses:', toolResponses);
-    } else {
-      console.log(result.text());
+      ]
     }
+  ],
+  config: {
+    tools: session.tools()
   }
+});
+
+// Handle function calls and tool responses
+let result = response.response;
+let functionCalls = result.candidates?.[0]?.content?.parts?.filter(
+  part => part.functionCall
 );
+
+if (functionCalls && functionCalls.length > 0) {
+  let toolCalls = functionCalls.map(fc => ({
+    id: `call_${Date.now()}`,
+    type: 'function' as const,
+    function: {
+      name: fc.functionCall!.name,
+      arguments: fc.functionCall!.args
+    }
+  }));
+
+  let toolResponses = await session.callTools(toolCalls);
+  console.log('Tool responses:', toolResponses);
+} else {
+  console.log(result.text());
+}
 ```
 
 ## License

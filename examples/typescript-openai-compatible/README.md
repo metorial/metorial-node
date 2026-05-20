@@ -33,25 +33,23 @@ let deployment = await metorial.providerDeployments.create({
   providerId: 'metorial-search'
 });
 
-// Use this adapter exactly like any other — pass it to `withProviderSession()` and the rest
-// is the same.
-await metorial.withProviderSession(
-  metorialOpenAICompatible,
-  { providers: [{ providerDeploymentId: deployment.id }] },
-  async session => {
-    // session.tools is in OpenAI function calling format
-    // session.callTools() executes tool calls and returns results
+// Use this adapter exactly like any other — pass it to `connect()` and the rest is the same.
+let session = await metorial.connect({
+  adapter: createOpenAICompatibleMcpSdk()(),
+  providers: [{ providerDeploymentId: deployment.id }]
+});
 
-    for (let i = 0; i < 10; i++) {
-      let response = await openai.chat.completions.create({
-        model: 'gpt-4o',
-        messages,
-        tools: session.tools as any
-      });
-      // ... same tool call loop as the OpenAI example
-    }
-  }
-);
+// session.tools() is in OpenAI function calling format
+// session.callTools() executes tool calls and returns results
+
+for (let i = 0; i < 10; i++) {
+  let response = await openai.chat.completions.create({
+    model: 'gpt-4o',
+    messages,
+    tools: session.tools() as any
+  });
+  // ... same tool call loop as the OpenAI example
+}
 ```
 
 ## When to use this

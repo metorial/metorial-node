@@ -85,32 +85,29 @@ let openai = new OpenAI({
 });
 
 // Use with AI provider integration
-await metorial.mcp.withProviderSession(
-  metorialOpenAI.chatCompletions,
-  {
-    serverDeployments: ['your-server-deployment-id']
-  },
-  async session => {
-    // session.tools contains the tools formatted for OpenAI
-    let response = await openai.chat.completions.create({
-      model: 'gpt-4o',
-      messages: [
-        {
-          role: 'user',
-          content: 'Search for information about AI developments'
-        }
-      ],
-      tools: session.tools
-    });
+let session = await metorial.connect({
+  adapter: metorialOpenAI.chatCompletions(),
+  providers: [{ providerDeploymentId: 'your-provider-deployment-id' }]
+});
 
-    let choice = response.choices[0];
-    if (choice.message.tool_calls) {
-      // Execute tool calls
-      let toolResponses = await session.callTools(choice.message.tool_calls);
-      console.log('Tool responses:', toolResponses);
+// session.tools() contains the tools formatted for OpenAI
+let response = await openai.chat.completions.create({
+  model: 'gpt-4o',
+  messages: [
+    {
+      role: 'user',
+      content: 'Search for information about AI developments'
     }
-  }
-);
+  ],
+  tools: session.tools()
+});
+
+let choice = response.choices[0];
+if (choice.message.tool_calls) {
+  // Execute tool calls
+  let toolResponses = await session.callTools(choice.message.tool_calls);
+  console.log('Tool responses:', toolResponses);
+}
 ```
 
 ### Direct MCP Connection
@@ -252,7 +249,7 @@ new Metorial(config: {
 
 - `mcp.createSession(init)`: Create a new MCP session
 - `mcp.withSession(init, action)`: Execute action with session lifecycle management
-- `mcp.withProviderSession(provider, init, action)`: Execute action with provider integration
+- `connect(options)`: Connect to MCP providers with an AI adapter
 - `mcp.createConnection(deploymentId)`: Create direct MCP connection
 
 ### Session Management

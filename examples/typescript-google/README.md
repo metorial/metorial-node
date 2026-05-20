@@ -30,41 +30,40 @@ let deployment = await metorial.providerDeployments.create({
   providerId: 'metorial-search'
 });
 
-// Open a session with `metorialGoogle`, which formats MCP tools as Gemini function declarations.
+// Open a session with `metorialGoogle()`, which formats MCP tools as Gemini function declarations.
 // Gemini expects tools in the `config.tools` field.
-await metorial.withProviderSession(
-  metorialGoogle,
-  { providers: [{ providerDeploymentId: deployment.id }] },
-  async session => {
-    let response = await genAI.models.generateContent({
-      model: 'gemini-2.5-flash',
-      contents: [
-        {
-          role: 'user',
-          parts: [{ text: 'Search the web for the latest news about AI agents...' }]
-        }
-      ],
-      config: {
-        tools: session.tools
-      }
-    });
+let session = await metorial.connect({
+  adapter: metorialGoogle(),
+  providers: [{ providerDeploymentId: deployment.id }]
+});
 
-    // Gemini returns function calls as `functionCall` parts inside `response.candidates`.
-    // Extract them and execute via `session.callTools()`.
-    let functionCalls = response.candidates?.[0]?.content?.parts
-      ?.filter(part => part.functionCall)
-      .map(part => part.functionCall!);
-
-    if (functionCalls && functionCalls.length > 0) {
-      let toolResponses = await session.callTools(functionCalls);
-      console.log('Tool responses:', toolResponses);
+let response = await genAI.models.generateContent({
+  model: 'gemini-2.5-flash',
+  contents: [
+    {
+      role: 'user',
+      parts: [{ text: 'Search the web for the latest news about AI agents...' }]
     }
-
-    // Note: this example does a single round of tool calls. For a full multi-turn loop
-    // (like the Anthropic/OpenAI examples), you'd feed the tool results back into `contents`
-    // and call `generateContent` again.
+  ],
+  config: {
+    tools: session.tools()
   }
-);
+});
+
+// Gemini returns function calls as `functionCall` parts inside `response.candidates`.
+// Extract them and execute via `session.callTools()`.
+let functionCalls = response.candidates?.[0]?.content?.parts
+  ?.filter(part => part.functionCall)
+  .map(part => part.functionCall!);
+
+if (functionCalls && functionCalls.length > 0) {
+  let toolResponses = await session.callTools(functionCalls);
+  console.log('Tool responses:', toolResponses);
+}
+
+// Note: this example does a single round of tool calls. For a full multi-turn loop
+// (like the Anthropic/OpenAI examples), you'd feed the tool results back into `contents`
+// and call `generateContent` again.
 ```
 
 ## Adding OAuth providers

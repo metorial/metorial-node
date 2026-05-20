@@ -30,48 +30,44 @@ let deployment = await metorial.providerDeployments.create({
   providerId: 'metorial-search'
 });
 
-// Open a session with `metorialAnthropic`, which formats MCP tools in Claude's native tool
-// format. The session callback receives `session.tools` (tool definitions) and
-// `session.callTools()` (to execute tool calls).
-await metorial.withProviderSession(
-  metorialAnthropic,
-  { providers: [{ providerDeploymentId: deployment.id }] },
-  async session => {
-    // Some MCP providers expose overlapping tool names, so deduplicate by name.
-    let uniqueTools = Array.from(new Map(session.tools.map(t => [t.name, t])).values());
+// Open a session with `metorialAnthropic()`, which formats MCP tools in Claude's native tool
+// format. The session provides `session.tools()` (tool definitions) and `session.callTools()`
+// (to execute tool calls).
+let session = await metorial.connect({
+  adapter: metorialAnthropic(),
+  providers: [{ providerDeploymentId: deployment.id }]
+});
 
-    // Multi-turn tool call loop. Each iteration sends the conversation to Claude with the
-    // available tools, checks if Claude wants to call any tools, and if so, executes them
-    // via `session.callTools()` and appends the results to the message history. When Claude
-    // responds without tool calls, we print the final text.
-    for (let i = 0; i < 10; i++) {
-      let response = await anthropic.messages.create({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1024,
-        messages,
-        tools: uniqueTools
-      });
+// Multi-turn tool call loop. Each iteration sends the conversation to Claude with the
+// available tools, checks if Claude wants to call any tools, and if so, executes them
+// via `session.callTools()` and appends the results to the message history. When Claude
+// responds without tool calls, we print the final text.
+for (let i = 0; i < 10; i++) {
+  let response = await anthropic.messages.create({
+    model: 'claude-sonnet-4-20250514',
+    max_tokens: 1024,
+    messages,
+    tools: session.tools()
+  });
 
-      let toolCalls = response.content.filter(
-        (c): c is Anthropic.Messages.ToolUseBlock => c.type === 'tool_use'
-      );
+  let toolCalls = response.content.filter(
+    (c): c is Anthropic.Messages.ToolUseBlock => c.type === 'tool_use'
+  );
 
-      if (toolCalls.length === 0) {
-        // No tool calls — print the final text response
-        let finalText = response.content
-          .filter((c): c is Anthropic.Messages.TextBlock => c.type === 'text')
-          .map(c => c.text)
-          .join('');
-        console.log(finalText);
-        return;
-      }
-
-      // Execute the tool calls and add results to the conversation
-      let toolResponses = await session.callTools(toolCalls);
-      messages.push({ role: 'assistant', content: response.content as any }, toolResponses);
-    }
+  if (toolCalls.length === 0) {
+    // No tool calls — print the final text response
+    let finalText = response.content
+      .filter((c): c is Anthropic.Messages.TextBlock => c.type === 'text')
+      .map(c => c.text)
+      .join('');
+    console.log(finalText);
+    break;
   }
-);
+
+  // Execute the tool calls and add results to the conversation
+  let toolResponses = await session.callTools(toolCalls);
+  messages.push({ role: 'assistant', content: response.content as any }, toolResponses);
+}
 ```
 
 ## Adding OAuth providers

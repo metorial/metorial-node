@@ -39,42 +39,32 @@ let deployment = await metorial.providerDeployments.create({
 // console.log('Complete OAuth at:', setupSession.url);
 // let [completedSession] = await metorial.providerDeployments.setupSessions.waitForCompletion([setupSession]);
 
-// Open a streaming session. `metorialAiSdk` is the adapter that formats MCP tools for the
-// Vercel AI SDK. You can pass multiple providers in the `providers` array — here we just use
-// Metorial Search, but the commented-out block shows adding an OAuth provider alongside it.
-// The `streaming: true` flag is important — it tells Metorial to keep the MCP connection alive
-// for the duration of the stream instead of closing it after the initial tool list is returned.
-let result = await metorial.withProviderSession(
-  metorialAiSdk,
-  {
-    providers: [
-      { providerDeploymentId: deployment.id }
-      // { providerDeploymentId: oauthProviderDeploymentId, providerAuthConfigId: completedSession.authConfig!.id }
-    ],
-    streaming: true
-  },
-  async ({ tools, closeSession }) => {
-    // `streamText()` handles the tool call loop automatically. When the model wants to use a tool,
-    // the AI SDK calls it and feeds the result back. `onStepFinish` logs which tools were called
-    // at each step. Always call `closeSession()` when done to free server-side resources.
-    let result = streamText({
-      model: openai('gpt-4o-mini'),
-      prompt:
-        'Search the web for the latest news about AI agents and summarize the top 3 stories.',
-      stopWhen: stepCountIs(10),
-      tools,
-      onStepFinish: step => {
-        if (step.toolCalls?.length) {
-          console.log(`\n🔧 ${step.toolCalls.map(tc => tc.toolName).join(', ')}\n`);
-        }
-      },
-      onFinish: async () => {
-        await closeSession();
-      }
-    });
-    return result;
+// Open a session. `metorialAiSdk()` is the adapter that formats MCP tools for the Vercel AI SDK.
+// You can pass multiple providers in the `providers` array — here we just use Metorial Search,
+// but the commented-out block shows adding an OAuth provider alongside it.
+let session = await metorial.connect({
+  adapter: metorialAiSdk(),
+  providers: [
+    { providerDeploymentId: deployment.id }
+    // { providerDeploymentId: oauthProviderDeploymentId, providerAuthConfigId: completedSession.authConfig!.id }
+  ]
+});
+
+// `streamText()` handles the tool call loop automatically. When the model wants to use a tool,
+// the AI SDK calls it and feeds the result back. `onStepFinish` logs which tools were called
+// at each step.
+let result = streamText({
+  model: openai('gpt-4o-mini'),
+  prompt:
+    'Search the web for the latest news about AI agents and summarize the top 3 stories.',
+  stopWhen: stepCountIs(10),
+  tools: session.tools(),
+  onStepFinish: step => {
+    if (step.toolCalls?.length) {
+      console.log(`\n🔧 ${step.toolCalls.map(tc => tc.toolName).join(', ')}\n`);
+    }
   }
-);
+});
 
 for await (let part of result.textStream) {
   process.stdout.write(part);

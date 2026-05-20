@@ -28,39 +28,33 @@ The official Node.js/TypeScript SDK for [Metorial](https://metorial.com) - Conne
 ```typescript
 import { anthropic } from "@ai-sdk/anthropic";
 import { metorialAiSdk } from "@metorial/ai-sdk";
-import { Metorial } from "@metorial/sdk";
+import { Metorial } from "metorial";
 import { stepCountIs, streamText } from "ai";
 
 // Get your API key at https://app.metorial.com
 let metorial = new Metorial({ apiKey: "your-metorial-api-key" });
 
-let result = await metorial.withProviderSession(
-  metorialAiSdk,
-  {
-    serverDeployments: [
-      { serverDeploymentId: "your-server-deployment-id" },
-    ],
-    streaming: true, // Required for streaming with tool calls
-  },
-  async ({ tools, closeSession }) => {
-    let result = streamText({
-      model: anthropic("claude-sonnet-4-5"),
-      prompt: "Research what makes Metorial so special.",
-      stopWhen: stepCountIs(25),
-      tools: tools,
-      onStepFinish: (step: any) => {
-        if (step.toolCalls) {
-          console.log(`🔧 Using tools: ${step.toolCalls.map((tc: any) => tc.toolName).join(", ")}`);
-        }
-      },
-      onFinish: async () => {
-        console.log("\n🎯 Stream completed!");
-        await closeSession();
-      },
-    });
-    return result;
+let deployment = await metorial.providerDeployments.create({
+  name: "Metorial Search",
+  providerId: "metorial-search"
+});
+
+let session = await metorial.connect({
+  adapter: metorialAiSdk(),
+  providers: [{ providerDeploymentId: deployment.id }]
+});
+
+let result = streamText({
+  model: anthropic("claude-sonnet-4-5"),
+  prompt: "Research what makes Metorial so special.",
+  stopWhen: stepCountIs(25),
+  tools: session.tools(),
+  onStepFinish: (step) => {
+    if (step.toolCalls?.length) {
+      console.log(`🔧 Using tools: ${step.toolCalls.map((tc) => tc.toolName).join(", ")}`);
+    }
   }
-);
+});
 
 console.log("🤖 AI Response:\n");
 for await (const textPart of result.textStream) {
@@ -118,66 +112,56 @@ await metorial.oauth.waitForCompletion([googleCalOAuthSession, slackOAuthSession
 console.log('OAuth sessions completed!');
 
 // Now use the authenticated sessions
-await metorial.withProviderSession(
-  metorialAnthropic,
-  {
-    serverDeployments: [
-      { 
-        serverDeploymentId: 'your-google-calendar-server-deployment-id', 
-        oauthSessionId: googleCalOAuthSession.id 
-      },
-      { 
-        serverDeploymentId: 'your-slack-server-deployment-id', 
-        oauthSessionId: slackOAuthSession.id 
-      },
-      { 
-        serverDeploymentId: 'your-exa-server-deployment-id' // No OAuth needed for Exa
-      }
-    ],
-    // streaming: true, // Optional: enable for streaming with tool calls
-  },
-  async ({ tools, callTools, closeSession }) => {
-    let messages: Anthropic.Messages.MessageParam[] = [
-      { 
-        role: 'user', 
-        content: `Look in Slack for mentions of potential partners. Use Exa to research their background, 
-        company, and email. Schedule a 30-minute intro call with them for an open slot on Dec 13th, 2025 
-        SF time and send me the calendar link.` 
-      }
-    ];
-
-    // Dedupe tools by name
-    let uniqueTools = Array.from(new Map(tools.map(t => [t.name, t])).values());
-
-    for (let i = 0; i < 10; i++) {
-      let response = await anthropic.messages.create({
-        model: 'claude-sonnet-4-5',
-        max_tokens: 1024,
-        messages,
-        tools: uniqueTools
-      });
-
-      let toolCalls = response.content.filter(
-        (c): c is Anthropic.Messages.ToolUseBlock => c.type === 'tool_use'
-      );
-
-      if (toolCalls.length === 0) {
-        let finalText = response.content
-          .filter((c): c is Anthropic.Messages.TextBlock => c.type === 'text')
-          .map(c => c.text)
-          .join('');
-        console.log(finalText);
-        await closeSession();
-        return;
-      }
-
-      let toolResponses = await callTools(toolCalls);
-      messages.push({ role: 'assistant', content: response.content as any }, toolResponses);
+let session = await metorial.connect({
+  adapter: metorialAnthropic(),
+  providers: [
+    {
+      providerDeploymentId: 'your-google-calendar-provider-deployment-id',
+      providerAuthConfigId: googleCalOAuthSession.id
+    },
+    {
+      providerDeploymentId: 'your-slack-provider-deployment-id',
+      providerAuthConfigId: slackOAuthSession.id
+    },
+    {
+      providerDeploymentId: 'your-exa-provider-deployment-id'
     }
+  ]
+});
 
-    await closeSession();
+let messages: Anthropic.Messages.MessageParam[] = [
+  {
+    role: 'user',
+    content: `Look in Slack for mentions of potential partners. Use Exa to research their background,
+    company, and email. Schedule a 30-minute intro call with them for an open slot on Dec 13th, 2025
+    SF time and send me the calendar link.`
   }
-);
+];
+
+for (let i = 0; i < 10; i++) {
+  let response = await anthropic.messages.create({
+    model: 'claude-sonnet-4-5',
+    max_tokens: 1024,
+    messages,
+    tools: session.tools()
+  });
+
+  let toolCalls = response.content.filter(
+    (c): c is Anthropic.Messages.ToolUseBlock => c.type === 'tool_use'
+  );
+
+  if (toolCalls.length === 0) {
+    let finalText = response.content
+      .filter((c): c is Anthropic.Messages.TextBlock => c.type === 'text')
+      .map(c => c.text)
+      .join('');
+    console.log(finalText);
+    break;
+  }
+
+  let toolResponses = await session.callTools(toolCalls);
+  messages.push({ role: 'assistant', content: response.content as any }, toolResponses);
+}
 ```
 
 ### OAuth Flow Explained
@@ -185,7 +169,7 @@ await metorial.withProviderSession(
 1. **Create OAuth Sessions**: Call `metorial.oauth.sessions.create()` for each service requiring user authentication (only once per user)
 2. **Send URLs**: Show the OAuth URLs to users so they can authenticate in their browser
 3. **Wait for Completion**: Use `metorial.oauth.waitForCompletion()` to wait for users to complete the OAuth flow
-4. **Use Authenticated Sessions**: Pass the `oauthSessionId` when configuring `serverDeployments`
+4. **Use Authenticated Sessions**: Pass the `providerAuthConfigId` when configuring `providers`
 
 ## Examples
 
@@ -209,43 +193,36 @@ import OpenAI from 'openai';
 let metorial = new Metorial({ apiKey: 'your-metorial-api-key' });
 let openai = new OpenAI({ apiKey: 'your-openai-api-key' });
 
-await metorial.withProviderSession(
-  metorialOpenAI.chatCompletions,
-  { 
-    serverDeployments: ['your-server-deployment-id'],
-    // streaming: true, // Optional: enable for streaming with tool calls
-  },
-  async ({ tools, callTools, closeSession }) => {
-    let messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
-      { role: 'user', content: 'What are the latest commits?' }
-    ];
+let session = await metorial.connect({
+  adapter: metorialOpenAI.chatCompletions(),
+  providers: [{ providerDeploymentId: 'your-provider-deployment-id' }]
+});
 
-    for (let i = 0; i < 10; i++) {
-      let response = await openai.chat.completions.create({
-        model: 'gpt-4o',
-        messages,
-        tools: tools
-      });
+let messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
+  { role: 'user', content: 'What are the latest commits?' }
+];
 
-      let choice = response.choices[0]!;
-      let toolCalls = choice.message.tool_calls;
+for (let i = 0; i < 10; i++) {
+  let response = await openai.chat.completions.create({
+    model: 'gpt-4o',
+    messages,
+    tools: session.tools()
+  });
 
-      if (!toolCalls) {
-        console.log(choice.message.content);
-        await closeSession();
-        return;
-      }
+  let choice = response.choices[0]!;
+  let toolCalls = choice.message.tool_calls;
 
-      let toolResponses = await callTools(toolCalls);
-      messages.push(
-        { role: 'assistant', tool_calls: choice.message.tool_calls },
-        ...toolResponses
-      );
-    }
-
-    await closeSession();
+  if (!toolCalls) {
+    console.log(choice.message.content);
+    break;
   }
-);
+
+  let toolResponses = await session.callTools(toolCalls);
+  messages.push(
+    { role: 'assistant', tool_calls: choice.message.tool_calls },
+    ...toolResponses
+  );
+}
 ```
 
 ### Anthropic (Claude)
@@ -258,40 +235,31 @@ import Anthropic from '@anthropic-ai/sdk';
 let metorial = new Metorial({ apiKey: 'your-metorial-api-key' });
 let anthropic = new Anthropic({ apiKey: 'your-anthropic-api-key' });
 
-await metorial.withProviderSession(
-  metorialAnthropic,
-  { 
-    serverDeployments: ['your-server-deployment-id'],
-    // streaming: true, // Optional: enable for streaming with tool calls
-  },
-  async ({ tools, callTools, closeSession }) => {
-    let messages: Anthropic.Messages.MessageParam[] = [
-      { role: 'user', content: 'Help me with this GitHub task: ...' }
-    ];
+let session = await metorial.connect({
+  adapter: metorialAnthropic(),
+  providers: [{ providerDeploymentId: 'your-provider-deployment-id' }]
+});
 
-    // Dedupe tools by name
-    let uniqueTools = Array.from(new Map(tools.map(t => [t.name, t])).values());
+let messages: Anthropic.Messages.MessageParam[] = [
+  { role: 'user', content: 'Help me with this GitHub task: ...' }
+];
 
-    let response = await anthropic.messages.create({
-      model: 'claude-sonnet-4-5',
-      max_tokens: 1024,
-      messages,
-      tools: uniqueTools
-    });
+let response = await anthropic.messages.create({
+  model: 'claude-sonnet-4-5',
+  max_tokens: 1024,
+  messages,
+  tools: session.tools()
+});
 
-    // Handle tool calls
-    let toolCalls = response.content.filter(
-      (c): c is Anthropic.Messages.ToolUseBlock => c.type === 'tool_use'
-    );
-
-    if (toolCalls.length > 0) {
-      let toolResponses = await callTools(toolCalls);
-      messages.push({ role: 'assistant', content: response.content as any }, toolResponses);
-    }
-
-    await closeSession();
-  }
+// Handle tool calls
+let toolCalls = response.content.filter(
+  (c): c is Anthropic.Messages.ToolUseBlock => c.type === 'tool_use'
 );
+
+if (toolCalls.length > 0) {
+  let toolResponses = await session.callTools(toolCalls);
+  messages.push({ role: 'assistant', content: response.content as any }, toolResponses);
+}
 ```
 
 ### Google (Gemini)
@@ -304,26 +272,20 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 let metorial = new Metorial({ apiKey: 'your-metorial-api-key' });
 let genAI = new GoogleGenerativeAI('your-google-api-key');
 
-await metorial.withProviderSession(
-  metorialGoogle,
-  { 
-    serverDeployments: ['your-server-deployment-id'],
-    // streaming: true, // Optional: enable for streaming with tool calls
-  },
-  async ({ tools, closeSession }) => {
-    let model = genAI.getGenerativeModel({
-      model: 'gemini-2.5-pro',
-      tools: tools
-    });
+let session = await metorial.connect({
+  adapter: metorialGoogle(),
+  providers: [{ providerDeploymentId: 'your-provider-deployment-id' }]
+});
 
-    let response = await model.generateContent('What can you help me with?');
+let model = genAI.getGenerativeModel({
+  model: 'gemini-2.5-pro',
+  tools: session.tools()
+});
 
-    // Handle function calls if present
-    // ... tool call handling logic
+let response = await model.generateContent('What can you help me with?');
 
-    await closeSession();
-  }
-);
+// Handle function calls if present
+// ... tool call handling logic
 ```
 
 ### OpenAI-Compatible (DeepSeek, TogetherAI, XAI)
@@ -341,23 +303,17 @@ let deepseekClient = new OpenAI({
 
 let metorial = new Metorial({ apiKey: 'your-metorial-api-key' });
 
-await metorial.withProviderSession(
-  metorialDeepSeek.chatCompletions,
-  { 
-    serverDeployments: ['your-server-deployment-id'],
-    // streaming: true, // Optional: enable for streaming with tool calls
-  },
-  async ({ tools, closeSession }) => {
-    let response = await deepseekClient.chat.completions.create({
-      model: 'deepseek-chat',
-      messages: [{ role: 'user', content: 'Help me code' }],
-      tools: tools
-    });
-    // ... handle response
+let session = await metorial.connect({
+  adapter: metorialDeepSeek.chatCompletions(),
+  providers: [{ providerDeploymentId: 'your-provider-deployment-id' }]
+});
 
-    await closeSession();
-  }
-);
+let response = await deepseekClient.chat.completions.create({
+  model: 'deepseek-chat',
+  messages: [{ role: 'user', content: 'Help me code' }],
+  tools: session.tools()
+});
+// ... handle response
 ```
 
 ## Core API
@@ -375,35 +331,28 @@ let metorial = new Metorial({
 ### Session Management
 
 ```typescript
-// Provider session (recommended)
-await metorial.withProviderSession(
-  provider.chatCompletions,
-  { 
-    serverDeployments: ['deployment-id'],
-    // streaming: true, // Optional: enable for streaming with tool calls
-  },
-  async ({ tools, callTools, closeSession }) => {
-    // Your session logic here
-    await closeSession(); // Close when done
-  }
-);
-
-// Direct session management
-await metorial.withSession(['deployment-id'], async session => {
-  // Your session logic here
+// Connect to MCP providers with an AI adapter (recommended)
+let session = await metorial.connect({
+  adapter: provider.chatCompletions(),
+  providers: [{ providerDeploymentId: 'deployment-id' }]
 });
+
+// session.tools() — tool definitions formatted for your provider
+// session.callTools() — execute tool calls and get responses
 ```
 
-### Session Callback
+### Adapter Session
 
-The callback provides:
+The adapter session provides:
 
 ```typescript
-async ({ tools, callTools, closeSession }) => {
-  // tools: Tool definitions formatted for your provider
-  // callTools: Execute tools and get responses
-  // closeSession: Close the session when done (always call this!)
-}
+let session = await metorial.connect({
+  adapter: metorialOpenAI.chatCompletions(),
+  providers: [{ providerDeploymentId: 'deployment-id' }]
+});
+
+session.tools(); // Tool definitions formatted for your provider
+session.callTools(toolCalls); // Execute tools and get responses
 ```
 
 ## Error Handling
@@ -412,7 +361,10 @@ async ({ tools, callTools, closeSession }) => {
 import { MetorialAPIError } from 'metorial';
 
 try {
-  await metorial.withProviderSession(/* ... */);
+  await metorial.connect({
+    adapter: metorialAiSdk(),
+    providers: [{ providerDeploymentId: 'your-provider-deployment-id' }]
+  });
 } catch (error) {
   if (error instanceof MetorialAPIError) {
     console.error(`API Error: ${error.message} (Status: ${error.status})`);

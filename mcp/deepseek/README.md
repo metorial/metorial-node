@@ -17,7 +17,7 @@ bun add @metorial/deepseek
 ## Usage
 
 ```typescript
-import { metorialDeepSeek } from '@metorial/deepseek';
+import { metorialDeepseek } from '@metorial/deepseek';
 import { Metorial } from 'metorial';
 import OpenAI from 'openai';
 
@@ -30,47 +30,44 @@ let deepseek = new OpenAI({
   baseURL: 'https://api.deepseek.com'
 });
 
-await metorial.withProviderSession(
-  metorialDeepSeek,
+let session = await metorial.connect({
+  adapter: metorialDeepseek(),
+  providers: [{ providerDeploymentId: 'your-provider-deployment-id' }]
+});
+
+let messages = [
   {
-    serverDeployments: ['your-server-deployment-id']
-  },
-  async session => {
-    let messages = [
-      {
-        role: 'user',
-        content:
-          'Summarize the README.md file of the metorial/websocket-explorer repository on GitHub?'
-      }
-    ];
-
-    for (let i = 0; i < 10; i++) {
-      let response = await deepseek.chat.completions.create({
-        model: 'deepseek-chat',
-        messages,
-        tools: session.tools
-      });
-
-      let choice = response.choices[0]!;
-      let toolCalls = choice.message.tool_calls;
-
-      if (!toolCalls) {
-        console.log(choice.message.content);
-        return;
-      }
-
-      let toolResponses = await session.callTools(toolCalls);
-
-      messages.push(
-        {
-          role: 'assistant',
-          tool_calls: choice.message.tool_calls
-        },
-        ...toolResponses
-      );
-    }
+    role: 'user',
+    content:
+      'Summarize the README.md file of the metorial/websocket-explorer repository on GitHub?'
   }
-);
+];
+
+for (let i = 0; i < 10; i++) {
+  let response = await deepseek.chat.completions.create({
+    model: 'deepseek-chat',
+    messages,
+    tools: session.tools()
+  });
+
+  let choice = response.choices[0]!;
+  let toolCalls = choice.message.tool_calls;
+
+  if (!toolCalls) {
+    console.log(choice.message.content);
+    break;
+  }
+
+  let toolResponses = await session.callTools(toolCalls);
+
+  messages.push(
+    {
+      role: 'assistant',
+      tool_calls: choice.message.tool_calls
+    },
+    ...toolResponses
+  );
+}
 ```
 
 ## License
