@@ -1,5 +1,11 @@
 # @metorial/json-schema
 
+## 3.0.0
+
+### Major Changes
+
+- Register new endpoints and update mcp handling
+
 ## 2.1.1
 
 ### Patch Changes

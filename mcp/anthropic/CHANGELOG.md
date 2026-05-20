@@ -1,5 +1,19 @@
 # @metorial/anthropic
 
+## 3.0.0
+
+### Major Changes
+
+- Register new endpoints and update mcp handling
+
+### Patch Changes
+
+- Updated dependencies
+  - @metorial/mcp-session@3.0.0
+  - @metorial/core@3.0.0
+  - @metorial/openai-compatible@3.0.0
+  - @metorial/mcp-sdk-utils@3.0.0
+
 ## 2.1.1
 
 ### Patch Changes

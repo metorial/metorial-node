@@ -1,5 +1,11 @@
 # @metorial/util-async-iterator
 
+## 3.0.0
+
+### Major Changes
+
+- Register new endpoints and update mcp handling
+
 ## 2.1.0
 
 ### Minor Changes

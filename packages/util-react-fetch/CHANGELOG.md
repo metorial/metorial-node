@@ -1,5 +1,17 @@
 # @metorial/util-react-fetch
 
+## 3.0.0
+
+### Major Changes
+
+- Register new endpoints and update mcp handling
+
+### Patch Changes
+
+- Updated dependencies
+  - @metorial/util-endpoint@3.0.0
+  - @metorial/util-memo@3.0.0
+
 ## 2.0.1
 
 ### Patch Changes

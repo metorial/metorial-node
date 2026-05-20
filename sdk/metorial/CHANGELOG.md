@@ -1,5 +1,16 @@
 # metorial
 
+## 3.0.0
+
+### Major Changes
+
+- Register new endpoints and update mcp handling
+
+### Patch Changes
+
+- Updated dependencies
+  - @metorial/sdk@3.0.0
+
 ## 2.1.2
 
 ### Patch Changes
