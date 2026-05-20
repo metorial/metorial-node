@@ -7,15 +7,15 @@ export type MetorialKeyPrefix =
   | 'metorial_ak_'
   | 'metorial_pk_';
 
-export let sdkBuilder = MetorialSDKBuilder.create<
-  '2025-01-01-pulsar',
+export let coreSdkBuilder = MetorialSDKBuilder.create<
+  '2026-01-01-magnetar',
   {
-    apiVersion: '2025-01-01-pulsar';
+    apiVersion: '2026-01-01-magnetar';
     apiKey: `${MetorialKeyPrefix}${string}` | string;
     headers?: Record<string, string>;
     apiHost?: string;
   }
->('metorial-public-api', '2025-01-01-pulsar')
+>('metorial-public-api', '2026-01-01-magnetar')
   .setGetApiHost(config => config.apiHost ?? 'https://api.metorial.com')
   .setGetHeaders(config => ({
     Authorization: `Bearer ${config.apiKey}`,
@@ -23,4 +23,4 @@ export let sdkBuilder = MetorialSDKBuilder.create<
     ...(config.headers ?? {})
   }));
 
-export type MetorialSDKConfig = GetMetorialSDKConfig<typeof sdkBuilder>;
+export type MetorialCoreSDKConfig = GetMetorialSDKConfig<typeof coreSdkBuilder>;

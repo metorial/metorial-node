@@ -1,5 +1,17 @@
 # @metorial/core
 
+## 3.0.0
+
+### Major Changes
+
+- Register new endpoints and update mcp handling
+
+### Patch Changes
+
+- Updated dependencies
+  - @metorial/generated@3.0.0
+  - @metorial/util-endpoint@3.0.0
+
 ## 2.1.1
 
 ### Patch Changes

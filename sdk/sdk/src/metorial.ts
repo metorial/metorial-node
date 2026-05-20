@@ -57,22 +57,6 @@ export class Metorial {
     return this.sdk.publishers;
   }
 
-  get providerCategories() {
-    return this.sdk.providerCategories;
-  }
-
-  get providerCollections() {
-    return this.sdk.providerCollections;
-  }
-
-  get providerGroups() {
-    return this.sdk.providerGroups;
-  }
-
-  get providerListings() {
-    return this.sdk.providerListings;
-  }
-
   get providerSetupSessions() {
     return this.sdk.providerSetupSessions;
   }
@@ -83,6 +67,34 @@ export class Metorial {
 
   get customProviders() {
     return this.sdk.customProviders;
+  }
+
+  get integrations() {
+    return this.sdk.integrations;
+  }
+
+  get documents() {
+    return this.sdk.documents;
+  }
+
+  get stores() {
+    return this.sdk.stores;
+  }
+
+  get files() {
+    return this.sdk.files;
+  }
+
+  get skills() {
+    return this.sdk.skills;
+  }
+
+  get callbacks() {
+    return this.sdk.callbacks;
+  }
+
+  get portals() {
+    return this.sdk.portals;
   }
 
   async connect<T>(options: {
@@ -106,7 +118,7 @@ export class Metorial {
   ): Promise<T> {
     let session = await MetorialMcpSession.create(this.sdk, init);
     let resolved = typeof adapter === 'function' ? adapter() : adapter;
-    let adapterResult = await resolved.__resolve(session) as Record<string, unknown>;
+    let adapterResult = (await resolved.__resolve(session)) as Record<string, unknown>;
 
     if (
       adapterResult &&
@@ -117,7 +129,7 @@ export class Metorial {
       adapterResult.tools = (adapterResult.tools as () => unknown)();
     }
 
-    return action({ ...adapterResult as P, closeSession: async () => {} });
+    return action({ ...(adapterResult as P), closeSession: async () => {} });
   }
 
   async waitForSetupSession(

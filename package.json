@@ -3,7 +3,8 @@
   "private": true,
   "scripts": {
     "test": "turbo run --concurrency=1 --ui=stream test",
-    "build": "turbo run --ui=stream build"
+    "build": "turbo run --ui=stream build",
+    "sync-versions": "node script/sync-versions.mjs"
   },
   "devDependencies": {
     "@changesets/cli": "^2.29.7",

@@ -26,7 +26,7 @@ let sdk = createMetorialCoreSDK({
   apiKey: 'your-metorial-api-key',
   apiHost: 'https://api.metorial.com', // optional
   mcpHost: 'https://mcp.metorial.com', // optional
-  apiVersion: '2025-01-01-pulsar', // optional, defaults to this version
+  apiVersion: '2026-01-01-magnetar', // optional, defaults to this version
   headers: {
     'Custom-Header': 'value' // optional custom headers
   }
@@ -240,7 +240,7 @@ createMetorialCoreSDK(config: {
   apiKey: string;
   apiHost?: string;
   mcpHost?: string;
-  apiVersion?: '2025-01-01-pulsar';
+  apiVersion?: '2026-01-01-magnetar';
   headers?: Record<string, string>;
 })
 ```

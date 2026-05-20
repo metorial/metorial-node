@@ -1,113 +1,100 @@
-export { createMetorialCoreSDK } from './core';
-export type { MetorialCoreSDK } from './core';
-export { coreSdkBuilder as metorialSdkBuilder } from './coreBuilder';
-export type { MetorialCoreSDKConfig as MetorialSDKConfig } from './coreBuilder';
-
-export type {
-  InstanceGetOutput,
-  MetorialInstanceEndpoint,
-  MetorialSecretsEndpoint,
-  MetorialServerRunErrorsEndpoint,
-  MetorialServerRunsEndpoint,
-  MetorialServersCapabilitiesEndpoint,
-  MetorialServersDeploymentsEndpoint,
-  MetorialServersEndpoint,
-  MetorialServersImplementationsEndpoint,
-  MetorialServersVariantsEndpoint,
-  MetorialServersVersionsEndpoint,
-  MetorialSessionsConnectionsEndpoint,
-  MetorialSessionsEndpoint,
-  MetorialSessionsMessagesEndpoint
-} from '@metorial/generated';
+export { coreSdkBuilder as metorialSdkBuilder } from './builder';
+export type { MetorialCoreSDKConfig as MetorialSDKConfig } from './builder';
+export { createMetorialCoreSDK } from './sdk';
+export type { MetorialCoreSDK } from './sdk';
 
 import type * as MetorialGenerated from '@metorial/generated';
-import type * as MagnetarGenerated from '@metorial/generated/src/mt_2026_01_01_magnetar';
 
 export namespace MetorialSDK {
-  export type SecretsGetOutput = MetorialGenerated.SecretsGetOutput;
-  export type Secret = MetorialGenerated.SecretsGetOutput;
-  export type SecretsListOutput = MetorialGenerated.SecretsListOutput;
-  export type SecretsListQuery = MetorialGenerated.SecretsListQuery;
-  export type ServerRunErrorsGetOutput = MetorialGenerated.ServerRunErrorsGetOutput;
-  export type ServerRunError = MetorialGenerated.ServerRunErrorsGetOutput;
-  export type ServerRunErrorsListOutput = MetorialGenerated.ServerRunErrorsListOutput;
-  export type ServerRunErrorsListQuery = MetorialGenerated.ServerRunErrorsListQuery;
-  export type ServerRunsGetOutput = MetorialGenerated.ServerRunsGetOutput;
-  export type ServerRun = MetorialGenerated.ServerRunsGetOutput;
-  export type ServerRunsListOutput = MetorialGenerated.ServerRunsListOutput;
-  export type ServerRunsListQuery = MetorialGenerated.ServerRunsListQuery;
-  export type ServerCapabilitiesListOutput = MetorialGenerated.ServersCapabilitiesListOutput;
-  export type ServerCapabilities = MetorialGenerated.ServersCapabilitiesListOutput;
-  export type ServerCapabilitiesListQuery = MetorialGenerated.ServersCapabilitiesListQuery;
-  export type ServerDeploymentsCreateBody = MetorialGenerated.ServersDeploymentsCreateBody;
-  export type ServerDeploymentsCreateOutput = MetorialGenerated.ServersDeploymentsCreateOutput;
-  export type ServerDeploymentsDeleteOutput = MetorialGenerated.ServersDeploymentsDeleteOutput;
-  export type ServerDeploymentsGetOutput = MetorialGenerated.ServersDeploymentsGetOutput;
-  export type ServerDeployment = MetorialGenerated.ServersDeploymentsGetOutput;
-  export type ServerDeploymentsListOutput = MetorialGenerated.ServersDeploymentsListOutput;
-  export type ServerDeploymentsListQuery = MetorialGenerated.ServersDeploymentsListQuery;
-  export type ServerDeploymentsUpdateBody = MetorialGenerated.ServersDeploymentsUpdateBody;
-  export type ServerDeploymentsUpdateOutput = MetorialGenerated.ServersDeploymentsUpdateOutput;
-  export type ServersGetOutput = MetorialGenerated.ServersGetOutput;
-  export type Server = MetorialGenerated.ServersGetOutput;
-  export type ServerImplementationsCreateBody =
-    MetorialGenerated.ServersImplementationsCreateBody;
-  export type ServerImplementationsCreateOutput =
-    MetorialGenerated.ServersImplementationsCreateOutput;
-  export type ServerImplementationsDeleteOutput =
-    MetorialGenerated.ServersImplementationsDeleteOutput;
-  export type ServerImplementationsGetOutput =
-    MetorialGenerated.ServersImplementationsGetOutput;
-  export type ServersImplementation = MetorialGenerated.ServersImplementationsGetOutput;
-  export type ServerImplementationsListOutput =
-    MetorialGenerated.ServersImplementationsListOutput;
-  export type ServerImplementationsListQuery =
-    MetorialGenerated.ServersImplementationsListQuery;
-  export type ServerImplementationsUpdateBody =
-    MetorialGenerated.ServersImplementationsUpdateBody;
-  export type ServerImplementationsUpdateOutput =
-    MetorialGenerated.ServersImplementationsUpdateOutput;
-  export type ServerVariantsGetOutput = MetorialGenerated.ServersVariantsGetOutput;
-  export type ServerVariant = MetorialGenerated.ServersVariantsGetOutput;
-  export type ServerVariantsListOutput = MetorialGenerated.ServersVariantsListOutput;
-  export type ServerVariantsListQuery = MetorialGenerated.ServersVariantsListQuery;
-  export type ServerVersionsGetOutput = MetorialGenerated.ServersVersionsGetOutput;
-  export type ServerVersion = MetorialGenerated.ServersVersionsGetOutput;
-  export type ServerVersionsListOutput = MetorialGenerated.ServersVersionsListOutput;
-  export type ServerVersionsListQuery = MetorialGenerated.ServersVersionsListQuery;
-  export type SessionsCreateBody = MetorialGenerated.SessionsCreateBody;
-  export type SessionsCreateOutput = MetorialGenerated.SessionsCreateOutput;
-  export type SessionsDeleteOutput = MetorialGenerated.SessionsDeleteOutput;
-  export type SessionsGetOutput = MetorialGenerated.SessionsGetOutput;
-  export type Session = MetorialGenerated.SessionsGetOutput;
-  export type SessionsListOutput = MetorialGenerated.SessionsListOutput;
-  export type SessionsListQuery = MetorialGenerated.SessionsListQuery;
-  export type SessionMessagesGetOutput = MetorialGenerated.SessionsMessagesGetOutput;
-  export type SessionMessage = MetorialGenerated.SessionsMessagesGetOutput;
-  export type SessionMessagesListOutput = MetorialGenerated.SessionsMessagesListOutput;
-  export type SessionMessagesListQuery = MetorialGenerated.SessionsMessagesListQuery;
-  export type SessionConnectionsGetOutput = MetorialGenerated.SessionsConnectionsGetOutput;
-  export type SessionServerSession = MetorialGenerated.SessionsConnectionsGetOutput;
-  export type SessionConnectionsListOutput = MetorialGenerated.SessionsConnectionsListOutput;
-  export type SessionConnectionsListQuery = MetorialGenerated.SessionsConnectionsListQuery;
-}
+  export type Instance = MetorialGenerated.InstanceGetOutput;
+  export type Publisher = MetorialGenerated.PublishersGetOutput;
 
-export namespace MetorialTypes {
-  export type SessionsCreateBody = MagnetarGenerated.SessionsCreateBody;
-  export type SessionsCreateOutput = MagnetarGenerated.SessionsCreateOutput;
-  export type SessionsGetOutput = MagnetarGenerated.SessionsGetOutput;
-  export type Session = MagnetarGenerated.SessionsGetOutput;
-  export type SessionsListOutput = MagnetarGenerated.SessionsListOutput;
-  export type ProvidersGetOutput = MagnetarGenerated.ProvidersGetOutput;
-  export type Provider = MagnetarGenerated.ProvidersGetOutput;
-  export type ProvidersListOutput = MagnetarGenerated.ProvidersListOutput;
-  export type ProviderDeploymentsGetOutput = MagnetarGenerated.ProviderDeploymentsGetOutput;
-  export type ProviderDeployment = MagnetarGenerated.ProviderDeploymentsGetOutput;
-  export type ProviderDeploymentsListOutput = MagnetarGenerated.ProviderDeploymentsListOutput;
-  export type SessionTemplatesGetOutput = MagnetarGenerated.SessionTemplatesGetOutput;
-  export type SessionTemplate = MagnetarGenerated.SessionTemplatesGetOutput;
-  export type SessionTemplatesListOutput = MagnetarGenerated.SessionTemplatesListOutput;
-  export type ProviderRunsGetOutput = MagnetarGenerated.ProviderRunsGetOutput;
-  export type ProviderRun = MagnetarGenerated.ProviderRunsGetOutput;
-  export type ProviderRunsListOutput = MagnetarGenerated.ProviderRunsListOutput;
+  export type Provider = MetorialGenerated.ProvidersGetOutput;
+  export type ProviderVersion = MetorialGenerated.ProvidersVersionsGetOutput;
+  export type ProviderSpecification = MetorialGenerated.ProvidersSpecificationsGetOutput;
+  export type ProviderTrigger = MetorialGenerated.ProvidersTriggersGetOutput;
+  export type ProviderTool = MetorialGenerated.ProvidersToolsGetOutput;
+  export type ProviderAuthMethod = MetorialGenerated.ProvidersAuthMethodsGetOutput;
+
+  export type Integration = MetorialGenerated.IntegrationsGetOutput;
+  export type IntegrationProvider = MetorialGenerated.IntegrationsProvidersGetOutput;
+  export type IntegrationSetupSession = MetorialGenerated.IntegrationsSetupSessionsGetOutput;
+  export type IntegrationInstance = MetorialGenerated.IntegrationsInstancesGetOutput;
+  export type IntegrationInstanceProvider =
+    MetorialGenerated.IntegrationsInstancesProvidersGetOutput;
+  export type IntegrationInstanceGroup = MetorialGenerated.IntegrationsInstanceGroupsGetOutput;
+  export type IntegrationInstanceGroupProvider =
+    MetorialGenerated.IntegrationsInstanceGroupsProvidersGetOutput;
+
+  export type Document = MetorialGenerated.DocumentsGetOutput;
+  export type DocumentVersion = MetorialGenerated.DocumentsVersionsGetOutput;
+  export type DocumentParticipant = MetorialGenerated.DocumentsParticipantsGetOutput;
+
+  export type Store = MetorialGenerated.StoresGetOutput;
+  export type StoreItem = MetorialGenerated.StoresItemsGetOutput;
+  export type StoreParticipant = MetorialGenerated.StoresParticipantsGetOutput;
+
+  export type File = MetorialGenerated.FilesGetOutput;
+  export type FileLink = MetorialGenerated.FilesLinksGetOutput;
+
+  export type ProviderCategory = MetorialGenerated.ProviderCategoriesGetOutput;
+  export type ProviderCollection = MetorialGenerated.ProviderCollectionsGetOutput;
+  export type ProviderGroup = MetorialGenerated.ProviderGroupsGetOutput;
+  export type ProviderListing = MetorialGenerated.ProviderListingsGetOutput;
+
+  export type ProviderDeployment = MetorialGenerated.ProviderDeploymentsGetOutput;
+  export type ProviderDeploymentConfig = MetorialGenerated.ProviderDeploymentsConfigsGetOutput;
+  export type ProviderDeploymentConfigVault =
+    MetorialGenerated.ProviderDeploymentsConfigVaultsGetOutput;
+  export type ProviderDeploymentAuthCredential =
+    MetorialGenerated.ProviderDeploymentsAuthCredentialsGetOutput;
+  export type ProviderDeploymentSetupSession =
+    MetorialGenerated.ProviderDeploymentsSetupSessionsGetOutput;
+  export type ProviderDeploymentAuthConfig =
+    MetorialGenerated.ProviderDeploymentsAuthConfigsGetOutput;
+  export type ProviderDeploymentAuthConfigImport =
+    MetorialGenerated.ProviderDeploymentsAuthConfigsImportsGetOutput;
+  export type ProviderDeploymentAuthConfigExport =
+    MetorialGenerated.ProviderDeploymentsAuthConfigsExportsGetOutput;
+  export type ProviderSetupSession =
+    MetorialGenerated.ProviderDeploymentsSetupSessionsGetOutput;
+
+  export type Session = MetorialGenerated.SessionsGetOutput;
+  export type SessionProvider = MetorialGenerated.SessionsProvidersGetOutput;
+  export type SessionParticipant = MetorialGenerated.SessionsParticipantsGetOutput;
+  export type SessionError = MetorialGenerated.SessionsErrorsGetOutput;
+  export type SessionMessage = MetorialGenerated.SessionsMessagesGetOutput;
+  export type SessionConnection = MetorialGenerated.SessionsConnectionsGetOutput;
+
+  export type Skill = MetorialGenerated.SkillsGetOutput;
+  export type SkillConfiguration = MetorialGenerated.SkillsConfigurationsGetOutput;
+  export type SkillAgent = MetorialGenerated.SkillsAgentsGetOutput;
+  export type SkillItem = MetorialGenerated.SkillsItemsGetOutput;
+  export type SkillParticipant = MetorialGenerated.SkillsParticipantsGetOutput;
+  export type SkillExport = MetorialGenerated.SkillsExportsGetOutput;
+  export type SkillTemplate = MetorialGenerated.SkillsTemplatesGetOutput;
+  export type SkillTemplateItem = MetorialGenerated.SkillsTemplatesItemsGetOutput;
+  export type SkillMarketplace = MetorialGenerated.SkillsMarketplacesGetOutput;
+  export type SkillMarketplacePlugin = MetorialGenerated.SkillsMarketplacesPluginsGetOutput;
+  export type SkillPlugin = MetorialGenerated.SkillsPluginsGetOutput;
+  export type SkillPluginSkill = MetorialGenerated.SkillsPluginsSkillsGetOutput;
+  export type SkillVersion = MetorialGenerated.SkillsVersionsGetOutput;
+  export type SkillVersionSnapshot = MetorialGenerated.SkillsVersionsSnapshotGetOutput;
+  export type SkillGroup = MetorialGenerated.SkillsGroupsGetOutput;
+  export type SkillGroupItem = MetorialGenerated.SkillsGroupsItemsGetOutput;
+
+  export type Callback = MetorialGenerated.CallbacksGetOutput;
+  export type CallbackDestination = MetorialGenerated.CallbacksDestinationsGetOutput;
+  export type CallbackEvent = MetorialGenerated.CallbacksEventsGetOutput;
+  export type CallbackInstance = MetorialGenerated.CallbacksInstancesGetOutput;
+
+  export type SessionTemplate = MetorialGenerated.SessionTemplatesGetOutput;
+  export type SessionTemplateProvider = MetorialGenerated.SessionTemplatesProvidersGetOutput;
+
+  export type ProviderRun = MetorialGenerated.ProviderRunsGetOutput;
+  export type ToolCall = MetorialGenerated.ToolCallsGetOutput;
+
+  export type CustomProvider = MetorialGenerated.CustomProvidersGetOutput;
+  export type CustomProviderVersion = MetorialGenerated.CustomProvidersVersionsGetOutput;
+  export type CustomProviderDeployment = MetorialGenerated.CustomProvidersDeploymentsGetOutput;
 }
