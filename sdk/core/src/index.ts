@@ -103,4 +103,5 @@ export namespace MetorialSDK {
   export type MagicMcpGroup = MetorialGenerated.MagicMcpGroupsGetOutput;
   export type MagicMcpSession = MetorialGenerated.MagicMcpSessionsGetOutput;
   export type MagicMcpToken = MetorialGenerated.MagicMcpTokensGetOutput;
+  export type MagicMcpEndpoint = MetorialGenerated.MagicMcpEndpointsGetOutput;
 }

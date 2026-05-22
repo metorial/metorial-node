@@ -1,5 +1,13 @@
 # @metorial/mcp-session
 
+## 3.0.1
+
+### Patch Changes
+
+- Expose magic mcp endpoints
+- Updated dependencies
+  - @metorial/core@3.0.1
+
 ## 3.0.0
 
 ### Major Changes

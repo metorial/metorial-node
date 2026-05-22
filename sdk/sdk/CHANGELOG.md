@@ -1,5 +1,22 @@
 # @metorial/sdk
 
+## 3.0.1
+
+### Patch Changes
+
+- Expose magic mcp endpoints
+- Updated dependencies
+  - @metorial/openai-compatible@3.0.1
+  - @metorial/mcp-session@3.0.1
+  - @metorial/togetherai@3.0.1
+  - @metorial/anthropic@3.0.1
+  - @metorial/deepseek@3.0.1
+  - @metorial/mistral@3.0.1
+  - @metorial/google@3.0.1
+  - @metorial/openai@3.0.1
+  - @metorial/core@3.0.1
+  - @metorial/xai@3.0.1
+
 ## 3.0.0
 
 ### Major Changes

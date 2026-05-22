@@ -1,5 +1,11 @@
 # @metorial/core
 
+## 3.0.1
+
+### Patch Changes
+
+- Expose magic mcp endpoints
+
 ## 3.0.0
 
 ### Major Changes

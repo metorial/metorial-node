@@ -7,7 +7,7 @@
     "start": "bun ./src/index.ts"
   },
   "dependencies": {
-    "@metorial/deepseek": "^3.0.0",
+    "@metorial/deepseek": "^3.0.1",
     "metorial": "^3.0.0",
     "openai": "^5.3.0"
   },
