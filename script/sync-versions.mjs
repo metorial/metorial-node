@@ -97,9 +97,11 @@ const syncManifest = (packageJson, workspaceVersions) => {
   return changed;
 };
 
-const main = async () => {
-  let rootPackageJsonPath = path.join(rootDir, 'package.json');
-  let packageJsonPaths = [rootPackageJsonPath, ...(await getPackageJsonPaths())];
+const writePackageJson = async (packageJsonPath, packageJson) => {
+  await writeFile(packageJsonPath, `${JSON.stringify(packageJson, null, 2)}\n`);
+};
+
+const runSyncPass = async packageJsonPaths => {
   let workspaceVersions = await getWorkspaceVersions(packageJsonPaths.slice(1));
   let updatedFiles = [];
 
@@ -110,18 +112,48 @@ const main = async () => {
       continue;
     }
 
-    await writeFile(packageJsonPath, `${JSON.stringify(packageJson, null, 2)}\n`);
+    await writePackageJson(packageJsonPath, packageJson);
     updatedFiles.push(path.relative(rootDir, packageJsonPath));
   }
 
-  if (updatedFiles.length === 0) {
+  return updatedFiles;
+};
+
+const main = async () => {
+  let rootPackageJsonPath = path.join(rootDir, 'package.json');
+  let packageJsonPaths = [rootPackageJsonPath, ...(await getPackageJsonPaths())];
+  let allUpdatedFiles = [];
+  let pass = 0;
+  let maxPasses = packageJsonPaths.length + 1;
+
+  while (pass < maxPasses) {
+    pass += 1;
+
+    let updatedFiles = await runSyncPass(packageJsonPaths);
+
+    if (updatedFiles.length === 0) {
+      break;
+    }
+
+    allUpdatedFiles.push(...updatedFiles);
+  }
+
+  if (pass >= maxPasses) {
+    throw new Error(`Version sync did not converge after ${maxPasses} pass(es).`);
+  }
+
+  if (allUpdatedFiles.length === 0) {
     console.log('All local package versions are already in sync.');
     return;
   }
 
-  console.log(`Updated ${updatedFiles.length} package.json file(s):`);
+  let uniqueUpdatedFiles = [...new Set(allUpdatedFiles)];
 
-  for (let filePath of updatedFiles) {
+  console.log(
+    `Updated ${uniqueUpdatedFiles.length} package.json file(s) in ${pass} pass(es):`
+  );
+
+  for (let filePath of uniqueUpdatedFiles) {
     console.log(`- ${filePath}`);
   }
 };
