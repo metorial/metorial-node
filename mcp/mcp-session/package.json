@@ -1,6 +1,6 @@
 {
   "name": "@metorial/mcp-session",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "author": "Metorial Inc.",
   "license": "MIT",
   "type": "module",
@@ -30,7 +30,7 @@
   ],
   "dependencies": {
     "@metorial/json-schema": "^3.0.0",
-    "@metorial/core": "^3.0.0",
+    "@metorial/core": "^3.0.1",
     "@metorial/generated": "^3.0.0",
     "@metorial/util-endpoint": "^3.0.0",
     "@modelcontextprotocol/sdk": "^1.12.1",

@@ -21,8 +21,6 @@
     "mcp/*",
     "packages/*",
     "examples/*",
-    "examples/v1/*",
-    "examples/v2/*",
     "sdk/*"
   ],
   "dependencies": {}

@@ -20,6 +20,7 @@ import {
   MetorialIntegrationsInstancesProvidersEndpoint,
   MetorialIntegrationsProvidersEndpoint,
   MetorialIntegrationsSetupSessionsEndpoint,
+  MetorialMagicMcpEndpointsEndpoint,
   MetorialMagicMcpGroupsEndpoint,
   MetorialMagicMcpServersEndpoint,
   MetorialMagicMcpServersProvidersEndpoint,
@@ -232,7 +233,8 @@ export let createMetorialCoreSDK = coreSdkBuilder.build(
     }),
     groups: new MetorialMagicMcpGroupsEndpoint(manager),
     sessions: new MetorialMagicMcpSessionsEndpoint(manager),
-    tokens: new MetorialMagicMcpTokensEndpoint(manager)
+    tokens: new MetorialMagicMcpTokensEndpoint(manager),
+    endpoints: new MetorialMagicMcpEndpointsEndpoint(manager)
   },
 
   portals: Object.assign(new MetorialPortalsEndpoint(manager), {

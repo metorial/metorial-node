@@ -7,7 +7,7 @@
     "start": "bun ./src/index.ts"
   },
   "dependencies": {
-    "@metorial/mistral": "^3.0.0",
+    "@metorial/mistral": "^3.0.1",
     "metorial": "^3.0.0",
     "@mistralai/mistralai": "^1.7.2"
   },
