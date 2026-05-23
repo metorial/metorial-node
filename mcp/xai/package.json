@@ -1,6 +1,6 @@
 {
   "name": "@metorial/xai",
-  "version": "3.0.1",
+  "version": "3.0.5",
   "author": "Metorial Inc.",
   "license": "MIT",
   "type": "module",
@@ -29,10 +29,10 @@
     "dist"
   ],
   "dependencies": {
-    "@metorial/core": "^3.0.4",
-    "@metorial/mcp-sdk-utils": "^3.0.1",
-    "@metorial/mcp-session": "^3.0.1",
-    "@metorial/openai-compatible": "^3.0.1"
+    "@metorial/core": "^3.0.5",
+    "@metorial/mcp-sdk-utils": "^3.0.3",
+    "@metorial/mcp-session": "^3.0.2",
+    "@metorial/openai-compatible": "^3.0.4"
   },
   "peerDependencies": {},
   "devDependencies": {

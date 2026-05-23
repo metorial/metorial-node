@@ -1,6 +1,6 @@
 {
   "name": "@metorial/mcp-sdk-utils",
-  "version": "3.0.1",
+  "version": "3.0.3",
   "author": "Metorial Inc.",
   "license": "MIT",
   "type": "module",
@@ -29,8 +29,8 @@
     "dist"
   ],
   "dependencies": {
-    "@metorial/core": "^3.0.4",
-    "@metorial/mcp-session": "^3.0.1"
+    "@metorial/core": "^3.0.5",
+    "@metorial/mcp-session": "^3.0.2"
   },
   "peerDependencies": {
     "ai": "*"

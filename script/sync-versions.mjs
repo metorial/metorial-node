@@ -15,6 +15,18 @@ const readJson = async filePath => JSON.parse(await readFile(filePath, 'utf8'));
 const isWorkspacePackageName = name =>
   typeof name === 'string' && (name.startsWith('@metorial/') || name === 'metorial');
 
+const bumpPatchVersion = version => {
+  let match = /^(\d+)\.(\d+)\.(\d+)(.*)$/.exec(version);
+
+  if (!match) {
+    throw new Error(`Cannot bump unsupported package version "${version}".`);
+  }
+
+  let [, major, minor, patch, suffix] = match;
+
+  return `${major}.${minor}.${Number(patch) + 1}${suffix}`;
+};
+
 const expandWorkspacePattern = async pattern => {
   if (!pattern.endsWith('/*')) {
     return [path.join(rootDir, pattern, 'package.json')];
@@ -69,7 +81,7 @@ const getWorkspaceVersions = async packageJsonPaths => {
 };
 
 const syncManifest = (packageJson, workspaceVersions) => {
-  let changed = false;
+  let dependenciesChanged = false;
 
   for (let field of dependencyFields) {
     let dependencies = packageJson[field];
@@ -89,12 +101,16 @@ const syncManifest = (packageJson, workspaceVersions) => {
 
       if (currentRange !== nextRange) {
         dependencies[name] = nextRange;
-        changed = true;
+        dependenciesChanged = true;
       }
     }
   }
 
-  return changed;
+  if (dependenciesChanged && packageJson.version) {
+    packageJson.version = bumpPatchVersion(packageJson.version);
+  }
+
+  return dependenciesChanged;
 };
 
 const writePackageJson = async (packageJsonPath, packageJson) => {
@@ -125,6 +141,7 @@ const main = async () => {
   let allUpdatedFiles = [];
   let pass = 0;
   let maxPasses = packageJsonPaths.length + 1;
+  let converged = false;
 
   while (pass < maxPasses) {
     pass += 1;
@@ -132,13 +149,14 @@ const main = async () => {
     let updatedFiles = await runSyncPass(packageJsonPaths);
 
     if (updatedFiles.length === 0) {
+      converged = true;
       break;
     }
 
     allUpdatedFiles.push(...updatedFiles);
   }
 
-  if (pass >= maxPasses) {
+  if (!converged) {
     throw new Error(`Version sync did not converge after ${maxPasses} pass(es).`);
   }
 

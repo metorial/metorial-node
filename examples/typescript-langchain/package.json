@@ -9,9 +9,9 @@
   "dependencies": {
     "@langchain/anthropic": "^1.4.0",
     "@langchain/core": "^1.1.0",
-    "@metorial/langchain": "^3.0.1",
+    "@metorial/langchain": "^3.0.4",
     "langchain": "^1.4.0",
-    "metorial": "^3.0.4"
+    "metorial": "^3.0.9"
   },
   "devDependencies": {
     "@types/bun": "latest"
