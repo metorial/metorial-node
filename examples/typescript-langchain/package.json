@@ -11,7 +11,7 @@
     "@langchain/core": "^1.1.0",
     "@metorial/langchain": "^3.0.1",
     "langchain": "^1.4.0",
-    "metorial": "^3.0.1"
+    "metorial": "^3.0.3"
   },
   "devDependencies": {
     "@types/bun": "latest"

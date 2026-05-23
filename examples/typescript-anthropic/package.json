@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "@metorial/anthropic": "^3.0.1",
-    "metorial": "^3.0.1",
+    "metorial": "^3.0.3",
     "@anthropic-ai/sdk": "^0.32.1"
   },
   "devDependencies": {
