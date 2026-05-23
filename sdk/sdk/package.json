@@ -1,6 +1,6 @@
 {
   "name": "@metorial/sdk",
-  "version": "3.0.1",
+  "version": "3.0.4",
   "author": "Metorial Inc.",
   "license": "MIT",
   "type": "module",
@@ -29,7 +29,7 @@
     "dist"
   ],
   "dependencies": {
-    "@metorial/core": "^3.0.3",
+    "@metorial/core": "^3.0.4",
     "@metorial/mcp-session": "^3.0.1",
     "@metorial/util-endpoint": "^3.0.0",
     "@metorial/anthropic": "^3.0.1",

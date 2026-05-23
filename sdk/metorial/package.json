@@ -1,6 +1,6 @@
 {
   "name": "metorial",
-  "version": "3.0.3",
+  "version": "3.0.4",
   "author": "Metorial Inc.",
   "license": "MIT",
   "type": "module",
@@ -29,7 +29,7 @@
     "dist"
   ],
   "dependencies": {
-    "@metorial/sdk": "^3.0.1"
+    "@metorial/sdk": "^3.0.4"
   },
   "devDependencies": {
     "tsup": "^7.1.0",
