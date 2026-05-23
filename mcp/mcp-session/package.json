@@ -30,8 +30,8 @@
   ],
   "dependencies": {
     "@metorial/json-schema": "^3.0.0",
-    "@metorial/core": "^3.0.1",
-    "@metorial/generated": "^3.0.0",
+    "@metorial/core": "^3.0.2",
+    "@metorial/generated": "^3.0.2",
     "@metorial/util-endpoint": "^3.0.0",
     "@modelcontextprotocol/sdk": "^1.12.1",
     "eventsource-parser": "^3.0.0"
