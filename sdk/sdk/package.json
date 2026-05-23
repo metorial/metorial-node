@@ -29,7 +29,7 @@
     "dist"
   ],
   "dependencies": {
-    "@metorial/core": "^3.0.2",
+    "@metorial/core": "^3.0.3",
     "@metorial/mcp-session": "^3.0.1",
     "@metorial/util-endpoint": "^3.0.0",
     "@metorial/anthropic": "^3.0.1",

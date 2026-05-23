@@ -35,7 +35,7 @@
     "dist"
   ],
   "dependencies": {
-    "@metorial/core": "^3.0.2",
+    "@metorial/core": "^3.0.3",
     "@metorial/mcp-session": "^3.0.1",
     "@metorial/mcp-sdk-utils": "^3.0.1",
     "zod": "^3.22.4"

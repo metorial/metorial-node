@@ -104,4 +104,11 @@ export namespace MetorialSDK {
   export type MagicMcpSession = MetorialGenerated.MagicMcpSessionsGetOutput;
   export type MagicMcpToken = MetorialGenerated.MagicMcpTokensGetOutput;
   export type MagicMcpEndpoint = MetorialGenerated.MagicMcpEndpointsGetOutput;
+
+  export type Portal = MetorialGenerated.PortalsGetOutput;
+  export type PortalAccess = MetorialGenerated.PortalsAccessGetOutput;
+  export type PortalAccessRequest = MetorialGenerated.PortalsAccessRequestsGetOutput;
+  export type PortalAccessGroup = MetorialGenerated.PortalsConsumerGroupsGetOutput;
+  export type PortalAccessProfile = MetorialGenerated.PortalsConsumerProfilesGetOutput;
+  export type PortalAccessInvite = MetorialGenerated.PortalsConsumerInvitesGetOutput;
 }
