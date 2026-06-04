@@ -48,7 +48,7 @@ import {
   MetorialProvidersAuthMethodsEndpoint,
   MetorialProvidersEndpoint,
   MetorialProvidersSpecificationsEndpoint,
-  MetorialProvidersToolsEndpoint,
+  MetorialProviderToolsEndpoint,
   MetorialProvidersTriggersEndpoint,
   MetorialProvidersVersionsEndpoint,
   MetorialPublishersEndpoint,
@@ -101,11 +101,14 @@ export let createMetorialCoreSDK = coreSdkBuilder.build(
 
   publishers: new MetorialPublishersEndpoint(manager),
 
+  provider: {
+    tools: new MetorialProviderToolsEndpoint(manager)
+  },
+
   providers: Object.assign(new MetorialProvidersEndpoint(manager), {
     versions: new MetorialProvidersVersionsEndpoint(manager),
     specifications: new MetorialProvidersSpecificationsEndpoint(manager),
     triggers: new MetorialProvidersTriggersEndpoint(manager),
-    tools: new MetorialProvidersToolsEndpoint(manager),
     authMethods: new MetorialProvidersAuthMethodsEndpoint(manager)
   }),
 
