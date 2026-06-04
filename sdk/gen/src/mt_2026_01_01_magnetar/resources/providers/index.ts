@@ -3,4 +3,4 @@ export * from './get';
 export * from './list';
 export * from './specifications';
 export * from './triggers';
-export * from './versions';
+export * from './versions';export * from './tools';

@@ -13,7 +13,7 @@ export namespace MetorialSDK {
   export type ProviderVersion = MetorialGenerated.ProvidersVersionsGetOutput;
   export type ProviderSpecification = MetorialGenerated.ProvidersSpecificationsGetOutput;
   export type ProviderTrigger = MetorialGenerated.ProvidersTriggersGetOutput;
-  export type ProviderTool = MetorialGenerated.ProviderToolsGetOutput;
+  export type ProviderTool = MetorialGenerated.ProvidersToolsGetOutput;
   export type ProviderAuthMethod = MetorialGenerated.ProvidersAuthMethodsGetOutput;
 
   export type Integration = MetorialGenerated.IntegrationsGetOutput;
