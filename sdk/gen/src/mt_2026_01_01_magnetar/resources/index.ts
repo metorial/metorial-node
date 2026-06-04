@@ -26,7 +26,6 @@ export * from './management';
 export * from './network-policies';
 export * from './networks';
 export * from './portals';
-export * from './provider';
 export * from './provider-categories';
 export * from './provider-collections';
 export * from './provider-deployments';
