@@ -28,9 +28,6 @@ import {
   MetorialMagicMcpTokensEndpoint,
   MetorialPortalsAccessEndpoint,
   MetorialPortalsAccessRequestsEndpoint,
-  MetorialPortalsAuthAppEndpoint,
-  MetorialPortalsAuthSsoTenantsConnectionsEndpoint,
-  MetorialPortalsAuthSsoTenantsEndpoint,
   MetorialPortalsConsumerGroupsEndpoint,
   MetorialPortalsConsumerInvitesEndpoint,
   MetorialPortalsConsumerProfilesEndpoint,
@@ -238,11 +235,6 @@ export let createMetorialCoreSDK = coreSdkBuilder.build(
   },
 
   portals: Object.assign(new MetorialPortalsEndpoint(manager), {
-    auth: Object.assign(new MetorialPortalsAuthAppEndpoint(manager), {
-      ssoTenants: Object.assign(new MetorialPortalsAuthSsoTenantsEndpoint(manager), {
-        connections: new MetorialPortalsAuthSsoTenantsConnectionsEndpoint(manager)
-      })
-    }),
     access: new MetorialPortalsAccessEndpoint(manager),
     accessRequests: new MetorialPortalsAccessRequestsEndpoint(manager),
 
