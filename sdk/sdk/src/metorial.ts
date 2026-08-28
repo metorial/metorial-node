@@ -5,6 +5,7 @@ import {
   MetorialMcpSessionInitProviders,
   MetorialMcpToolManager
 } from '@metorial/mcp-session';
+import { waitForSetupSessions } from './waitForSetupSession';
 
 export type {
   MetorialMcpSession,
@@ -143,48 +144,11 @@ export class Metorial {
       timeout?: number;
     }
   ) {
-    let sessionList = Array.isArray(sessions) ? sessions : [sessions];
-    let pollInterval = Math.max(options?.pollInterval ?? 5000, 2000);
-    let timeout = options?.timeout ?? 600000;
-    let startTime = Date.now();
-
-    if (sessionList.length === 0) {
-      return [];
-    }
-
-    while (true) {
-      if (Date.now() - startTime > timeout) {
-        throw new Error(`Setup session timed out after ${timeout / 1000} seconds`);
-      }
-
-      try {
-        let statuses = await Promise.all(
-          sessionList.map(s => this.sdk.providerDeployments.setupSessions.get(s.id))
-        );
-
-        let failed = statuses.filter(s => s.status === 'failed');
-        if (failed.length > 0) {
-          throw new Error(`${failed.length} setup session(s) failed`);
-        }
-
-        let allCompleted = statuses.every(s => s.status === 'completed');
-        if (allCompleted) {
-          return statuses;
-        }
-
-        await new Promise(resolve => setTimeout(resolve, pollInterval));
-      } catch (error) {
-        if (
-          error instanceof Error &&
-          error.message.includes('setup session') &&
-          (error.message.includes('failed') || error.message.includes('timed out'))
-        ) {
-          throw error;
-        }
-
-        await new Promise(resolve => setTimeout(resolve, pollInterval));
-      }
-    }
+    return waitForSetupSessions(
+      id => this.sdk.providerDeployments.setupSessions.get(id),
+      sessions,
+      options
+    );
   }
 }
 
