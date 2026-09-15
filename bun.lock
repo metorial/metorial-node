@@ -1,5 +1,6 @@
 {
   "lockfileVersion": 1,
+  "configVersion": 0,
   "workspaces": {
     "": {
       "name": "@metorial/metorial-js-root",
@@ -199,7 +200,7 @@
     },
     "mcp/ai-sdk": {
       "name": "@metorial/ai-sdk",
-      "version": "3.0.0",
+      "version": "3.0.4",
       "dependencies": {
         "@metorial/core": "^3.0.0",
         "@metorial/mcp-sdk-utils": "^3.0.0",
@@ -218,7 +219,7 @@
     },
     "mcp/anthropic": {
       "name": "@metorial/anthropic",
-      "version": "3.0.0",
+      "version": "3.0.5",
       "dependencies": {
         "@metorial/core": "^3.0.0",
         "@metorial/mcp-sdk-utils": "^3.0.0",
@@ -237,7 +238,7 @@
     },
     "mcp/deepseek": {
       "name": "@metorial/deepseek",
-      "version": "3.0.0",
+      "version": "3.0.5",
       "dependencies": {
         "@metorial/core": "^3.0.0",
         "@metorial/mcp-sdk-utils": "^3.0.0",
@@ -253,7 +254,7 @@
     },
     "mcp/google": {
       "name": "@metorial/google",
-      "version": "3.0.0",
+      "version": "3.0.5",
       "dependencies": {
         "@metorial/core": "^3.0.0",
         "@metorial/mcp-sdk-utils": "^3.0.0",
@@ -272,31 +273,31 @@
     },
     "mcp/langchain": {
       "name": "@metorial/langchain",
-      "version": "3.0.0",
+      "version": "3.0.4",
       "dependencies": {
-        "@metorial/core": "^3.0.0",
-        "@metorial/mcp-sdk-utils": "^3.0.0",
-        "@metorial/mcp-session": "^3.0.0",
+        "@metorial/core": "^3.0.5",
+        "@metorial/mcp-sdk-utils": "^3.0.3",
+        "@metorial/mcp-session": "^3.0.2",
         "zod": "^3.22.4",
       },
       "devDependencies": {
-        "@langchain/core": "^1.0.0",
-        "langchain": "^1.0.4",
+        "@langchain/core": "^1.1.0",
+        "langchain": "^1.4.1",
         "tsup": "^7.1.0",
         "typescript": "^5.1.6",
         "vitest": "^0.34.6",
       },
       "peerDependencies": {
-        "@langchain/core": "^1.0.0",
-        "langchain": "^1.0.0",
+        "@langchain/core": "^1.1.0",
+        "langchain": "^1.4.0",
       },
     },
     "mcp/mcp-session": {
       "name": "@metorial/mcp-session",
-      "version": "3.0.0",
+      "version": "3.0.2",
       "dependencies": {
-        "@metorial/core": "^3.0.0",
-        "@metorial/generated": "^3.0.0",
+        "@metorial/core": "^3.0.5",
+        "@metorial/generated": "^3.0.2",
         "@metorial/json-schema": "^3.0.0",
         "@metorial/util-endpoint": "^3.0.0",
         "@modelcontextprotocol/sdk": "^1.12.1",
@@ -310,7 +311,7 @@
     },
     "mcp/mistral": {
       "name": "@metorial/mistral",
-      "version": "3.0.0",
+      "version": "3.0.4",
       "dependencies": {
         "@metorial/core": "^3.0.0",
         "@metorial/mcp-sdk-utils": "^3.0.0",
@@ -328,7 +329,7 @@
     },
     "mcp/openai": {
       "name": "@metorial/openai",
-      "version": "3.0.0",
+      "version": "3.0.5",
       "dependencies": {
         "@metorial/core": "^3.0.0",
         "@metorial/mcp-sdk-utils": "^3.0.0",
@@ -347,7 +348,7 @@
     },
     "mcp/openai-compatible": {
       "name": "@metorial/openai-compatible",
-      "version": "3.0.0",
+      "version": "3.0.4",
       "dependencies": {
         "@metorial/core": "^3.0.0",
         "@metorial/mcp-sdk-utils": "^3.0.0",
@@ -361,7 +362,7 @@
     },
     "mcp/togetherai": {
       "name": "@metorial/togetherai",
-      "version": "3.0.0",
+      "version": "3.0.5",
       "dependencies": {
         "@metorial/core": "^3.0.0",
         "@metorial/mcp-sdk-utils": "^3.0.0",
@@ -377,7 +378,7 @@
     },
     "mcp/xai": {
       "name": "@metorial/xai",
-      "version": "3.0.0",
+      "version": "3.0.5",
       "dependencies": {
         "@metorial/core": "^3.0.0",
         "@metorial/mcp-sdk-utils": "^3.0.0",
@@ -418,10 +419,10 @@
     },
     "packages/mcp-sdk-utils": {
       "name": "@metorial/mcp-sdk-utils",
-      "version": "3.0.0",
+      "version": "3.0.3",
       "dependencies": {
-        "@metorial/core": "^3.0.0",
-        "@metorial/mcp-session": "^3.0.0",
+        "@metorial/core": "^3.0.5",
+        "@metorial/mcp-session": "^3.0.2",
       },
       "devDependencies": {
         "@types/isomorphic-fetch": "^0.0.39",
@@ -525,9 +526,9 @@
     },
     "sdk/core": {
       "name": "@metorial/core",
-      "version": "3.0.0",
+      "version": "3.0.5",
       "dependencies": {
-        "@metorial/generated": "^3.0.0",
+        "@metorial/generated": "^3.0.2",
         "@metorial/util-endpoint": "^3.0.0",
       },
       "devDependencies": {
@@ -540,7 +541,7 @@
     },
     "sdk/gen": {
       "name": "@metorial/generated",
-      "version": "3.0.0",
+      "version": "3.0.2",
       "dependencies": {
         "@metorial/util-endpoint": "^3.0.0",
         "@metorial/util-resource-mapper": "^3.0.0",
@@ -556,7 +557,7 @@
     },
     "sdk/metorial": {
       "name": "metorial",
-      "version": "3.0.0",
+      "version": "3.0.9",
       "dependencies": {
         "@metorial/sdk": "^3.0.0",
       },
@@ -568,7 +569,7 @@
     },
     "sdk/sdk": {
       "name": "@metorial/sdk",
-      "version": "3.0.0",
+      "version": "3.0.9",
       "dependencies": {
         "@metorial/anthropic": "^3.0.0",
         "@metorial/core": "^3.0.0",

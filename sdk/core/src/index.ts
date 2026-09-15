@@ -84,9 +84,20 @@ export namespace MetorialSDK {
   export type SkillGroupItem = MetorialGenerated.SkillsGroupsItemsGetOutput;
 
   export type Callback = MetorialGenerated.CallbacksGetOutput;
-  export type CallbackDestination = MetorialGenerated.CallbacksDestinationsGetOutput;
-  export type CallbackEvent = MetorialGenerated.CallbacksEventsGetOutput;
-  export type CallbackInstance = MetorialGenerated.CallbacksInstancesGetOutput;
+  export type CallbackEvent = MetorialGenerated.CallbackEventsGetOutput;
+  export type CallbackInstance = MetorialGenerated.CallbackInstancesGetOutput;
+
+  export type Chat = MetorialGenerated.ChatsGetOutput;
+  export type ChatChannel = MetorialGenerated.ChatsChannelsGetOutput;
+  export type ChatChannelMember = MetorialGenerated.ChatsChannelsMembersGetOutput;
+  export type ChatThread = MetorialGenerated.ChatsThreadsGetOutput;
+  export type ChatMessage = MetorialGenerated.ChatsMessagesGetOutput;
+
+  export type ChatWorkspace = MetorialGenerated.ChatWorkspacesGetOutput;
+  export type ChatConnection = MetorialGenerated.ChatConnectionsGetOutput;
+  export type ChatEvent = MetorialGenerated.ChatEventsGetOutput;
+  export type ChatInstance = MetorialGenerated.ChatInstancesGetOutput;
+  export type ChatInstanceProvider = MetorialGenerated.ChatInstancesProviderGetOutput;
 
   export type SessionTemplate = MetorialGenerated.SessionTemplatesGetOutput;
   export type SessionTemplateProvider = MetorialGenerated.SessionTemplatesProvidersGetOutput;

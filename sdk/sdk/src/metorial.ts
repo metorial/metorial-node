@@ -93,6 +93,14 @@ export class Metorial {
     return this.sdk.callbacks;
   }
 
+  get chats() {
+    return this.sdk.chats;
+  }
+
+  get chat() {
+    return this.sdk.chat;
+  }
+
   get portals() {
     return this.sdk.portals;
   }

@@ -1,9 +1,21 @@
 import {
   mapDashboardInstanceFilesGetOutput,
-  MetorialCallbacksDestinationsEndpoint,
+  MetorialCallbackEventsEndpoint,
+  MetorialCallbackInstancesEndpoint,
   MetorialCallbacksEndpoint,
-  MetorialCallbacksEventsEndpoint,
-  MetorialCallbacksInstancesEndpoint,
+  MetorialChatConnectionsEndpoint,
+  MetorialChatEventsEndpoint,
+  MetorialChatInstancesEndpoint,
+  MetorialChatInstancesProviderEndpoint,
+  MetorialChatWorkspacesEndpoint,
+  MetorialChatsChannelsEndpoint,
+  MetorialChatsChannelsMembersEndpoint,
+  MetorialChatsChannelsTypingEndpoint,
+  MetorialChatsDmsEndpoint,
+  MetorialChatsEndpoint,
+  MetorialChatsMessagesEndpoint,
+  MetorialChatsMessagesReactionsEndpoint,
+  MetorialChatsThreadsEndpoint,
   MetorialCustomProvidersDeploymentsEndpoint,
   MetorialCustomProvidersEndpoint,
   MetorialCustomProvidersVersionsEndpoint,
@@ -206,10 +218,30 @@ export let createMetorialCoreSDK = coreSdkBuilder.build(
   }),
 
   callbacks: Object.assign(new MetorialCallbacksEndpoint(manager), {
-    destinations: new MetorialCallbacksDestinationsEndpoint(manager),
-    events: new MetorialCallbacksEventsEndpoint(manager),
-    instances: new MetorialCallbacksInstancesEndpoint(manager)
+    events: new MetorialCallbackEventsEndpoint(manager),
+    instances: new MetorialCallbackInstancesEndpoint(manager)
   }),
+
+  chats: Object.assign(new MetorialChatsEndpoint(manager), {
+    channels: Object.assign(new MetorialChatsChannelsEndpoint(manager), {
+      members: new MetorialChatsChannelsMembersEndpoint(manager),
+      typing: new MetorialChatsChannelsTypingEndpoint(manager)
+    }),
+    dms: new MetorialChatsDmsEndpoint(manager),
+    threads: new MetorialChatsThreadsEndpoint(manager),
+    messages: Object.assign(new MetorialChatsMessagesEndpoint(manager), {
+      reactions: new MetorialChatsMessagesReactionsEndpoint(manager)
+    })
+  }),
+
+  chat: {
+    workspaces: new MetorialChatWorkspacesEndpoint(manager),
+    connections: new MetorialChatConnectionsEndpoint(manager),
+    events: new MetorialChatEventsEndpoint(manager),
+    instances: Object.assign(new MetorialChatInstancesEndpoint(manager), {
+      provider: new MetorialChatInstancesProviderEndpoint(manager)
+    })
+  },
 
   sessionTemplates: Object.assign(new MetorialSessionTemplatesEndpoint(manager), {
     providers: new MetorialSessionTemplatesProvidersEndpoint(manager)
