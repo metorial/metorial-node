@@ -12,6 +12,7 @@ export type IntegrationsCreateOutput = {
     canAttachCustomToolFilters: boolean;
     canAttachCustomProviderConfig: boolean;
     canOverrideToolFilters: boolean;
+    useIntegrationNameInToolNames: boolean | null;
   };
   implementation:
     | { type: 'provider_template'; providerTemplateId: string }
@@ -55,6 +56,11 @@ export type IntegrationsCreateOutput = {
       createdAt: Date;
       updatedAt: Date;
     } | null;
+    callbacks: {
+      object: 'integration.provider.callbacks';
+      status: 'enabled' | 'disabled';
+      callbackId: string | null;
+    };
     createdAt: Date;
     updatedAt: Date;
     archivedAt: Date | null;
@@ -86,6 +92,10 @@ export let mapIntegrationsCreateOutput = mtMap.object<IntegrationsCreateOutput>(
         ),
         canOverrideToolFilters: mtMap.objectField(
           'can_override_tool_filters',
+          mtMap.passthrough()
+        ),
+        useIntegrationNameInToolNames: mtMap.objectField(
+          'use_integration_name_in_tool_names',
           mtMap.passthrough()
         )
       })
@@ -193,6 +203,14 @@ export let mapIntegrationsCreateOutput = mtMap.object<IntegrationsCreateOutput>(
               updatedAt: mtMap.objectField('updated_at', mtMap.date())
             })
           ),
+          callbacks: mtMap.objectField(
+            'callbacks',
+            mtMap.object({
+              object: mtMap.objectField('object', mtMap.passthrough()),
+              status: mtMap.objectField('status', mtMap.passthrough()),
+              callbackId: mtMap.objectField('callback_id', mtMap.passthrough())
+            })
+          ),
           createdAt: mtMap.objectField('created_at', mtMap.date()),
           updatedAt: mtMap.objectField('updated_at', mtMap.date()),
           archivedAt: mtMap.objectField('archived_at', mtMap.date())
@@ -209,6 +227,7 @@ export type IntegrationsCreateBody = {
   name: string;
   description?: string | undefined;
   metadata?: Record<string, any> | undefined;
+  useIntegrationNameInToolNames?: boolean | null | undefined;
   canAttachCustomToolFilters?: boolean | undefined;
   canAttachCustomProviderConfig?: boolean | undefined;
   canOverrideToolFilters?: boolean | undefined;
@@ -218,6 +237,10 @@ export let mapIntegrationsCreateBody = mtMap.object<IntegrationsCreateBody>({
   name: mtMap.objectField('name', mtMap.passthrough()),
   description: mtMap.objectField('description', mtMap.passthrough()),
   metadata: mtMap.objectField('metadata', mtMap.passthrough()),
+  useIntegrationNameInToolNames: mtMap.objectField(
+    'use_integration_name_in_tool_names',
+    mtMap.passthrough()
+  ),
   canAttachCustomToolFilters: mtMap.objectField(
     'can_attach_custom_tool_filters',
     mtMap.passthrough()

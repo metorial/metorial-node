@@ -77,6 +77,7 @@ export type ManagementInstanceMagicMcpServersCreateOutput = {
             description: string | null;
           }[]
         | null;
+      adapters: string[] | null;
       providerId: string;
       providerSpecificationId: string;
       createdAt: Date;
@@ -292,6 +293,10 @@ export let mapManagementInstanceMagicMcpServersCreateOutput =
                   })
                 )
               ),
+              adapters: mtMap.objectField(
+                'adapters',
+                mtMap.array(mtMap.passthrough())
+              ),
               providerId: mtMap.objectField('provider_id', mtMap.passthrough()),
               providerSpecificationId: mtMap.objectField(
                 'provider_specification_id',
@@ -377,6 +382,7 @@ export type ManagementInstanceMagicMcpServersCreateBody = {
   description?: string | undefined;
   metadata?: Record<string, any> | undefined;
   providerTemplateId?: string | undefined;
+  integrationInstanceId?: string | undefined;
   consumerProfileId?: string | undefined;
 };
 
@@ -387,6 +393,10 @@ export let mapManagementInstanceMagicMcpServersCreateBody =
     metadata: mtMap.objectField('metadata', mtMap.passthrough()),
     providerTemplateId: mtMap.objectField(
       'provider_template_id',
+      mtMap.passthrough()
+    ),
+    integrationInstanceId: mtMap.objectField(
+      'integration_instance_id',
       mtMap.passthrough()
     ),
     consumerProfileId: mtMap.objectField(

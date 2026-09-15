@@ -8,42 +8,17 @@ export type ManagementInstanceCallbacksListOutput = {
     name: string;
     description: string | null;
     metadata: Record<string, any> | null;
-    pollIntervalSecondsOverride: number | null;
-    providerDeployment: {
-      object: 'provider.deployment#preview';
+    integrationId: string;
+    integrationProviderId: string;
+    provider: {
+      object: 'provider#preview';
       id: string;
-      isDefault: boolean;
-      name: string | null;
+      name: string;
       description: string | null;
-      metadata: Record<string, any> | null;
-      providerId: string;
+      slug: string;
       createdAt: Date;
       updatedAt: Date;
     };
-    destinations: {
-      object: 'callback.destination';
-      id: string;
-      status: 'active' | 'archived' | 'deleted';
-      name: string;
-      description: string | null;
-      metadata: Record<string, any> | null;
-      url: string;
-      method: string;
-      createdAt: Date;
-      updatedAt: Date;
-    }[];
-    providerTriggers: {
-      object: 'callback.provider_trigger';
-      id: string;
-      providerTrigger: {
-        object: 'provider.trigger#preview';
-        id: string;
-        key: string;
-        name: string;
-      };
-      eventTypes: string[];
-      createdAt: Date;
-    }[];
     createdAt: Date;
     updatedAt: Date;
   }[];
@@ -62,69 +37,28 @@ export let mapManagementInstanceCallbacksListOutput =
           name: mtMap.objectField('name', mtMap.passthrough()),
           description: mtMap.objectField('description', mtMap.passthrough()),
           metadata: mtMap.objectField('metadata', mtMap.passthrough()),
-          pollIntervalSecondsOverride: mtMap.objectField(
-            'poll_interval_seconds_override',
+          integrationId: mtMap.objectField(
+            'integration_id',
             mtMap.passthrough()
           ),
-          providerDeployment: mtMap.objectField(
-            'provider_deployment',
+          integrationProviderId: mtMap.objectField(
+            'integration_provider_id',
+            mtMap.passthrough()
+          ),
+          provider: mtMap.objectField(
+            'provider',
             mtMap.object({
               object: mtMap.objectField('object', mtMap.passthrough()),
               id: mtMap.objectField('id', mtMap.passthrough()),
-              isDefault: mtMap.objectField('is_default', mtMap.passthrough()),
               name: mtMap.objectField('name', mtMap.passthrough()),
               description: mtMap.objectField(
                 'description',
                 mtMap.passthrough()
               ),
-              metadata: mtMap.objectField('metadata', mtMap.passthrough()),
-              providerId: mtMap.objectField('provider_id', mtMap.passthrough()),
+              slug: mtMap.objectField('slug', mtMap.passthrough()),
               createdAt: mtMap.objectField('created_at', mtMap.date()),
               updatedAt: mtMap.objectField('updated_at', mtMap.date())
             })
-          ),
-          destinations: mtMap.objectField(
-            'destinations',
-            mtMap.array(
-              mtMap.object({
-                object: mtMap.objectField('object', mtMap.passthrough()),
-                id: mtMap.objectField('id', mtMap.passthrough()),
-                status: mtMap.objectField('status', mtMap.passthrough()),
-                name: mtMap.objectField('name', mtMap.passthrough()),
-                description: mtMap.objectField(
-                  'description',
-                  mtMap.passthrough()
-                ),
-                metadata: mtMap.objectField('metadata', mtMap.passthrough()),
-                url: mtMap.objectField('url', mtMap.passthrough()),
-                method: mtMap.objectField('method', mtMap.passthrough()),
-                createdAt: mtMap.objectField('created_at', mtMap.date()),
-                updatedAt: mtMap.objectField('updated_at', mtMap.date())
-              })
-            )
-          ),
-          providerTriggers: mtMap.objectField(
-            'provider_triggers',
-            mtMap.array(
-              mtMap.object({
-                object: mtMap.objectField('object', mtMap.passthrough()),
-                id: mtMap.objectField('id', mtMap.passthrough()),
-                providerTrigger: mtMap.objectField(
-                  'provider_trigger',
-                  mtMap.object({
-                    object: mtMap.objectField('object', mtMap.passthrough()),
-                    id: mtMap.objectField('id', mtMap.passthrough()),
-                    key: mtMap.objectField('key', mtMap.passthrough()),
-                    name: mtMap.objectField('name', mtMap.passthrough())
-                  })
-                ),
-                eventTypes: mtMap.objectField(
-                  'event_types',
-                  mtMap.array(mtMap.passthrough())
-                ),
-                createdAt: mtMap.objectField('created_at', mtMap.date())
-              })
-            )
           ),
           createdAt: mtMap.objectField('created_at', mtMap.date()),
           updatedAt: mtMap.objectField('updated_at', mtMap.date())
@@ -151,7 +85,9 @@ export type ManagementInstanceCallbacksListQuery = {
   order?: 'asc' | 'desc' | undefined;
 } & {
   id?: string | string[] | undefined;
-  providerDeploymentId?: string | string[] | undefined;
+  integrationId?: string | string[] | undefined;
+  integrationProviderId?: string | string[] | undefined;
+  providerId?: string | string[] | undefined;
   status?:
     | 'active'
     | 'archived'
@@ -181,8 +117,28 @@ export let mapManagementInstanceCallbacksListQuery = mtMap.union([
           )
         ])
       ),
-      providerDeploymentId: mtMap.objectField(
-        'provider_deployment_id',
+      integrationId: mtMap.objectField(
+        'integration_id',
+        mtMap.union([
+          mtMap.unionOption('string', mtMap.passthrough()),
+          mtMap.unionOption(
+            'array',
+            mtMap.union([mtMap.unionOption('string', mtMap.passthrough())])
+          )
+        ])
+      ),
+      integrationProviderId: mtMap.objectField(
+        'integration_provider_id',
+        mtMap.union([
+          mtMap.unionOption('string', mtMap.passthrough()),
+          mtMap.unionOption(
+            'array',
+            mtMap.union([mtMap.unionOption('string', mtMap.passthrough())])
+          )
+        ])
+      ),
+      providerId: mtMap.objectField(
+        'provider_id',
         mtMap.union([
           mtMap.unionOption('string', mtMap.passthrough()),
           mtMap.unionOption(

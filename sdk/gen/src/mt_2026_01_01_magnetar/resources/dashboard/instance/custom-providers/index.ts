@@ -1,3 +1,4 @@
+export * from './archive';
 export * from './commits';
 export * from './create';
 export * from './deployments';

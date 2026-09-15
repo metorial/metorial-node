@@ -6,6 +6,7 @@ export type DashboardInstanceInstanceGetOutput = {
   slug: string;
   name: string;
   organizationId: string;
+  sandboxId: string | null;
   type: 'development' | 'production';
   createdAt: Date;
   updatedAt: Date;
@@ -16,7 +17,6 @@ export type DashboardInstanceInstanceGetOutput = {
     slug: string;
     name: string;
     organizationId: string;
-    magicMcpSessionDurationMinutes: number;
     createdAt: Date;
     updatedAt: Date;
   };
@@ -29,6 +29,7 @@ export let mapDashboardInstanceInstanceGetOutput =
     slug: mtMap.objectField('slug', mtMap.passthrough()),
     name: mtMap.objectField('name', mtMap.passthrough()),
     organizationId: mtMap.objectField('organization_id', mtMap.passthrough()),
+    sandboxId: mtMap.objectField('sandbox_id', mtMap.passthrough()),
     type: mtMap.objectField('type', mtMap.passthrough()),
     createdAt: mtMap.objectField('created_at', mtMap.date()),
     updatedAt: mtMap.objectField('updated_at', mtMap.date()),
@@ -42,10 +43,6 @@ export let mapDashboardInstanceInstanceGetOutput =
         name: mtMap.objectField('name', mtMap.passthrough()),
         organizationId: mtMap.objectField(
           'organization_id',
-          mtMap.passthrough()
-        ),
-        magicMcpSessionDurationMinutes: mtMap.objectField(
-          'magic_mcp_session_duration_minutes',
           mtMap.passthrough()
         ),
         createdAt: mtMap.objectField('created_at', mtMap.date()),

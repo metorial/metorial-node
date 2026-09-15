@@ -39,6 +39,11 @@ export type DashboardInstanceIntegrationsProvidersListOutput = {
       createdAt: Date;
       updatedAt: Date;
     } | null;
+    callbacks: {
+      object: 'integration.provider.callbacks';
+      status: 'enabled' | 'disabled';
+      callbackId: string | null;
+    };
     createdAt: Date;
     updatedAt: Date;
     archivedAt: Date | null;
@@ -130,6 +135,14 @@ export let mapDashboardInstanceIntegrationsProvidersListOutput =
               providerId: mtMap.objectField('provider_id', mtMap.passthrough()),
               createdAt: mtMap.objectField('created_at', mtMap.date()),
               updatedAt: mtMap.objectField('updated_at', mtMap.date())
+            })
+          ),
+          callbacks: mtMap.objectField(
+            'callbacks',
+            mtMap.object({
+              object: mtMap.objectField('object', mtMap.passthrough()),
+              status: mtMap.objectField('status', mtMap.passthrough()),
+              callbackId: mtMap.objectField('callback_id', mtMap.passthrough())
             })
           ),
           createdAt: mtMap.objectField('created_at', mtMap.date()),

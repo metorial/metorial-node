@@ -72,6 +72,21 @@ export type ConsumerProvidersListOutput = {
           providerId: string;
           lockedVersionId: string | null;
         };
+        toolFilter:
+          | { type: 'allow_all'; ignoreParentFilters: boolean }
+          | {
+              type: 'filter';
+              filters: (
+                | { type: 'tool_keys'; keys: string[] }
+                | { type: 'tool_regex'; pattern: string }
+                | { type: 'resource_regex'; pattern: string }
+                | { type: 'resource_uris'; uris: string[] }
+                | { type: 'prompt_keys'; keys: string[] }
+                | { type: 'prompt_regex'; pattern: string }
+              )[];
+              ignoreParentFilters: boolean;
+            }
+          | null;
         configSchema: {
           type: 'json_schema';
           schema: Record<string, any>;
@@ -101,6 +116,7 @@ export type ConsumerProvidersListOutput = {
                 description: string | null;
               }[]
             | null;
+          adapters: string[] | null;
           providerId: string;
           providerSpecificationId: string;
           createdAt: Date;
@@ -296,6 +312,49 @@ export let mapConsumerProvidersListOutput =
                   )
                 })
               ),
+              toolFilter: mtMap.objectField(
+                'tool_filter',
+                mtMap.union([
+                  mtMap.unionOption(
+                    'object',
+                    mtMap.object({
+                      type: mtMap.objectField('type', mtMap.passthrough()),
+                      ignoreParentFilters: mtMap.objectField(
+                        'ignore_parent_filters',
+                        mtMap.passthrough()
+                      ),
+                      filters: mtMap.objectField(
+                        'filters',
+                        mtMap.array(
+                          mtMap.union([
+                            mtMap.unionOption(
+                              'object',
+                              mtMap.object({
+                                type: mtMap.objectField(
+                                  'type',
+                                  mtMap.passthrough()
+                                ),
+                                keys: mtMap.objectField(
+                                  'keys',
+                                  mtMap.array(mtMap.passthrough())
+                                ),
+                                pattern: mtMap.objectField(
+                                  'pattern',
+                                  mtMap.passthrough()
+                                ),
+                                uris: mtMap.objectField(
+                                  'uris',
+                                  mtMap.array(mtMap.passthrough())
+                                )
+                              })
+                            )
+                          ])
+                        )
+                      )
+                    })
+                  )
+                ])
+              ),
               configSchema: mtMap.objectField(
                 'config_schema',
                 mtMap.object({
@@ -355,6 +414,10 @@ export let mapConsumerProvidersListOutput =
                         })
                       )
                     ),
+                    adapters: mtMap.objectField(
+                      'adapters',
+                      mtMap.array(mtMap.passthrough())
+                    ),
                     providerId: mtMap.objectField(
                       'provider_id',
                       mtMap.passthrough()
@@ -404,7 +467,10 @@ export type ConsumerProvidersListQuery = {
   before?: string | undefined;
   cursor?: string | undefined;
   order?: 'asc' | 'desc' | undefined;
-} & { search?: string | undefined; providerGroupId?: string | undefined };
+} & {
+  search?: string | undefined;
+  providerGroupId?: string | string[] | undefined;
+};
 
 export let mapConsumerProvidersListQuery = mtMap.union([
   mtMap.unionOption(
@@ -418,7 +484,13 @@ export let mapConsumerProvidersListQuery = mtMap.union([
       search: mtMap.objectField('search', mtMap.passthrough()),
       providerGroupId: mtMap.objectField(
         'provider_group_id',
-        mtMap.passthrough()
+        mtMap.union([
+          mtMap.unionOption('string', mtMap.passthrough()),
+          mtMap.unionOption(
+            'array',
+            mtMap.union([mtMap.unionOption('string', mtMap.passthrough())])
+          )
+        ])
       )
     })
   )

@@ -22,7 +22,8 @@ export type DashboardInstancePortalsUpdateOutput = {
     sessionExpiryTimeInSeconds: number;
     allowedRedirectUrlFilters: { url: string }[];
   };
-  urls: { type: 'default'; url: string }[];
+  urls: { type: 'default' | 'namespace'; url: string }[];
+  magicMcpUrl: string;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -85,6 +86,7 @@ export let mapDashboardInstancePortalsUpdateOutput =
         })
       )
     ),
+    magicMcpUrl: mtMap.objectField('magic_mcp_url', mtMap.passthrough()),
     createdAt: mtMap.objectField('created_at', mtMap.date()),
     updatedAt: mtMap.objectField('updated_at', mtMap.date())
   });

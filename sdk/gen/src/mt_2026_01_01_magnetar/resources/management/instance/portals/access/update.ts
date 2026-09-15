@@ -3,9 +3,11 @@ import { mtMap } from '@metorial/util-resource-mapper';
 export type ManagementInstancePortalsAccessUpdateOutput = {
   object: 'consumer.access';
   id: string;
+  accessLevel: 'read' | 'manage' | null;
   name: string;
   description: string | null;
   readme: string | null;
+  listing: { id: string; name: string; description: string | null } | null;
   access:
     | {
         type: 'provider_template';
@@ -68,6 +70,15 @@ export type ManagementInstancePortalsAccessUpdateOutput = {
           id: string;
           status: 'active' | 'archived' | 'deleted';
         };
+      }
+    | {
+        type: 'skill_plugin';
+        skillPlugin: {
+          object: 'skill.plugin';
+          id: string;
+          status: 'active' | 'archived' | 'deleted';
+          name: string | null;
+        };
       };
   consumerGroup: {
     object: 'consumer.group';
@@ -76,7 +87,6 @@ export type ManagementInstancePortalsAccessUpdateOutput = {
     name: string;
     description: string | null;
     isDefault: boolean;
-    ssoGroupIds: string[];
     createdAt: Date;
     updatedAt: Date;
   };
@@ -88,9 +98,18 @@ export let mapManagementInstancePortalsAccessUpdateOutput =
   mtMap.object<ManagementInstancePortalsAccessUpdateOutput>({
     object: mtMap.objectField('object', mtMap.passthrough()),
     id: mtMap.objectField('id', mtMap.passthrough()),
+    accessLevel: mtMap.objectField('access_level', mtMap.passthrough()),
     name: mtMap.objectField('name', mtMap.passthrough()),
     description: mtMap.objectField('description', mtMap.passthrough()),
     readme: mtMap.objectField('readme', mtMap.passthrough()),
+    listing: mtMap.objectField(
+      'listing',
+      mtMap.object({
+        id: mtMap.objectField('id', mtMap.passthrough()),
+        name: mtMap.objectField('name', mtMap.passthrough()),
+        description: mtMap.objectField('description', mtMap.passthrough())
+      })
+    ),
     access: mtMap.objectField(
       'access',
       mtMap.union([
@@ -174,6 +193,15 @@ export let mapManagementInstancePortalsAccessUpdateOutput =
                 id: mtMap.objectField('id', mtMap.passthrough()),
                 status: mtMap.objectField('status', mtMap.passthrough())
               })
+            ),
+            skillPlugin: mtMap.objectField(
+              'skill_plugin',
+              mtMap.object({
+                object: mtMap.objectField('object', mtMap.passthrough()),
+                id: mtMap.objectField('id', mtMap.passthrough()),
+                status: mtMap.objectField('status', mtMap.passthrough()),
+                name: mtMap.objectField('name', mtMap.passthrough())
+              })
             )
           })
         )
@@ -188,10 +216,6 @@ export let mapManagementInstancePortalsAccessUpdateOutput =
         name: mtMap.objectField('name', mtMap.passthrough()),
         description: mtMap.objectField('description', mtMap.passthrough()),
         isDefault: mtMap.objectField('is_default', mtMap.passthrough()),
-        ssoGroupIds: mtMap.objectField(
-          'sso_group_ids',
-          mtMap.array(mtMap.passthrough())
-        ),
         createdAt: mtMap.objectField('created_at', mtMap.date()),
         updatedAt: mtMap.objectField('updated_at', mtMap.date())
       })

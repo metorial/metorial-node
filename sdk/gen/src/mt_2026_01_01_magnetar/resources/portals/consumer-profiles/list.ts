@@ -8,6 +8,7 @@ export type PortalsConsumerProfilesListOutput = {
     email: string;
     imageUrl: string;
     consumerId: string;
+    userId: string | null;
     status: 'active' | 'invited';
     createdAt: Date;
     updatedAt: Date;
@@ -22,7 +23,6 @@ export type PortalsConsumerProfilesListOutput = {
             name: string;
             description: string | null;
             isDefault: boolean;
-            ssoGroupIds: string[];
             createdAt: Date;
             updatedAt: Date;
           };
@@ -48,6 +48,7 @@ export let mapPortalsConsumerProfilesListOutput =
               email: mtMap.objectField('email', mtMap.passthrough()),
               imageUrl: mtMap.objectField('image_url', mtMap.passthrough()),
               consumerId: mtMap.objectField('consumer_id', mtMap.passthrough()),
+              userId: mtMap.objectField('user_id', mtMap.passthrough()),
               status: mtMap.objectField('status', mtMap.passthrough()),
               createdAt: mtMap.objectField('created_at', mtMap.date()),
               updatedAt: mtMap.objectField('updated_at', mtMap.date()),
@@ -76,10 +77,6 @@ export let mapPortalsConsumerProfilesListOutput =
                         isDefault: mtMap.objectField(
                           'is_default',
                           mtMap.passthrough()
-                        ),
-                        ssoGroupIds: mtMap.objectField(
-                          'sso_group_ids',
-                          mtMap.array(mtMap.passthrough())
                         ),
                         createdAt: mtMap.objectField(
                           'created_at',
@@ -120,6 +117,7 @@ export type PortalsConsumerProfilesListQuery = {
   order?: 'asc' | 'desc' | undefined;
 } & {
   search?: string | undefined;
+  email?: string | string[] | undefined;
   consumerGroupId?: string | undefined;
   status?: 'active' | 'invited' | ('active' | 'invited')[] | undefined;
 };
@@ -134,6 +132,16 @@ export let mapPortalsConsumerProfilesListQuery = mtMap.union([
       cursor: mtMap.objectField('cursor', mtMap.passthrough()),
       order: mtMap.objectField('order', mtMap.passthrough()),
       search: mtMap.objectField('search', mtMap.passthrough()),
+      email: mtMap.objectField(
+        'email',
+        mtMap.union([
+          mtMap.unionOption('string', mtMap.passthrough()),
+          mtMap.unionOption(
+            'array',
+            mtMap.union([mtMap.unionOption('string', mtMap.passthrough())])
+          )
+        ])
+      ),
       consumerGroupId: mtMap.objectField(
         'consumer_group_id',
         mtMap.passthrough()

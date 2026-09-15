@@ -84,6 +84,7 @@ export type MagicMcpServersListOutput = {
               description: string | null;
             }[]
           | null;
+        adapters: string[] | null;
         providerId: string;
         providerSpecificationId: string;
         createdAt: Date;
@@ -323,6 +324,10 @@ export let mapMagicMcpServersListOutput =
                         })
                       )
                     ),
+                    adapters: mtMap.objectField(
+                      'adapters',
+                      mtMap.array(mtMap.passthrough())
+                    ),
                     providerId: mtMap.objectField(
                       'provider_id',
                       mtMap.passthrough()
@@ -464,6 +469,13 @@ export type MagicMcpServersListQuery = {
     | undefined;
   magicMcpGroupId?: string | string[] | undefined;
   providerTemplateId?: string | string[] | undefined;
+  integrationInstanceId?: string | string[] | undefined;
+  owner?:
+    | 'organization'
+    | 'consumer'
+    | ('organization' | 'consumer')[]
+    | undefined;
+  providerId?: string | string[] | undefined;
   consumerId?: string | string[] | undefined;
   consumerProfileId?: string | string[] | undefined;
   search?: string | undefined;
@@ -496,6 +508,30 @@ export let mapMagicMcpServersListQuery = mtMap.union([
       ),
       providerTemplateId: mtMap.objectField(
         'provider_template_id',
+        mtMap.union([
+          mtMap.unionOption('string', mtMap.passthrough()),
+          mtMap.unionOption(
+            'array',
+            mtMap.union([mtMap.unionOption('string', mtMap.passthrough())])
+          )
+        ])
+      ),
+      integrationInstanceId: mtMap.objectField(
+        'integration_instance_id',
+        mtMap.union([
+          mtMap.unionOption('string', mtMap.passthrough()),
+          mtMap.unionOption(
+            'array',
+            mtMap.union([mtMap.unionOption('string', mtMap.passthrough())])
+          )
+        ])
+      ),
+      owner: mtMap.objectField(
+        'owner',
+        mtMap.union([mtMap.unionOption('array', mtMap.union([]))])
+      ),
+      providerId: mtMap.objectField(
+        'provider_id',
         mtMap.union([
           mtMap.unionOption('string', mtMap.passthrough()),
           mtMap.unionOption(

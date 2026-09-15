@@ -23,7 +23,8 @@ export type ManagementInstancePortalsListOutput = {
       sessionExpiryTimeInSeconds: number;
       allowedRedirectUrlFilters: { url: string }[];
     };
-    urls: { type: 'default'; url: string }[];
+    urls: { type: 'default' | 'namespace'; url: string }[];
+    magicMcpUrl: string;
     createdAt: Date;
     updatedAt: Date;
   }[];
@@ -97,6 +98,7 @@ export let mapManagementInstancePortalsListOutput =
               })
             )
           ),
+          magicMcpUrl: mtMap.objectField('magic_mcp_url', mtMap.passthrough()),
           createdAt: mtMap.objectField('created_at', mtMap.date()),
           updatedAt: mtMap.objectField('updated_at', mtMap.date())
         })
@@ -120,7 +122,7 @@ export type ManagementInstancePortalsListQuery = {
   before?: string | undefined;
   cursor?: string | undefined;
   order?: 'asc' | 'desc' | undefined;
-} & {};
+} & { search?: string | undefined };
 
 export let mapManagementInstancePortalsListQuery = mtMap.union([
   mtMap.unionOption(
@@ -130,7 +132,8 @@ export let mapManagementInstancePortalsListQuery = mtMap.union([
       after: mtMap.objectField('after', mtMap.passthrough()),
       before: mtMap.objectField('before', mtMap.passthrough()),
       cursor: mtMap.objectField('cursor', mtMap.passthrough()),
-      order: mtMap.objectField('order', mtMap.passthrough())
+      order: mtMap.objectField('order', mtMap.passthrough()),
+      search: mtMap.objectField('search', mtMap.passthrough())
     })
   )
 ]);

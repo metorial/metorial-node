@@ -7,6 +7,7 @@ export type ConsumersListOutput = {
     name: string;
     email: string;
     imageUrl: string;
+    userId: string | null;
     createdAt: Date;
     updatedAt: Date;
   }[];
@@ -23,6 +24,7 @@ export let mapConsumersListOutput = mtMap.object<ConsumersListOutput>({
         name: mtMap.objectField('name', mtMap.passthrough()),
         email: mtMap.objectField('email', mtMap.passthrough()),
         imageUrl: mtMap.objectField('image_url', mtMap.passthrough()),
+        userId: mtMap.objectField('user_id', mtMap.passthrough()),
         createdAt: mtMap.objectField('created_at', mtMap.date()),
         updatedAt: mtMap.objectField('updated_at', mtMap.date())
       })
@@ -43,7 +45,11 @@ export type ConsumersListQuery = {
   before?: string | undefined;
   cursor?: string | undefined;
   order?: 'asc' | 'desc' | undefined;
-} & { search?: string | undefined; id?: string | undefined };
+} & {
+  search?: string | undefined;
+  email?: string | string[] | undefined;
+  id?: string | undefined;
+};
 
 export let mapConsumersListQuery = mtMap.union([
   mtMap.unionOption(
@@ -55,6 +61,16 @@ export let mapConsumersListQuery = mtMap.union([
       cursor: mtMap.objectField('cursor', mtMap.passthrough()),
       order: mtMap.objectField('order', mtMap.passthrough()),
       search: mtMap.objectField('search', mtMap.passthrough()),
+      email: mtMap.objectField(
+        'email',
+        mtMap.union([
+          mtMap.unionOption('string', mtMap.passthrough()),
+          mtMap.unionOption(
+            'array',
+            mtMap.union([mtMap.unionOption('string', mtMap.passthrough())])
+          )
+        ])
+      ),
       id: mtMap.objectField('id', mtMap.passthrough())
     })
   )

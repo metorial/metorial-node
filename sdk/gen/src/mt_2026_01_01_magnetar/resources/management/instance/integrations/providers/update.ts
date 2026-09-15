@@ -38,6 +38,11 @@ export type ManagementInstanceIntegrationsProvidersUpdateOutput = {
     createdAt: Date;
     updatedAt: Date;
   } | null;
+  callbacks: {
+    object: 'integration.provider.callbacks';
+    status: 'enabled' | 'disabled';
+    callbackId: string | null;
+  };
   createdAt: Date;
   updatedAt: Date;
   archivedAt: Date | null;
@@ -113,6 +118,14 @@ export let mapManagementInstanceIntegrationsProvidersUpdateOutput =
         updatedAt: mtMap.objectField('updated_at', mtMap.date())
       })
     ),
+    callbacks: mtMap.objectField(
+      'callbacks',
+      mtMap.object({
+        object: mtMap.objectField('object', mtMap.passthrough()),
+        status: mtMap.objectField('status', mtMap.passthrough()),
+        callbackId: mtMap.objectField('callback_id', mtMap.passthrough())
+      })
+    ),
     createdAt: mtMap.objectField('created_at', mtMap.date()),
     updatedAt: mtMap.objectField('updated_at', mtMap.date()),
     archivedAt: mtMap.objectField('archived_at', mtMap.date())
@@ -145,6 +158,7 @@ export type ManagementInstanceIntegrationsProvidersUpdateBody = {
       )[]
     | null
     | undefined;
+  callbacks?: { status: 'enabled' | 'disabled' } | undefined;
 };
 
 export let mapManagementInstanceIntegrationsProvidersUpdateBody =
@@ -201,6 +215,10 @@ export let mapManagementInstanceIntegrationsProvidersUpdateBody =
           ])
         )
       ])
+    ),
+    callbacks: mtMap.objectField(
+      'callbacks',
+      mtMap.object({ status: mtMap.objectField('status', mtMap.passthrough()) })
     )
   });
 

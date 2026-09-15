@@ -39,7 +39,7 @@ export type DashboardInstanceCustomProvidersUpdateOutput = {
     id: string;
     provider: {
       object: 'scm.provider';
-      type: 'github' | 'gitlab';
+      type: 'github' | 'gitlab' | 'bitbucket';
       id: string;
       name: string;
       owner: string;
