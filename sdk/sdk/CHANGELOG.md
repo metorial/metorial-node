@@ -1,5 +1,16 @@
 # @metorial/sdk
 
+## 3.1.0
+
+### Minor Changes
+
+- Add chat and callbacks
+
+### Patch Changes
+
+- Updated dependencies
+  - @metorial/core@3.1.0
+
 ## 3.0.1
 
 ### Patch Changes
