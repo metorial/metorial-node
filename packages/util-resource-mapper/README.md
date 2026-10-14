@@ -1,3 +1,94 @@
+# Compact generated mappers
+
+Generated TypeScript SDKs import `mapObject<T>(fields)` and `createMapper<T>(descriptor)` from
+`@metorial/util-resource-mapper/compact`. Both return a `MetorialMapper<T>` with `transformFrom`
+(wire → SDK) and `transformTo` (SDK → wire). The compact entry point is independent of the legacy
+builders documented below, so a bundle using only compact mappers excludes the legacy runtime.
+
+```typescript
+import { mapObject } from '@metorial/util-resource-mapper/compact';
+
+export let mapper = /* @__PURE__ */ mapObject([
+  'network_policies',
+  ['created_at', 1, 4],
+  ['rules', 0, [2, [1, [['custom_special_name', 'customSPECIALname']]]]]
+]);
+```
+
+Descriptors:
+
+| Descriptor        | Operation       |
+| ----------------- | --------------- |
+| `0`               | Identity        |
+| `4`               | Date conversion |
+| `[1, fields]`     | Object          |
+| `[2, descriptor]` | Array elements  |
+| `[3, branches]`   | Union           |
+
+An object field is a string for an automatic rename, `[source, target]` for a rename only, or
+`[source, target, descriptor]` for a rename and/or value transformation. Tuple targets are an
+explicit string, `0` to keep the source name, or `1` for snake case to camel case. Automatic
+renaming replaces underscore-plus-lowercase-letter with the uppercase letter; the generator
+uses it only for canonical snake case names whose result matches its SDK naming rules.
+Other names use explicit targets. Unlisted fields retain both their names and their values.
+
+Union branches are `[kind, descriptor]`, where kinds are `0` object, `1` array, `2` Date instance,
+`3` string, `4` number, and `5` boolean. A date branch uses descriptor `4`. Strings and numbers
+use their explicit branches first; when that branch is absent, a date branch may parse a valid
+string or timestamp. Unmatched values and invalid dates pass through. Date conversion is the
+same in both directions, preserving existing Date instances; serialization remains the caller's
+responsibility. Arrays map their elements, including nested arrays and heterogeneous unions.
+
+Identity mappings reuse the original object or array. Mappings that transform a container create
+a copy without mutating input. Empty arrays, null, undefined, missing fields, and incompatible
+input types pass through. Only own enumerable string fields are mapped. Unknown fields remain
+untouched and take precedence when they collide with a mapped destination. Rename chains and
+swaps read from the original input. Records and arbitrary JSON are not recursively mapped.
+
+The generator rejects schema fields that normalize to the same SDK property, including conflicts
+between merged union object alternatives. Existing legacy builders and custom mappers retain
+their API and behavior.
+
+## Date defaults and generic patterns (3.2.0)
+
+Both `mapObject(fields, flags = 0)` and `createMapper(descriptor, flags = 0)` accept an optional
+numeric flags argument. Bit `1` enables date conversion by default for **listed** source fields
+ending in `_at` when their value descriptor is omitted. Existing calls without the flag keep
+their 3.1.0 behavior. Defaults propagate through nested objects, arrays, unions, and list items.
+
+```typescript
+let output = mapObject(['created_at', ['pagination', 0, 6]], 1);
+let query = mapObject([['created_at', 1, 5]], 1);
+let logs = mapObject(
+  [
+    ['first_seen_at', 1, 0],
+    ['metadata_at', 1, 0]
+  ],
+  1
+);
+let list = createMapper([7, 8]);
+```
+
+Explicit descriptors override the default: `['first_seen_at', 1, 0]` renames the field without
+parsing its string value; `['metadata_at', 1, 0]` preserves the raw record, including all nested
+keys and values. Unlisted fields, records, and arbitrary JSON are never scanned for `_at` keys.
+The generator omits the flags argument when the descriptor does not use inferred dates.
+
+| Descriptor            | Canonical mapping                                                 |
+| --------------------- | ----------------------------------------------------------------- |
+| `5`                   | Object with date-converted `gt` and `lt` fields                   |
+| `6`                   | Object renaming `has_more_before` and `has_more_after`            |
+| `[7, itemDescriptor]` | Object mapping each `items` element and standard pagination       |
+| `8`                   | Object renaming and date-converting `created_at` and `updated_at` |
+
+Special descriptors expand into the normal mapping engine at construction; `5`, `6`, and `8`
+share cached compiled plans. They work without the date-default flag and preserve the normal
+handling of unknown fields, nullable/missing values, collisions, and input immutability.
+No pattern detection occurs while transforming payloads. Descriptor IDs are stable; unknown
+numeric descriptors throw during construction.
+
+---
+
 # @metorial/util-resource-mapper
 
 Resource mapper utilities for Metorial. Provides utilities for transforming data between different formats with bidirectional mapping support.

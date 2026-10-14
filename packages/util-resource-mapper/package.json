@@ -1,6 +1,6 @@
 {
   "name": "@metorial/util-resource-mapper",
-  "version": "3.0.0",
+  "version": "3.2.0",
   "author": "Metorial Inc.",
   "license": "MIT",
   "type": "module",
@@ -18,7 +18,13 @@
       "require": "./dist/index.cjs",
       "default": "./dist/index.js"
     },
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./compact": {
+      "types": "./dist/compact.d.ts",
+      "import": "./dist/compact.js",
+      "require": "./dist/compact.cjs",
+      "default": "./dist/compact.js"
+    }
   },
   "scripts": {
     "test": "vitest run --passWithNoTests",
@@ -32,6 +38,15 @@
   "devDependencies": {
     "tsup": "^7.1.0",
     "typescript": "^5.1.6",
-    "vitest": "^0.34.6"
+    "vitest": "^0.34.6",
+    "esbuild": "^0.25.12"
+  },
+  "sideEffects": false,
+  "typesVersions": {
+    "*": {
+      "compact": [
+        "dist/compact.d.ts"
+      ]
+    }
   }
 }
