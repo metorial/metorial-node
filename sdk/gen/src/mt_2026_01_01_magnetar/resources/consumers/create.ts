@@ -1,4 +1,7 @@
-import { mtMap } from '@metorial/util-resource-mapper';
+import {
+  createMapper,
+  mapObject
+} from '@metorial/util-resource-mapper/compact';
 
 export type ConsumersCreateOutput = {
   object: 'consumer';
@@ -11,21 +14,13 @@ export type ConsumersCreateOutput = {
   updatedAt: Date;
 };
 
-export let mapConsumersCreateOutput = mtMap.object<ConsumersCreateOutput>({
-  object: mtMap.objectField('object', mtMap.passthrough()),
-  id: mtMap.objectField('id', mtMap.passthrough()),
-  name: mtMap.objectField('name', mtMap.passthrough()),
-  email: mtMap.objectField('email', mtMap.passthrough()),
-  imageUrl: mtMap.objectField('image_url', mtMap.passthrough()),
-  userId: mtMap.objectField('user_id', mtMap.passthrough()),
-  createdAt: mtMap.objectField('created_at', mtMap.date()),
-  updatedAt: mtMap.objectField('updated_at', mtMap.date())
-});
+export let mapConsumersCreateOutput =
+  /* @__PURE__ */ mapObject<ConsumersCreateOutput>(
+    ['image_url', 'user_id', 'created_at', 'updated_at'],
+    1
+  );
 
 export type ConsumersCreateBody = { name: string; email: string };
 
-export let mapConsumersCreateBody = mtMap.object<ConsumersCreateBody>({
-  name: mtMap.objectField('name', mtMap.passthrough()),
-  email: mtMap.objectField('email', mtMap.passthrough())
-});
-
+export let mapConsumersCreateBody =
+  /* @__PURE__ */ createMapper<ConsumersCreateBody>(0);

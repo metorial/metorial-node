@@ -1,4 +1,4 @@
-import { mtMap } from '@metorial/util-resource-mapper';
+import { createMapper } from '@metorial/util-resource-mapper/compact';
 
 export type DashboardInstancePortalsConsumerGroupsListOutput = {
   items: {
@@ -15,33 +15,10 @@ export type DashboardInstancePortalsConsumerGroupsListOutput = {
 };
 
 export let mapDashboardInstancePortalsConsumerGroupsListOutput =
-  mtMap.object<DashboardInstancePortalsConsumerGroupsListOutput>({
-    items: mtMap.objectField(
-      'items',
-      mtMap.array(
-        mtMap.object({
-          object: mtMap.objectField('object', mtMap.passthrough()),
-          id: mtMap.objectField('id', mtMap.passthrough()),
-          status: mtMap.objectField('status', mtMap.passthrough()),
-          name: mtMap.objectField('name', mtMap.passthrough()),
-          description: mtMap.objectField('description', mtMap.passthrough()),
-          isDefault: mtMap.objectField('is_default', mtMap.passthrough()),
-          createdAt: mtMap.objectField('created_at', mtMap.date()),
-          updatedAt: mtMap.objectField('updated_at', mtMap.date())
-        })
-      )
-    ),
-    pagination: mtMap.objectField(
-      'pagination',
-      mtMap.object({
-        hasMoreBefore: mtMap.objectField(
-          'has_more_before',
-          mtMap.passthrough()
-        ),
-        hasMoreAfter: mtMap.objectField('has_more_after', mtMap.passthrough())
-      })
-    )
-  });
+  /* @__PURE__ */ createMapper<DashboardInstancePortalsConsumerGroupsListOutput>(
+    [7, [1, ['is_default', 'created_at', 'updated_at']]],
+    1
+  );
 
 export type DashboardInstancePortalsConsumerGroupsListQuery = {
   limit?: number | undefined;
@@ -59,21 +36,7 @@ export type DashboardInstancePortalsConsumerGroupsListQuery = {
   search?: string | undefined;
 };
 
-export let mapDashboardInstancePortalsConsumerGroupsListQuery = mtMap.union([
-  mtMap.unionOption(
-    'object',
-    mtMap.object({
-      limit: mtMap.objectField('limit', mtMap.passthrough()),
-      after: mtMap.objectField('after', mtMap.passthrough()),
-      before: mtMap.objectField('before', mtMap.passthrough()),
-      cursor: mtMap.objectField('cursor', mtMap.passthrough()),
-      order: mtMap.objectField('order', mtMap.passthrough()),
-      status: mtMap.objectField(
-        'status',
-        mtMap.union([mtMap.unionOption('array', mtMap.union([]))])
-      ),
-      search: mtMap.objectField('search', mtMap.passthrough())
-    })
-  )
-]);
-
+export let mapDashboardInstancePortalsConsumerGroupsListQuery =
+  /* @__PURE__ */ createMapper<DashboardInstancePortalsConsumerGroupsListQuery>(
+    0
+  );

@@ -101,6 +101,10 @@ export class Metorial {
     return this.sdk.chat;
   }
 
+  get sandbox() {
+    return this.sdk.sandbox;
+  }
+
   get portals() {
     return this.sdk.portals;
   }

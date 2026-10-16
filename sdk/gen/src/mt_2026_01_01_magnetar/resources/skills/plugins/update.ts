@@ -1,4 +1,4 @@
-import { mtMap } from '@metorial/util-resource-mapper';
+import { mapObject } from '@metorial/util-resource-mapper/compact';
 
 export type SkillsPluginsUpdateOutput = {
   object: 'skill.plugin';
@@ -49,88 +49,51 @@ export type SkillsPluginsUpdateOutput = {
 };
 
 export let mapSkillsPluginsUpdateOutput =
-  mtMap.object<SkillsPluginsUpdateOutput>({
-    object: mtMap.objectField('object', mtMap.passthrough()),
-    id: mtMap.objectField('id', mtMap.passthrough()),
-    status: mtMap.objectField('status', mtMap.passthrough()),
-    syncStatus: mtMap.objectField('sync_status', mtMap.passthrough()),
-    imageUrl: mtMap.objectField('image_url', mtMap.passthrough()),
-    name: mtMap.objectField('name', mtMap.passthrough()),
-    description: mtMap.objectField('description', mtMap.passthrough()),
-    longDescription: mtMap.objectField('long_description', mtMap.passthrough()),
-    category: mtMap.objectField('category', mtMap.passthrough()),
-    slug: mtMap.objectField('slug', mtMap.passthrough()),
-    skillConfigurationId: mtMap.objectField(
+  /* @__PURE__ */ mapObject<SkillsPluginsUpdateOutput>(
+    [
+      'sync_status',
+      'image_url',
+      'long_description',
       'skill_configuration_id',
-      mtMap.passthrough()
-    ),
-    skills: mtMap.objectField(
-      'skills',
-      mtMap.array(
-        mtMap.object({
-          object: mtMap.objectField('object', mtMap.passthrough()),
-          id: mtMap.objectField('id', mtMap.passthrough()),
-          identifier: mtMap.objectField('identifier', mtMap.passthrough()),
-          status: mtMap.objectField('status', mtMap.passthrough()),
-          clientName: mtMap.objectField('client_name', mtMap.passthrough()),
-          clientDescription: mtMap.objectField(
-            'client_description',
-            mtMap.passthrough()
-          ),
-          clientMetadata: mtMap.objectField(
-            'client_metadata',
-            mtMap.passthrough()
-          ),
-          license: mtMap.objectField('license', mtMap.passthrough()),
-          compatibility: mtMap.objectField(
-            'compatibility',
-            mtMap.passthrough()
-          ),
-          skillConfigurationId: mtMap.objectField(
-            'skill_configuration_id',
-            mtMap.passthrough()
-          ),
-          skillId: mtMap.objectField('skill_id', mtMap.passthrough()),
-          skill: mtMap.objectField(
-            'skill',
-            mtMap.object({
-              object: mtMap.objectField('object', mtMap.passthrough()),
-              id: mtMap.objectField('id', mtMap.passthrough()),
-              status: mtMap.objectField('status', mtMap.passthrough()),
-              slug: mtMap.objectField('slug', mtMap.passthrough()),
-              name: mtMap.objectField('name', mtMap.passthrough()),
-              description: mtMap.objectField(
-                'description',
-                mtMap.passthrough()
-              ),
-              imageUrl: mtMap.objectField('image_url', mtMap.passthrough()),
-              clientName: mtMap.objectField('client_name', mtMap.passthrough()),
-              clientDescription: mtMap.objectField(
-                'client_description',
-                mtMap.passthrough()
-              ),
-              clientMetadata: mtMap.objectField(
-                'client_metadata',
-                mtMap.passthrough()
-              ),
-              license: mtMap.objectField('license', mtMap.passthrough()),
-              compatibility: mtMap.objectField(
-                'compatibility',
-                mtMap.passthrough()
-              ),
-              metadata: mtMap.objectField('metadata', mtMap.passthrough()),
-              createdAt: mtMap.objectField('created_at', mtMap.date()),
-              updatedAt: mtMap.objectField('updated_at', mtMap.date())
-            })
-          ),
-          createdAt: mtMap.objectField('created_at', mtMap.date()),
-          updatedAt: mtMap.objectField('updated_at', mtMap.date())
-        })
-      )
-    ),
-    createdAt: mtMap.objectField('created_at', mtMap.date()),
-    updatedAt: mtMap.objectField('updated_at', mtMap.date())
-  });
+      [
+        'skills',
+        0,
+        [
+          2,
+          [
+            1,
+            [
+              'client_name',
+              'client_description',
+              'client_metadata',
+              'skill_configuration_id',
+              'skill_id',
+              [
+                'skill',
+                0,
+                [
+                  1,
+                  [
+                    'image_url',
+                    'client_name',
+                    'client_description',
+                    'client_metadata',
+                    'created_at',
+                    'updated_at'
+                  ]
+                ]
+              ],
+              'created_at',
+              'updated_at'
+            ]
+          ]
+        ]
+      ],
+      'created_at',
+      'updated_at'
+    ],
+    1
+  );
 
 export type SkillsPluginsUpdateBody = {
   name?: string | undefined;
@@ -141,15 +104,9 @@ export type SkillsPluginsUpdateBody = {
   skillConfigurationId?: string | null | undefined;
 };
 
-export let mapSkillsPluginsUpdateBody = mtMap.object<SkillsPluginsUpdateBody>({
-  name: mtMap.objectField('name', mtMap.passthrough()),
-  description: mtMap.objectField('description', mtMap.passthrough()),
-  longDescription: mtMap.objectField('long_description', mtMap.passthrough()),
-  category: mtMap.objectField('category', mtMap.passthrough()),
-  imageFileId: mtMap.objectField('image_file_id', mtMap.passthrough()),
-  skillConfigurationId: mtMap.objectField(
-    'skill_configuration_id',
-    mtMap.passthrough()
-  )
-});
-
+export let mapSkillsPluginsUpdateBody =
+  /* @__PURE__ */ mapObject<SkillsPluginsUpdateBody>([
+    'long_description',
+    'image_file_id',
+    'skill_configuration_id'
+  ]);

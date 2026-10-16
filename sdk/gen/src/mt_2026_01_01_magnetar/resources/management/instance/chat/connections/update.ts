@@ -1,4 +1,4 @@
-import { mtMap } from '@metorial/util-resource-mapper';
+import { mapObject } from '@metorial/util-resource-mapper/compact';
 
 export type ManagementInstanceChatConnectionsUpdateOutput = {
   object: 'chat.connection';
@@ -55,88 +55,40 @@ export type ManagementInstanceChatConnectionsUpdateOutput = {
 };
 
 export let mapManagementInstanceChatConnectionsUpdateOutput =
-  mtMap.object<ManagementInstanceChatConnectionsUpdateOutput>({
-    object: mtMap.objectField('object', mtMap.passthrough()),
-    id: mtMap.objectField('id', mtMap.passthrough()),
-    status: mtMap.objectField('status', mtMap.passthrough()),
-    slug: mtMap.objectField('slug', mtMap.passthrough()),
-    name: mtMap.objectField('name', mtMap.passthrough()),
-    description: mtMap.objectField('description', mtMap.passthrough()),
-    metadata: mtMap.objectField('metadata', mtMap.passthrough()),
-    providers: mtMap.objectField(
-      'providers',
-      mtMap.array(
-        mtMap.object({
-          object: mtMap.objectField('object', mtMap.passthrough()),
-          id: mtMap.objectField('id', mtMap.passthrough()),
-          status: mtMap.objectField('status', mtMap.passthrough()),
-          provider: mtMap.objectField(
-            'provider',
-            mtMap.object({
-              object: mtMap.objectField('object', mtMap.passthrough()),
-              id: mtMap.objectField('id', mtMap.passthrough()),
-              name: mtMap.objectField('name', mtMap.passthrough()),
-              description: mtMap.objectField(
-                'description',
-                mtMap.passthrough()
-              ),
-              slug: mtMap.objectField('slug', mtMap.passthrough()),
-              createdAt: mtMap.objectField('created_at', mtMap.date()),
-              updatedAt: mtMap.objectField('updated_at', mtMap.date())
-            })
-          ),
-          deployment: mtMap.objectField(
-            'deployment',
-            mtMap.object({
-              object: mtMap.objectField('object', mtMap.passthrough()),
-              id: mtMap.objectField('id', mtMap.passthrough()),
-              isDefault: mtMap.objectField('is_default', mtMap.passthrough()),
-              name: mtMap.objectField('name', mtMap.passthrough()),
-              description: mtMap.objectField(
-                'description',
-                mtMap.passthrough()
-              ),
-              metadata: mtMap.objectField('metadata', mtMap.passthrough()),
-              providerId: mtMap.objectField('provider_id', mtMap.passthrough()),
-              createdAt: mtMap.objectField('created_at', mtMap.date()),
-              updatedAt: mtMap.objectField('updated_at', mtMap.date())
-            })
-          ),
-          config: mtMap.objectField(
-            'config',
-            mtMap.object({
-              object: mtMap.objectField('object', mtMap.passthrough()),
-              id: mtMap.objectField('id', mtMap.passthrough()),
-              isDefault: mtMap.objectField('is_default', mtMap.passthrough()),
-              name: mtMap.objectField('name', mtMap.passthrough()),
-              description: mtMap.objectField(
-                'description',
-                mtMap.passthrough()
-              ),
-              metadata: mtMap.objectField('metadata', mtMap.passthrough()),
-              providerId: mtMap.objectField('provider_id', mtMap.passthrough()),
-              createdAt: mtMap.objectField('created_at', mtMap.date()),
-              updatedAt: mtMap.objectField('updated_at', mtMap.date())
-            })
-          ),
-          authMethodId: mtMap.objectField(
-            'auth_method_id',
-            mtMap.passthrough()
-          ),
-          authCredentialsId: mtMap.objectField(
-            'auth_credentials_id',
-            mtMap.passthrough()
-          ),
-          name: mtMap.objectField('name', mtMap.passthrough()),
-          description: mtMap.objectField('description', mtMap.passthrough()),
-          createdAt: mtMap.objectField('created_at', mtMap.date()),
-          updatedAt: mtMap.objectField('updated_at', mtMap.date())
-        })
-      )
-    ),
-    createdAt: mtMap.objectField('created_at', mtMap.date()),
-    updatedAt: mtMap.objectField('updated_at', mtMap.date())
-  });
+  /* @__PURE__ */ mapObject<ManagementInstanceChatConnectionsUpdateOutput>(
+    [
+      [
+        'providers',
+        0,
+        [
+          2,
+          [
+            1,
+            [
+              ['provider', 0, 8],
+              [
+                'deployment',
+                0,
+                [1, ['is_default', 'provider_id', 'created_at', 'updated_at']]
+              ],
+              [
+                'config',
+                0,
+                [1, ['is_default', 'provider_id', 'created_at', 'updated_at']]
+              ],
+              'auth_method_id',
+              'auth_credentials_id',
+              'created_at',
+              'updated_at'
+            ]
+          ]
+        ]
+      ],
+      'created_at',
+      'updated_at'
+    ],
+    1
+  );
 
 export type ManagementInstanceChatConnectionsUpdateBody = {
   name?: string | undefined;
@@ -146,10 +98,6 @@ export type ManagementInstanceChatConnectionsUpdateBody = {
 };
 
 export let mapManagementInstanceChatConnectionsUpdateBody =
-  mtMap.object<ManagementInstanceChatConnectionsUpdateBody>({
-    name: mtMap.objectField('name', mtMap.passthrough()),
-    description: mtMap.objectField('description', mtMap.passthrough()),
-    metadata: mtMap.objectField('metadata', mtMap.passthrough()),
-    privateMetadata: mtMap.objectField('private_metadata', mtMap.passthrough())
-  });
-
+  /* @__PURE__ */ mapObject<ManagementInstanceChatConnectionsUpdateBody>([
+    'private_metadata'
+  ]);

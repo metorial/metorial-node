@@ -1,4 +1,4 @@
-import { mtMap } from '@metorial/util-resource-mapper';
+import { mapObject } from '@metorial/util-resource-mapper/compact';
 
 export type DashboardOrganizationsEventDestinationListenersGetOutput = {
   object: 'event.destination_listener';
@@ -9,32 +9,23 @@ export type DashboardOrganizationsEventDestinationListenersGetOutput = {
   eventTypes: string[] | null;
   callbackId: string | null;
   triggers: string[] | null;
-  chatIntegrationId: string | null;
+  chatConnectionId: string | null;
+  providerId: string | null;
   createdAt: Date;
   updatedAt: Date;
 };
 
 export let mapDashboardOrganizationsEventDestinationListenersGetOutput =
-  mtMap.object<DashboardOrganizationsEventDestinationListenersGetOutput>({
-    object: mtMap.objectField('object', mtMap.passthrough()),
-    id: mtMap.objectField('id', mtMap.passthrough()),
-    instanceId: mtMap.objectField('instance_id', mtMap.passthrough()),
-    eventDestinationId: mtMap.objectField(
+  /* @__PURE__ */ mapObject<DashboardOrganizationsEventDestinationListenersGetOutput>(
+    [
+      'instance_id',
       'event_destination_id',
-      mtMap.passthrough()
-    ),
-    type: mtMap.objectField('type', mtMap.passthrough()),
-    eventTypes: mtMap.objectField(
       'event_types',
-      mtMap.array(mtMap.passthrough())
-    ),
-    callbackId: mtMap.objectField('callback_id', mtMap.passthrough()),
-    triggers: mtMap.objectField('triggers', mtMap.array(mtMap.passthrough())),
-    chatIntegrationId: mtMap.objectField(
-      'chat_integration_id',
-      mtMap.passthrough()
-    ),
-    createdAt: mtMap.objectField('created_at', mtMap.date()),
-    updatedAt: mtMap.objectField('updated_at', mtMap.date())
-  });
-
+      'callback_id',
+      'chat_connection_id',
+      'provider_id',
+      'created_at',
+      'updated_at'
+    ],
+    1
+  );

@@ -1,4 +1,4 @@
-import { mtMap } from '@metorial/util-resource-mapper';
+import { mapObject } from '@metorial/util-resource-mapper/compact';
 
 export type CallbacksCreateOutput = {
   object: 'callback';
@@ -22,33 +22,17 @@ export type CallbacksCreateOutput = {
   updatedAt: Date;
 };
 
-export let mapCallbacksCreateOutput = mtMap.object<CallbacksCreateOutput>({
-  object: mtMap.objectField('object', mtMap.passthrough()),
-  id: mtMap.objectField('id', mtMap.passthrough()),
-  status: mtMap.objectField('status', mtMap.passthrough()),
-  name: mtMap.objectField('name', mtMap.passthrough()),
-  description: mtMap.objectField('description', mtMap.passthrough()),
-  metadata: mtMap.objectField('metadata', mtMap.passthrough()),
-  integrationId: mtMap.objectField('integration_id', mtMap.passthrough()),
-  integrationProviderId: mtMap.objectField(
-    'integration_provider_id',
-    mtMap.passthrough()
-  ),
-  provider: mtMap.objectField(
-    'provider',
-    mtMap.object({
-      object: mtMap.objectField('object', mtMap.passthrough()),
-      id: mtMap.objectField('id', mtMap.passthrough()),
-      name: mtMap.objectField('name', mtMap.passthrough()),
-      description: mtMap.objectField('description', mtMap.passthrough()),
-      slug: mtMap.objectField('slug', mtMap.passthrough()),
-      createdAt: mtMap.objectField('created_at', mtMap.date()),
-      updatedAt: mtMap.objectField('updated_at', mtMap.date())
-    })
-  ),
-  createdAt: mtMap.objectField('created_at', mtMap.date()),
-  updatedAt: mtMap.objectField('updated_at', mtMap.date())
-});
+export let mapCallbacksCreateOutput =
+  /* @__PURE__ */ mapObject<CallbacksCreateOutput>(
+    [
+      'integration_id',
+      'integration_provider_id',
+      ['provider', 0, 8],
+      'created_at',
+      'updated_at'
+    ],
+    1
+  );
 
 export type CallbacksCreateBody = {
   integrationId: string;
@@ -57,13 +41,8 @@ export type CallbacksCreateBody = {
   description?: string | null | undefined;
 };
 
-export let mapCallbacksCreateBody = mtMap.object<CallbacksCreateBody>({
-  integrationId: mtMap.objectField('integration_id', mtMap.passthrough()),
-  integrationProviderId: mtMap.objectField(
-    'integration_provider_id',
-    mtMap.passthrough()
-  ),
-  name: mtMap.objectField('name', mtMap.passthrough()),
-  description: mtMap.objectField('description', mtMap.passthrough())
-});
-
+export let mapCallbacksCreateBody =
+  /* @__PURE__ */ mapObject<CallbacksCreateBody>([
+    'integration_id',
+    'integration_provider_id'
+  ]);

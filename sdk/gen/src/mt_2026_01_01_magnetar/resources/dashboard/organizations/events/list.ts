@@ -1,4 +1,4 @@
-import { mtMap } from '@metorial/util-resource-mapper';
+import { createMapper } from '@metorial/util-resource-mapper/compact';
 
 export type DashboardOrganizationsEventsListOutput = {
   items: {
@@ -6,59 +6,41 @@ export type DashboardOrganizationsEventsListOutput = {
     id: string;
     organizationId: string;
     instanceId: string | null;
-    source: 'resource' | 'callback' | 'chat';
+    source: 'resource' | 'callback' | 'chat' | 'ping';
     eventType: string;
-    payload: Record<string, any> | null;
     callbackId: string | null;
+    callbackEventId: string | null;
     callbackTriggerKey: string | null;
     chatEventId: string | null;
-    chatIntegrationId: string | null;
+    chatConnectionId: string | null;
+    providerId: string | null;
     createdAt: Date;
   }[];
   pagination: { hasMoreBefore: boolean; hasMoreAfter: boolean };
 };
 
 export let mapDashboardOrganizationsEventsListOutput =
-  mtMap.object<DashboardOrganizationsEventsListOutput>({
-    items: mtMap.objectField(
-      'items',
-      mtMap.array(
-        mtMap.object({
-          object: mtMap.objectField('object', mtMap.passthrough()),
-          id: mtMap.objectField('id', mtMap.passthrough()),
-          organizationId: mtMap.objectField(
-            'organization_id',
-            mtMap.passthrough()
-          ),
-          instanceId: mtMap.objectField('instance_id', mtMap.passthrough()),
-          source: mtMap.objectField('source', mtMap.passthrough()),
-          eventType: mtMap.objectField('event_type', mtMap.passthrough()),
-          payload: mtMap.objectField('payload', mtMap.passthrough()),
-          callbackId: mtMap.objectField('callback_id', mtMap.passthrough()),
-          callbackTriggerKey: mtMap.objectField(
-            'callback_trigger_key',
-            mtMap.passthrough()
-          ),
-          chatEventId: mtMap.objectField('chat_event_id', mtMap.passthrough()),
-          chatIntegrationId: mtMap.objectField(
-            'chat_integration_id',
-            mtMap.passthrough()
-          ),
-          createdAt: mtMap.objectField('created_at', mtMap.date())
-        })
-      )
-    ),
-    pagination: mtMap.objectField(
-      'pagination',
-      mtMap.object({
-        hasMoreBefore: mtMap.objectField(
-          'has_more_before',
-          mtMap.passthrough()
-        ),
-        hasMoreAfter: mtMap.objectField('has_more_after', mtMap.passthrough())
-      })
-    )
-  });
+  /* @__PURE__ */ createMapper<DashboardOrganizationsEventsListOutput>(
+    [
+      7,
+      [
+        1,
+        [
+          'organization_id',
+          'instance_id',
+          'event_type',
+          'callback_id',
+          'callback_event_id',
+          'callback_trigger_key',
+          'chat_event_id',
+          'chat_connection_id',
+          'provider_id',
+          'created_at'
+        ]
+      ]
+    ],
+    1
+  );
 
 export type DashboardOrganizationsEventsListQuery = {
   limit?: number | undefined;
@@ -73,68 +55,34 @@ export type DashboardOrganizationsEventsListQuery = {
     | 'resource'
     | 'callback'
     | 'chat'
-    | ('resource' | 'callback' | 'chat')[]
+    | 'ping'
+    | ('resource' | 'callback' | 'chat' | 'ping')[]
     | undefined;
   callbackId?: string | string[] | undefined;
   callbackTriggerKey?: string | string[] | undefined;
-  chatIntegrationId?: string | string[] | undefined;
+  chatConnectionId?: string | string[] | undefined;
+  providerId?: string | string[] | undefined;
+  createdAt?: { gt?: Date | undefined; lt?: Date | undefined } | undefined;
 };
 
-export let mapDashboardOrganizationsEventsListQuery = mtMap.union([
-  mtMap.unionOption(
-    'object',
-    mtMap.object({
-      limit: mtMap.objectField('limit', mtMap.passthrough()),
-      after: mtMap.objectField('after', mtMap.passthrough()),
-      before: mtMap.objectField('before', mtMap.passthrough()),
-      cursor: mtMap.objectField('cursor', mtMap.passthrough()),
-      order: mtMap.objectField('order', mtMap.passthrough()),
-      instanceId: mtMap.objectField('instance_id', mtMap.passthrough()),
-      eventType: mtMap.objectField(
-        'event_type',
-        mtMap.union([
-          mtMap.unionOption('string', mtMap.passthrough()),
-          mtMap.unionOption(
-            'array',
-            mtMap.union([mtMap.unionOption('string', mtMap.passthrough())])
-          )
-        ])
-      ),
-      source: mtMap.objectField(
-        'source',
-        mtMap.union([mtMap.unionOption('array', mtMap.union([]))])
-      ),
-      callbackId: mtMap.objectField(
-        'callback_id',
-        mtMap.union([
-          mtMap.unionOption('string', mtMap.passthrough()),
-          mtMap.unionOption(
-            'array',
-            mtMap.union([mtMap.unionOption('string', mtMap.passthrough())])
-          )
-        ])
-      ),
-      callbackTriggerKey: mtMap.objectField(
-        'callback_trigger_key',
-        mtMap.union([
-          mtMap.unionOption('string', mtMap.passthrough()),
-          mtMap.unionOption(
-            'array',
-            mtMap.union([mtMap.unionOption('string', mtMap.passthrough())])
-          )
-        ])
-      ),
-      chatIntegrationId: mtMap.objectField(
-        'chat_integration_id',
-        mtMap.union([
-          mtMap.unionOption('string', mtMap.passthrough()),
-          mtMap.unionOption(
-            'array',
-            mtMap.union([mtMap.unionOption('string', mtMap.passthrough())])
-          )
-        ])
-      )
-    })
-  )
-]);
-
+export let mapDashboardOrganizationsEventsListQuery =
+  /* @__PURE__ */ createMapper<DashboardOrganizationsEventsListQuery>([
+    3,
+    [
+      [
+        0,
+        [
+          1,
+          [
+            'instance_id',
+            'event_type',
+            'callback_id',
+            'callback_trigger_key',
+            'chat_connection_id',
+            'provider_id',
+            ['created_at', 1, 5]
+          ]
+        ]
+      ]
+    ]
+  ]);

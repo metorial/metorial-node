@@ -1,4 +1,7 @@
-import { mtMap } from '@metorial/util-resource-mapper';
+import {
+  createMapper,
+  mapObject
+} from '@metorial/util-resource-mapper/compact';
 
 export type DashboardInstanceIdentityActorsCreateOutput = {
   object: 'identity.actor';
@@ -14,18 +17,10 @@ export type DashboardInstanceIdentityActorsCreateOutput = {
 };
 
 export let mapDashboardInstanceIdentityActorsCreateOutput =
-  mtMap.object<DashboardInstanceIdentityActorsCreateOutput>({
-    object: mtMap.objectField('object', mtMap.passthrough()),
-    id: mtMap.objectField('id', mtMap.passthrough()),
-    type: mtMap.objectField('type', mtMap.passthrough()),
-    status: mtMap.objectField('status', mtMap.passthrough()),
-    name: mtMap.objectField('name', mtMap.passthrough()),
-    description: mtMap.objectField('description', mtMap.passthrough()),
-    metadata: mtMap.objectField('metadata', mtMap.passthrough()),
-    agentId: mtMap.objectField('agent_id', mtMap.passthrough()),
-    createdAt: mtMap.objectField('created_at', mtMap.date()),
-    updatedAt: mtMap.objectField('updated_at', mtMap.date())
-  });
+  /* @__PURE__ */ mapObject<DashboardInstanceIdentityActorsCreateOutput>(
+    ['agent_id', 'created_at', 'updated_at'],
+    1
+  );
 
 export type DashboardInstanceIdentityActorsCreateBody = {
   type: 'person' | 'agent';
@@ -35,10 +30,4 @@ export type DashboardInstanceIdentityActorsCreateBody = {
 };
 
 export let mapDashboardInstanceIdentityActorsCreateBody =
-  mtMap.object<DashboardInstanceIdentityActorsCreateBody>({
-    type: mtMap.objectField('type', mtMap.passthrough()),
-    name: mtMap.objectField('name', mtMap.passthrough()),
-    description: mtMap.objectField('description', mtMap.passthrough()),
-    metadata: mtMap.objectField('metadata', mtMap.passthrough())
-  });
-
+  /* @__PURE__ */ createMapper<DashboardInstanceIdentityActorsCreateBody>(0);

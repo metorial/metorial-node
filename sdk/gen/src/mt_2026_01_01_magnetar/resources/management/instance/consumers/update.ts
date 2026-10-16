@@ -1,4 +1,7 @@
-import { mtMap } from '@metorial/util-resource-mapper';
+import {
+  createMapper,
+  mapObject
+} from '@metorial/util-resource-mapper/compact';
 
 export type ManagementInstanceConsumersUpdateOutput = {
   object: 'consumer';
@@ -12,16 +15,10 @@ export type ManagementInstanceConsumersUpdateOutput = {
 };
 
 export let mapManagementInstanceConsumersUpdateOutput =
-  mtMap.object<ManagementInstanceConsumersUpdateOutput>({
-    object: mtMap.objectField('object', mtMap.passthrough()),
-    id: mtMap.objectField('id', mtMap.passthrough()),
-    name: mtMap.objectField('name', mtMap.passthrough()),
-    email: mtMap.objectField('email', mtMap.passthrough()),
-    imageUrl: mtMap.objectField('image_url', mtMap.passthrough()),
-    userId: mtMap.objectField('user_id', mtMap.passthrough()),
-    createdAt: mtMap.objectField('created_at', mtMap.date()),
-    updatedAt: mtMap.objectField('updated_at', mtMap.date())
-  });
+  /* @__PURE__ */ mapObject<ManagementInstanceConsumersUpdateOutput>(
+    ['image_url', 'user_id', 'created_at', 'updated_at'],
+    1
+  );
 
 export type ManagementInstanceConsumersUpdateBody = {
   name?: string | undefined;
@@ -29,8 +26,4 @@ export type ManagementInstanceConsumersUpdateBody = {
 };
 
 export let mapManagementInstanceConsumersUpdateBody =
-  mtMap.object<ManagementInstanceConsumersUpdateBody>({
-    name: mtMap.objectField('name', mtMap.passthrough()),
-    email: mtMap.objectField('email', mtMap.passthrough())
-  });
-
+  /* @__PURE__ */ createMapper<ManagementInstanceConsumersUpdateBody>(0);

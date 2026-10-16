@@ -1,4 +1,4 @@
-import { mtMap } from '@metorial/util-resource-mapper';
+import { mapObject } from '@metorial/util-resource-mapper/compact';
 
 export type ManagementInstancePortalsConsumerGroupsUpdateOutput = {
   object: 'consumer.group';
@@ -12,16 +12,10 @@ export type ManagementInstancePortalsConsumerGroupsUpdateOutput = {
 };
 
 export let mapManagementInstancePortalsConsumerGroupsUpdateOutput =
-  mtMap.object<ManagementInstancePortalsConsumerGroupsUpdateOutput>({
-    object: mtMap.objectField('object', mtMap.passthrough()),
-    id: mtMap.objectField('id', mtMap.passthrough()),
-    status: mtMap.objectField('status', mtMap.passthrough()),
-    name: mtMap.objectField('name', mtMap.passthrough()),
-    description: mtMap.objectField('description', mtMap.passthrough()),
-    isDefault: mtMap.objectField('is_default', mtMap.passthrough()),
-    createdAt: mtMap.objectField('created_at', mtMap.date()),
-    updatedAt: mtMap.objectField('updated_at', mtMap.date())
-  });
+  /* @__PURE__ */ mapObject<ManagementInstancePortalsConsumerGroupsUpdateOutput>(
+    ['is_default', 'created_at', 'updated_at'],
+    1
+  );
 
 export type ManagementInstancePortalsConsumerGroupsUpdateBody = {
   name?: string | undefined;
@@ -30,9 +24,6 @@ export type ManagementInstancePortalsConsumerGroupsUpdateBody = {
 };
 
 export let mapManagementInstancePortalsConsumerGroupsUpdateBody =
-  mtMap.object<ManagementInstancePortalsConsumerGroupsUpdateBody>({
-    name: mtMap.objectField('name', mtMap.passthrough()),
-    description: mtMap.objectField('description', mtMap.passthrough()),
-    isDefault: mtMap.objectField('is_default', mtMap.passthrough())
-  });
-
+  /* @__PURE__ */ mapObject<ManagementInstancePortalsConsumerGroupsUpdateBody>([
+    'is_default'
+  ]);

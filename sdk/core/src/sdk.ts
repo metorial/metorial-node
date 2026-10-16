@@ -11,6 +11,7 @@ import {
   MetorialChatsChannelsEndpoint,
   MetorialChatsChannelsMembersEndpoint,
   MetorialChatsChannelsTypingEndpoint,
+  MetorialChatsCommandsEndpoint,
   MetorialChatsDmsEndpoint,
   MetorialChatsEndpoint,
   MetorialChatsMessagesEndpoint,
@@ -61,6 +62,22 @@ import {
   MetorialProvidersVersionsEndpoint,
   MetorialProvidersToolsEndpoint,
   MetorialPublishersEndpoint,
+  MetorialSandboxDisksEndpoint,
+  MetorialSandboxDisksMountsEndpoint,
+  MetorialSandboxDisksResizesEndpoint,
+  MetorialSandboxImageBuildsEndpoint,
+  MetorialSandboxImagesBuildsEndpoint,
+  MetorialSandboxImagesEndpoint,
+  MetorialSandboxImagesVersionsEndpoint,
+  MetorialSandboxMachinesAccessEndpoint,
+  MetorialSandboxMachinesEndpoint,
+  MetorialSandboxMachinesErrorsEndpoint,
+  MetorialSandboxMachinesEventsEndpoint,
+  MetorialSandboxMachinesInstancesEndpoint,
+  MetorialSandboxMachinesOperationsEndpoint,
+  MetorialSandboxMachinesUsageEndpoint,
+  MetorialSandboxRegionsEndpoint,
+  MetorialSandboxSpecsEndpoint,
   MetorialSessionsConnectionsEndpoint,
   MetorialSessionsEndpoint,
   MetorialSessionsErrorsEndpoint,
@@ -231,7 +248,8 @@ export let createMetorialCoreSDK = coreSdkBuilder.build(
     threads: new MetorialChatsThreadsEndpoint(manager),
     messages: Object.assign(new MetorialChatsMessagesEndpoint(manager), {
       reactions: new MetorialChatsMessagesReactionsEndpoint(manager)
-    })
+    }),
+    commands: new MetorialChatsCommandsEndpoint(manager)
   }),
 
   chat: {
@@ -241,6 +259,28 @@ export let createMetorialCoreSDK = coreSdkBuilder.build(
     instances: Object.assign(new MetorialChatInstancesEndpoint(manager), {
       provider: new MetorialChatInstancesProviderEndpoint(manager)
     })
+  },
+
+  sandbox: {
+    machines: Object.assign(new MetorialSandboxMachinesEndpoint(manager), {
+      access: new MetorialSandboxMachinesAccessEndpoint(manager),
+      instances: new MetorialSandboxMachinesInstancesEndpoint(manager),
+      operations: new MetorialSandboxMachinesOperationsEndpoint(manager),
+      events: new MetorialSandboxMachinesEventsEndpoint(manager),
+      errors: new MetorialSandboxMachinesErrorsEndpoint(manager),
+      usageHistory: new MetorialSandboxMachinesUsageEndpoint(manager)
+    }),
+    images: Object.assign(new MetorialSandboxImagesEndpoint(manager), {
+      versions: new MetorialSandboxImagesVersionsEndpoint(manager),
+      builds: new MetorialSandboxImagesBuildsEndpoint(manager)
+    }),
+    imageBuilds: new MetorialSandboxImageBuildsEndpoint(manager),
+    disks: Object.assign(new MetorialSandboxDisksEndpoint(manager), {
+      mounts: new MetorialSandboxDisksMountsEndpoint(manager),
+      resizes: new MetorialSandboxDisksResizesEndpoint(manager)
+    }),
+    regions: new MetorialSandboxRegionsEndpoint(manager),
+    specs: new MetorialSandboxSpecsEndpoint(manager)
   },
 
   sessionTemplates: Object.assign(new MetorialSessionTemplatesEndpoint(manager), {

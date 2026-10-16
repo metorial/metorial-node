@@ -1,4 +1,4 @@
-import { mtMap } from '@metorial/util-resource-mapper';
+import { createMapper } from '@metorial/util-resource-mapper/compact';
 
 export type ManagementInstanceChatsChannelsListOutput = {
   items: {
@@ -20,6 +20,24 @@ export type ManagementInstanceChatsChannelsListOutput = {
     name: string | null;
     topic: string | null;
     subject: string | null;
+    hasAccess: boolean;
+    recipient: {
+      object: 'chat.author';
+      id: string;
+      chatId: string;
+      type: 'user' | 'app' | 'system' | 'webhook' | 'unknown';
+      role: 'member' | 'guest' | 'unknown';
+      providerType: string;
+      providerAuthorId: string;
+      userName: string;
+      fullName: string;
+      email: string | null;
+      imageUrl: string | null;
+      isSelf: boolean;
+      createdAt: Date;
+      updatedAt: Date;
+      lastInteractionAt: Date | null;
+    } | null;
     memberCount: number | null;
     permalink: string | null;
     context: {
@@ -47,77 +65,45 @@ export type ManagementInstanceChatsChannelsListOutput = {
 };
 
 export let mapManagementInstanceChatsChannelsListOutput =
-  mtMap.object<ManagementInstanceChatsChannelsListOutput>({
-    items: mtMap.objectField(
-      'items',
-      mtMap.array(
-        mtMap.object({
-          object: mtMap.objectField('object', mtMap.passthrough()),
-          id: mtMap.objectField('id', mtMap.passthrough()),
-          chatId: mtMap.objectField('chat_id', mtMap.passthrough()),
-          workspaceId: mtMap.objectField('workspace_id', mtMap.passthrough()),
-          type: mtMap.objectField('type', mtMap.passthrough()),
-          providerType: mtMap.objectField('provider_type', mtMap.passthrough()),
-          providerChannelId: mtMap.objectField(
-            'provider_channel_id',
-            mtMap.passthrough()
-          ),
-          name: mtMap.objectField('name', mtMap.passthrough()),
-          topic: mtMap.objectField('topic', mtMap.passthrough()),
-          subject: mtMap.objectField('subject', mtMap.passthrough()),
-          memberCount: mtMap.objectField('member_count', mtMap.passthrough()),
-          permalink: mtMap.objectField('permalink', mtMap.passthrough()),
-          context: mtMap.objectField(
-            'context',
-            mtMap.object({
-              type: mtMap.objectField('type', mtMap.passthrough()),
-              id: mtMap.objectField('id', mtMap.passthrough()),
-              description: mtMap.objectField(
-                'description',
-                mtMap.passthrough()
-              ),
-              status: mtMap.objectField('status', mtMap.passthrough()),
-              url: mtMap.objectField('url', mtMap.passthrough()),
-              author: mtMap.objectField(
-                'author',
-                mtMap.object({
-                  id: mtMap.objectField('id', mtMap.passthrough()),
-                  name: mtMap.objectField('name', mtMap.passthrough())
-                })
-              ),
-              assignee: mtMap.objectField(
-                'assignee',
-                mtMap.object({
-                  id: mtMap.objectField('id', mtMap.passthrough()),
-                  name: mtMap.objectField('name', mtMap.passthrough())
-                })
-              ),
-              labels: mtMap.objectField(
-                'labels',
-                mtMap.array(mtMap.passthrough())
-              )
-            })
-          ),
-          createdAt: mtMap.objectField('created_at', mtMap.date()),
-          updatedAt: mtMap.objectField('updated_at', mtMap.date()),
-          lastInteractionAt: mtMap.objectField(
-            'last_interaction_at',
-            mtMap.date()
-          )
-        })
-      )
-    ),
-    pagination: mtMap.objectField(
-      'pagination',
-      mtMap.object({
-        hasMoreBefore: mtMap.objectField(
-          'has_more_before',
-          mtMap.passthrough()
-        ),
-        hasMoreAfter: mtMap.objectField('has_more_after', mtMap.passthrough())
-      })
-    )
-  });
+  /* @__PURE__ */ createMapper<ManagementInstanceChatsChannelsListOutput>(
+    [
+      7,
+      [
+        1,
+        [
+          'chat_id',
+          'workspace_id',
+          'provider_type',
+          'provider_channel_id',
+          'has_access',
+          [
+            'recipient',
+            0,
+            [
+              1,
+              [
+                'chat_id',
+                'provider_type',
+                'provider_author_id',
+                'user_name',
+                'full_name',
+                'image_url',
+                'is_self',
+                'created_at',
+                'updated_at',
+                'last_interaction_at'
+              ]
+            ]
+          ],
+          'member_count',
+          'created_at',
+          'updated_at',
+          'last_interaction_at'
+        ]
+      ]
+    ],
+    1
+  );
 
 export type ManagementInstanceChatsChannelsListQuery = {
   limit?: number | undefined;
@@ -138,21 +124,11 @@ export type ManagementInstanceChatsChannelsListQuery = {
     | 'unknown'
     | undefined;
   search?: string | undefined;
+  hasAccess?: boolean | undefined;
 };
 
-export let mapManagementInstanceChatsChannelsListQuery = mtMap.union([
-  mtMap.unionOption(
-    'object',
-    mtMap.object({
-      limit: mtMap.objectField('limit', mtMap.passthrough()),
-      after: mtMap.objectField('after', mtMap.passthrough()),
-      before: mtMap.objectField('before', mtMap.passthrough()),
-      cursor: mtMap.objectField('cursor', mtMap.passthrough()),
-      order: mtMap.objectField('order', mtMap.passthrough()),
-      workspaceId: mtMap.objectField('workspace_id', mtMap.passthrough()),
-      type: mtMap.objectField('type', mtMap.passthrough()),
-      search: mtMap.objectField('search', mtMap.passthrough())
-    })
-  )
-]);
-
+export let mapManagementInstanceChatsChannelsListQuery =
+  /* @__PURE__ */ createMapper<ManagementInstanceChatsChannelsListQuery>([
+    3,
+    [[0, [1, ['workspace_id', 'has_access']]]]
+  ]);

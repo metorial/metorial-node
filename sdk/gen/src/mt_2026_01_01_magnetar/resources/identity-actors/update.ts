@@ -1,4 +1,7 @@
-import { mtMap } from '@metorial/util-resource-mapper';
+import {
+  createMapper,
+  mapObject
+} from '@metorial/util-resource-mapper/compact';
 
 export type IdentityActorsUpdateOutput = {
   object: 'identity.actor';
@@ -14,18 +17,10 @@ export type IdentityActorsUpdateOutput = {
 };
 
 export let mapIdentityActorsUpdateOutput =
-  mtMap.object<IdentityActorsUpdateOutput>({
-    object: mtMap.objectField('object', mtMap.passthrough()),
-    id: mtMap.objectField('id', mtMap.passthrough()),
-    type: mtMap.objectField('type', mtMap.passthrough()),
-    status: mtMap.objectField('status', mtMap.passthrough()),
-    name: mtMap.objectField('name', mtMap.passthrough()),
-    description: mtMap.objectField('description', mtMap.passthrough()),
-    metadata: mtMap.objectField('metadata', mtMap.passthrough()),
-    agentId: mtMap.objectField('agent_id', mtMap.passthrough()),
-    createdAt: mtMap.objectField('created_at', mtMap.date()),
-    updatedAt: mtMap.objectField('updated_at', mtMap.date())
-  });
+  /* @__PURE__ */ mapObject<IdentityActorsUpdateOutput>(
+    ['agent_id', 'created_at', 'updated_at'],
+    1
+  );
 
 export type IdentityActorsUpdateBody = {
   name?: string | undefined;
@@ -33,11 +28,5 @@ export type IdentityActorsUpdateBody = {
   metadata?: Record<string, any> | undefined;
 };
 
-export let mapIdentityActorsUpdateBody = mtMap.object<IdentityActorsUpdateBody>(
-  {
-    name: mtMap.objectField('name', mtMap.passthrough()),
-    description: mtMap.objectField('description', mtMap.passthrough()),
-    metadata: mtMap.objectField('metadata', mtMap.passthrough())
-  }
-);
-
+export let mapIdentityActorsUpdateBody =
+  /* @__PURE__ */ createMapper<IdentityActorsUpdateBody>(0);

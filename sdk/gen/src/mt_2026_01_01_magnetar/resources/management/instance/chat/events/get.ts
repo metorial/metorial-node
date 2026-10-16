@@ -1,11 +1,12 @@
-import { mtMap } from '@metorial/util-resource-mapper';
+import { mapObject } from '@metorial/util-resource-mapper/compact';
 
 export type ManagementInstanceChatEventsGetOutput = {
   object: 'chat.event';
   id: string;
   type: string;
-  source: 'webhook' | 'polling';
-  chatId: string;
+  source: 'webhook' | 'polling' | 'internal';
+  chatConnectionId: string;
+  chatId: string | null;
   channelId: string | null;
   threadId: string | null;
   messageId: string | null;
@@ -21,38 +22,21 @@ export type ManagementInstanceChatEventsGetOutput = {
 };
 
 export let mapManagementInstanceChatEventsGetOutput =
-  mtMap.object<ManagementInstanceChatEventsGetOutput>({
-    object: mtMap.objectField('object', mtMap.passthrough()),
-    id: mtMap.objectField('id', mtMap.passthrough()),
-    type: mtMap.objectField('type', mtMap.passthrough()),
-    source: mtMap.objectField('source', mtMap.passthrough()),
-    chatId: mtMap.objectField('chat_id', mtMap.passthrough()),
-    channelId: mtMap.objectField('channel_id', mtMap.passthrough()),
-    threadId: mtMap.objectField('thread_id', mtMap.passthrough()),
-    messageId: mtMap.objectField('message_id', mtMap.passthrough()),
-    authorId: mtMap.objectField('author_id', mtMap.passthrough()),
-    providerEventId: mtMap.objectField(
+  /* @__PURE__ */ mapObject<ManagementInstanceChatEventsGetOutput>(
+    [
+      'chat_connection_id',
+      'chat_id',
+      'channel_id',
+      'thread_id',
+      'message_id',
+      'author_id',
       'provider_event_id',
-      mtMap.passthrough()
-    ),
-    providerChannelId: mtMap.objectField(
       'provider_channel_id',
-      mtMap.passthrough()
-    ),
-    providerThreadId: mtMap.objectField(
       'provider_thread_id',
-      mtMap.passthrough()
-    ),
-    providerMessageId: mtMap.objectField(
       'provider_message_id',
-      mtMap.passthrough()
-    ),
-    providerAuthorId: mtMap.objectField(
       'provider_author_id',
-      mtMap.passthrough()
-    ),
-    payload: mtMap.objectField('payload', mtMap.passthrough()),
-    occurredAt: mtMap.objectField('occurred_at', mtMap.date()),
-    createdAt: mtMap.objectField('created_at', mtMap.date())
-  });
-
+      'occurred_at',
+      'created_at'
+    ],
+    1
+  );

@@ -1,4 +1,4 @@
-import { mtMap } from '@metorial/util-resource-mapper';
+import { mapObject } from '@metorial/util-resource-mapper/compact';
 
 export type CallbacksGetOutput = {
   object: 'callback';
@@ -22,31 +22,14 @@ export type CallbacksGetOutput = {
   updatedAt: Date;
 };
 
-export let mapCallbacksGetOutput = mtMap.object<CallbacksGetOutput>({
-  object: mtMap.objectField('object', mtMap.passthrough()),
-  id: mtMap.objectField('id', mtMap.passthrough()),
-  status: mtMap.objectField('status', mtMap.passthrough()),
-  name: mtMap.objectField('name', mtMap.passthrough()),
-  description: mtMap.objectField('description', mtMap.passthrough()),
-  metadata: mtMap.objectField('metadata', mtMap.passthrough()),
-  integrationId: mtMap.objectField('integration_id', mtMap.passthrough()),
-  integrationProviderId: mtMap.objectField(
-    'integration_provider_id',
-    mtMap.passthrough()
-  ),
-  provider: mtMap.objectField(
-    'provider',
-    mtMap.object({
-      object: mtMap.objectField('object', mtMap.passthrough()),
-      id: mtMap.objectField('id', mtMap.passthrough()),
-      name: mtMap.objectField('name', mtMap.passthrough()),
-      description: mtMap.objectField('description', mtMap.passthrough()),
-      slug: mtMap.objectField('slug', mtMap.passthrough()),
-      createdAt: mtMap.objectField('created_at', mtMap.date()),
-      updatedAt: mtMap.objectField('updated_at', mtMap.date())
-    })
-  ),
-  createdAt: mtMap.objectField('created_at', mtMap.date()),
-  updatedAt: mtMap.objectField('updated_at', mtMap.date())
-});
-
+export let mapCallbacksGetOutput =
+  /* @__PURE__ */ mapObject<CallbacksGetOutput>(
+    [
+      'integration_id',
+      'integration_provider_id',
+      ['provider', 0, 8],
+      'created_at',
+      'updated_at'
+    ],
+    1
+  );

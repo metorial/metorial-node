@@ -1,4 +1,4 @@
-import { mtMap } from '@metorial/util-resource-mapper';
+import { mapObject } from '@metorial/util-resource-mapper/compact';
 
 export type IntegrationsInstanceGroupsProvidersGetOutput = {
   object: 'integration.instance.group.provider';
@@ -18,6 +18,7 @@ export type IntegrationsInstanceGroupsProvidersGetOutput = {
         type: 'filter';
         filters: (
           | { type: 'tool_keys'; keys: string[] }
+          | { type: 'tool_categories'; keys: string[] }
           | { type: 'tool_regex'; pattern: string }
           | { type: 'resource_regex'; pattern: string }
           | { type: 'resource_uris'; uris: string[] }
@@ -34,76 +35,18 @@ export type IntegrationsInstanceGroupsProvidersGetOutput = {
 };
 
 export let mapIntegrationsInstanceGroupsProvidersGetOutput =
-  mtMap.object<IntegrationsInstanceGroupsProvidersGetOutput>({
-    object: mtMap.objectField('object', mtMap.passthrough()),
-    id: mtMap.objectField('id', mtMap.passthrough()),
-    status: mtMap.objectField('status', mtMap.passthrough()),
-    name: mtMap.objectField('name', mtMap.passthrough()),
-    description: mtMap.objectField('description', mtMap.passthrough()),
-    metadata: mtMap.objectField('metadata', mtMap.passthrough()),
-    integrationId: mtMap.objectField('integration_id', mtMap.passthrough()),
-    integrationInstanceGroupId: mtMap.objectField(
+  /* @__PURE__ */ mapObject<IntegrationsInstanceGroupsProvidersGetOutput>(
+    [
+      'integration_id',
       'integration_instance_group_id',
-      mtMap.passthrough()
-    ),
-    integrationInstanceId: mtMap.objectField(
       'integration_instance_id',
-      mtMap.passthrough()
-    ),
-    integrationProviderId: mtMap.objectField(
       'integration_provider_id',
-      mtMap.passthrough()
-    ),
-    integrationInstanceProviderId: mtMap.objectField(
       'integration_instance_provider_id',
-      mtMap.passthrough()
-    ),
-    toolFilter: mtMap.objectField(
-      'tool_filter',
-      mtMap.union([
-        mtMap.unionOption(
-          'object',
-          mtMap.object({
-            type: mtMap.objectField('type', mtMap.passthrough()),
-            ignoreParentFilters: mtMap.objectField(
-              'ignore_parent_filters',
-              mtMap.passthrough()
-            ),
-            filters: mtMap.objectField(
-              'filters',
-              mtMap.array(
-                mtMap.union([
-                  mtMap.unionOption(
-                    'object',
-                    mtMap.object({
-                      type: mtMap.objectField('type', mtMap.passthrough()),
-                      keys: mtMap.objectField(
-                        'keys',
-                        mtMap.array(mtMap.passthrough())
-                      ),
-                      pattern: mtMap.objectField(
-                        'pattern',
-                        mtMap.passthrough()
-                      ),
-                      uris: mtMap.objectField(
-                        'uris',
-                        mtMap.array(mtMap.passthrough())
-                      )
-                    })
-                  )
-                ])
-              )
-            )
-          })
-        )
-      ])
-    ),
-    isOverrideToolFilter: mtMap.objectField(
+      ['tool_filter', 1, [3, [[0, [1, ['ignore_parent_filters']]]]]],
       'is_override_tool_filter',
-      mtMap.passthrough()
-    ),
-    createdAt: mtMap.objectField('created_at', mtMap.date()),
-    updatedAt: mtMap.objectField('updated_at', mtMap.date()),
-    archivedAt: mtMap.objectField('archived_at', mtMap.date())
-  });
-
+      'created_at',
+      'updated_at',
+      'archived_at'
+    ],
+    1
+  );

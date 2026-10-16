@@ -1,30 +1,11 @@
-import { mtMap } from '@metorial/util-resource-mapper';
+import { createMapper } from '@metorial/util-resource-mapper/compact';
 
 export type DashboardOrganizationsWebhookEventsListOutput = {
-  items: { object: 'event.type'; name: string }[];
+  items: { object: 'event.type'; name: string; description: string }[];
   pagination: { hasMoreBefore: boolean; hasMoreAfter: boolean };
 };
 
 export let mapDashboardOrganizationsWebhookEventsListOutput =
-  mtMap.object<DashboardOrganizationsWebhookEventsListOutput>({
-    items: mtMap.objectField(
-      'items',
-      mtMap.array(
-        mtMap.object({
-          object: mtMap.objectField('object', mtMap.passthrough()),
-          name: mtMap.objectField('name', mtMap.passthrough())
-        })
-      )
-    ),
-    pagination: mtMap.objectField(
-      'pagination',
-      mtMap.object({
-        hasMoreBefore: mtMap.objectField(
-          'has_more_before',
-          mtMap.passthrough()
-        ),
-        hasMoreAfter: mtMap.objectField('has_more_after', mtMap.passthrough())
-      })
-    )
-  });
-
+  /* @__PURE__ */ createMapper<DashboardOrganizationsWebhookEventsListOutput>([
+    7, 0
+  ]);

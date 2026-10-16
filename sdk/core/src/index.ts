@@ -99,6 +99,19 @@ export namespace MetorialSDK {
   export type ChatInstance = MetorialGenerated.ChatInstancesGetOutput;
   export type ChatInstanceProvider = MetorialGenerated.ChatInstancesProviderGetOutput;
 
+  export type SandboxMachine = MetorialGenerated.SandboxMachinesGetOutput;
+  export type SandboxMachineInstance = MetorialGenerated.SandboxMachinesInstancesGetOutput;
+  export type SandboxMachineOperation = MetorialGenerated.SandboxMachinesOperationsGetOutput;
+  export type SandboxMachineEvent = MetorialGenerated.SandboxMachinesEventsGetOutput;
+  export type SandboxMachineError = MetorialGenerated.SandboxMachinesErrorsGetOutput;
+  export type SandboxImage = MetorialGenerated.SandboxImagesGetOutput;
+  export type SandboxImageVersion = MetorialGenerated.SandboxImagesVersionsGetOutput;
+  export type SandboxImageBuild = MetorialGenerated.SandboxImageBuildsGetOutput;
+  export type SandboxDisk = MetorialGenerated.SandboxDisksGetOutput;
+  export type SandboxDiskResize = MetorialGenerated.SandboxDisksResizesGetOutput;
+  export type SandboxRegion = MetorialGenerated.SandboxRegionsGetOutput;
+  export type SandboxSpec = MetorialGenerated.SandboxSpecsGetOutput;
+
   export type SessionTemplate = MetorialGenerated.SessionTemplatesGetOutput;
   export type SessionTemplateProvider = MetorialGenerated.SessionTemplatesProvidersGetOutput;
 

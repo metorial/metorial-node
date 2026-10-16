@@ -1,4 +1,4 @@
-import { mtMap } from '@metorial/util-resource-mapper';
+import { mapObject } from '@metorial/util-resource-mapper/compact';
 
 export type DashboardInstancePortalsConsumerGroupsCreateOutput = {
   object: 'consumer.group';
@@ -12,16 +12,10 @@ export type DashboardInstancePortalsConsumerGroupsCreateOutput = {
 };
 
 export let mapDashboardInstancePortalsConsumerGroupsCreateOutput =
-  mtMap.object<DashboardInstancePortalsConsumerGroupsCreateOutput>({
-    object: mtMap.objectField('object', mtMap.passthrough()),
-    id: mtMap.objectField('id', mtMap.passthrough()),
-    status: mtMap.objectField('status', mtMap.passthrough()),
-    name: mtMap.objectField('name', mtMap.passthrough()),
-    description: mtMap.objectField('description', mtMap.passthrough()),
-    isDefault: mtMap.objectField('is_default', mtMap.passthrough()),
-    createdAt: mtMap.objectField('created_at', mtMap.date()),
-    updatedAt: mtMap.objectField('updated_at', mtMap.date())
-  });
+  /* @__PURE__ */ mapObject<DashboardInstancePortalsConsumerGroupsCreateOutput>(
+    ['is_default', 'created_at', 'updated_at'],
+    1
+  );
 
 export type DashboardInstancePortalsConsumerGroupsCreateBody = {
   name: string;
@@ -30,9 +24,6 @@ export type DashboardInstancePortalsConsumerGroupsCreateBody = {
 };
 
 export let mapDashboardInstancePortalsConsumerGroupsCreateBody =
-  mtMap.object<DashboardInstancePortalsConsumerGroupsCreateBody>({
-    name: mtMap.objectField('name', mtMap.passthrough()),
-    description: mtMap.objectField('description', mtMap.passthrough()),
-    isDefault: mtMap.objectField('is_default', mtMap.passthrough())
-  });
-
+  /* @__PURE__ */ mapObject<DashboardInstancePortalsConsumerGroupsCreateBody>([
+    'is_default'
+  ]);

@@ -1,4 +1,4 @@
-import { mtMap } from '@metorial/util-resource-mapper';
+import { mapObject } from '@metorial/util-resource-mapper/compact';
 
 export type TokenGetOutput = {
   object: 'token';
@@ -43,61 +43,6 @@ export type TokenGetOutput = {
   user: { object: 'token.user'; id: string; name: string } | null;
 };
 
-export let mapTokenGetOutput = mtMap.object<TokenGetOutput>({
-  object: mtMap.objectField('object', mtMap.passthrough()),
-  type: mtMap.objectField('type', mtMap.passthrough()),
-  organization: mtMap.objectField(
-    'organization',
-    mtMap.object({
-      object: mtMap.objectField('object', mtMap.passthrough()),
-      id: mtMap.objectField('id', mtMap.passthrough()),
-      name: mtMap.objectField('name', mtMap.passthrough()),
-      slug: mtMap.objectField('slug', mtMap.passthrough())
-    })
-  ),
-  instance: mtMap.objectField(
-    'instance',
-    mtMap.object({
-      object: mtMap.objectField('object', mtMap.passthrough()),
-      id: mtMap.objectField('id', mtMap.passthrough()),
-      name: mtMap.objectField('name', mtMap.passthrough()),
-      slug: mtMap.objectField('slug', mtMap.passthrough()),
-      projectId: mtMap.objectField('project_id', mtMap.passthrough())
-    })
-  ),
-  project: mtMap.objectField(
-    'project',
-    mtMap.object({
-      object: mtMap.objectField('object', mtMap.passthrough()),
-      id: mtMap.objectField('id', mtMap.passthrough()),
-      name: mtMap.objectField('name', mtMap.passthrough()),
-      slug: mtMap.objectField('slug', mtMap.passthrough())
-    })
-  ),
-  actor: mtMap.objectField(
-    'actor',
-    mtMap.object({
-      object: mtMap.objectField('object', mtMap.passthrough()),
-      id: mtMap.objectField('id', mtMap.passthrough()),
-      type: mtMap.objectField('type', mtMap.passthrough()),
-      name: mtMap.objectField('name', mtMap.passthrough())
-    })
-  ),
-  member: mtMap.objectField(
-    'member',
-    mtMap.object({
-      object: mtMap.objectField('object', mtMap.passthrough()),
-      id: mtMap.objectField('id', mtMap.passthrough()),
-      name: mtMap.objectField('name', mtMap.passthrough())
-    })
-  ),
-  user: mtMap.objectField(
-    'user',
-    mtMap.object({
-      object: mtMap.objectField('object', mtMap.passthrough()),
-      id: mtMap.objectField('id', mtMap.passthrough()),
-      name: mtMap.objectField('name', mtMap.passthrough())
-    })
-  )
-});
-
+export let mapTokenGetOutput = /* @__PURE__ */ mapObject<TokenGetOutput>([
+  ['instance', 0, [1, ['project_id']]]
+]);

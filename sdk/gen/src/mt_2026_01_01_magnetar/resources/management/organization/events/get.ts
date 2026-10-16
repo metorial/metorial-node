@@ -1,39 +1,35 @@
-import { mtMap } from '@metorial/util-resource-mapper';
+import { mapObject } from '@metorial/util-resource-mapper/compact';
 
 export type ManagementOrganizationEventsGetOutput = {
   object: 'event';
   id: string;
   organizationId: string;
   instanceId: string | null;
-  source: 'resource' | 'callback' | 'chat';
+  source: 'resource' | 'callback' | 'chat' | 'ping';
   eventType: string;
-  payload: Record<string, any> | null;
   callbackId: string | null;
+  callbackEventId: string | null;
   callbackTriggerKey: string | null;
   chatEventId: string | null;
-  chatIntegrationId: string | null;
+  chatConnectionId: string | null;
+  providerId: string | null;
   createdAt: Date;
+  payload: Record<string, any> | null;
 };
 
 export let mapManagementOrganizationEventsGetOutput =
-  mtMap.object<ManagementOrganizationEventsGetOutput>({
-    object: mtMap.objectField('object', mtMap.passthrough()),
-    id: mtMap.objectField('id', mtMap.passthrough()),
-    organizationId: mtMap.objectField('organization_id', mtMap.passthrough()),
-    instanceId: mtMap.objectField('instance_id', mtMap.passthrough()),
-    source: mtMap.objectField('source', mtMap.passthrough()),
-    eventType: mtMap.objectField('event_type', mtMap.passthrough()),
-    payload: mtMap.objectField('payload', mtMap.passthrough()),
-    callbackId: mtMap.objectField('callback_id', mtMap.passthrough()),
-    callbackTriggerKey: mtMap.objectField(
+  /* @__PURE__ */ mapObject<ManagementOrganizationEventsGetOutput>(
+    [
+      'organization_id',
+      'instance_id',
+      'event_type',
+      'callback_id',
+      'callback_event_id',
       'callback_trigger_key',
-      mtMap.passthrough()
-    ),
-    chatEventId: mtMap.objectField('chat_event_id', mtMap.passthrough()),
-    chatIntegrationId: mtMap.objectField(
-      'chat_integration_id',
-      mtMap.passthrough()
-    ),
-    createdAt: mtMap.objectField('created_at', mtMap.date())
-  });
-
+      'chat_event_id',
+      'chat_connection_id',
+      'provider_id',
+      'created_at'
+    ],
+    1
+  );

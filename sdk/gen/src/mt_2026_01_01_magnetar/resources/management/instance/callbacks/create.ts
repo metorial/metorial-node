@@ -1,4 +1,4 @@
-import { mtMap } from '@metorial/util-resource-mapper';
+import { mapObject } from '@metorial/util-resource-mapper/compact';
 
 export type ManagementInstanceCallbacksCreateOutput = {
   object: 'callback';
@@ -23,33 +23,16 @@ export type ManagementInstanceCallbacksCreateOutput = {
 };
 
 export let mapManagementInstanceCallbacksCreateOutput =
-  mtMap.object<ManagementInstanceCallbacksCreateOutput>({
-    object: mtMap.objectField('object', mtMap.passthrough()),
-    id: mtMap.objectField('id', mtMap.passthrough()),
-    status: mtMap.objectField('status', mtMap.passthrough()),
-    name: mtMap.objectField('name', mtMap.passthrough()),
-    description: mtMap.objectField('description', mtMap.passthrough()),
-    metadata: mtMap.objectField('metadata', mtMap.passthrough()),
-    integrationId: mtMap.objectField('integration_id', mtMap.passthrough()),
-    integrationProviderId: mtMap.objectField(
+  /* @__PURE__ */ mapObject<ManagementInstanceCallbacksCreateOutput>(
+    [
+      'integration_id',
       'integration_provider_id',
-      mtMap.passthrough()
-    ),
-    provider: mtMap.objectField(
-      'provider',
-      mtMap.object({
-        object: mtMap.objectField('object', mtMap.passthrough()),
-        id: mtMap.objectField('id', mtMap.passthrough()),
-        name: mtMap.objectField('name', mtMap.passthrough()),
-        description: mtMap.objectField('description', mtMap.passthrough()),
-        slug: mtMap.objectField('slug', mtMap.passthrough()),
-        createdAt: mtMap.objectField('created_at', mtMap.date()),
-        updatedAt: mtMap.objectField('updated_at', mtMap.date())
-      })
-    ),
-    createdAt: mtMap.objectField('created_at', mtMap.date()),
-    updatedAt: mtMap.objectField('updated_at', mtMap.date())
-  });
+      ['provider', 0, 8],
+      'created_at',
+      'updated_at'
+    ],
+    1
+  );
 
 export type ManagementInstanceCallbacksCreateBody = {
   integrationId: string;
@@ -59,13 +42,7 @@ export type ManagementInstanceCallbacksCreateBody = {
 };
 
 export let mapManagementInstanceCallbacksCreateBody =
-  mtMap.object<ManagementInstanceCallbacksCreateBody>({
-    integrationId: mtMap.objectField('integration_id', mtMap.passthrough()),
-    integrationProviderId: mtMap.objectField(
-      'integration_provider_id',
-      mtMap.passthrough()
-    ),
-    name: mtMap.objectField('name', mtMap.passthrough()),
-    description: mtMap.objectField('description', mtMap.passthrough())
-  });
-
+  /* @__PURE__ */ mapObject<ManagementInstanceCallbacksCreateBody>([
+    'integration_id',
+    'integration_provider_id'
+  ]);

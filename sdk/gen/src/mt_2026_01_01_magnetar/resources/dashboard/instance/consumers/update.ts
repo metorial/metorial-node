@@ -1,4 +1,7 @@
-import { mtMap } from '@metorial/util-resource-mapper';
+import {
+  createMapper,
+  mapObject
+} from '@metorial/util-resource-mapper/compact';
 
 export type DashboardInstanceConsumersUpdateOutput = {
   object: 'consumer';
@@ -12,16 +15,10 @@ export type DashboardInstanceConsumersUpdateOutput = {
 };
 
 export let mapDashboardInstanceConsumersUpdateOutput =
-  mtMap.object<DashboardInstanceConsumersUpdateOutput>({
-    object: mtMap.objectField('object', mtMap.passthrough()),
-    id: mtMap.objectField('id', mtMap.passthrough()),
-    name: mtMap.objectField('name', mtMap.passthrough()),
-    email: mtMap.objectField('email', mtMap.passthrough()),
-    imageUrl: mtMap.objectField('image_url', mtMap.passthrough()),
-    userId: mtMap.objectField('user_id', mtMap.passthrough()),
-    createdAt: mtMap.objectField('created_at', mtMap.date()),
-    updatedAt: mtMap.objectField('updated_at', mtMap.date())
-  });
+  /* @__PURE__ */ mapObject<DashboardInstanceConsumersUpdateOutput>(
+    ['image_url', 'user_id', 'created_at', 'updated_at'],
+    1
+  );
 
 export type DashboardInstanceConsumersUpdateBody = {
   name?: string | undefined;
@@ -29,8 +26,4 @@ export type DashboardInstanceConsumersUpdateBody = {
 };
 
 export let mapDashboardInstanceConsumersUpdateBody =
-  mtMap.object<DashboardInstanceConsumersUpdateBody>({
-    name: mtMap.objectField('name', mtMap.passthrough()),
-    email: mtMap.objectField('email', mtMap.passthrough())
-  });
-
+  /* @__PURE__ */ createMapper<DashboardInstanceConsumersUpdateBody>(0);

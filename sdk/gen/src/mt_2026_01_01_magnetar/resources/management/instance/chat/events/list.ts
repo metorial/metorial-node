@@ -1,12 +1,13 @@
-import { mtMap } from '@metorial/util-resource-mapper';
+import { createMapper } from '@metorial/util-resource-mapper/compact';
 
 export type ManagementInstanceChatEventsListOutput = {
   items: {
     object: 'chat.event';
     id: string;
     type: string;
-    source: 'webhook' | 'polling';
-    chatId: string;
+    source: 'webhook' | 'polling' | 'internal';
+    chatConnectionId: string;
+    chatId: string | null;
     channelId: string | null;
     threadId: string | null;
     messageId: string | null;
@@ -16,7 +17,6 @@ export type ManagementInstanceChatEventsListOutput = {
     providerThreadId: string | null;
     providerMessageId: string | null;
     providerAuthorId: string | null;
-    payload: Record<string, any> | null;
     occurredAt: Date;
     createdAt: Date;
   }[];
@@ -24,57 +24,30 @@ export type ManagementInstanceChatEventsListOutput = {
 };
 
 export let mapManagementInstanceChatEventsListOutput =
-  mtMap.object<ManagementInstanceChatEventsListOutput>({
-    items: mtMap.objectField(
-      'items',
-      mtMap.array(
-        mtMap.object({
-          object: mtMap.objectField('object', mtMap.passthrough()),
-          id: mtMap.objectField('id', mtMap.passthrough()),
-          type: mtMap.objectField('type', mtMap.passthrough()),
-          source: mtMap.objectField('source', mtMap.passthrough()),
-          chatId: mtMap.objectField('chat_id', mtMap.passthrough()),
-          channelId: mtMap.objectField('channel_id', mtMap.passthrough()),
-          threadId: mtMap.objectField('thread_id', mtMap.passthrough()),
-          messageId: mtMap.objectField('message_id', mtMap.passthrough()),
-          authorId: mtMap.objectField('author_id', mtMap.passthrough()),
-          providerEventId: mtMap.objectField(
-            'provider_event_id',
-            mtMap.passthrough()
-          ),
-          providerChannelId: mtMap.objectField(
-            'provider_channel_id',
-            mtMap.passthrough()
-          ),
-          providerThreadId: mtMap.objectField(
-            'provider_thread_id',
-            mtMap.passthrough()
-          ),
-          providerMessageId: mtMap.objectField(
-            'provider_message_id',
-            mtMap.passthrough()
-          ),
-          providerAuthorId: mtMap.objectField(
-            'provider_author_id',
-            mtMap.passthrough()
-          ),
-          payload: mtMap.objectField('payload', mtMap.passthrough()),
-          occurredAt: mtMap.objectField('occurred_at', mtMap.date()),
-          createdAt: mtMap.objectField('created_at', mtMap.date())
-        })
-      )
-    ),
-    pagination: mtMap.objectField(
-      'pagination',
-      mtMap.object({
-        hasMoreBefore: mtMap.objectField(
-          'has_more_before',
-          mtMap.passthrough()
-        ),
-        hasMoreAfter: mtMap.objectField('has_more_after', mtMap.passthrough())
-      })
-    )
-  });
+  /* @__PURE__ */ createMapper<ManagementInstanceChatEventsListOutput>(
+    [
+      7,
+      [
+        1,
+        [
+          'chat_connection_id',
+          'chat_id',
+          'channel_id',
+          'thread_id',
+          'message_id',
+          'author_id',
+          'provider_event_id',
+          'provider_channel_id',
+          'provider_thread_id',
+          'provider_message_id',
+          'provider_author_id',
+          'occurred_at',
+          'created_at'
+        ]
+      ]
+    ],
+    1
+  );
 
 export type ManagementInstanceChatEventsListQuery = {
   limit?: number | undefined;
@@ -91,70 +64,22 @@ export type ManagementInstanceChatEventsListQuery = {
   occurredAt?: { gt?: Date | undefined; lt?: Date | undefined } | undefined;
 };
 
-export let mapManagementInstanceChatEventsListQuery = mtMap.union([
-  mtMap.unionOption(
-    'object',
-    mtMap.object({
-      limit: mtMap.objectField('limit', mtMap.passthrough()),
-      after: mtMap.objectField('after', mtMap.passthrough()),
-      before: mtMap.objectField('before', mtMap.passthrough()),
-      cursor: mtMap.objectField('cursor', mtMap.passthrough()),
-      order: mtMap.objectField('order', mtMap.passthrough()),
-      chatId: mtMap.objectField(
-        'chat_id',
-        mtMap.union([
-          mtMap.unionOption('string', mtMap.passthrough()),
-          mtMap.unionOption(
-            'array',
-            mtMap.union([mtMap.unionOption('string', mtMap.passthrough())])
-          )
-        ])
-      ),
-      chatConnectionId: mtMap.objectField(
-        'chat_connection_id',
-        mtMap.union([
-          mtMap.unionOption('string', mtMap.passthrough()),
-          mtMap.unionOption(
-            'array',
-            mtMap.union([mtMap.unionOption('string', mtMap.passthrough())])
-          )
-        ])
-      ),
-      chatInstanceId: mtMap.objectField(
-        'chat_instance_id',
-        mtMap.union([
-          mtMap.unionOption('string', mtMap.passthrough()),
-          mtMap.unionOption(
-            'array',
-            mtMap.union([mtMap.unionOption('string', mtMap.passthrough())])
-          )
-        ])
-      ),
-      type: mtMap.objectField(
-        'type',
-        mtMap.union([
-          mtMap.unionOption('string', mtMap.passthrough()),
-          mtMap.unionOption(
-            'array',
-            mtMap.union([mtMap.unionOption('string', mtMap.passthrough())])
-          )
-        ])
-      ),
-      createdAt: mtMap.objectField(
-        'created_at',
-        mtMap.object({
-          gt: mtMap.objectField('gt', mtMap.date()),
-          lt: mtMap.objectField('lt', mtMap.date())
-        })
-      ),
-      occurredAt: mtMap.objectField(
-        'occurred_at',
-        mtMap.object({
-          gt: mtMap.objectField('gt', mtMap.date()),
-          lt: mtMap.objectField('lt', mtMap.date())
-        })
-      )
-    })
-  )
-]);
-
+export let mapManagementInstanceChatEventsListQuery =
+  /* @__PURE__ */ createMapper<ManagementInstanceChatEventsListQuery>([
+    3,
+    [
+      [
+        0,
+        [
+          1,
+          [
+            'chat_id',
+            'chat_connection_id',
+            'chat_instance_id',
+            ['created_at', 1, 5],
+            ['occurred_at', 1, 5]
+          ]
+        ]
+      ]
+    ]
+  ]);

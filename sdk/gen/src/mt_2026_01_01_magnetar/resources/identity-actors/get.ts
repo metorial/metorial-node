@@ -1,4 +1,4 @@
-import { mtMap } from '@metorial/util-resource-mapper';
+import { mapObject } from '@metorial/util-resource-mapper/compact';
 
 export type IdentityActorsGetOutput = {
   object: 'identity.actor';
@@ -13,16 +13,8 @@ export type IdentityActorsGetOutput = {
   updatedAt: Date;
 };
 
-export let mapIdentityActorsGetOutput = mtMap.object<IdentityActorsGetOutput>({
-  object: mtMap.objectField('object', mtMap.passthrough()),
-  id: mtMap.objectField('id', mtMap.passthrough()),
-  type: mtMap.objectField('type', mtMap.passthrough()),
-  status: mtMap.objectField('status', mtMap.passthrough()),
-  name: mtMap.objectField('name', mtMap.passthrough()),
-  description: mtMap.objectField('description', mtMap.passthrough()),
-  metadata: mtMap.objectField('metadata', mtMap.passthrough()),
-  agentId: mtMap.objectField('agent_id', mtMap.passthrough()),
-  createdAt: mtMap.objectField('created_at', mtMap.date()),
-  updatedAt: mtMap.objectField('updated_at', mtMap.date())
-});
-
+export let mapIdentityActorsGetOutput =
+  /* @__PURE__ */ mapObject<IdentityActorsGetOutput>(
+    ['agent_id', 'created_at', 'updated_at'],
+    1
+  );
