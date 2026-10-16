@@ -1,5 +1,11 @@
 # @metorial/generated
 
+## 3.2.0
+
+### Minor Changes
+
+- Add sandboxes and chat commands
+
 ## 3.1.0
 
 ### Minor Changes
