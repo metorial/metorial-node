@@ -11,6 +11,7 @@
     "forceConsistentCasingInFileNames": true,
     "inlineSources": false,
     "isolatedModules": true,
+    "module": "ESNext",
     "moduleResolution": "node",
     "lib": [
       "ESNext",

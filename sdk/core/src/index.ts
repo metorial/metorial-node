@@ -2,6 +2,7 @@ export { coreSdkBuilder as metorialSdkBuilder } from './builder';
 export type { MetorialCoreSDKConfig as MetorialSDKConfig } from './builder';
 export { createMetorialCoreSDK } from './sdk';
 export type { MetorialCoreSDK } from './sdk';
+export * from './sandbox';
 
 import type * as MetorialGenerated from '@metorial/generated';
 

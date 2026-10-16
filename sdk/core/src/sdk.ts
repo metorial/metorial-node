@@ -108,6 +108,7 @@ import {
   MetorialToolCallsEndpoint
 } from '@metorial/generated';
 import { coreSdkBuilder, MetorialKeyPrefix } from './builder';
+import { createSandboxMachineConnections } from './sandbox';
 
 export let createMetorialCoreSDK = coreSdkBuilder.build(
   (soft: {
@@ -268,7 +269,8 @@ export let createMetorialCoreSDK = coreSdkBuilder.build(
       operations: new MetorialSandboxMachinesOperationsEndpoint(manager),
       events: new MetorialSandboxMachinesEventsEndpoint(manager),
       errors: new MetorialSandboxMachinesErrorsEndpoint(manager),
-      usageHistory: new MetorialSandboxMachinesUsageEndpoint(manager)
+      usageHistory: new MetorialSandboxMachinesUsageEndpoint(manager),
+      ...createSandboxMachineConnections(new MetorialSandboxMachinesAccessEndpoint(manager))
     }),
     images: Object.assign(new MetorialSandboxImagesEndpoint(manager), {
       versions: new MetorialSandboxImagesVersionsEndpoint(manager),

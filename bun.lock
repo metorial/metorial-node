@@ -527,10 +527,11 @@
     },
     "sdk/core": {
       "name": "@metorial/core",
-      "version": "3.0.5",
+      "version": "3.2.0",
       "dependencies": {
-        "@metorial/generated": "^3.0.2",
+        "@metorial/generated": "^3.2.0",
         "@metorial/util-endpoint": "^3.0.0",
+        "ws": "^8.18.2",
       },
       "devDependencies": {
         "@types/isomorphic-fetch": "^0.0.39",
@@ -542,10 +543,10 @@
     },
     "sdk/gen": {
       "name": "@metorial/generated",
-      "version": "3.0.2",
+      "version": "3.2.0",
       "dependencies": {
         "@metorial/util-endpoint": "^3.0.0",
-        "@metorial/util-resource-mapper": "^3.2.0",
+        "@metorial/util-resource-mapper": "^3.0.0",
         "jose": "^5.9.6",
       },
       "devDependencies": {
@@ -558,7 +559,7 @@
     },
     "sdk/metorial": {
       "name": "metorial",
-      "version": "3.0.9",
+      "version": "3.2.0",
       "dependencies": {
         "@metorial/sdk": "^3.0.0",
       },
@@ -570,7 +571,7 @@
     },
     "sdk/sdk": {
       "name": "@metorial/sdk",
-      "version": "3.0.9",
+      "version": "3.2.0",
       "dependencies": {
         "@metorial/anthropic": "^3.0.0",
         "@metorial/core": "^3.0.0",
