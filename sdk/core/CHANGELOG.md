@@ -1,5 +1,16 @@
 # @metorial/core
 
+## 3.3.1
+
+### Minor Changes
+
+- Add sandbox machine connections
+
+### Patch Changes
+
+- Updated dependencies
+  - @metorial/generated@3.3.1
+
 ## 3.2.0
 
 ### Minor Changes

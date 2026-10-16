@@ -1,6 +1,6 @@
 {
   "name": "@metorial/generated",
-  "version": "3.2.0",
+  "version": "3.3.1",
   "author": "Metorial Inc.",
   "license": "MIT",
   "type": "module",
@@ -43,7 +43,7 @@
   "dependencies": {
     "jose": "^5.9.6",
     "@metorial/util-endpoint": "^3.0.0",
-    "@metorial/util-resource-mapper": "^3.0.0"
+    "@metorial/util-resource-mapper": "^3.2.0"
   },
   "devDependencies": {
     "@types/isomorphic-fetch": "^0.0.39",

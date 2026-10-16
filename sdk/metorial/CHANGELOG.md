@@ -1,5 +1,16 @@
 # metorial
 
+## 3.3.6
+
+### Minor Changes
+
+- Add sandbox machine connections
+
+### Patch Changes
+
+- Updated dependencies
+  - @metorial/sdk@3.3.6
+
 ## 3.2.0
 
 ### Minor Changes

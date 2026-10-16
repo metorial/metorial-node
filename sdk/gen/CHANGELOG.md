@@ -1,5 +1,11 @@
 # @metorial/generated
 
+## 3.3.1
+
+### Minor Changes
+
+- Add sandbox machine connections
+
 ## 3.2.0
 
 ### Minor Changes

@@ -7,8 +7,8 @@
     "start": "bun ./src/index.ts"
   },
   "dependencies": {
-    "@metorial/google": "^3.0.5",
-    "metorial": "^3.2.0",
+    "@metorial/google": "^3.0.11",
+    "metorial": "^3.3.6",
     "@google/genai": "^1.13.0"
   },
   "devDependencies": {
