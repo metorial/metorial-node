@@ -41,15 +41,15 @@
     "dist"
   ],
   "dependencies": {
-    "jose": "^5.9.6",
+    "jose": "^5.10.0",
     "@metorial/util-endpoint": "^3.0.0",
     "@metorial/util-resource-mapper": "^3.2.0"
   },
   "devDependencies": {
     "@types/isomorphic-fetch": "^0.0.39",
-    "@types/ws": "^8.5.13",
-    "tsup": "^7.1.0",
-    "typescript": "^5.1.6",
+    "@types/ws": "^8.18.2",
+    "tsup": "^7.2.0",
+    "typescript": "^5.9.3",
     "vitest": "^0.34.6"
   }
 }

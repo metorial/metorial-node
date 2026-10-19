@@ -9,7 +9,7 @@
   "dependencies": {
     "@metorial/google": "^3.0.11",
     "metorial": "^3.3.6",
-    "@google/genai": "^1.13.0"
+    "@google/genai": "^1.52.0"
   },
   "devDependencies": {
     "@types/bun": "latest"

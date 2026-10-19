@@ -32,17 +32,17 @@
     "@metorial/core": "^3.3.1",
     "@metorial/mcp-sdk-utils": "^3.0.7",
     "@metorial/mcp-session": "^3.0.5",
-    "zod": "^3.22.4"
+    "zod": "^3.25.76"
   },
   "peerDependencies": {
     "@langchain/core": "^1.1.0",
     "langchain": "^1.4.0"
   },
   "devDependencies": {
-    "@langchain/core": "^1.1.0",
-    "langchain": "^1.4.1",
-    "tsup": "^7.1.0",
-    "typescript": "^5.1.6",
+    "@langchain/core": "^1.2.17",
+    "langchain": "^1.5.16",
+    "tsup": "^7.2.0",
+    "typescript": "^5.9.3",
     "vitest": "^0.34.6"
   }
 }

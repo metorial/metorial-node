@@ -38,9 +38,9 @@
     "@google/genai": "*"
   },
   "devDependencies": {
-    "tsup": "^7.1.0",
-    "typescript": "^5.1.6",
+    "tsup": "^7.2.0",
+    "typescript": "^5.9.3",
     "vitest": "^0.34.6",
-    "@google/genai": "^1.4.0"
+    "@google/genai": "^1.52.0"
   }
 }
