@@ -36,10 +36,10 @@
   ],
   "dependencies": {},
   "devDependencies": {
-    "tsup": "^7.2.0",
+    "tsup": "^8.5.1",
     "typescript": "^5.9.3",
     "vitest": "^4.1.11",
-    "esbuild": "^0.25.12"
+    "esbuild": "^0.28.2"
   },
   "sideEffects": false,
   "typesVersions": {
