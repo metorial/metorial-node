@@ -38,7 +38,7 @@
     "@metorial/core": "^3.3.1",
     "@metorial/mcp-session": "^3.0.5",
     "@metorial/mcp-sdk-utils": "^3.0.7",
-    "zod": "^3.25.76"
+    "zod": "^4.6.7"
   },
   "peerDependencies": {
     "ai": ">=4.3.16"
