@@ -43,6 +43,6 @@
     "langchain": "^1.5.16",
     "tsup": "^7.2.0",
     "typescript": "^5.9.3",
-    "vitest": "^0.34.6"
+    "vitest": "^4.1.11"
   }
 }
