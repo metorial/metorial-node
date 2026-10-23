@@ -4,12 +4,14 @@ export type ManagementInstanceIdentityActorsListOutput = {
   items: {
     object: 'identity.actor';
     id: string;
-    type: 'person' | 'agent';
+    type: 'person' | 'agent' | 'consumer';
     status: 'active' | 'archived' | 'deleted';
     name: string;
     description: string | null;
     metadata: Record<string, any> | null;
     agentId: string | null;
+    consumerId: string | null;
+    defaultIdentityId: string | null;
     createdAt: Date;
     updatedAt: Date;
   }[];
@@ -18,7 +20,19 @@ export type ManagementInstanceIdentityActorsListOutput = {
 
 export let mapManagementInstanceIdentityActorsListOutput =
   /* @__PURE__ */ createMapper<ManagementInstanceIdentityActorsListOutput>(
-    [7, [1, ['agent_id', 'created_at', 'updated_at']]],
+    [
+      7,
+      [
+        1,
+        [
+          'agent_id',
+          'consumer_id',
+          'default_identity_id',
+          'created_at',
+          'updated_at'
+        ]
+      ]
+    ],
     1
   );
 
