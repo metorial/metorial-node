@@ -138,6 +138,11 @@ export type DashboardInstanceMagicMcpSessionsListOutput = {
       name: string | null;
       description: string | null;
       metadata: Record<string, any>;
+      ownerActor: {
+        id: string;
+        type: 'person' | 'agent' | 'consumer';
+        consumerId: string | null;
+      } | null;
       createdAt: Date;
       updatedAt: Date;
     } | null;
@@ -178,6 +183,7 @@ export type DashboardInstanceMagicMcpSessionsListOutput = {
       name: string | null;
       description: string | null;
       metadata: Record<string, any>;
+      enableSkillEditing: boolean;
       createdAt: Date;
       updatedAt: Date;
     } | null;
@@ -297,6 +303,7 @@ export let mapDashboardInstanceMagicMcpSessionsListOutput =
                     ]
                   ]
                 ],
+                ['owner_actor', 1, [1, ['consumer_id']]],
                 'created_at',
                 'updated_at'
               ]
@@ -309,6 +316,7 @@ export let mapDashboardInstanceMagicMcpSessionsListOutput =
               1,
               [
                 ['servers', 0, [2, [3, [[0, [1, ['tool_filters']]]]]]],
+                'enable_skill_editing',
                 'created_at',
                 'updated_at'
               ]

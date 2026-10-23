@@ -1,7 +1,4 @@
-import {
-  createMapper,
-  mapObject
-} from '@metorial/util-resource-mapper/compact';
+import { mapObject } from '@metorial/util-resource-mapper/compact';
 
 export type ManagementOrganizationApiKeysCreateOutput = {
   object: 'machine_access.api_key';
@@ -23,7 +20,8 @@ export type ManagementOrganizationApiKeysCreateOutput = {
     type:
       | 'organization_management'
       | 'instance_secret'
-      | 'instance_publishable';
+      | 'instance_publishable'
+      | 'instance_consumer';
     name: string;
     lastUsedAt: Date;
     createdAt: Date;
@@ -189,15 +187,9 @@ export let mapManagementOrganizationApiKeysCreateOutput =
     1
   );
 
-export type ManagementOrganizationApiKeysCreateBody = (
-  | { type: 'organization_management_token' }
-  | {
-      type:
-        | 'instance_access_token_secret'
-        | 'instance_access_token_publishable';
-      instanceId: string;
-    }
-) & {
+export type ManagementOrganizationApiKeysCreateBody = {
+  type: 'instance_access_token_secret' | 'instance_access_token_publishable';
+  instanceId: string;
   name: string;
   description?: string | undefined;
   expiresAt?: Date | undefined;
@@ -205,7 +197,7 @@ export type ManagementOrganizationApiKeysCreateBody = (
 };
 
 export let mapManagementOrganizationApiKeysCreateBody =
-  /* @__PURE__ */ createMapper<ManagementOrganizationApiKeysCreateBody>(
-    [3, [[0, [1, ['instance_id', 'expires_at', 'ip_filters']]]]],
+  /* @__PURE__ */ mapObject<ManagementOrganizationApiKeysCreateBody>(
+    ['instance_id', 'expires_at', 'ip_filters'],
     1
   );

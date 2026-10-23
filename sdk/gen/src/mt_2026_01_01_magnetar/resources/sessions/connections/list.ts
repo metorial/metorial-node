@@ -13,7 +13,7 @@ export type SessionsConnectionsListOutput = {
     mcp: {
       capabilities: Record<string, any>;
       protocolVersion: string;
-      transport: 'none' | 'sse' | 'streamable_http';
+      transport: 'none' | 'sse' | 'streamable_http' | 'sessionless';
     } | null;
     sessionId: string;
     participant: {
@@ -103,10 +103,7 @@ export type SessionsConnectionsListQuery = {
 } & {
   status?: 'active' | 'archived' | ('active' | 'archived')[] | undefined;
   connectionState?:
-    | 'connected'
-    | 'disconnected'
-    | ('connected' | 'disconnected')[]
-    | undefined;
+    'connected' | 'disconnected' | ('connected' | 'disconnected')[] | undefined;
   id?: string | string[] | undefined;
   agentId?: string | string[] | undefined;
   actorId?: string | string[] | undefined;

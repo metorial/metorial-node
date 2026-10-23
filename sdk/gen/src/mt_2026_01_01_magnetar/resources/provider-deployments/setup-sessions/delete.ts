@@ -3,15 +3,11 @@ import { mapObject } from '@metorial/util-resource-mapper/compact';
 export type ProviderDeploymentsSetupSessionsDeleteOutput = {
   object: 'provider.setup_session';
   id: string;
-  type: 'auth_only' | 'config_only' | 'auth_and_config';
+  type: 'auth_only' | 'config_only' | 'auth_and_config' | 'admin';
   status:
-    | 'failed'
-    | 'archived'
-    | 'deleted'
-    | 'pending'
-    | 'completed'
-    | 'expired';
+    'failed' | 'archived' | 'deleted' | 'pending' | 'completed' | 'expired';
   url: string;
+  error: { code: string; message: string } | null;
   name: string | null;
   description: string | null;
   metadata: Record<string, any> | null;
@@ -19,6 +15,11 @@ export type ProviderDeploymentsSetupSessionsDeleteOutput = {
   providerId: string | null;
   identityId: string | null;
   identityCredentialId: string | null;
+  ownerActor: {
+    id: string;
+    type: 'person' | 'agent' | 'consumer';
+    consumerId: string | null;
+  } | null;
   authMethod: {
     object: 'provider.capabilities.auth_method';
     id: string;
@@ -147,6 +148,11 @@ export type ProviderDeploymentsSetupSessionsDeleteOutput = {
       createdAt: Date;
       updatedAt: Date;
     };
+    ownerActor: {
+      id: string;
+      type: 'person' | 'agent' | 'consumer';
+      consumerId: string | null;
+    } | null;
     createdAt: Date;
     updatedAt: Date;
   } | null;
@@ -208,6 +214,11 @@ export type ProviderDeploymentsSetupSessionsDeleteOutput = {
       createdAt: Date;
       updatedAt: Date;
     } | null;
+    ownerActor: {
+      id: string;
+      type: 'person' | 'agent' | 'consumer';
+      consumerId: string | null;
+    } | null;
     createdAt: Date;
     updatedAt: Date;
   } | null;
@@ -224,6 +235,7 @@ export let mapProviderDeploymentsSetupSessionsDeleteOutput =
       'provider_id',
       'identity_id',
       'identity_credential_id',
+      ['owner_actor', 1, [1, ['consumer_id']]],
       [
         'auth_method',
         1,
@@ -301,6 +313,7 @@ export let mapProviderDeploymentsSetupSessionsDeleteOutput =
                 ]
               ]
             ],
+            ['owner_actor', 1, [1, ['consumer_id']]],
             'created_at',
             'updated_at'
           ]
@@ -341,6 +354,7 @@ export let mapProviderDeploymentsSetupSessionsDeleteOutput =
                 ]
               ]
             ],
+            ['owner_actor', 1, [1, ['consumer_id']]],
             'created_at',
             'updated_at'
           ]
