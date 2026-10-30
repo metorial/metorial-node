@@ -13,7 +13,7 @@ export type ManagementInstanceProviderDeploymentsAuthConfigsImportsListOutput =
         object: 'provider.auth_config';
         id: string;
         type: 'manual' | 'oauth_automated' | 'oauth_manual';
-        source: 'manual' | 'setup_session' | 'system';
+        source: 'manual' | 'setup_session' | 'system' | 'explorer';
         status: 'active' | 'archived' | 'deleted';
         isDefault: boolean;
         providerId: string;
@@ -92,6 +92,21 @@ export type ManagementInstanceProviderDeploymentsAuthConfigsImportsListOutput =
           createdAt: Date;
           updatedAt: Date;
         };
+        access: {
+          source: 'explorer' | null;
+          type: 'public' | 'owner_locked';
+          visibility: 'anyone' | 'owner';
+          owner: {
+            type: 'person' | 'agent' | 'consumer' | 'organization_member';
+            name: string | null;
+            imageUrl: string | null;
+            email: string | null;
+            organizationMember?: { id: string } | undefined;
+            consumer?:
+              | { id: string; profileId: string; portalId: string | null }
+              | undefined;
+          } | null;
+        };
         createdAt: Date;
         updatedAt: Date;
       };
@@ -153,6 +168,27 @@ export let mapManagementInstanceProviderDeploymentsAuthConfigsImportsListOutput 
                       'provider_specification_id',
                       'created_at',
                       'updated_at'
+                    ]
+                  ]
+                ],
+                [
+                  'access',
+                  0,
+                  [
+                    1,
+                    [
+                      [
+                        'owner',
+                        0,
+                        [
+                          1,
+                          [
+                            'image_url',
+                            'organization_member',
+                            ['consumer', 0, [1, ['profile_id', 'portal_id']]]
+                          ]
+                        ]
+                      ]
                     ]
                   ]
                 ],

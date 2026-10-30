@@ -61,6 +61,20 @@ export type ProviderDeploymentsConfigsCreateOutput = {
     createdAt: Date;
     updatedAt: Date;
   } | null;
+  access: {
+    source: 'explorer' | null;
+    type: 'public' | 'owner_locked';
+    visibility: 'anyone' | 'owner';
+    owner: {
+      type: 'person' | 'agent' | 'consumer' | 'organization_member';
+      name: string | null;
+      imageUrl: string | null;
+      email: string | null;
+      organizationMember?: { id: string } | undefined;
+      consumer?:
+        { id: string; profileId: string; portalId: string | null } | undefined;
+    } | null;
+  };
   createdAt: Date;
   updatedAt: Date;
 };
@@ -91,6 +105,27 @@ export let mapProviderDeploymentsConfigsCreateOutput =
             ],
             'created_at',
             'updated_at'
+          ]
+        ]
+      ],
+      [
+        'access',
+        0,
+        [
+          1,
+          [
+            [
+              'owner',
+              0,
+              [
+                1,
+                [
+                  'image_url',
+                  'organization_member',
+                  ['consumer', 0, [1, ['profile_id', 'portal_id']]]
+                ]
+              ]
+            ]
           ]
         ]
       ],
