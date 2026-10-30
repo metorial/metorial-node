@@ -3,15 +3,11 @@ import { mapObject } from '@metorial/util-resource-mapper/compact';
 export type ProviderDeploymentsSetupSessionsGetOutput = {
   object: 'provider.setup_session';
   id: string;
-  type: 'auth_only' | 'config_only' | 'auth_and_config';
+  type: 'auth_only' | 'config_only' | 'auth_and_config' | 'admin';
   status:
-    | 'failed'
-    | 'archived'
-    | 'deleted'
-    | 'pending'
-    | 'completed'
-    | 'expired';
+    'failed' | 'archived' | 'deleted' | 'pending' | 'completed' | 'expired';
   url: string;
+  error: { code: string; message: string } | null;
   name: string | null;
   description: string | null;
   metadata: Record<string, any> | null;
@@ -19,6 +15,20 @@ export type ProviderDeploymentsSetupSessionsGetOutput = {
   providerId: string | null;
   identityId: string | null;
   identityCredentialId: string | null;
+  access: {
+    source: 'explorer' | null;
+    type: 'public' | 'owner_locked';
+    visibility: 'anyone' | 'owner';
+    owner: {
+      type: 'person' | 'agent' | 'consumer' | 'organization_member';
+      name: string | null;
+      imageUrl: string | null;
+      email: string | null;
+      organizationMember?: { id: string } | undefined;
+      consumer?:
+        { id: string; profileId: string; portalId: string | null } | undefined;
+    } | null;
+  };
   authMethod: {
     object: 'provider.capabilities.auth_method';
     id: string;
@@ -74,7 +84,7 @@ export type ProviderDeploymentsSetupSessionsGetOutput = {
     object: 'provider.auth_config';
     id: string;
     type: 'manual' | 'oauth_automated' | 'oauth_manual';
-    source: 'manual' | 'setup_session' | 'system';
+    source: 'manual' | 'setup_session' | 'system' | 'explorer';
     status: 'active' | 'archived' | 'deleted';
     isDefault: boolean;
     providerId: string;
@@ -147,6 +157,21 @@ export type ProviderDeploymentsSetupSessionsGetOutput = {
       createdAt: Date;
       updatedAt: Date;
     };
+    access: {
+      source: 'explorer' | null;
+      type: 'public' | 'owner_locked';
+      visibility: 'anyone' | 'owner';
+      owner: {
+        type: 'person' | 'agent' | 'consumer' | 'organization_member';
+        name: string | null;
+        imageUrl: string | null;
+        email: string | null;
+        organizationMember?: { id: string } | undefined;
+        consumer?:
+          | { id: string; profileId: string; portalId: string | null }
+          | undefined;
+      } | null;
+    };
     createdAt: Date;
     updatedAt: Date;
   } | null;
@@ -208,6 +233,21 @@ export type ProviderDeploymentsSetupSessionsGetOutput = {
       createdAt: Date;
       updatedAt: Date;
     } | null;
+    access: {
+      source: 'explorer' | null;
+      type: 'public' | 'owner_locked';
+      visibility: 'anyone' | 'owner';
+      owner: {
+        type: 'person' | 'agent' | 'consumer' | 'organization_member';
+        name: string | null;
+        imageUrl: string | null;
+        email: string | null;
+        organizationMember?: { id: string } | undefined;
+        consumer?:
+          | { id: string; profileId: string; portalId: string | null }
+          | undefined;
+      } | null;
+    };
     createdAt: Date;
     updatedAt: Date;
   } | null;
@@ -224,6 +264,27 @@ export let mapProviderDeploymentsSetupSessionsGetOutput =
       'provider_id',
       'identity_id',
       'identity_credential_id',
+      [
+        'access',
+        0,
+        [
+          1,
+          [
+            [
+              'owner',
+              0,
+              [
+                1,
+                [
+                  'image_url',
+                  'organization_member',
+                  ['consumer', 0, [1, ['profile_id', 'portal_id']]]
+                ]
+              ]
+            ]
+          ]
+        ]
+      ],
       [
         'auth_method',
         1,
@@ -301,6 +362,27 @@ export let mapProviderDeploymentsSetupSessionsGetOutput =
                 ]
               ]
             ],
+            [
+              'access',
+              0,
+              [
+                1,
+                [
+                  [
+                    'owner',
+                    0,
+                    [
+                      1,
+                      [
+                        'image_url',
+                        'organization_member',
+                        ['consumer', 0, [1, ['profile_id', 'portal_id']]]
+                      ]
+                    ]
+                  ]
+                ]
+              ]
+            ],
             'created_at',
             'updated_at'
           ]
@@ -338,6 +420,27 @@ export let mapProviderDeploymentsSetupSessionsGetOutput =
                   ],
                   'created_at',
                   'updated_at'
+                ]
+              ]
+            ],
+            [
+              'access',
+              0,
+              [
+                1,
+                [
+                  [
+                    'owner',
+                    0,
+                    [
+                      1,
+                      [
+                        'image_url',
+                        'organization_member',
+                        ['consumer', 0, [1, ['profile_id', 'portal_id']]]
+                      ]
+                    ]
+                  ]
                 ]
               ]
             ],
