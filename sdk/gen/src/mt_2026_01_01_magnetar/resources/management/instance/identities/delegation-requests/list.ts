@@ -13,12 +13,14 @@ export type ManagementInstanceIdentitiesDelegationRequestsListOutput = {
     requester: {
       object: 'identity.actor';
       id: string;
-      type: 'person' | 'agent';
+      type: 'person' | 'agent' | 'consumer' | 'organization_member';
       status: 'active' | 'archived' | 'deleted';
       name: string;
       description: string | null;
       metadata: Record<string, any> | null;
       agentId: string | null;
+      consumerId: string | null;
+      defaultIdentityId: string | null;
       createdAt: Date;
       updatedAt: Date;
     };
@@ -27,11 +29,7 @@ export type ManagementInstanceIdentitiesDelegationRequestsListOutput = {
       object: 'identity.delegation';
       id: string;
       status:
-        | 'waiting_for_consent'
-        | 'denied'
-        | 'active'
-        | 'revoked'
-        | 'expired';
+        'waiting_for_consent' | 'denied' | 'active' | 'revoked' | 'expired';
       deniedReason:
         | 'request_denied'
         | 'sub_delegation_depth_exceeded'
@@ -65,12 +63,14 @@ export type ManagementInstanceIdentitiesDelegationRequestsListOutput = {
         actor: {
           object: 'identity.actor';
           id: string;
-          type: 'person' | 'agent';
+          type: 'person' | 'agent' | 'consumer' | 'organization_member';
           status: 'active' | 'archived' | 'deleted';
           name: string;
           description: string | null;
           metadata: Record<string, any> | null;
           agentId: string | null;
+          consumerId: string | null;
+          defaultIdentityId: string | null;
           createdAt: Date;
           updatedAt: Date;
         };
@@ -88,12 +88,14 @@ export type ManagementInstanceIdentitiesDelegationRequestsListOutput = {
         requester: {
           object: 'identity.actor';
           id: string;
-          type: 'person' | 'agent';
+          type: 'person' | 'agent' | 'consumer' | 'organization_member';
           status: 'active' | 'archived' | 'deleted';
           name: string;
           description: string | null;
           metadata: Record<string, any> | null;
           agentId: string | null;
+          consumerId: string | null;
+          defaultIdentityId: string | null;
           createdAt: Date;
           updatedAt: Date;
         };
@@ -128,7 +130,20 @@ export let mapManagementInstanceIdentitiesDelegationRequestsListOutput =
         1,
         [
           'denied_reason',
-          ['requester', 0, [1, ['agent_id', 'created_at', 'updated_at']]],
+          [
+            'requester',
+            0,
+            [
+              1,
+              [
+                'agent_id',
+                'consumer_id',
+                'default_identity_id',
+                'created_at',
+                'updated_at'
+              ]
+            ]
+          ],
           'identity_id',
           [
             'delegation',
@@ -151,7 +166,16 @@ export let mapManagementInstanceIdentitiesDelegationRequestsListOutput =
                         [
                           'actor',
                           0,
-                          [1, ['agent_id', 'created_at', 'updated_at']]
+                          [
+                            1,
+                            [
+                              'agent_id',
+                              'consumer_id',
+                              'default_identity_id',
+                              'created_at',
+                              'updated_at'
+                            ]
+                          ]
                         ],
                         'created_at'
                       ]
@@ -168,7 +192,16 @@ export let mapManagementInstanceIdentitiesDelegationRequestsListOutput =
                       [
                         'requester',
                         0,
-                        [1, ['agent_id', 'created_at', 'updated_at']]
+                        [
+                          1,
+                          [
+                            'agent_id',
+                            'consumer_id',
+                            'default_identity_id',
+                            'created_at',
+                            'updated_at'
+                          ]
+                        ]
                       ],
                       'identity_id',
                       'expires_at',

@@ -25,7 +25,7 @@ export type ManagementInstanceCustomProvidersCreateOutput = {
       | {
           object: 'custom_provider.draft.remote';
           url: string;
-          transport: 'sse' | 'streamable_http';
+          transport: 'sse' | 'streamable_http' | 'stateless';
         }
       | undefined;
     config: {
@@ -163,7 +163,7 @@ export type ManagementInstanceCustomProvidersCreateBody = {
         type: 'remote';
         remoteUrl: string;
         oauthConfig?: Record<string, any> | undefined;
-        protocol: 'sse' | 'streamable_http';
+        protocol: 'sse' | 'streamable_http' | 'stateless';
       }
     | {
         type: 'function';

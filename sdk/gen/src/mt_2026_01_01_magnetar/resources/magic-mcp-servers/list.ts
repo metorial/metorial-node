@@ -5,7 +5,7 @@ export type MagicMcpServersListOutput = {
     object: 'magic_mcp.server';
     id: string;
     status: 'active' | 'archived' | 'deleted';
-    source: 'manual' | 'consumer_provider_template';
+    source: 'manual' | 'consumer_provider_template' | 'explorer';
     providerManagementMode:
       | 'manual'
       | 'inherited_from_provider_template'
@@ -135,6 +135,21 @@ export type MagicMcpServersListOutput = {
     name: string | null;
     description: string | null;
     metadata: Record<string, any>;
+    access: {
+      source: 'explorer' | null;
+      type: 'public' | 'owner_locked';
+      visibility: 'anyone' | 'owner';
+      owner: {
+        type: 'person' | 'agent' | 'consumer' | 'organization_member';
+        name: string | null;
+        imageUrl: string | null;
+        email: string | null;
+        organizationMember?: { id: string } | undefined;
+        consumer?:
+          | { id: string; profileId: string; portalId: string | null }
+          | undefined;
+      } | null;
+    };
     createdAt: Date;
     updatedAt: Date;
   }[];
@@ -226,6 +241,27 @@ export let mapMagicMcpServersListOutput =
               ]
             ]
           ],
+          [
+            'access',
+            0,
+            [
+              1,
+              [
+                [
+                  'owner',
+                  0,
+                  [
+                    1,
+                    [
+                      'image_url',
+                      'organization_member',
+                      ['consumer', 0, [1, ['profile_id', 'portal_id']]]
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ],
           'created_at',
           'updated_at'
         ]
@@ -241,6 +277,7 @@ export type MagicMcpServersListQuery = {
   cursor?: string | undefined;
   order?: 'asc' | 'desc' | undefined;
 } & {
+  ownership?: 'shared' | 'usable' | 'all' | undefined;
   status?:
     | 'active'
     | 'archived'
@@ -251,10 +288,7 @@ export type MagicMcpServersListQuery = {
   providerTemplateId?: string | string[] | undefined;
   integrationInstanceId?: string | string[] | undefined;
   owner?:
-    | 'organization'
-    | 'consumer'
-    | ('organization' | 'consumer')[]
-    | undefined;
+    'organization' | 'consumer' | ('organization' | 'consumer')[] | undefined;
   providerId?: string | string[] | undefined;
   consumerId?: string | string[] | undefined;
   consumerProfileId?: string | string[] | undefined;

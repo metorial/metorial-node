@@ -1,7 +1,4 @@
-import {
-  createMapper,
-  mapObject
-} from '@metorial/util-resource-mapper/compact';
+import { mapObject } from '@metorial/util-resource-mapper/compact';
 
 export type MagicMcpEndpointsUpdateOutput = {
   object: 'magic_mcp.endpoint';
@@ -40,6 +37,25 @@ export type MagicMcpEndpointsUpdateOutput = {
   name: string | null;
   description: string | null;
   metadata: Record<string, any>;
+  enableSkillEditing: boolean;
+  enableSkillResources: boolean;
+  skillSelection:
+    | { type: 'all' }
+    | { type: 'selected'; skillIds: string[]; skillGroupIds: string[] };
+  access: {
+    source: 'explorer' | null;
+    type: 'public' | 'owner_locked';
+    visibility: 'anyone' | 'owner';
+    owner: {
+      type: 'person' | 'agent' | 'consumer' | 'organization_member';
+      name: string | null;
+      imageUrl: string | null;
+      email: string | null;
+      organizationMember?: { id: string } | undefined;
+      consumer?:
+        { id: string; profileId: string; portalId: string | null } | undefined;
+    } | null;
+  };
   createdAt: Date;
   updatedAt: Date;
 };
@@ -48,6 +64,30 @@ export let mapMagicMcpEndpointsUpdateOutput =
   /* @__PURE__ */ mapObject<MagicMcpEndpointsUpdateOutput>(
     [
       ['servers', 0, [2, [3, [[0, [1, ['tool_filters']]]]]]],
+      'enable_skill_editing',
+      'enable_skill_resources',
+      ['skill_selection', 1, [3, [[0, [1, ['skill_ids', 'skill_group_ids']]]]]],
+      [
+        'access',
+        0,
+        [
+          1,
+          [
+            [
+              'owner',
+              0,
+              [
+                1,
+                [
+                  'image_url',
+                  'organization_member',
+                  ['consumer', 0, [1, ['profile_id', 'portal_id']]]
+                ]
+              ]
+            ]
+          ]
+        ]
+      ],
       'created_at',
       'updated_at'
     ],
@@ -58,7 +98,21 @@ export type MagicMcpEndpointsUpdateBody = {
   name?: string | undefined;
   description?: string | undefined;
   metadata?: Record<string, any> | undefined;
+  enableSkillEditing?: boolean | undefined;
+  enableSkillResources?: boolean | undefined;
+  skillSelection?:
+    | { type: 'all' }
+    | {
+        type: 'selected';
+        skillIds?: string[] | undefined;
+        skillGroupIds?: string[] | undefined;
+      }
+    | undefined;
 };
 
 export let mapMagicMcpEndpointsUpdateBody =
-  /* @__PURE__ */ createMapper<MagicMcpEndpointsUpdateBody>(0);
+  /* @__PURE__ */ mapObject<MagicMcpEndpointsUpdateBody>([
+    'enable_skill_editing',
+    'enable_skill_resources',
+    ['skill_selection', 1, [3, [[0, [1, ['skill_ids', 'skill_group_ids']]]]]]
+  ]);
