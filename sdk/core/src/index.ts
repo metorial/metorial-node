@@ -3,6 +3,7 @@ export type { MetorialCoreSDKConfig as MetorialSDKConfig } from './builder';
 export { createMetorialCoreSDK } from './sdk';
 export type { MetorialCoreSDK } from './sdk';
 export * from './sandbox';
+export type { MetorialFileUploadInput, MetorialFileUploadMode } from './fileUpload';
 
 import type * as MetorialGenerated from '@metorial/generated';
 

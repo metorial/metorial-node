@@ -1,5 +1,4 @@
 import {
-  mapDashboardInstanceFilesGetOutput,
   MetorialCallbackEventsEndpoint,
   MetorialCallbackInstancesEndpoint,
   MetorialCallbacksEndpoint,
@@ -108,6 +107,7 @@ import {
   MetorialToolCallsEndpoint
 } from '@metorial/generated';
 import { coreSdkBuilder, MetorialKeyPrefix } from './builder';
+import { MetorialFileUploadInput, uploadFile } from './fileUpload';
 import { createSandboxMachineConnections } from './sandbox';
 
 export let createMetorialCoreSDK = coreSdkBuilder.build(
@@ -159,31 +159,7 @@ export let createMetorialCoreSDK = coreSdkBuilder.build(
 
   files: Object.assign(new MetorialFilesEndpoint(manager), {
     links: new MetorialFilesLinksEndpoint(manager),
-    upload: async (input: {
-      file: File | Blob;
-      purpose: string;
-      title?: string;
-      store?: {
-        id: string;
-        path: string;
-      };
-    }) => {
-      let body = new FormData();
-      body.append('file', input.file);
-      body.append('purpose', input.purpose);
-      if (input.title) body.append('title', input.title);
-      if (input.store) {
-        body.append('store_id', input.store.id);
-        body.append('path', input.store.path);
-      }
-
-      return await manager
-        ._post({
-          path: ['files'],
-          body
-        })
-        .transform(mapDashboardInstanceFilesGetOutput);
-    }
+    upload: (input: MetorialFileUploadInput) => uploadFile(manager, input)
   }),
 
   providerDeployments: Object.assign(new MetorialProviderDeploymentsEndpoint(manager), {
