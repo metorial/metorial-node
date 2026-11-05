@@ -15,7 +15,7 @@ export type ConsumerSessionConnectionsListOutput = {
       mcp: {
         capabilities: Record<string, any>;
         protocolVersion: string;
-        transport: 'none' | 'sse' | 'streamable_http';
+        transport: 'none' | 'sse' | 'streamable_http' | 'sessionless';
       } | null;
       sessionId: string;
       participant: {
@@ -120,10 +120,7 @@ export type ConsumerSessionConnectionsListQuery = {
   order?: 'asc' | 'desc' | undefined;
 } & {
   connectionState?:
-    | 'connected'
-    | 'disconnected'
-    | ('connected' | 'disconnected')[]
-    | undefined;
+    'connected' | 'disconnected' | ('connected' | 'disconnected')[] | undefined;
   agentId?: string | undefined;
   sessionId?: string | undefined;
   createdAt?: { gt?: Date | undefined; lt?: Date | undefined } | undefined;

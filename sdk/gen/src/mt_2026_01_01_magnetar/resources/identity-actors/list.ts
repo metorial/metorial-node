@@ -4,12 +4,14 @@ export type IdentityActorsListOutput = {
   items: {
     object: 'identity.actor';
     id: string;
-    type: 'person' | 'agent';
+    type: 'person' | 'agent' | 'consumer' | 'organization_member';
     status: 'active' | 'archived' | 'deleted';
     name: string;
     description: string | null;
     metadata: Record<string, any> | null;
     agentId: string | null;
+    consumerId: string | null;
+    defaultIdentityId: string | null;
     createdAt: Date;
     updatedAt: Date;
   }[];
@@ -18,7 +20,19 @@ export type IdentityActorsListOutput = {
 
 export let mapIdentityActorsListOutput =
   /* @__PURE__ */ createMapper<IdentityActorsListOutput>(
-    [7, [1, ['agent_id', 'created_at', 'updated_at']]],
+    [
+      7,
+      [
+        1,
+        [
+          'agent_id',
+          'consumer_id',
+          'default_identity_id',
+          'created_at',
+          'updated_at'
+        ]
+      ]
+    ],
     1
   );
 
@@ -38,6 +52,7 @@ export type IdentityActorsListQuery = {
     | undefined;
   id?: string | string[] | undefined;
   agentId?: string | string[] | undefined;
+  consumerProfileId?: string | string[] | undefined;
   consumerId?: string | string[] | undefined;
   createdAt?: { gt?: Date | undefined; lt?: Date | undefined } | undefined;
   updatedAt?: { gt?: Date | undefined; lt?: Date | undefined } | undefined;
@@ -53,6 +68,7 @@ export let mapIdentityActorsListQuery =
           1,
           [
             'agent_id',
+            'consumer_profile_id',
             'consumer_id',
             ['created_at', 1, 5],
             ['updated_at', 1, 5]
