@@ -76,6 +76,7 @@ export type FilesGetOutput = {
                   updatedAt: Date;
                 };
                 assignedVia: 'default' | 'manual' | 'sso' | 'user';
+                ssoGroupIds: string[];
               }[]
             | null;
         })
@@ -149,7 +150,8 @@ export let mapFilesGetOutput = /* @__PURE__ */ mapObject<FilesGetOutput>(
                                 0,
                                 [1, ['is_default', 'created_at', 'updated_at']]
                               ],
-                              'assigned_via'
+                              'assigned_via',
+                              'sso_group_ids'
                             ]
                           ]
                         ]

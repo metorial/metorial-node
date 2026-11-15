@@ -20,6 +20,18 @@ export type ManagementInstanceSkillsMarketplacesPluginsListOutput = {
       category: string | null;
       slug: string;
       skillConfigurationId: string | null;
+      source:
+        | { type: 'manual' }
+        | {
+            type: 'skill_group';
+            skillGroup: { id: string; name: string };
+            unsyncedSkills: {
+              skillId: string;
+              reason: 'limit_exceeded';
+              message: string;
+            }[];
+            lastSyncedAt: Date | null;
+          };
       skills: {
         object: 'skill.plugin_skill';
         id: string;
@@ -40,6 +52,12 @@ export type ManagementInstanceSkillsMarketplacesPluginsListOutput = {
           name: string;
           description: string | null;
           imageUrl: string;
+          image: {
+            object: 'skill.image';
+            type: 'file' | 'url' | 'icon' | 'default';
+            icon: string | null;
+            color: string | null;
+          };
           clientName: string;
           clientDescription: string | null;
           clientMetadata: Record<string, any> | null;
@@ -80,6 +98,26 @@ export let mapManagementInstanceSkillsMarketplacesPluginsListOutput =
                 'image_url',
                 'long_description',
                 'skill_configuration_id',
+                [
+                  'source',
+                  0,
+                  [
+                    3,
+                    [
+                      [
+                        0,
+                        [
+                          1,
+                          [
+                            'skill_group',
+                            ['unsynced_skills', 1, [2, [1, ['skill_id']]]],
+                            'last_synced_at'
+                          ]
+                        ]
+                      ]
+                    ]
+                  ]
+                ],
                 [
                   'skills',
                   0,

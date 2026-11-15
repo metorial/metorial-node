@@ -33,6 +33,18 @@ export type DashboardInstanceSkillsMarketplacesListOutput = {
         category: string | null;
         slug: string;
         skillConfigurationId: string | null;
+        source:
+          | { type: 'manual' }
+          | {
+              type: 'skill_group';
+              skillGroup: { id: string; name: string };
+              unsyncedSkills: {
+                skillId: string;
+                reason: 'limit_exceeded';
+                message: string;
+              }[];
+              lastSyncedAt: Date | null;
+            };
         skills: {
           object: 'skill.plugin_skill';
           id: string;
@@ -53,6 +65,12 @@ export type DashboardInstanceSkillsMarketplacesListOutput = {
             name: string;
             description: string | null;
             imageUrl: string;
+            image: {
+              object: 'skill.image';
+              type: 'file' | 'url' | 'icon' | 'default';
+              icon: string | null;
+              color: string | null;
+            };
             clientName: string;
             clientDescription: string | null;
             clientMetadata: Record<string, any> | null;
@@ -110,6 +128,30 @@ export let mapDashboardInstanceSkillsMarketplacesListOutput =
                         'image_url',
                         'long_description',
                         'skill_configuration_id',
+                        [
+                          'source',
+                          0,
+                          [
+                            3,
+                            [
+                              [
+                                0,
+                                [
+                                  1,
+                                  [
+                                    'skill_group',
+                                    [
+                                      'unsynced_skills',
+                                      1,
+                                      [2, [1, ['skill_id']]]
+                                    ],
+                                    'last_synced_at'
+                                  ]
+                                ]
+                              ]
+                            ]
+                          ]
+                        ],
                         [
                           'skills',
                           0,
@@ -178,6 +220,7 @@ export type DashboardInstanceSkillsMarketplacesListQuery = {
     | ('active' | 'archived' | 'deleted')[]
     | undefined;
   skillConfigurationId?: string | string[] | undefined;
+  skillGroupId?: string | string[] | undefined;
   search?: string | undefined;
   createdAt?: { gt?: Date | undefined; lt?: Date | undefined } | undefined;
   updatedAt?: { gt?: Date | undefined; lt?: Date | undefined } | undefined;
@@ -191,7 +234,12 @@ export let mapDashboardInstanceSkillsMarketplacesListQuery =
         0,
         [
           1,
-          ['skill_configuration_id', ['created_at', 1, 5], ['updated_at', 1, 5]]
+          [
+            'skill_configuration_id',
+            'skill_group_id',
+            ['created_at', 1, 5],
+            ['updated_at', 1, 5]
+          ]
         ]
       ]
     ]

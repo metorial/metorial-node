@@ -29,6 +29,7 @@ export type PortalsConsumerProfilesUnassignGroupsOutput = {
           updatedAt: Date;
         };
         assignedVia: 'default' | 'manual' | 'sso' | 'user';
+        ssoGroupIds: string[];
       }[]
     | null;
 };
@@ -61,7 +62,8 @@ export let mapPortalsConsumerProfilesUnassignGroupsOutput =
                         0,
                         [1, ['is_default', 'created_at', 'updated_at']]
                       ],
-                      'assigned_via'
+                      'assigned_via',
+                      'sso_group_ids'
                     ]
                   ]
                 ]

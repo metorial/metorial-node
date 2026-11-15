@@ -27,6 +27,7 @@ export type PortalsConsumerProfilesListOutput = {
             updatedAt: Date;
           };
           assignedVia: 'default' | 'manual' | 'sso' | 'user';
+          ssoGroupIds: string[];
         }[]
       | null;
   })[];
@@ -63,7 +64,8 @@ export let mapPortalsConsumerProfilesListOutput =
                           0,
                           [1, ['is_default', 'created_at', 'updated_at']]
                         ],
-                        'assigned_via'
+                        'assigned_via',
+                        'sso_group_ids'
                       ]
                     ]
                   ]
@@ -87,6 +89,7 @@ export type PortalsConsumerProfilesListQuery = {
   search?: string | undefined;
   email?: string | string[] | undefined;
   consumerGroupId?: string | undefined;
+  source?: 'manual' | 'sso' | undefined;
   status?: 'active' | 'invited' | ('active' | 'invited')[] | undefined;
 };
 

@@ -4,7 +4,7 @@ export type SkillsParticipantsGetOutput = {
   object: 'skill.participant';
   id: string;
   skillId: string;
-  roles: ('creator' | 'editor' | 'viewer' | 'user' | 'forker')[];
+  roles: ('creator' | 'owner' | 'editor' | 'viewer' | 'user' | 'forker')[];
   actor: {
     type: 'organization_actor' | 'consumer' | 'resource_actor';
     name: string;
@@ -72,6 +72,7 @@ export type SkillsParticipantsGetOutput = {
                   updatedAt: Date;
                 };
                 assignedVia: 'default' | 'manual' | 'sso' | 'user';
+                ssoGroupIds: string[];
               }[]
             | null;
         })
@@ -80,7 +81,9 @@ export type SkillsParticipantsGetOutput = {
   surfaces:
     | {
         id: string;
-        roles: ('creator' | 'editor' | 'viewer' | 'user' | 'forker')[];
+        roles: (
+          'creator' | 'owner' | 'editor' | 'viewer' | 'user' | 'forker'
+        )[];
         actor: {
           type: 'organization_actor' | 'consumer' | 'resource_actor';
           name: string;
@@ -148,6 +151,7 @@ export type SkillsParticipantsGetOutput = {
                         updatedAt: Date;
                       };
                       assignedVia: 'default' | 'manual' | 'sso' | 'user';
+                      ssoGroupIds: string[];
                     }[]
                   | null;
               })
@@ -228,7 +232,8 @@ export let mapSkillsParticipantsGetOutput =
                                     ['is_default', 'created_at', 'updated_at']
                                   ]
                                 ],
-                                'assigned_via'
+                                'assigned_via',
+                                'sso_group_ids'
                               ]
                             ]
                           ]
@@ -319,7 +324,8 @@ export let mapSkillsParticipantsGetOutput =
                                             ]
                                           ]
                                         ],
-                                        'assigned_via'
+                                        'assigned_via',
+                                        'sso_group_ids'
                                       ]
                                     ]
                                   ]
