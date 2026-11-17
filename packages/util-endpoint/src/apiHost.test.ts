@@ -4,7 +4,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { apiHostFromToken, resolveApiHost } from './apiHost';
 
 let fixtures: { name: string; token: string; host: string | null }[] = JSON.parse(
-  readFileSync(join(__dirname, '../../../testdata/api-key-hosts.json'), 'utf8')
+  readFileSync(join(__dirname, '../testdata/api-key-hosts.json'), 'utf8')
 );
 
 describe('API host resolution', () => {

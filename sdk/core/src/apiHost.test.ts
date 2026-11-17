@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { createMetorialCoreSDK } from './sdk';
 
 let fixtures: { token: string; host: string | null }[] = JSON.parse(
-  readFileSync(new URL('../../../testdata/api-key-hosts.json', import.meta.url), 'utf8')
+  readFileSync(new URL('../testdata/api-key-hosts.json', import.meta.url), 'utf8')
 );
 
 describe('SDK API host selection', () => {
