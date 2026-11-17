@@ -56,6 +56,7 @@ export class MetorialSDKBuilder<
       } => {
         let fullConfig = getConfig(config);
         let apiHost = this.#getApiHost!(fullConfig);
+        fullConfig = { ...fullConfig, apiHost };
 
         let manager = new MetorialEndpointManager(
           fullConfig,
