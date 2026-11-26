@@ -14,7 +14,7 @@ import {
 
 /**
  * @name Provider Listings controller
- * @description A listing is a provider enriched with marketplace metadata.
+ * @description A provider listing is a provider with its marketplace details.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -55,7 +55,7 @@ export class MetorialDashboardInstanceProviderListingsEndpoint {
     query?: DashboardInstanceProviderListingsListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProviderListingsListOutput> {
-    let path = `dashboard/instances/${instanceId}/provider-listings`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/provider-listings`;
 
     let request = {
       path,
@@ -87,7 +87,7 @@ export class MetorialDashboardInstanceProviderListingsEndpoint {
     providerListingId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProviderListingsGetOutput> {
-    let path = `dashboard/instances/${instanceId}/provider-listings/${providerListingId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/provider-listings/${encodeURIComponent(providerListingId)}`;
 
     let request = {
       path,

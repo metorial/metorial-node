@@ -14,7 +14,7 @@ import {
 
 /**
  * @name Session Errors controller
- * @description Session errors track errors that occurred during a session. This read-only resource provides visibility into issues that happened during provider execution.
+ * @description A session error is an error recorded while running a session. Similar errors group together for review.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -40,7 +40,7 @@ export class MetorialManagementInstanceSessionsErrorsEndpoint {
   }
 
   /**
-   * @name List all session errors
+   * @name List session errors
    * @description Returns a paginated list of errors across all sessions.
    *
    * @param `instanceId` - string
@@ -55,7 +55,7 @@ export class MetorialManagementInstanceSessionsErrorsEndpoint {
     query?: DashboardInstanceSessionsErrorsListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSessionsErrorsListOutput> {
-    let path = `instances/${instanceId}/session-errors`;
+    let path = `instances/${encodeURIComponent(instanceId)}/session-errors`;
 
     let request = {
       path,
@@ -73,7 +73,7 @@ export class MetorialManagementInstanceSessionsErrorsEndpoint {
 
   /**
    * @name Get session error
-   * @description Retrieves a specific error that occurred in a session.
+   * @description Retrieves a session error.
    *
    * @param `instanceId` - string
    * @param `sessionErrorId` - string
@@ -87,7 +87,7 @@ export class MetorialManagementInstanceSessionsErrorsEndpoint {
     sessionErrorId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSessionsErrorsGetOutput> {
-    let path = `instances/${instanceId}/session-errors/${sessionErrorId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/session-errors/${encodeURIComponent(sessionErrorId)}`;
 
     let request = {
       path,

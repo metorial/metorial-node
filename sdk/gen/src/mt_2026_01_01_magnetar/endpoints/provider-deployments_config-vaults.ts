@@ -24,7 +24,7 @@ import {
 
 /**
  * @name Provider Config Vaults controller
- * @description A config vault is a saved, reusable set of configuration values. Use vaults to store credentials once and apply them to multiple deployments without re-entering.
+ * @description A provider config vault is a saved, reusable set of configuration values. Configs can reference a vault instead of holding values directly.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -95,7 +95,7 @@ export class MetorialProviderDeploymentsConfigVaultsEndpoint {
     providerConfigVaultId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProviderDeploymentsConfigVaultsGetOutput> {
-    let path = `provider-config-vaults/${providerConfigVaultId}`;
+    let path = `provider-config-vaults/${encodeURIComponent(providerConfigVaultId)}`;
 
     let request = {
       path,
@@ -154,7 +154,7 @@ export class MetorialProviderDeploymentsConfigVaultsEndpoint {
     body: DashboardInstanceProviderDeploymentsConfigVaultsUpdateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProviderDeploymentsConfigVaultsUpdateOutput> {
-    let path = `provider-config-vaults/${providerConfigVaultId}`;
+    let path = `provider-config-vaults/${encodeURIComponent(providerConfigVaultId)}`;
 
     let request = {
       path,
@@ -171,8 +171,8 @@ export class MetorialProviderDeploymentsConfigVaultsEndpoint {
   }
 
   /**
-   * @name Delete provider config vault
-   * @description Permanently deletes a provider config vault.
+   * @name Archive provider config vault
+   * @description Archives a provider config vault. It stays listable with `status=archived`.
    *
    * @param `providerConfigVaultId` - string
    * @param `opts` - { headers?: Record<string, string> }
@@ -184,7 +184,7 @@ export class MetorialProviderDeploymentsConfigVaultsEndpoint {
     providerConfigVaultId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProviderDeploymentsConfigVaultsDeleteOutput> {
-    let path = `provider-config-vaults/${providerConfigVaultId}`;
+    let path = `provider-config-vaults/${encodeURIComponent(providerConfigVaultId)}`;
 
     let request = {
       path,

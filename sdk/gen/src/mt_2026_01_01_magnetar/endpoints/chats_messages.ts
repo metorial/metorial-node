@@ -73,7 +73,7 @@ export class MetorialChatsMessagesEndpoint {
     query?: DashboardInstanceChatsMessagesListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceChatsMessagesListOutput> {
-    let path = `chats/${chatId}/messages`;
+    let path = `chats/${encodeURIComponent(chatId)}/messages`;
 
     let request = {
       path,
@@ -91,7 +91,7 @@ export class MetorialChatsMessagesEndpoint {
 
   /**
    * @name Get chat message
-   * @description Retrieves a specific chat message.
+   * @description Retrieves a chat message.
    *
    * @param `chatId` - string
    * @param `messageId` - string
@@ -107,7 +107,7 @@ export class MetorialChatsMessagesEndpoint {
     query?: DashboardInstanceChatsMessagesGetQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceChatsMessagesGetOutput> {
-    let path = `chats/${chatId}/messages/${messageId}`;
+    let path = `chats/${encodeURIComponent(chatId)}/messages/${encodeURIComponent(messageId)}`;
 
     let request = {
       path,
@@ -139,7 +139,7 @@ export class MetorialChatsMessagesEndpoint {
     body: DashboardInstanceChatsMessagesCreateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceChatsMessagesCreateOutput> {
-    let path = `chats/${chatId}/messages`;
+    let path = `chats/${encodeURIComponent(chatId)}/messages`;
 
     let request = {
       path,
@@ -155,7 +155,7 @@ export class MetorialChatsMessagesEndpoint {
 
   /**
    * @name Edit chat message
-   * @description Edits a specific chat message.
+   * @description Edits a chat message.
    *
    * @param `chatId` - string
    * @param `messageId` - string
@@ -171,7 +171,7 @@ export class MetorialChatsMessagesEndpoint {
     body: DashboardInstanceChatsMessagesUpdateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceChatsMessagesUpdateOutput> {
-    let path = `chats/${chatId}/messages/${messageId}`;
+    let path = `chats/${encodeURIComponent(chatId)}/messages/${encodeURIComponent(messageId)}`;
 
     let request = {
       path,
@@ -187,7 +187,7 @@ export class MetorialChatsMessagesEndpoint {
 
   /**
    * @name Delete chat message
-   * @description Deletes a specific chat message.
+   * @description Deletes a chat message.
    *
    * @param `chatId` - string
    * @param `messageId` - string
@@ -203,7 +203,7 @@ export class MetorialChatsMessagesEndpoint {
     query?: DashboardInstanceChatsMessagesDeleteQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceChatsMessagesDeleteOutput> {
-    let path = `chats/${chatId}/messages/${messageId}`;
+    let path = `chats/${encodeURIComponent(chatId)}/messages/${encodeURIComponent(messageId)}`;
 
     let request = {
       path,
@@ -221,7 +221,7 @@ export class MetorialChatsMessagesEndpoint {
 
   /**
    * @name Mark chat message read
-   * @description Marks a specific chat message as read.
+   * @description Marks a chat message as read.
    *
    * @param `chatId` - string
    * @param `messageId` - string
@@ -237,7 +237,7 @@ export class MetorialChatsMessagesEndpoint {
     body: DashboardInstanceChatsMessagesReadBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceChatsMessagesReadOutput> {
-    let path = `chats/${chatId}/messages/${messageId}/read`;
+    let path = `chats/${encodeURIComponent(chatId)}/messages/${encodeURIComponent(messageId)}/read`;
 
     let request = {
       path,

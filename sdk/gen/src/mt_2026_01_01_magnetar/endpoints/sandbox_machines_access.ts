@@ -20,7 +20,7 @@ import {
 
 /**
  * @name Sandbox machines controller
- * @description Create and operate sandbox machines. A machine boots from an image, can mount disks, and moves between running, paused, and hibernated states.
+ * @description A sandbox machine is a virtual machine that boots from an image and can mount disks. Machines move between running, paused, and hibernated states.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -61,7 +61,7 @@ export class MetorialSandboxMachinesAccessEndpoint {
     body: DashboardInstanceSandboxMachinesAccessShellBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSandboxMachinesAccessShellOutput> {
-    let path = `sandbox/machines/${machineId}/access/shell`;
+    let path = `sandbox/machines/${encodeURIComponent(machineId)}/access/shell`;
 
     let request = {
       path,
@@ -93,7 +93,7 @@ export class MetorialSandboxMachinesAccessEndpoint {
     body: DashboardInstanceSandboxMachinesAccessFilesBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSandboxMachinesAccessFilesOutput> {
-    let path = `sandbox/machines/${machineId}/access/files`;
+    let path = `sandbox/machines/${encodeURIComponent(machineId)}/access/files`;
 
     let request = {
       path,
@@ -125,7 +125,7 @@ export class MetorialSandboxMachinesAccessEndpoint {
     body: DashboardInstanceSandboxMachinesAccessPortsBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSandboxMachinesAccessPortsOutput> {
-    let path = `sandbox/machines/${machineId}/access/ports`;
+    let path = `sandbox/machines/${encodeURIComponent(machineId)}/access/ports`;
 
     let request = {
       path,

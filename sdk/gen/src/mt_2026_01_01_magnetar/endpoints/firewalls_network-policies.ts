@@ -14,7 +14,7 @@ import {
 
 /**
  * @name Firewalls controller
- * @description Manage firewalls and their attached network policies. Firewalls apply to integration enclaves, providers, and sandbox machines.
+ * @description A firewall is a set of network policies applied to targets. Firewalls apply to integration enclaves, providers, and sandbox machines.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -55,7 +55,7 @@ export class MetorialFirewallsNetworkPoliciesEndpoint {
     body: DashboardInstanceFirewallsNetworkPoliciesAttachBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceFirewallsNetworkPoliciesAttachOutput> {
-    let path = `firewalls/${firewallId}/network-policies`;
+    let path = `firewalls/${encodeURIComponent(firewallId)}/network-policies`;
 
     let request = {
       path,
@@ -87,7 +87,7 @@ export class MetorialFirewallsNetworkPoliciesEndpoint {
     networkPolicyId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceFirewallsNetworkPoliciesDetachOutput> {
-    let path = `firewalls/${firewallId}/network-policies/${networkPolicyId}`;
+    let path = `firewalls/${encodeURIComponent(firewallId)}/network-policies/${encodeURIComponent(networkPolicyId)}`;
 
     let request = {
       path,

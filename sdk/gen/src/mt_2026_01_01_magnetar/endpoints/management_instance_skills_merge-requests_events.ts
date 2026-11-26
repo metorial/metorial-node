@@ -14,7 +14,7 @@ import {
 
 /**
  * @name Skill Merge Request Events controller
- * @description Inspect the activity history of skill merge requests.
+ * @description A skill merge request event is one entry in a merge request activity history.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -57,7 +57,7 @@ export class MetorialManagementInstanceSkillsMergeRequestsEventsEndpoint {
     query?: DashboardInstanceSkillsMergeRequestsEventsListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsMergeRequestsEventsListOutput> {
-    let path = `instances/${instanceId}/skill-merge-requests/${skillMergeRequestId}/events`;
+    let path = `instances/${encodeURIComponent(instanceId)}/skill-merge-requests/${encodeURIComponent(skillMergeRequestId)}/events`;
 
     let request = {
       path,
@@ -93,7 +93,7 @@ export class MetorialManagementInstanceSkillsMergeRequestsEventsEndpoint {
     eventId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsMergeRequestsEventsGetOutput> {
-    let path = `instances/${instanceId}/skill-merge-requests/${skillMergeRequestId}/events/${eventId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/skill-merge-requests/${encodeURIComponent(skillMergeRequestId)}/events/${encodeURIComponent(eventId)}`;
 
     let request = {
       path,

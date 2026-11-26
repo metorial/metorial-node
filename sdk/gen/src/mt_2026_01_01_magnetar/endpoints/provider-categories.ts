@@ -14,7 +14,7 @@ import {
 
 /**
  * @name Provider Categories controller
- * @description A category groups providers by function like 'Developer Tools' or 'ERPs'.
+ * @description A provider category is a grouping of providers by function.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -83,7 +83,7 @@ export class MetorialProviderCategoriesEndpoint {
     providerCategoryId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProviderCategoriesGetOutput> {
-    let path = `provider-categories/${providerCategoryId}`;
+    let path = `provider-categories/${encodeURIComponent(providerCategoryId)}`;
 
     let request = {
       path,

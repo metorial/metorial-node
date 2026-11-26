@@ -24,7 +24,7 @@ import {
 
 /**
  * @name Identity Delegation Configs controller
- * @description Delegation configs define the default policy for sub-delegation behavior and delegation depth.
+ * @description An identity delegation config is the default policy for sub-delegation. It controls whether delegates can delegate further, and how deep.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -65,7 +65,7 @@ export class MetorialManagementInstanceIdentitiesDelegationConfigsEndpoint {
     query?: DashboardInstanceIdentitiesDelegationConfigsListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIdentitiesDelegationConfigsListOutput> {
-    let path = `instances/${instanceId}/identity-delegation-configs`;
+    let path = `instances/${encodeURIComponent(instanceId)}/identity-delegation-configs`;
 
     let request = {
       path,
@@ -85,7 +85,7 @@ export class MetorialManagementInstanceIdentitiesDelegationConfigsEndpoint {
 
   /**
    * @name Get identity delegation config
-   * @description Retrieves a specific identity delegation config by ID.
+   * @description Retrieves an identity delegation config.
    *
    * @param `instanceId` - string
    * @param `identityDelegationConfigId` - string
@@ -99,7 +99,7 @@ export class MetorialManagementInstanceIdentitiesDelegationConfigsEndpoint {
     identityDelegationConfigId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIdentitiesDelegationConfigsGetOutput> {
-    let path = `instances/${instanceId}/identity-delegation-configs/${identityDelegationConfigId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/identity-delegation-configs/${encodeURIComponent(identityDelegationConfigId)}`;
 
     let request = {
       path,
@@ -114,7 +114,7 @@ export class MetorialManagementInstanceIdentitiesDelegationConfigsEndpoint {
 
   /**
    * @name Create identity delegation config
-   * @description Creates a new identity delegation config.
+   * @description Creates an identity delegation config.
    *
    * @param `instanceId` - string
    * @param `body` - DashboardInstanceIdentitiesDelegationConfigsCreateBody
@@ -128,7 +128,7 @@ export class MetorialManagementInstanceIdentitiesDelegationConfigsEndpoint {
     body: DashboardInstanceIdentitiesDelegationConfigsCreateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIdentitiesDelegationConfigsCreateOutput> {
-    let path = `instances/${instanceId}/identity-delegation-configs`;
+    let path = `instances/${encodeURIComponent(instanceId)}/identity-delegation-configs`;
 
     let request = {
       path,
@@ -146,7 +146,7 @@ export class MetorialManagementInstanceIdentitiesDelegationConfigsEndpoint {
 
   /**
    * @name Update identity delegation config
-   * @description Updates mutable fields on an existing identity delegation config.
+   * @description Updates an identity delegation config. Omitted fields keep their current value.
    *
    * @param `instanceId` - string
    * @param `identityDelegationConfigId` - string
@@ -162,7 +162,7 @@ export class MetorialManagementInstanceIdentitiesDelegationConfigsEndpoint {
     body: DashboardInstanceIdentitiesDelegationConfigsUpdateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIdentitiesDelegationConfigsUpdateOutput> {
-    let path = `instances/${instanceId}/identity-delegation-configs/${identityDelegationConfigId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/identity-delegation-configs/${encodeURIComponent(identityDelegationConfigId)}`;
 
     let request = {
       path,
@@ -179,8 +179,8 @@ export class MetorialManagementInstanceIdentitiesDelegationConfigsEndpoint {
   }
 
   /**
-   * @name Delete identity delegation config
-   * @description Archives an identity delegation config.
+   * @name Archive identity delegation config
+   * @description Archives an identity delegation config. It stays listable with `status=archived`.
    *
    * @param `instanceId` - string
    * @param `identityDelegationConfigId` - string
@@ -194,7 +194,7 @@ export class MetorialManagementInstanceIdentitiesDelegationConfigsEndpoint {
     identityDelegationConfigId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIdentitiesDelegationConfigsDeleteOutput> {
-    let path = `instances/${instanceId}/identity-delegation-configs/${identityDelegationConfigId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/identity-delegation-configs/${encodeURIComponent(identityDelegationConfigId)}`;
 
     let request = {
       path,

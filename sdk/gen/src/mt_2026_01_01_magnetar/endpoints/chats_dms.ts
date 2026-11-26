@@ -12,7 +12,7 @@ import {
 
 /**
  * @name Chat DMs controller
- * @description Open direct message channels with one or more users on a chat.
+ * @description A chat DM is a direct message channel with one or more users on a chat.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -53,7 +53,7 @@ export class MetorialChatsDmsEndpoint {
     body: DashboardInstanceChatsDmsOpenBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceChatsDmsOpenOutput> {
-    let path = `chats/${chatId}/dms`;
+    let path = `chats/${encodeURIComponent(chatId)}/dms`;
 
     let request = {
       path,

@@ -1,6 +1,7 @@
 import { createMapper } from '@metorial/util-resource-mapper/compact';
 
 export type DashboardInstanceNetworkPoliciesListOutput = {
+  object: 'list';
   items: {
     object: 'networking.network_policy';
     id: string;
@@ -30,7 +31,12 @@ export type DashboardInstanceNetworkPoliciesListOutput = {
     updatedAt: Date;
     archivedAt: Date | null;
   }[];
-  pagination: { hasMoreBefore: boolean; hasMoreAfter: boolean };
+  pagination: {
+    hasMoreBefore: boolean;
+    hasMoreAfter: boolean;
+    before?: string | undefined;
+    after?: string | undefined;
+  };
 };
 
 export let mapDashboardInstanceNetworkPoliciesListOutput =

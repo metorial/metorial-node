@@ -24,7 +24,7 @@ import {
 
 /**
  * @name Skill Groups controller
- * @description Skill groups organize skills into reusable collections.
+ * @description A skill group is a reusable collection of skills.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -81,7 +81,7 @@ export class MetorialSkillsGroupsEndpoint {
 
   /**
    * @name Get skill group
-   * @description Retrieves a specific skill group.
+   * @description Retrieves a skill group.
    *
    * @param `skillGroupId` - string
    * @param `opts` - { headers?: Record<string, string> }
@@ -93,7 +93,7 @@ export class MetorialSkillsGroupsEndpoint {
     skillGroupId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsGroupsGetOutput> {
-    let path = `skill-groups/${skillGroupId}`;
+    let path = `skill-groups/${encodeURIComponent(skillGroupId)}`;
 
     let request = {
       path,
@@ -136,7 +136,7 @@ export class MetorialSkillsGroupsEndpoint {
 
   /**
    * @name Update skill group
-   * @description Updates a skill group.
+   * @description Updates a skill group. Omitted fields keep their current value.
    *
    * @param `skillGroupId` - string
    * @param `body` - DashboardInstanceSkillsGroupsUpdateBody
@@ -150,7 +150,7 @@ export class MetorialSkillsGroupsEndpoint {
     body: DashboardInstanceSkillsGroupsUpdateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsGroupsUpdateOutput> {
-    let path = `skill-groups/${skillGroupId}`;
+    let path = `skill-groups/${encodeURIComponent(skillGroupId)}`;
 
     let request = {
       path,
@@ -165,7 +165,7 @@ export class MetorialSkillsGroupsEndpoint {
   }
 
   /**
-   * @name Delete skill group
+   * @name Archive skill group
    * @description Archives a skill group.
    *
    * @param `skillGroupId` - string
@@ -178,7 +178,7 @@ export class MetorialSkillsGroupsEndpoint {
     skillGroupId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsGroupsDeleteOutput> {
-    let path = `skill-groups/${skillGroupId}`;
+    let path = `skill-groups/${encodeURIComponent(skillGroupId)}`;
 
     let request = {
       path,

@@ -38,7 +38,7 @@ import {
 
 /**
  * @name Skills controller
- * @description Skills group provider and integration capabilities into reusable, owned compositions.
+ * @description A skill is a reusable composition of provider and integration capabilities.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -93,7 +93,7 @@ export class MetorialSkillsEndpoint {
 
   /**
    * @name Get skill
-   * @description Retrieves a specific skill.
+   * @description Retrieves a skill.
    *
    * @param `skillId` - string
    * @param `opts` - { headers?: Record<string, string> }
@@ -105,7 +105,7 @@ export class MetorialSkillsEndpoint {
     skillId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsGetOutput> {
-    let path = `skills/${skillId}`;
+    let path = `skills/${encodeURIComponent(skillId)}`;
 
     let request = {
       path,
@@ -146,7 +146,7 @@ export class MetorialSkillsEndpoint {
 
   /**
    * @name Update skill
-   * @description Updates a specific skill.
+   * @description Updates a skill. Omitted fields keep their current value.
    *
    * @param `skillId` - string
    * @param `body` - DashboardInstanceSkillsUpdateBody
@@ -160,7 +160,7 @@ export class MetorialSkillsEndpoint {
     body: DashboardInstanceSkillsUpdateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsUpdateOutput> {
-    let path = `skills/${skillId}`;
+    let path = `skills/${encodeURIComponent(skillId)}`;
 
     let request = {
       path,
@@ -175,8 +175,8 @@ export class MetorialSkillsEndpoint {
   }
 
   /**
-   * @name Delete skill
-   * @description Archives a specific skill.
+   * @name Archive skill
+   * @description Archives a skill.
    *
    * @param `skillId` - string
    * @param `opts` - { headers?: Record<string, string> }
@@ -188,7 +188,7 @@ export class MetorialSkillsEndpoint {
     skillId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsDeleteOutput> {
-    let path = `skills/${skillId}`;
+    let path = `skills/${encodeURIComponent(skillId)}`;
 
     let request = {
       path,
@@ -217,7 +217,7 @@ export class MetorialSkillsEndpoint {
     body: DashboardInstanceSkillsForkBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsForkOutput> {
-    let path = `skills/${skillId}/fork`;
+    let path = `skills/${encodeURIComponent(skillId)}/fork`;
 
     let request = {
       path,
@@ -243,7 +243,7 @@ export class MetorialSkillsEndpoint {
     skillId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsPublishConsumerSkillOutput> {
-    let path = `skills/${skillId}/publish`;
+    let path = `skills/${encodeURIComponent(skillId)}/publish`;
 
     let request = {
       path,
@@ -258,7 +258,7 @@ export class MetorialSkillsEndpoint {
 
   /**
    * @name Share skill
-   * @description Shares a skill with consumers or organization members.
+   * @description Shares a skill with consumers.
    *
    * @param `skillId` - string
    * @param `body` - DashboardInstanceSkillsShareBody
@@ -272,7 +272,7 @@ export class MetorialSkillsEndpoint {
     body: DashboardInstanceSkillsShareBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsShareOutput> {
-    let path = `skills/${skillId}/shares`;
+    let path = `skills/${encodeURIComponent(skillId)}/shares`;
 
     let request = {
       path,
@@ -300,7 +300,7 @@ export class MetorialSkillsEndpoint {
     body: DashboardInstanceSkillsDuplicateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsDuplicateOutput> {
-    let path = `skills/${skillId}/duplicate`;
+    let path = `skills/${encodeURIComponent(skillId)}/duplicate`;
 
     let request = {
       path,

@@ -14,7 +14,7 @@ import {
 
 /**
  * @name Skill Participants controller
- * @description Inspect participants associated with an instance skill.
+ * @description A skill participant is a member or consumer participating in a skill.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -41,7 +41,7 @@ export class MetorialDashboardInstanceSkillsParticipantsEndpoint {
 
   /**
    * @name List skill participants
-   * @description Returns a paginated list of participants for a specific skill.
+   * @description Returns a paginated list of skill participants.
    *
    * @param `instanceId` - string
    * @param `skillId` - string
@@ -57,7 +57,7 @@ export class MetorialDashboardInstanceSkillsParticipantsEndpoint {
     query?: DashboardInstanceSkillsParticipantsListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsParticipantsListOutput> {
-    let path = `dashboard/instances/${instanceId}/skills/${skillId}/participants`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/skills/${encodeURIComponent(skillId)}/participants`;
 
     let request = {
       path,
@@ -74,8 +74,8 @@ export class MetorialDashboardInstanceSkillsParticipantsEndpoint {
   }
 
   /**
-   * @name Get skill participant by ID
-   * @description Retrieves a specific participant within a skill.
+   * @name Get skill participant
+   * @description Retrieves a skill participant.
    *
    * @param `instanceId` - string
    * @param `skillId` - string
@@ -91,7 +91,7 @@ export class MetorialDashboardInstanceSkillsParticipantsEndpoint {
     skillParticipantId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsParticipantsGetOutput> {
-    let path = `dashboard/instances/${instanceId}/skills/${skillId}/participants/${skillParticipantId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/skills/${encodeURIComponent(skillId)}/participants/${encodeURIComponent(skillParticipantId)}`;
 
     let request = {
       path,

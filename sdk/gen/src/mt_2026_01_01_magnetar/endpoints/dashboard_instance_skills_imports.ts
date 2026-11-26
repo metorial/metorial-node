@@ -18,7 +18,7 @@ import {
 
 /**
  * @name Skill Imports controller
- * @description Import skills from public repositories or uploaded files.
+ * @description A skill import is a queued import of skills from a repository or uploaded file.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -59,7 +59,7 @@ export class MetorialDashboardInstanceSkillsImportsEndpoint {
     query?: DashboardInstanceSkillsImportsListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsImportsListOutput> {
-    let path = `dashboard/instances/${instanceId}/skill-imports`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/skill-imports`;
 
     let request = {
       path,
@@ -77,7 +77,7 @@ export class MetorialDashboardInstanceSkillsImportsEndpoint {
 
   /**
    * @name Get skill import
-   * @description Retrieves an individual skill import and its results.
+   * @description Retrieves a skill import and its results.
    *
    * @param `instanceId` - string
    * @param `skillImportId` - string
@@ -91,7 +91,7 @@ export class MetorialDashboardInstanceSkillsImportsEndpoint {
     skillImportId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsImportsGetOutput> {
-    let path = `dashboard/instances/${instanceId}/skill-imports/${skillImportId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/skill-imports/${encodeURIComponent(skillImportId)}`;
 
     let request = {
       path,
@@ -120,7 +120,7 @@ export class MetorialDashboardInstanceSkillsImportsEndpoint {
     body: DashboardInstanceSkillsImportsCreateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsImportsCreateOutput> {
-    let path = `dashboard/instances/${instanceId}/skill-imports`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/skill-imports`;
 
     let request = {
       path,

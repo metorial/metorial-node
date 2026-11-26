@@ -18,7 +18,7 @@ import {
 
 /**
  * @name Provider Auth Exports controller
- * @description An auth export lets you extract OAuth tokens or credentials from Metorial to use in other systems, avoiding duplicate authentication flows.
+ * @description A provider auth export is a copy of authentication credentials taken out of Metorial for use in another system.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -59,7 +59,7 @@ export class MetorialDashboardInstanceProviderDeploymentsAuthConfigsExportsEndpo
     query?: DashboardInstanceProviderDeploymentsAuthConfigsExportsListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProviderDeploymentsAuthConfigsExportsListOutput> {
-    let path = `dashboard/instances/${instanceId}/provider-auth-config-exports`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/provider-auth-config-exports`;
 
     let request = {
       path,
@@ -93,7 +93,7 @@ export class MetorialDashboardInstanceProviderDeploymentsAuthConfigsExportsEndpo
     providerAuthExportId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProviderDeploymentsAuthConfigsExportsGetOutput> {
-    let path = `dashboard/instances/${instanceId}/provider-auth-config-exports/${providerAuthExportId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/provider-auth-config-exports/${encodeURIComponent(providerAuthExportId)}`;
 
     let request = {
       path,
@@ -108,7 +108,7 @@ export class MetorialDashboardInstanceProviderDeploymentsAuthConfigsExportsEndpo
 
   /**
    * @name Create provider auth export
-   * @description Exports authentication credentials from a provider.
+   * @description Exports the credentials of a provider auth config for use outside Metorial.
    *
    * @param `instanceId` - string
    * @param `body` - DashboardInstanceProviderDeploymentsAuthConfigsExportsCreateBody
@@ -122,7 +122,7 @@ export class MetorialDashboardInstanceProviderDeploymentsAuthConfigsExportsEndpo
     body: DashboardInstanceProviderDeploymentsAuthConfigsExportsCreateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProviderDeploymentsAuthConfigsExportsCreateOutput> {
-    let path = `dashboard/instances/${instanceId}/provider-auth-config-exports`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/provider-auth-config-exports`;
 
     let request = {
       path,

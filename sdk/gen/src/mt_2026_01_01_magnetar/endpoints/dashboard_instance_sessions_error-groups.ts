@@ -14,7 +14,7 @@ import {
 
 /**
  * @name Session Error Groups controller
- * @description Session error groups aggregate similar errors that occurred during a session. This read-only resource helps identify patterns in errors.
+ * @description A session error group is a set of similar session errors. Groups show how often each failure repeats.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -40,7 +40,7 @@ export class MetorialDashboardInstanceSessionsErrorGroupsEndpoint {
   }
 
   /**
-   * @name List all session error groups
+   * @name List session error groups
    * @description Returns a paginated list of error groups across all sessions.
    *
    * @param `instanceId` - string
@@ -55,7 +55,7 @@ export class MetorialDashboardInstanceSessionsErrorGroupsEndpoint {
     query?: DashboardInstanceSessionsErrorGroupsListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSessionsErrorGroupsListOutput> {
-    let path = `dashboard/instances/${instanceId}/session-error-groups`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/session-error-groups`;
 
     let request = {
       path,
@@ -73,7 +73,7 @@ export class MetorialDashboardInstanceSessionsErrorGroupsEndpoint {
 
   /**
    * @name Get session error group
-   * @description Retrieves a specific error group by ID across all sessions.
+   * @description Retrieves a session error group.
    *
    * @param `instanceId` - string
    * @param `sessionErrorGroupId` - string
@@ -87,7 +87,7 @@ export class MetorialDashboardInstanceSessionsErrorGroupsEndpoint {
     sessionErrorGroupId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSessionsErrorGroupsGetOutput> {
-    let path = `dashboard/instances/${instanceId}/session-error-groups/${sessionErrorGroupId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/session-error-groups/${encodeURIComponent(sessionErrorGroupId)}`;
 
     let request = {
       path,

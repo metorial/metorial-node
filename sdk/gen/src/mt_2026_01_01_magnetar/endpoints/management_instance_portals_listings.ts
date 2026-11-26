@@ -24,7 +24,7 @@ import {
 
 /**
  * @name Portal Listings controller
- * @description Read the shared listings available on a portal surface.
+ * @description A portal listing is the shared catalog entry for one integration, skill, or skill set on a portal. Access rules decide which consumer groups see it.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -67,7 +67,7 @@ export class MetorialManagementInstancePortalsListingsEndpoint {
     query?: DashboardInstancePortalsListingsListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstancePortalsListingsListOutput> {
-    let path = `instances/${instanceId}/portals/${portalId}/listings`;
+    let path = `instances/${encodeURIComponent(instanceId)}/portals/${encodeURIComponent(portalId)}/listings`;
 
     let request = {
       path,
@@ -85,7 +85,7 @@ export class MetorialManagementInstancePortalsListingsEndpoint {
 
   /**
    * @name Get portal listing
-   * @description Retrieves one shared listing for a portal.
+   * @description Retrieves a shared listing for a portal.
    *
    * @param `instanceId` - string
    * @param `portalId` - string
@@ -101,7 +101,7 @@ export class MetorialManagementInstancePortalsListingsEndpoint {
     listingId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstancePortalsListingsGetOutput> {
-    let path = `instances/${instanceId}/portals/${portalId}/listings/${listingId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/portals/${encodeURIComponent(portalId)}/listings/${encodeURIComponent(listingId)}`;
 
     let request = {
       path,
@@ -116,7 +116,7 @@ export class MetorialManagementInstancePortalsListingsEndpoint {
 
   /**
    * @name Create portal listing
-   * @description Creates a shared listing for a portal.
+   * @description Creates or updates the shared listing for one target on a portal. A portal has at most one listing per target.
    *
    * @param `instanceId` - string
    * @param `portalId` - string
@@ -132,7 +132,7 @@ export class MetorialManagementInstancePortalsListingsEndpoint {
     body: DashboardInstancePortalsListingsCreateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstancePortalsListingsCreateOutput> {
-    let path = `instances/${instanceId}/portals/${portalId}/listings`;
+    let path = `instances/${encodeURIComponent(instanceId)}/portals/${encodeURIComponent(portalId)}/listings`;
 
     let request = {
       path,
@@ -148,7 +148,7 @@ export class MetorialManagementInstancePortalsListingsEndpoint {
 
   /**
    * @name Update portal listing
-   * @description Updates listing metadata for a portal listing.
+   * @description Updates a portal listing. Omitted fields keep their current value.
    *
    * @param `instanceId` - string
    * @param `portalId` - string
@@ -166,7 +166,7 @@ export class MetorialManagementInstancePortalsListingsEndpoint {
     body: DashboardInstancePortalsListingsUpdateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstancePortalsListingsUpdateOutput> {
-    let path = `instances/${instanceId}/portals/${portalId}/listings/${listingId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/portals/${encodeURIComponent(portalId)}/listings/${encodeURIComponent(listingId)}`;
 
     let request = {
       path,
@@ -198,7 +198,7 @@ export class MetorialManagementInstancePortalsListingsEndpoint {
     listingId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstancePortalsListingsDeleteOutput> {
-    let path = `instances/${instanceId}/portals/${portalId}/listings/${listingId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/portals/${encodeURIComponent(portalId)}/listings/${encodeURIComponent(listingId)}`;
 
     let request = {
       path,

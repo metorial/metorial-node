@@ -10,7 +10,7 @@ import {
 
 /**
  * @name Skill Access controller
- * @description Inspect who has been granted access to an instance skill.
+ * @description Skill access is the record of who can view or edit a skill.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -37,7 +37,7 @@ export class MetorialDashboardInstanceSkillsAccessEndpoint {
 
   /**
    * @name Get skill access
-   * @description Returns the access grants of a specific skill.
+   * @description Returns the access grants for a skill.
    *
    * @param `instanceId` - string
    * @param `skillId` - string
@@ -51,7 +51,7 @@ export class MetorialDashboardInstanceSkillsAccessEndpoint {
     skillId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsAccessGetOutput> {
-    let path = `dashboard/instances/${instanceId}/skills/${skillId}/access`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/skills/${encodeURIComponent(skillId)}/access`;
 
     let request = {
       path,

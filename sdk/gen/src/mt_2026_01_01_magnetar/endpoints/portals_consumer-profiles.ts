@@ -28,7 +28,7 @@ import {
 
 /**
  * @name Portal Consumer Profiles controller
- * @description Manage the consumers and effective group assignments for a portal.
+ * @description A portal consumer profile is the identity of one person on a portal. Group assignments decide what the consumer can access.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -69,7 +69,7 @@ export class MetorialPortalsConsumerProfilesEndpoint {
     query?: DashboardInstancePortalsConsumerProfilesListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstancePortalsConsumerProfilesListOutput> {
-    let path = `portals/${portalId}/consumer-profile`;
+    let path = `portals/${encodeURIComponent(portalId)}/consumer-profile`;
 
     let request = {
       path,
@@ -89,7 +89,7 @@ export class MetorialPortalsConsumerProfilesEndpoint {
 
   /**
    * @name Get portal consumer profile
-   * @description Retrieves a portal consumer profile by ID.
+   * @description Retrieves a portal consumer profile.
    *
    * @param `portalId` - string
    * @param `consumerProfileId` - string
@@ -103,7 +103,7 @@ export class MetorialPortalsConsumerProfilesEndpoint {
     consumerProfileId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstancePortalsConsumerProfilesGetOutput> {
-    let path = `portals/${portalId}/consumer-profile/${consumerProfileId}`;
+    let path = `portals/${encodeURIComponent(portalId)}/consumer-profile/${encodeURIComponent(consumerProfileId)}`;
 
     let request = {
       path,
@@ -118,7 +118,7 @@ export class MetorialPortalsConsumerProfilesEndpoint {
 
   /**
    * @name Create portal consumer profile
-   * @description Creates a new portal consumer profile.
+   * @description Creates a portal consumer profile.
    *
    * @param `portalId` - string
    * @param `body` - DashboardInstancePortalsConsumerProfilesCreateBody
@@ -132,7 +132,7 @@ export class MetorialPortalsConsumerProfilesEndpoint {
     body: DashboardInstancePortalsConsumerProfilesCreateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstancePortalsConsumerProfilesCreateOutput> {
-    let path = `portals/${portalId}/consumer-profile`;
+    let path = `portals/${encodeURIComponent(portalId)}/consumer-profile`;
 
     let request = {
       path,
@@ -164,7 +164,7 @@ export class MetorialPortalsConsumerProfilesEndpoint {
     consumerProfileId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstancePortalsConsumerProfilesDeleteOutput> {
-    let path = `portals/${portalId}/consumer-profile/${consumerProfileId}`;
+    let path = `portals/${encodeURIComponent(portalId)}/consumer-profile/${encodeURIComponent(consumerProfileId)}`;
 
     let request = {
       path,
@@ -195,7 +195,7 @@ export class MetorialPortalsConsumerProfilesEndpoint {
     body: DashboardInstancePortalsConsumerProfilesAssignGroupsBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstancePortalsConsumerProfilesAssignGroupsOutput> {
-    let path = `portals/${portalId}/consumer-profile/${consumerProfileId}/assign-groups`;
+    let path = `portals/${encodeURIComponent(portalId)}/consumer-profile/${encodeURIComponent(consumerProfileId)}/assign-groups`;
 
     let request = {
       path,
@@ -229,7 +229,7 @@ export class MetorialPortalsConsumerProfilesEndpoint {
     body: DashboardInstancePortalsConsumerProfilesUnassignGroupsBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstancePortalsConsumerProfilesUnassignGroupsOutput> {
-    let path = `portals/${portalId}/consumer-profile/${consumerProfileId}/unassign-groups`;
+    let path = `portals/${encodeURIComponent(portalId)}/consumer-profile/${encodeURIComponent(consumerProfileId)}/unassign-groups`;
 
     let request = {
       path,

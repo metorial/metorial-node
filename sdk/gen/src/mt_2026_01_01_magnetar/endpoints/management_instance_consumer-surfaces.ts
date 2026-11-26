@@ -14,7 +14,7 @@ import {
 
 /**
  * @name Consumer Surfaces controller
- * @description List and retrieve consumer surfaces for an instance.
+ * @description A consumer surface is a portal, member directory, or CLI entry point consumers sign in through.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -41,7 +41,7 @@ export class MetorialManagementInstanceConsumerSurfacesEndpoint {
 
   /**
    * @name List consumer surfaces
-   * @description Returns a paginated list of consumer surfaces for an instance.
+   * @description Returns a paginated list of consumer surfaces.
    *
    * @param `instanceId` - string
    * @param `query` - DashboardInstanceConsumerSurfacesListQuery
@@ -55,7 +55,7 @@ export class MetorialManagementInstanceConsumerSurfacesEndpoint {
     query?: DashboardInstanceConsumerSurfacesListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceConsumerSurfacesListOutput> {
-    let path = `instances/${instanceId}/consumer-surfaces`;
+    let path = `instances/${encodeURIComponent(instanceId)}/consumer-surfaces`;
 
     let request = {
       path,
@@ -73,7 +73,7 @@ export class MetorialManagementInstanceConsumerSurfacesEndpoint {
 
   /**
    * @name Get consumer surface
-   * @description Retrieves a consumer surface by ID.
+   * @description Retrieves a consumer surface.
    *
    * @param `instanceId` - string
    * @param `consumerSurfaceId` - string
@@ -87,7 +87,7 @@ export class MetorialManagementInstanceConsumerSurfacesEndpoint {
     consumerSurfaceId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceConsumerSurfacesGetOutput> {
-    let path = `instances/${instanceId}/consumer-surfaces/${consumerSurfaceId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/consumer-surfaces/${encodeURIComponent(consumerSurfaceId)}`;
 
     let request = {
       path,

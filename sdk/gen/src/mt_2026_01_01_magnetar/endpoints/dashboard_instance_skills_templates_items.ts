@@ -20,7 +20,7 @@ import {
 
 /**
  * @name Skill Template Items controller
- * @description Skill template items link template definitions to provider and integration items.
+ * @description A skill template item is a provider or integration attached to a skill template.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -47,7 +47,7 @@ export class MetorialDashboardInstanceSkillsTemplatesItemsEndpoint {
 
   /**
    * @name List skill template items
-   * @description Returns a paginated list of items for a skill template.
+   * @description Returns a paginated list of skill template items.
    *
    * @param `instanceId` - string
    * @param `skillTemplateId` - string
@@ -63,7 +63,7 @@ export class MetorialDashboardInstanceSkillsTemplatesItemsEndpoint {
     query?: DashboardInstanceSkillsTemplatesItemsListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsTemplatesItemsListOutput> {
-    let path = `dashboard/instances/${instanceId}/skill-templates/${skillTemplateId}/items`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/skill-templates/${encodeURIComponent(skillTemplateId)}/items`;
 
     let request = {
       path,
@@ -81,7 +81,7 @@ export class MetorialDashboardInstanceSkillsTemplatesItemsEndpoint {
 
   /**
    * @name Get skill template item
-   * @description Retrieves a specific skill template item.
+   * @description Retrieves a skill template item.
    *
    * @param `instanceId` - string
    * @param `skillTemplateId` - string
@@ -97,7 +97,7 @@ export class MetorialDashboardInstanceSkillsTemplatesItemsEndpoint {
     skillTemplateItemId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsTemplatesItemsGetOutput> {
-    let path = `dashboard/instances/${instanceId}/skill-templates/${skillTemplateId}/items/${skillTemplateItemId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/skill-templates/${encodeURIComponent(skillTemplateId)}/items/${encodeURIComponent(skillTemplateItemId)}`;
 
     let request = {
       path,
@@ -128,7 +128,7 @@ export class MetorialDashboardInstanceSkillsTemplatesItemsEndpoint {
     body: DashboardInstanceSkillsTemplatesItemsCreateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsTemplatesItemsCreateOutput> {
-    let path = `dashboard/instances/${instanceId}/skill-templates/${skillTemplateId}/items`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/skill-templates/${encodeURIComponent(skillTemplateId)}/items`;
 
     let request = {
       path,
@@ -162,7 +162,7 @@ export class MetorialDashboardInstanceSkillsTemplatesItemsEndpoint {
     skillTemplateItemId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsTemplatesItemsDeleteOutput> {
-    let path = `dashboard/instances/${instanceId}/skill-templates/${skillTemplateId}/items/${skillTemplateItemId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/skill-templates/${encodeURIComponent(skillTemplateId)}/items/${encodeURIComponent(skillTemplateItemId)}`;
 
     let request = {
       path,

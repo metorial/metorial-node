@@ -18,7 +18,7 @@ import {
 
 /**
  * @name Integration Instance Providers controller
- * @description Integration instance providers resolve the effective per-instance provider materialization for an integration.
+ * @description An integration instance provider binds one provider of an integration instance to the deployment, config, credentials, and tool filters it runs with.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -59,7 +59,7 @@ export class MetorialManagementInstanceIntegrationsInstancesProvidersEndpoint {
     query?: DashboardInstanceIntegrationsInstancesProvidersListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIntegrationsInstancesProvidersListOutput> {
-    let path = `instances/${instanceId}/integration-instance-providers`;
+    let path = `instances/${encodeURIComponent(instanceId)}/integration-instance-providers`;
 
     let request = {
       path,
@@ -79,7 +79,7 @@ export class MetorialManagementInstanceIntegrationsInstancesProvidersEndpoint {
 
   /**
    * @name Get integration instance provider
-   * @description Retrieves a specific integration instance provider.
+   * @description Retrieves an integration instance provider.
    *
    * @param `instanceId` - string
    * @param `integrationInstanceProviderId` - string
@@ -93,7 +93,7 @@ export class MetorialManagementInstanceIntegrationsInstancesProvidersEndpoint {
     integrationInstanceProviderId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIntegrationsInstancesProvidersGetOutput> {
-    let path = `instances/${instanceId}/integration-instance-providers/${integrationInstanceProviderId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/integration-instance-providers/${encodeURIComponent(integrationInstanceProviderId)}`;
 
     let request = {
       path,
@@ -108,7 +108,7 @@ export class MetorialManagementInstanceIntegrationsInstancesProvidersEndpoint {
 
   /**
    * @name Set integration instance provider
-   * @description Creates or updates the effective integration instance provider materialization.
+   * @description Sets the deployment, config, credentials, and tool filters one provider of an integration instance runs with. Creates the entry when none exists, otherwise updates it.
    *
    * @param `instanceId` - string
    * @param `integrationInstanceId` - string
@@ -126,7 +126,7 @@ export class MetorialManagementInstanceIntegrationsInstancesProvidersEndpoint {
     body: DashboardInstanceIntegrationsInstancesProvidersSetBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIntegrationsInstancesProvidersSetOutput> {
-    let path = `instances/${instanceId}/integration-instances/${integrationInstanceId}/providers/${providerId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/integration-instances/${encodeURIComponent(integrationInstanceId)}/providers/${encodeURIComponent(providerId)}`;
 
     let request = {
       path,

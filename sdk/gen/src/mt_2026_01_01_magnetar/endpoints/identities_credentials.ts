@@ -24,7 +24,7 @@ import {
 
 /**
  * @name Identity Credentials controller
- * @description Identity credentials bind an identity to concrete provider deployment, config, and auth resources.
+ * @description An identity credential is one provider attachment on an identity. It links the identity to a provider deployment, config, or auth config.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -81,7 +81,7 @@ export class MetorialIdentitiesCredentialsEndpoint {
 
   /**
    * @name Get identity credential
-   * @description Retrieves a specific identity credential by ID.
+   * @description Retrieves an identity credential.
    *
    * @param `identityCredentialId` - string
    * @param `opts` - { headers?: Record<string, string> }
@@ -93,7 +93,7 @@ export class MetorialIdentitiesCredentialsEndpoint {
     identityCredentialId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIdentitiesCredentialsGetOutput> {
-    let path = `identity-credentials/${identityCredentialId}`;
+    let path = `identity-credentials/${encodeURIComponent(identityCredentialId)}`;
 
     let request = {
       path,
@@ -108,7 +108,7 @@ export class MetorialIdentitiesCredentialsEndpoint {
 
   /**
    * @name Create identity credential
-   * @description Creates a new credential and attaches it to an identity.
+   * @description Creates an identity credential.
    *
    * @param `body` - DashboardInstanceIdentitiesCredentialsCreateBody
    * @param `opts` - { headers?: Record<string, string> }
@@ -152,7 +152,7 @@ export class MetorialIdentitiesCredentialsEndpoint {
     body: DashboardInstanceIdentitiesCredentialsUpdateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIdentitiesCredentialsUpdateOutput> {
-    let path = `identity-credentials/${identityCredentialId}`;
+    let path = `identity-credentials/${encodeURIComponent(identityCredentialId)}`;
 
     let request = {
       path,
@@ -169,8 +169,8 @@ export class MetorialIdentitiesCredentialsEndpoint {
   }
 
   /**
-   * @name Delete identity credential
-   * @description Archives an identity credential.
+   * @name Archive identity credential
+   * @description Archives an identity credential. It stays listable with `status=archived`.
    *
    * @param `identityCredentialId` - string
    * @param `opts` - { headers?: Record<string, string> }
@@ -182,7 +182,7 @@ export class MetorialIdentitiesCredentialsEndpoint {
     identityCredentialId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIdentitiesCredentialsDeleteOutput> {
-    let path = `identity-credentials/${identityCredentialId}`;
+    let path = `identity-credentials/${encodeURIComponent(identityCredentialId)}`;
 
     let request = {
       path,

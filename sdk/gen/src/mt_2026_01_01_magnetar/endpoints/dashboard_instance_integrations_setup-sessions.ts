@@ -18,7 +18,7 @@ import {
 
 /**
  * @name Integration Setup Sessions controller
- * @description Integration setup sessions orchestrate configuring every provider required by an integration instance.
+ * @description An integration setup session is a shareable flow that connects each provider an integration instance needs. It creates a draft instance unless you pass one, and expires 30 minutes after creation unless `expires_at` is set.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -59,7 +59,7 @@ export class MetorialDashboardInstanceIntegrationsSetupSessionsEndpoint {
     query?: DashboardInstanceIntegrationsSetupSessionsListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIntegrationsSetupSessionsListOutput> {
-    let path = `dashboard/instances/${instanceId}/integration-setup-sessions`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/integration-setup-sessions`;
 
     let request = {
       path,
@@ -79,7 +79,7 @@ export class MetorialDashboardInstanceIntegrationsSetupSessionsEndpoint {
 
   /**
    * @name Get integration setup session
-   * @description Retrieves a specific integration setup session.
+   * @description Retrieves an integration setup session.
    *
    * @param `instanceId` - string
    * @param `integrationSetupSessionId` - string
@@ -93,7 +93,7 @@ export class MetorialDashboardInstanceIntegrationsSetupSessionsEndpoint {
     integrationSetupSessionId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIntegrationsSetupSessionsGetOutput> {
-    let path = `dashboard/instances/${instanceId}/integration-setup-sessions/${integrationSetupSessionId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/integration-setup-sessions/${encodeURIComponent(integrationSetupSessionId)}`;
 
     let request = {
       path,
@@ -108,7 +108,7 @@ export class MetorialDashboardInstanceIntegrationsSetupSessionsEndpoint {
 
   /**
    * @name Create integration setup session
-   * @description Creates a new integration setup session. Creates a draft integration instance unless integration_instance_id is given, in which case that instance is reused and its config and auth config are overwritten on completion.
+   * @description Creates an integration setup session. Creates a draft integration instance unless `integration_instance_id` is given, in which case that instance is reused and its providers are configured on completion.
    *
    * @param `instanceId` - string
    * @param `body` - DashboardInstanceIntegrationsSetupSessionsCreateBody
@@ -122,7 +122,7 @@ export class MetorialDashboardInstanceIntegrationsSetupSessionsEndpoint {
     body: DashboardInstanceIntegrationsSetupSessionsCreateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIntegrationsSetupSessionsCreateOutput> {
-    let path = `dashboard/instances/${instanceId}/integration-setup-sessions`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/integration-setup-sessions`;
 
     let request = {
       path,

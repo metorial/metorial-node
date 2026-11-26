@@ -18,7 +18,7 @@ import {
 
 /**
  * @name Portal Consumer Invites controller
- * @description List and inspect consumer invites for a portal.
+ * @description A portal consumer invite is an email invitation for one person to join a portal.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -45,7 +45,7 @@ export class MetorialManagementInstancePortalsConsumerInvitesEndpoint {
 
   /**
    * @name List portal consumer invites
-   * @description Returns a paginated list of invites for a portal.
+   * @description Returns a paginated list of consumer invites for a portal.
    *
    * @param `instanceId` - string
    * @param `portalId` - string
@@ -61,7 +61,7 @@ export class MetorialManagementInstancePortalsConsumerInvitesEndpoint {
     query?: DashboardInstancePortalsConsumerInvitesListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstancePortalsConsumerInvitesListOutput> {
-    let path = `instances/${instanceId}/portals/${portalId}/consumer-invites`;
+    let path = `instances/${encodeURIComponent(instanceId)}/portals/${encodeURIComponent(portalId)}/consumer-invites`;
 
     let request = {
       path,
@@ -95,7 +95,7 @@ export class MetorialManagementInstancePortalsConsumerInvitesEndpoint {
     body: DashboardInstancePortalsConsumerInvitesCreateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstancePortalsConsumerInvitesCreateOutput> {
-    let path = `instances/${instanceId}/portals/${portalId}/consumer-invites`;
+    let path = `instances/${encodeURIComponent(instanceId)}/portals/${encodeURIComponent(portalId)}/consumer-invites`;
 
     let request = {
       path,
@@ -113,7 +113,7 @@ export class MetorialManagementInstancePortalsConsumerInvitesEndpoint {
 
   /**
    * @name Get portal consumer invite
-   * @description Retrieves a portal consumer invite by ID.
+   * @description Retrieves a portal consumer invite.
    *
    * @param `instanceId` - string
    * @param `portalId` - string
@@ -129,7 +129,7 @@ export class MetorialManagementInstancePortalsConsumerInvitesEndpoint {
     consumerInviteId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstancePortalsConsumerInvitesGetOutput> {
-    let path = `instances/${instanceId}/portals/${portalId}/consumer-invites/${consumerInviteId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/portals/${encodeURIComponent(portalId)}/consumer-invites/${encodeURIComponent(consumerInviteId)}`;
 
     let request = {
       path,

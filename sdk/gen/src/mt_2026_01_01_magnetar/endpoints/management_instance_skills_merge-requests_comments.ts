@@ -24,7 +24,7 @@ import {
 
 /**
  * @name Skill Merge Request Comments controller
- * @description Discuss skill merge requests and individual proposed changes.
+ * @description A skill merge request comment is a comment on a merge request or one of its proposed changes.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -51,7 +51,7 @@ export class MetorialManagementInstanceSkillsMergeRequestsCommentsEndpoint {
 
   /**
    * @name List skill merge request comments
-   * @description Lists comments on a skill merge request or one of its items.
+   * @description Returns a paginated list of skill merge request comments.
    *
    * @param `instanceId` - string
    * @param `skillMergeRequestId` - string
@@ -67,7 +67,7 @@ export class MetorialManagementInstanceSkillsMergeRequestsCommentsEndpoint {
     query?: DashboardInstanceSkillsMergeRequestsCommentsListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsMergeRequestsCommentsListOutput> {
-    let path = `instances/${instanceId}/skill-merge-requests/${skillMergeRequestId}/comments`;
+    let path = `instances/${encodeURIComponent(instanceId)}/skill-merge-requests/${encodeURIComponent(skillMergeRequestId)}/comments`;
 
     let request = {
       path,
@@ -87,7 +87,7 @@ export class MetorialManagementInstanceSkillsMergeRequestsCommentsEndpoint {
 
   /**
    * @name Create skill merge request comment
-   * @description Adds a comment to a skill merge request or one of its items.
+   * @description Creates a comment on a skill merge request or one of its items.
    *
    * @param `instanceId` - string
    * @param `skillMergeRequestId` - string
@@ -103,7 +103,7 @@ export class MetorialManagementInstanceSkillsMergeRequestsCommentsEndpoint {
     body: DashboardInstanceSkillsMergeRequestsCommentsCreateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsMergeRequestsCommentsCreateOutput> {
-    let path = `instances/${instanceId}/skill-merge-requests/${skillMergeRequestId}/comments`;
+    let path = `instances/${encodeURIComponent(instanceId)}/skill-merge-requests/${encodeURIComponent(skillMergeRequestId)}/comments`;
 
     let request = {
       path,
@@ -137,7 +137,7 @@ export class MetorialManagementInstanceSkillsMergeRequestsCommentsEndpoint {
     commentId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsMergeRequestsCommentsGetOutput> {
-    let path = `instances/${instanceId}/skill-merge-requests/${skillMergeRequestId}/comments/${commentId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/skill-merge-requests/${encodeURIComponent(skillMergeRequestId)}/comments/${encodeURIComponent(commentId)}`;
 
     let request = {
       path,
@@ -170,7 +170,7 @@ export class MetorialManagementInstanceSkillsMergeRequestsCommentsEndpoint {
     body: DashboardInstanceSkillsMergeRequestsCommentsUpdateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsMergeRequestsCommentsUpdateOutput> {
-    let path = `instances/${instanceId}/skill-merge-requests/${skillMergeRequestId}/comments/${commentId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/skill-merge-requests/${encodeURIComponent(skillMergeRequestId)}/comments/${encodeURIComponent(commentId)}`;
 
     let request = {
       path,
@@ -204,7 +204,7 @@ export class MetorialManagementInstanceSkillsMergeRequestsCommentsEndpoint {
     commentId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsMergeRequestsCommentsDeleteOutput> {
-    let path = `instances/${instanceId}/skill-merge-requests/${skillMergeRequestId}/comments/${commentId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/skill-merge-requests/${encodeURIComponent(skillMergeRequestId)}/comments/${encodeURIComponent(commentId)}`;
 
     let request = {
       path,

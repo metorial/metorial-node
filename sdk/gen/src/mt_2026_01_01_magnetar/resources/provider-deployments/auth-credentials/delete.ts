@@ -7,6 +7,7 @@ export type ProviderDeploymentsAuthCredentialsDeleteOutput = {
   status: 'active' | 'archived' | 'deleted';
   isDefault: boolean;
   isManaged: boolean;
+  managedBy: 'metorial' | 'installation' | null;
   name: string | null;
   description: string | null;
   metadata: Record<string, any> | null;
@@ -18,6 +19,13 @@ export type ProviderDeploymentsAuthCredentialsDeleteOutput = {
 
 export let mapProviderDeploymentsAuthCredentialsDeleteOutput =
   /* @__PURE__ */ mapObject<ProviderDeploymentsAuthCredentialsDeleteOutput>(
-    ['is_default', 'is_managed', 'provider_id', 'created_at', 'updated_at'],
+    [
+      'is_default',
+      'is_managed',
+      'managed_by',
+      'provider_id',
+      'created_at',
+      'updated_at'
+    ],
     1
   );

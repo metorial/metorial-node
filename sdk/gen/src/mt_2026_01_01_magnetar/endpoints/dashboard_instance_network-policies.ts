@@ -24,7 +24,7 @@ import {
 
 /**
  * @name Network Policies controller
- * @description Manage reusable network policy definitions and their rules.
+ * @description A network policy is a reusable set of allow and deny rules. Firewalls attach policies to enforce them.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -51,7 +51,7 @@ export class MetorialDashboardInstanceNetworkPoliciesEndpoint {
 
   /**
    * @name List network policies
-   * @description Returns a paginated list of network policies.
+   * @description Returns a paginated list of network policies in the instance.
    *
    * @param `instanceId` - string
    * @param `query` - DashboardInstanceNetworkPoliciesListQuery
@@ -65,7 +65,7 @@ export class MetorialDashboardInstanceNetworkPoliciesEndpoint {
     query?: DashboardInstanceNetworkPoliciesListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceNetworkPoliciesListOutput> {
-    let path = `dashboard/instances/${instanceId}/network-policies`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/network-policies`;
 
     let request = {
       path,
@@ -83,7 +83,7 @@ export class MetorialDashboardInstanceNetworkPoliciesEndpoint {
 
   /**
    * @name Get network policy
-   * @description Retrieves a specific network policy by ID.
+   * @description Retrieves a network policy.
    *
    * @param `instanceId` - string
    * @param `networkPolicyId` - string
@@ -97,7 +97,7 @@ export class MetorialDashboardInstanceNetworkPoliciesEndpoint {
     networkPolicyId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceNetworkPoliciesGetOutput> {
-    let path = `dashboard/instances/${instanceId}/network-policies/${networkPolicyId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/network-policies/${encodeURIComponent(networkPolicyId)}`;
 
     let request = {
       path,
@@ -112,7 +112,7 @@ export class MetorialDashboardInstanceNetworkPoliciesEndpoint {
 
   /**
    * @name Create network policy
-   * @description Creates a new network policy.
+   * @description Creates a network policy.
    *
    * @param `instanceId` - string
    * @param `body` - DashboardInstanceNetworkPoliciesCreateBody
@@ -126,7 +126,7 @@ export class MetorialDashboardInstanceNetworkPoliciesEndpoint {
     body: DashboardInstanceNetworkPoliciesCreateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceNetworkPoliciesCreateOutput> {
-    let path = `dashboard/instances/${instanceId}/network-policies`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/network-policies`;
 
     let request = {
       path,
@@ -142,7 +142,7 @@ export class MetorialDashboardInstanceNetworkPoliciesEndpoint {
 
   /**
    * @name Update network policy
-   * @description Updates a network policy definition.
+   * @description Updates a network policy. Omitted fields keep their current value.
    *
    * @param `instanceId` - string
    * @param `networkPolicyId` - string
@@ -158,7 +158,7 @@ export class MetorialDashboardInstanceNetworkPoliciesEndpoint {
     body: DashboardInstanceNetworkPoliciesUpdateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceNetworkPoliciesUpdateOutput> {
-    let path = `dashboard/instances/${instanceId}/network-policies/${networkPolicyId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/network-policies/${encodeURIComponent(networkPolicyId)}`;
 
     let request = {
       path,
@@ -173,8 +173,8 @@ export class MetorialDashboardInstanceNetworkPoliciesEndpoint {
   }
 
   /**
-   * @name Delete network policy
-   * @description Archives a network policy.
+   * @name Archive network policy
+   * @description Archives a network policy. It stays listable with `status=archived`.
    *
    * @param `instanceId` - string
    * @param `networkPolicyId` - string
@@ -188,7 +188,7 @@ export class MetorialDashboardInstanceNetworkPoliciesEndpoint {
     networkPolicyId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceNetworkPoliciesDeleteOutput> {
-    let path = `dashboard/instances/${instanceId}/network-policies/${networkPolicyId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/network-policies/${encodeURIComponent(networkPolicyId)}`;
 
     let request = {
       path,

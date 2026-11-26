@@ -1,6 +1,7 @@
 import { createMapper } from '@metorial/util-resource-mapper/compact';
 
 export type ProviderDeploymentsSetupSessionsEmailsListOutput = {
+  object: 'list';
   items: {
     object: 'provider.setup_session.email';
     id: string;
@@ -10,7 +11,12 @@ export type ProviderDeploymentsSetupSessionsEmailsListOutput = {
     organizationMemberId: string | null;
     createdAt: Date;
   }[];
-  pagination: { hasMoreBefore: boolean; hasMoreAfter: boolean };
+  pagination: {
+    hasMoreBefore: boolean;
+    hasMoreAfter: boolean;
+    before?: string | undefined;
+    after?: string | undefined;
+  };
 };
 
 export let mapProviderDeploymentsSetupSessionsEmailsListOutput =

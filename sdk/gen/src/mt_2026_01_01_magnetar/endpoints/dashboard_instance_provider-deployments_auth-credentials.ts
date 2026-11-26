@@ -24,7 +24,7 @@ import {
 
 /**
  * @name Provider Auth Credentials controller
- * @description Auth credentials store your OAuth app registration (client ID, client secret, and scopes). These are the app-level credentials you get from a service like GitHub or Slack.
+ * @description Provider auth credentials are an OAuth app registration used with a provider: a client ID, a client secret, and scopes.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -65,7 +65,7 @@ export class MetorialDashboardInstanceProviderDeploymentsAuthCredentialsEndpoint
     query?: DashboardInstanceProviderDeploymentsAuthCredentialsListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProviderDeploymentsAuthCredentialsListOutput> {
-    let path = `dashboard/instances/${instanceId}/provider-auth-credentials`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/provider-auth-credentials`;
 
     let request = {
       path,
@@ -85,7 +85,7 @@ export class MetorialDashboardInstanceProviderDeploymentsAuthCredentialsEndpoint
 
   /**
    * @name Get provider auth credentials
-   * @description Retrieves specific provider auth credentials by ID.
+   * @description Retrieves provider auth credentials.
    *
    * @param `instanceId` - string
    * @param `providerAuthCredentialsId` - string
@@ -99,7 +99,7 @@ export class MetorialDashboardInstanceProviderDeploymentsAuthCredentialsEndpoint
     providerAuthCredentialsId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProviderDeploymentsAuthCredentialsGetOutput> {
-    let path = `dashboard/instances/${instanceId}/provider-auth-credentials/${providerAuthCredentialsId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/provider-auth-credentials/${encodeURIComponent(providerAuthCredentialsId)}`;
 
     let request = {
       path,
@@ -114,7 +114,7 @@ export class MetorialDashboardInstanceProviderDeploymentsAuthCredentialsEndpoint
 
   /**
    * @name Create provider auth credentials
-   * @description Creates new provider auth credentials.
+   * @description Creates provider auth credentials.
    *
    * @param `instanceId` - string
    * @param `body` - DashboardInstanceProviderDeploymentsAuthCredentialsCreateBody
@@ -128,7 +128,7 @@ export class MetorialDashboardInstanceProviderDeploymentsAuthCredentialsEndpoint
     body: DashboardInstanceProviderDeploymentsAuthCredentialsCreateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProviderDeploymentsAuthCredentialsCreateOutput> {
-    let path = `dashboard/instances/${instanceId}/provider-auth-credentials`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/provider-auth-credentials`;
 
     let request = {
       path,
@@ -146,7 +146,7 @@ export class MetorialDashboardInstanceProviderDeploymentsAuthCredentialsEndpoint
 
   /**
    * @name Update provider auth credentials
-   * @description Updates specific provider auth credentials.
+   * @description Updates provider auth credentials.
    *
    * @param `instanceId` - string
    * @param `providerAuthCredentialsId` - string
@@ -162,7 +162,7 @@ export class MetorialDashboardInstanceProviderDeploymentsAuthCredentialsEndpoint
     body: DashboardInstanceProviderDeploymentsAuthCredentialsUpdateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProviderDeploymentsAuthCredentialsUpdateOutput> {
-    let path = `dashboard/instances/${instanceId}/provider-auth-credentials/${providerAuthCredentialsId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/provider-auth-credentials/${encodeURIComponent(providerAuthCredentialsId)}`;
 
     let request = {
       path,
@@ -179,8 +179,8 @@ export class MetorialDashboardInstanceProviderDeploymentsAuthCredentialsEndpoint
   }
 
   /**
-   * @name Delete provider auth credentials
-   * @description Permanently deletes provider auth credentials.
+   * @name Archive provider auth credentials
+   * @description Archives provider auth credentials. They stay listable with `status=archived`.
    *
    * @param `instanceId` - string
    * @param `providerAuthCredentialsId` - string
@@ -194,7 +194,7 @@ export class MetorialDashboardInstanceProviderDeploymentsAuthCredentialsEndpoint
     providerAuthCredentialsId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProviderDeploymentsAuthCredentialsDeleteOutput> {
-    let path = `dashboard/instances/${instanceId}/provider-auth-credentials/${providerAuthCredentialsId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/provider-auth-credentials/${encodeURIComponent(providerAuthCredentialsId)}`;
 
     let request = {
       path,

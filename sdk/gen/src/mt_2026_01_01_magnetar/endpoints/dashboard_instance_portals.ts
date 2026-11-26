@@ -24,7 +24,7 @@ import {
 
 /**
  * @name Portal controller
- * @description Use Portals to create custom branded MCP server marketplaces for your organization.
+ * @description A portal is a branded catalog of integrations and skills for your consumers. Each portal has its own consumers, groups, and access rules.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -65,7 +65,7 @@ export class MetorialDashboardInstancePortalsEndpoint {
     query?: DashboardInstancePortalsListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstancePortalsListOutput> {
-    let path = `dashboard/instances/${instanceId}/portals`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/portals`;
 
     let request = {
       path,
@@ -81,7 +81,7 @@ export class MetorialDashboardInstancePortalsEndpoint {
 
   /**
    * @name Get portal
-   * @description Retrieves details for a specific portal.
+   * @description Retrieves a portal.
    *
    * @param `instanceId` - string
    * @param `portalId` - string
@@ -95,7 +95,7 @@ export class MetorialDashboardInstancePortalsEndpoint {
     portalId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstancePortalsGetOutput> {
-    let path = `dashboard/instances/${instanceId}/portals/${portalId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/portals/${encodeURIComponent(portalId)}`;
 
     let request = {
       path,
@@ -108,7 +108,7 @@ export class MetorialDashboardInstancePortalsEndpoint {
 
   /**
    * @name Create portal
-   * @description Creates a new portal for the instance.
+   * @description Creates a portal.
    *
    * @param `instanceId` - string
    * @param `body` - DashboardInstancePortalsCreateBody
@@ -122,7 +122,7 @@ export class MetorialDashboardInstancePortalsEndpoint {
     body: DashboardInstancePortalsCreateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstancePortalsCreateOutput> {
-    let path = `dashboard/instances/${instanceId}/portals`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/portals`;
 
     let request = {
       path,
@@ -138,7 +138,7 @@ export class MetorialDashboardInstancePortalsEndpoint {
 
   /**
    * @name Update portal
-   * @description Updates an existing portal for the instance.
+   * @description Updates a portal. Omitted fields keep their current value.
    *
    * @param `instanceId` - string
    * @param `portalId` - string
@@ -154,7 +154,7 @@ export class MetorialDashboardInstancePortalsEndpoint {
     body: DashboardInstancePortalsUpdateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstancePortalsUpdateOutput> {
-    let path = `dashboard/instances/${instanceId}/portals/${portalId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/portals/${encodeURIComponent(portalId)}`;
 
     let request = {
       path,
@@ -169,7 +169,7 @@ export class MetorialDashboardInstancePortalsEndpoint {
   }
 
   /**
-   * @name Delete portal
+   * @name Archive portal
    * @description Archives a portal.
    *
    * @param `instanceId` - string
@@ -184,7 +184,7 @@ export class MetorialDashboardInstancePortalsEndpoint {
     portalId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstancePortalsDeleteOutput> {
-    let path = `dashboard/instances/${instanceId}/portals/${portalId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/portals/${encodeURIComponent(portalId)}`;
 
     let request = {
       path,

@@ -14,7 +14,7 @@ import {
 
 /**
  * @name Skill Fork Syncs controller
- * @description Synchronize changes from an upstream skill into a fork.
+ * @description A skill fork sync is a queued update pulling upstream changes into a forked skill.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -55,7 +55,7 @@ export class MetorialManagementInstanceSkillsForkSyncsEndpoint {
     body: DashboardInstanceSkillsForkSyncsCreateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsForkSyncsCreateOutput> {
-    let path = `instances/${instanceId}/skill-fork-syncs`;
+    let path = `instances/${encodeURIComponent(instanceId)}/skill-fork-syncs`;
 
     let request = {
       path,
@@ -85,7 +85,7 @@ export class MetorialManagementInstanceSkillsForkSyncsEndpoint {
     skillForkSyncId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsForkSyncsGetOutput> {
-    let path = `instances/${instanceId}/skill-fork-syncs/${skillForkSyncId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/skill-fork-syncs/${encodeURIComponent(skillForkSyncId)}`;
 
     let request = {
       path,

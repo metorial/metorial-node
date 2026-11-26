@@ -24,7 +24,7 @@ import {
 
 /**
  * @name Provider Auth Configs controller
- * @description An auth config is a user's authenticated connection to a provider. Created when a user completes OAuth or manually enters an API token.
+ * @description A provider auth config is a user's authenticated connection to a provider. It is created when a user completes OAuth or enters an API token.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -65,7 +65,7 @@ export class MetorialDashboardInstanceProviderDeploymentsAuthConfigsEndpoint {
     query?: DashboardInstanceProviderDeploymentsAuthConfigsListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProviderDeploymentsAuthConfigsListOutput> {
-    let path = `dashboard/instances/${instanceId}/provider-auth-configs`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/provider-auth-configs`;
 
     let request = {
       path,
@@ -99,7 +99,7 @@ export class MetorialDashboardInstanceProviderDeploymentsAuthConfigsEndpoint {
     providerAuthConfigId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProviderDeploymentsAuthConfigsGetOutput> {
-    let path = `dashboard/instances/${instanceId}/provider-auth-configs/${providerAuthConfigId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/provider-auth-configs/${encodeURIComponent(providerAuthConfigId)}`;
 
     let request = {
       path,
@@ -114,7 +114,7 @@ export class MetorialDashboardInstanceProviderDeploymentsAuthConfigsEndpoint {
 
   /**
    * @name Create provider auth config
-   * @description Creates a new provider auth config.
+   * @description Creates a provider auth config.
    *
    * @param `instanceId` - string
    * @param `body` - DashboardInstanceProviderDeploymentsAuthConfigsCreateBody
@@ -128,7 +128,7 @@ export class MetorialDashboardInstanceProviderDeploymentsAuthConfigsEndpoint {
     body: DashboardInstanceProviderDeploymentsAuthConfigsCreateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProviderDeploymentsAuthConfigsCreateOutput> {
-    let path = `dashboard/instances/${instanceId}/provider-auth-configs`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/provider-auth-configs`;
 
     let request = {
       path,
@@ -162,7 +162,7 @@ export class MetorialDashboardInstanceProviderDeploymentsAuthConfigsEndpoint {
     body: DashboardInstanceProviderDeploymentsAuthConfigsUpdateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProviderDeploymentsAuthConfigsUpdateOutput> {
-    let path = `dashboard/instances/${instanceId}/provider-auth-configs/${providerAuthConfigId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/provider-auth-configs/${encodeURIComponent(providerAuthConfigId)}`;
 
     let request = {
       path,
@@ -179,8 +179,8 @@ export class MetorialDashboardInstanceProviderDeploymentsAuthConfigsEndpoint {
   }
 
   /**
-   * @name Delete provider auth config
-   * @description Permanently deletes a provider auth config.
+   * @name Archive provider auth config
+   * @description Archives a provider auth config. It stays listable with `status=archived`.
    *
    * @param `instanceId` - string
    * @param `providerAuthConfigId` - string
@@ -194,7 +194,7 @@ export class MetorialDashboardInstanceProviderDeploymentsAuthConfigsEndpoint {
     providerAuthConfigId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProviderDeploymentsAuthConfigsDeleteOutput> {
-    let path = `dashboard/instances/${instanceId}/provider-auth-configs/${providerAuthConfigId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/provider-auth-configs/${encodeURIComponent(providerAuthConfigId)}`;
 
     let request = {
       path,

@@ -14,7 +14,7 @@ import {
 
 /**
  * @name ProtoGuard Alerts controller
- * @description ProtoGuard alerts describe prompt-injection detections.
+ * @description A ProtoGuard alert is a record of related prompt-injection findings. Findings that recur are folded into the same alert.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -41,7 +41,7 @@ export class MetorialDashboardInstanceProtoGuardAlertsEndpoint {
 
   /**
    * @name List ProtoGuard alerts
-   * @description Returns a paginated list of ProtoGuard alerts for this instance.
+   * @description Returns a paginated list of ProtoGuard alerts in the instance.
    *
    * @param `instanceId` - string
    * @param `query` - DashboardInstanceProtoGuardAlertsListQuery
@@ -55,7 +55,7 @@ export class MetorialDashboardInstanceProtoGuardAlertsEndpoint {
     query?: DashboardInstanceProtoGuardAlertsListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProtoGuardAlertsListOutput> {
-    let path = `dashboard/instances/${instanceId}/protoguard-alerts`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/protoguard-alerts`;
 
     let request = {
       path,
@@ -73,7 +73,7 @@ export class MetorialDashboardInstanceProtoGuardAlertsEndpoint {
 
   /**
    * @name Get ProtoGuard alert
-   * @description Retrieves a ProtoGuard alert by ID.
+   * @description Retrieves a ProtoGuard alert.
    *
    * @param `instanceId` - string
    * @param `protoGuardAlertId` - string
@@ -87,7 +87,7 @@ export class MetorialDashboardInstanceProtoGuardAlertsEndpoint {
     protoGuardAlertId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProtoGuardAlertsGetOutput> {
-    let path = `dashboard/instances/${instanceId}/protoguard-alerts/${protoGuardAlertId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/protoguard-alerts/${encodeURIComponent(protoGuardAlertId)}`;
 
     let request = {
       path,

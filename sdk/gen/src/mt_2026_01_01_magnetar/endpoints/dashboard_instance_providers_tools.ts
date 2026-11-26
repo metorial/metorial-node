@@ -14,7 +14,7 @@ import {
 
 /**
  * @name Provider Tools controller
- * @description A tool is a single action a provider can perform like 'search_issues' or 'send_message'. Tools are what AI agents call via MCP. By default, tools from the latest provider version are returned. Use the optional version filter to get tools for a specific version.
+ * @description A tool is a single action a provider can perform, like `search_issues` or `send_message`. Agents call tools over MCP, and each provider version has its own set.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -41,7 +41,7 @@ export class MetorialDashboardInstanceProvidersToolsEndpoint {
 
   /**
    * @name List provider tools
-   * @description Returns a paginated list of provider tools. By default returns tools from the latest version. Use optional filters to get tools for a specific version.
+   * @description Returns a paginated list of provider tools for a provider version.
    *
    * @param `instanceId` - string
    * @param `query` - DashboardInstanceProvidersToolsListQuery
@@ -55,7 +55,7 @@ export class MetorialDashboardInstanceProvidersToolsEndpoint {
     query?: DashboardInstanceProvidersToolsListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProvidersToolsListOutput> {
-    let path = `dashboard/instances/${instanceId}/provider-tools`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/provider-tools`;
 
     let request = {
       path,
@@ -87,7 +87,7 @@ export class MetorialDashboardInstanceProvidersToolsEndpoint {
     providerToolId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProvidersToolsGetOutput> {
-    let path = `dashboard/instances/${instanceId}/provider-tools/${providerToolId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/provider-tools/${encodeURIComponent(providerToolId)}`;
 
     let request = {
       path,

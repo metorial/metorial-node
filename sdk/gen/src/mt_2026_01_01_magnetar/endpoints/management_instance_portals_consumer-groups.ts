@@ -24,7 +24,7 @@ import {
 
 /**
  * @name Portal Consumer Groups controller
- * @description Manage the consumer groups that drive portal visibility and access rules.
+ * @description A portal consumer group is a set of consumers on a portal. Groups decide which listings each consumer sees.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -67,7 +67,7 @@ export class MetorialManagementInstancePortalsConsumerGroupsEndpoint {
     query?: DashboardInstancePortalsConsumerGroupsListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstancePortalsConsumerGroupsListOutput> {
-    let path = `instances/${instanceId}/portals/${portalId}/consumer-groups`;
+    let path = `instances/${encodeURIComponent(instanceId)}/portals/${encodeURIComponent(portalId)}/consumer-groups`;
 
     let request = {
       path,
@@ -85,7 +85,7 @@ export class MetorialManagementInstancePortalsConsumerGroupsEndpoint {
 
   /**
    * @name Get portal consumer group
-   * @description Retrieves a portal consumer group by ID.
+   * @description Retrieves a portal consumer group.
    *
    * @param `instanceId` - string
    * @param `portalId` - string
@@ -101,7 +101,7 @@ export class MetorialManagementInstancePortalsConsumerGroupsEndpoint {
     consumerGroupId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstancePortalsConsumerGroupsGetOutput> {
-    let path = `instances/${instanceId}/portals/${portalId}/consumer-groups/${consumerGroupId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/portals/${encodeURIComponent(portalId)}/consumer-groups/${encodeURIComponent(consumerGroupId)}`;
 
     let request = {
       path,
@@ -116,7 +116,7 @@ export class MetorialManagementInstancePortalsConsumerGroupsEndpoint {
 
   /**
    * @name Create portal consumer group
-   * @description Creates a new consumer group for the portal.
+   * @description Creates a consumer group for a portal.
    *
    * @param `instanceId` - string
    * @param `portalId` - string
@@ -132,7 +132,7 @@ export class MetorialManagementInstancePortalsConsumerGroupsEndpoint {
     body: DashboardInstancePortalsConsumerGroupsCreateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstancePortalsConsumerGroupsCreateOutput> {
-    let path = `instances/${instanceId}/portals/${portalId}/consumer-groups`;
+    let path = `instances/${encodeURIComponent(instanceId)}/portals/${encodeURIComponent(portalId)}/consumer-groups`;
 
     let request = {
       path,
@@ -150,7 +150,7 @@ export class MetorialManagementInstancePortalsConsumerGroupsEndpoint {
 
   /**
    * @name Update portal consumer group
-   * @description Updates a consumer group for the portal.
+   * @description Updates a portal consumer group. Omitted fields keep their current value.
    *
    * @param `instanceId` - string
    * @param `portalId` - string
@@ -168,7 +168,7 @@ export class MetorialManagementInstancePortalsConsumerGroupsEndpoint {
     body: DashboardInstancePortalsConsumerGroupsUpdateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstancePortalsConsumerGroupsUpdateOutput> {
-    let path = `instances/${instanceId}/portals/${portalId}/consumer-groups/${consumerGroupId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/portals/${encodeURIComponent(portalId)}/consumer-groups/${encodeURIComponent(consumerGroupId)}`;
 
     let request = {
       path,
@@ -185,8 +185,8 @@ export class MetorialManagementInstancePortalsConsumerGroupsEndpoint {
   }
 
   /**
-   * @name Delete portal consumer group
-   * @description Archives a consumer group for the portal.
+   * @name Archive portal consumer group
+   * @description Archives a portal consumer group.
    *
    * @param `instanceId` - string
    * @param `portalId` - string
@@ -202,7 +202,7 @@ export class MetorialManagementInstancePortalsConsumerGroupsEndpoint {
     consumerGroupId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstancePortalsConsumerGroupsDeleteOutput> {
-    let path = `instances/${instanceId}/portals/${portalId}/consumer-groups/${consumerGroupId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/portals/${encodeURIComponent(portalId)}/consumer-groups/${encodeURIComponent(consumerGroupId)}`;
 
     let request = {
       path,

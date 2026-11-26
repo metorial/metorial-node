@@ -30,7 +30,7 @@ import {
 
 /**
  * @name Consumers controller
- * @description Manage instance consumers independently from portals and inspect the profiles linked to each consumer.
+ * @description A consumer is a person or system that uses an instance. Each consumer has profiles linking them to the surfaces they can access.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -87,7 +87,7 @@ export class MetorialConsumersEndpoint {
 
   /**
    * @name Get consumer
-   * @description Retrieves a consumer by ID.
+   * @description Retrieves a consumer.
    *
    * @param `consumerId` - string
    * @param `opts` - { headers?: Record<string, string> }
@@ -99,7 +99,7 @@ export class MetorialConsumersEndpoint {
     consumerId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceConsumersGetOutput> {
-    let path = `consumers/${consumerId}`;
+    let path = `consumers/${encodeURIComponent(consumerId)}`;
 
     let request = {
       path,
@@ -200,7 +200,7 @@ export class MetorialConsumersEndpoint {
 
   /**
    * @name Update consumer
-   * @description Updates a consumer for an instance.
+   * @description Updates a consumer. Omitted fields keep their current value.
    *
    * @param `consumerId` - string
    * @param `body` - DashboardInstanceConsumersUpdateBody
@@ -214,7 +214,7 @@ export class MetorialConsumersEndpoint {
     body: DashboardInstanceConsumersUpdateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceConsumersUpdateOutput> {
-    let path = `consumers/${consumerId}`;
+    let path = `consumers/${encodeURIComponent(consumerId)}`;
 
     let request = {
       path,

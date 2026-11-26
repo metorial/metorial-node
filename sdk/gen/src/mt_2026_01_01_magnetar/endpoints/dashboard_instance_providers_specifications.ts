@@ -14,7 +14,7 @@ import {
 
 /**
  * @name Provider Specifications controller
- * @description A specification defines what a provider version can do: its tools, auth methods, and required configuration fields.
+ * @description A provider specification is the set of tools, auth methods, and configuration fields a provider version offers.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -55,7 +55,7 @@ export class MetorialDashboardInstanceProvidersSpecificationsEndpoint {
     query?: DashboardInstanceProvidersSpecificationsListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProvidersSpecificationsListOutput> {
-    let path = `dashboard/instances/${instanceId}/provider-specifications`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/provider-specifications`;
 
     let request = {
       path,
@@ -89,7 +89,7 @@ export class MetorialDashboardInstanceProvidersSpecificationsEndpoint {
     providerSpecificationId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProvidersSpecificationsGetOutput> {
-    let path = `dashboard/instances/${instanceId}/provider-specifications/${providerSpecificationId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/provider-specifications/${encodeURIComponent(providerSpecificationId)}`;
 
     let request = {
       path,

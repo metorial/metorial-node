@@ -16,7 +16,7 @@ import {
 
 /**
  * @name Provider Runs controller
- * @description Provider runs track the execution of provider operations within a session. This read-only resource provides visibility into provider activity.
+ * @description A provider run is one execution of a provider in a session. Runs track activity from start to completion.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -42,7 +42,7 @@ export class MetorialManagementInstanceProviderRunsEndpoint {
   }
 
   /**
-   * @name List all provider runs
+   * @name List provider runs
    * @description Returns a paginated list of provider runs across all sessions.
    *
    * @param `instanceId` - string
@@ -57,7 +57,7 @@ export class MetorialManagementInstanceProviderRunsEndpoint {
     query?: DashboardInstanceProviderRunsListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProviderRunsListOutput> {
-    let path = `instances/${instanceId}/provider-runs`;
+    let path = `instances/${encodeURIComponent(instanceId)}/provider-runs`;
 
     let request = {
       path,
@@ -75,7 +75,7 @@ export class MetorialManagementInstanceProviderRunsEndpoint {
 
   /**
    * @name Get provider run
-   * @description Retrieves a specific provider run by ID.
+   * @description Retrieves a provider run.
    *
    * @param `instanceId` - string
    * @param `providerRunId` - string
@@ -89,7 +89,7 @@ export class MetorialManagementInstanceProviderRunsEndpoint {
     providerRunId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProviderRunsGetOutput> {
-    let path = `instances/${instanceId}/provider-runs/${providerRunId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/provider-runs/${encodeURIComponent(providerRunId)}`;
 
     let request = {
       path,
@@ -104,7 +104,7 @@ export class MetorialManagementInstanceProviderRunsEndpoint {
 
   /**
    * @name Get provider run logs
-   * @description Retrieves the logs for a specific provider run.
+   * @description Retrieves the logs for a provider run.
    *
    * @param `instanceId` - string
    * @param `providerRunId` - string
@@ -118,7 +118,7 @@ export class MetorialManagementInstanceProviderRunsEndpoint {
     providerRunId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProviderRunsGetLogsOutput> {
-    let path = `instances/${instanceId}/provider-runs/${providerRunId}/logs`;
+    let path = `instances/${encodeURIComponent(instanceId)}/provider-runs/${encodeURIComponent(providerRunId)}/logs`;
 
     let request = {
       path,

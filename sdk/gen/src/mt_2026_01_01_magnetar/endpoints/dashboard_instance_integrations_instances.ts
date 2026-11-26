@@ -32,7 +32,7 @@ import {
 
 /**
  * @name Integration Instances controller
- * @description Integration instances materialize an integration for a specific actor, identity, or runtime configuration.
+ * @description An integration instance is an integration set up for a specific actor or identity. It binds each of the integration’s providers to the deployment, config, credentials, and tool filters it runs with.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -73,7 +73,7 @@ export class MetorialDashboardInstanceIntegrationsInstancesEndpoint {
     query?: DashboardInstanceIntegrationsInstancesListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIntegrationsInstancesListOutput> {
-    let path = `dashboard/instances/${instanceId}/integration-instances`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/integration-instances`;
 
     let request = {
       path,
@@ -91,7 +91,7 @@ export class MetorialDashboardInstanceIntegrationsInstancesEndpoint {
 
   /**
    * @name Get integration instance
-   * @description Retrieves a specific integration instance.
+   * @description Retrieves an integration instance.
    *
    * @param `instanceId` - string
    * @param `integrationInstanceId` - string
@@ -105,7 +105,7 @@ export class MetorialDashboardInstanceIntegrationsInstancesEndpoint {
     integrationInstanceId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIntegrationsInstancesGetOutput> {
-    let path = `dashboard/instances/${instanceId}/integration-instances/${integrationInstanceId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/integration-instances/${encodeURIComponent(integrationInstanceId)}`;
 
     let request = {
       path,
@@ -120,7 +120,7 @@ export class MetorialDashboardInstanceIntegrationsInstancesEndpoint {
 
   /**
    * @name Create integration instance session template
-   * @description Creates or updates the shared session template for a specific integration instance.
+   * @description Creates or updates the shared session template for the integration instance.
    *
    * @param `instanceId` - string
    * @param `integrationInstanceId` - string
@@ -136,7 +136,7 @@ export class MetorialDashboardInstanceIntegrationsInstancesEndpoint {
     body: DashboardInstanceIntegrationsInstancesCreateSessionTemplateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIntegrationsInstancesCreateSessionTemplateOutput> {
-    let path = `dashboard/instances/${instanceId}/integration-instances/${integrationInstanceId}/session-template`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/integration-instances/${encodeURIComponent(integrationInstanceId)}/session-template`;
 
     let request = {
       path,
@@ -154,7 +154,7 @@ export class MetorialDashboardInstanceIntegrationsInstancesEndpoint {
 
   /**
    * @name Create integration instance session
-   * @description Creates a session from the shared session template of a specific integration instance.
+   * @description Creates a session from the shared session template of the integration instance.
    *
    * @param `instanceId` - string
    * @param `integrationInstanceId` - string
@@ -170,7 +170,7 @@ export class MetorialDashboardInstanceIntegrationsInstancesEndpoint {
     body: DashboardInstanceIntegrationsInstancesCreateSessionBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIntegrationsInstancesCreateSessionOutput> {
-    let path = `dashboard/instances/${instanceId}/integration-instances/${integrationInstanceId}/session`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/integration-instances/${encodeURIComponent(integrationInstanceId)}/session`;
 
     let request = {
       path,
@@ -188,7 +188,7 @@ export class MetorialDashboardInstanceIntegrationsInstancesEndpoint {
 
   /**
    * @name Create integration instance
-   * @description Creates a new integration instance.
+   * @description Creates an integration instance.
    *
    * @param `instanceId` - string
    * @param `body` - DashboardInstanceIntegrationsInstancesCreateBody
@@ -202,7 +202,7 @@ export class MetorialDashboardInstanceIntegrationsInstancesEndpoint {
     body: DashboardInstanceIntegrationsInstancesCreateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIntegrationsInstancesCreateOutput> {
-    let path = `dashboard/instances/${instanceId}/integration-instances`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/integration-instances`;
 
     let request = {
       path,
@@ -220,7 +220,7 @@ export class MetorialDashboardInstanceIntegrationsInstancesEndpoint {
 
   /**
    * @name Update integration instance
-   * @description Updates a specific integration instance.
+   * @description Updates an integration instance. Omitted fields keep their current value.
    *
    * @param `instanceId` - string
    * @param `integrationInstanceId` - string
@@ -236,7 +236,7 @@ export class MetorialDashboardInstanceIntegrationsInstancesEndpoint {
     body: DashboardInstanceIntegrationsInstancesUpdateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIntegrationsInstancesUpdateOutput> {
-    let path = `dashboard/instances/${instanceId}/integration-instances/${integrationInstanceId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/integration-instances/${encodeURIComponent(integrationInstanceId)}`;
 
     let request = {
       path,
@@ -253,8 +253,8 @@ export class MetorialDashboardInstanceIntegrationsInstancesEndpoint {
   }
 
   /**
-   * @name Delete integration instance
-   * @description Archives a specific integration instance.
+   * @name Archive integration instance
+   * @description Archives an integration instance. It stays retrievable by ID and listable with `status=archived`.
    *
    * @param `instanceId` - string
    * @param `integrationInstanceId` - string
@@ -268,7 +268,7 @@ export class MetorialDashboardInstanceIntegrationsInstancesEndpoint {
     integrationInstanceId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIntegrationsInstancesDeleteOutput> {
-    let path = `dashboard/instances/${instanceId}/integration-instances/${integrationInstanceId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/integration-instances/${encodeURIComponent(integrationInstanceId)}`;
 
     let request = {
       path,

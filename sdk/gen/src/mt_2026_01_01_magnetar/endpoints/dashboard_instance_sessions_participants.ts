@@ -14,7 +14,7 @@ import {
 
 /**
  * @name Session Participants controller
- * @description Session participants represent the clients and other entities that are connected to a session. This read-only resource tracks who is participating in a session.
+ * @description A session participant is a client, provider, or system actor in a session. Participants appear automatically as connections open.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -41,7 +41,7 @@ export class MetorialDashboardInstanceSessionsParticipantsEndpoint {
 
   /**
    * @name List session participants
-   * @description Returns a paginated list of participants in a session.
+   * @description Returns a paginated list of session participants.
    *
    * @param `instanceId` - string
    * @param `query` - DashboardInstanceSessionsParticipantsListQuery
@@ -55,7 +55,7 @@ export class MetorialDashboardInstanceSessionsParticipantsEndpoint {
     query?: DashboardInstanceSessionsParticipantsListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSessionsParticipantsListOutput> {
-    let path = `dashboard/instances/${instanceId}/session-participants`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/session-participants`;
 
     let request = {
       path,
@@ -73,7 +73,7 @@ export class MetorialDashboardInstanceSessionsParticipantsEndpoint {
 
   /**
    * @name Get session participant
-   * @description Retrieves a specific participant in a session.
+   * @description Retrieves a session participant.
    *
    * @param `instanceId` - string
    * @param `sessionParticipantId` - string
@@ -87,7 +87,7 @@ export class MetorialDashboardInstanceSessionsParticipantsEndpoint {
     sessionParticipantId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSessionsParticipantsGetOutput> {
-    let path = `dashboard/instances/${instanceId}/session-participants/${sessionParticipantId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/session-participants/${encodeURIComponent(sessionParticipantId)}`;
 
     let request = {
       path,

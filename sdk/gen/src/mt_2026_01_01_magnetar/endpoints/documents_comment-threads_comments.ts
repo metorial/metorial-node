@@ -18,7 +18,7 @@ import {
 
 /**
  * @name Document Comments controller
- * @description Reply to, edit, and delete comments in a document comment thread.
+ * @description A document comment is a message in a document comment thread.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -44,8 +44,8 @@ export class MetorialDocumentsCommentThreadsCommentsEndpoint {
   }
 
   /**
-   * @name Reply to document comment thread
-   * @description Adds a comment to an existing comment thread.
+   * @name Create document comment
+   * @description Creates a comment in a document comment thread.
    *
    * @param `documentId` - string
    * @param `documentCommentThreadId` - string
@@ -61,7 +61,7 @@ export class MetorialDocumentsCommentThreadsCommentsEndpoint {
     body: DashboardInstanceDocumentsCommentThreadsCommentsCreateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceDocumentsCommentThreadsCommentsCreateOutput> {
-    let path = `documents/${documentId}/comment-threads/${documentCommentThreadId}/comments`;
+    let path = `documents/${encodeURIComponent(documentId)}/comment-threads/${encodeURIComponent(documentCommentThreadId)}/comments`;
 
     let request = {
       path,
@@ -97,7 +97,7 @@ export class MetorialDocumentsCommentThreadsCommentsEndpoint {
     body: DashboardInstanceDocumentsCommentThreadsCommentsUpdateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceDocumentsCommentThreadsCommentsUpdateOutput> {
-    let path = `documents/${documentId}/comment-threads/${documentCommentThreadId}/comments/${documentCommentId}`;
+    let path = `documents/${encodeURIComponent(documentId)}/comment-threads/${encodeURIComponent(documentCommentThreadId)}/comments/${encodeURIComponent(documentCommentId)}`;
 
     let request = {
       path,
@@ -131,7 +131,7 @@ export class MetorialDocumentsCommentThreadsCommentsEndpoint {
     documentCommentId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceDocumentsCommentThreadsCommentsDeleteOutput> {
-    let path = `documents/${documentId}/comment-threads/${documentCommentThreadId}/comments/${documentCommentId}`;
+    let path = `documents/${encodeURIComponent(documentId)}/comment-threads/${encodeURIComponent(documentCommentThreadId)}/comments/${encodeURIComponent(documentCommentId)}`;
 
     let request = {
       path,

@@ -18,7 +18,7 @@ import {
 
 /**
  * @name Custom Provider Commits controller
- * @description Commits represent version promotions between environments. Merge versions from one environment to another or rollback to a previous version.
+ * @description A custom provider commit is a promotion of a version into an environment, or a rollback to a previous version.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -45,7 +45,7 @@ export class MetorialManagementInstanceCustomProvidersCommitsEndpoint {
 
   /**
    * @name List custom provider commits
-   * @description Returns a paginated list of commits for a custom provider.
+   * @description Returns a paginated list of custom provider commits.
    *
    * @param `instanceId` - string
    * @param `query` - DashboardInstanceCustomProvidersCommitsListQuery
@@ -59,7 +59,7 @@ export class MetorialManagementInstanceCustomProvidersCommitsEndpoint {
     query?: DashboardInstanceCustomProvidersCommitsListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceCustomProvidersCommitsListOutput> {
-    let path = `instances/${instanceId}/custom-provider-commits`;
+    let path = `instances/${encodeURIComponent(instanceId)}/custom-provider-commits`;
 
     let request = {
       path,
@@ -77,7 +77,7 @@ export class MetorialManagementInstanceCustomProvidersCommitsEndpoint {
 
   /**
    * @name Get custom provider commit
-   * @description Retrieves a specific commit.
+   * @description Retrieves a custom provider commit.
    *
    * @param `instanceId` - string
    * @param `customProviderCommitId` - string
@@ -91,7 +91,7 @@ export class MetorialManagementInstanceCustomProvidersCommitsEndpoint {
     customProviderCommitId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceCustomProvidersCommitsGetOutput> {
-    let path = `instances/${instanceId}/custom-provider-commits/${customProviderCommitId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/custom-provider-commits/${encodeURIComponent(customProviderCommitId)}`;
 
     let request = {
       path,
@@ -120,7 +120,7 @@ export class MetorialManagementInstanceCustomProvidersCommitsEndpoint {
     body: DashboardInstanceCustomProvidersCommitsCreateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceCustomProvidersCommitsCreateOutput> {
-    let path = `instances/${instanceId}/custom-provider-commits`;
+    let path = `instances/${encodeURIComponent(instanceId)}/custom-provider-commits`;
 
     let request = {
       path,

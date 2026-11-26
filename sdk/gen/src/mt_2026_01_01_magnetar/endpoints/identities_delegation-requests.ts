@@ -28,7 +28,7 @@ import {
 
 /**
  * @name Identity Delegation Requests controller
- * @description Identity delegation requests represent approval workflows for creating delegations that require consent.
+ * @description An identity delegation request is an approval workflow for a delegation that needs consent. Approving it creates the delegation.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -87,7 +87,7 @@ export class MetorialIdentitiesDelegationRequestsEndpoint {
 
   /**
    * @name Get identity delegation request
-   * @description Retrieves a specific identity delegation request by ID.
+   * @description Retrieves an identity delegation request.
    *
    * @param `identityDelegationRequestId` - string
    * @param `query` - DashboardInstanceIdentitiesDelegationRequestsGetQuery
@@ -101,7 +101,7 @@ export class MetorialIdentitiesDelegationRequestsEndpoint {
     query?: DashboardInstanceIdentitiesDelegationRequestsGetQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIdentitiesDelegationRequestsGetOutput> {
-    let path = `identity-delegation-requests/${identityDelegationRequestId}`;
+    let path = `identity-delegation-requests/${encodeURIComponent(identityDelegationRequestId)}`;
 
     let request = {
       path,
@@ -121,7 +121,7 @@ export class MetorialIdentitiesDelegationRequestsEndpoint {
 
   /**
    * @name Create identity delegation request
-   * @description Creates a new identity delegation request.
+   * @description Creates an identity delegation request.
    *
    * @param `body` - DashboardInstanceIdentitiesDelegationRequestsCreateBody
    * @param `opts` - { headers?: Record<string, string> }
@@ -151,7 +151,7 @@ export class MetorialIdentitiesDelegationRequestsEndpoint {
 
   /**
    * @name Approve identity delegation request
-   * @description Approves an existing identity delegation request.
+   * @description Approves an identity delegation request.
    *
    * @param `identityDelegationRequestId` - string
    * @param `query` - DashboardInstanceIdentitiesDelegationRequestsApproveQuery
@@ -165,7 +165,7 @@ export class MetorialIdentitiesDelegationRequestsEndpoint {
     query?: DashboardInstanceIdentitiesDelegationRequestsApproveQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIdentitiesDelegationRequestsApproveOutput> {
-    let path = `identity-delegation-requests/${identityDelegationRequestId}/approve`;
+    let path = `identity-delegation-requests/${encodeURIComponent(identityDelegationRequestId)}/approve`;
 
     let request = {
       path,
@@ -185,7 +185,7 @@ export class MetorialIdentitiesDelegationRequestsEndpoint {
 
   /**
    * @name Deny identity delegation request
-   * @description Denies an existing identity delegation request.
+   * @description Denies an identity delegation request.
    *
    * @param `identityDelegationRequestId` - string
    * @param `query` - DashboardInstanceIdentitiesDelegationRequestsDenyQuery
@@ -199,7 +199,7 @@ export class MetorialIdentitiesDelegationRequestsEndpoint {
     query?: DashboardInstanceIdentitiesDelegationRequestsDenyQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIdentitiesDelegationRequestsDenyOutput> {
-    let path = `identity-delegation-requests/${identityDelegationRequestId}/deny`;
+    let path = `identity-delegation-requests/${encodeURIComponent(identityDelegationRequestId)}/deny`;
 
     let request = {
       path,

@@ -24,7 +24,7 @@ import {
 
 /**
  * @name Integrations controller
- * @description Integrations define reusable provider contracts that can then be materialized into integration instances.
+ * @description An integration is a reusable set of providers with shared configuration. Integration instances connect it for a specific actor or identity.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -65,7 +65,7 @@ export class MetorialManagementInstanceIntegrationsEndpoint {
     query?: DashboardInstanceIntegrationsListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIntegrationsListOutput> {
-    let path = `instances/${instanceId}/integrations`;
+    let path = `instances/${encodeURIComponent(instanceId)}/integrations`;
 
     let request = {
       path,
@@ -83,7 +83,7 @@ export class MetorialManagementInstanceIntegrationsEndpoint {
 
   /**
    * @name Get integration
-   * @description Retrieves a specific integration.
+   * @description Retrieves an integration.
    *
    * @param `instanceId` - string
    * @param `integrationId` - string
@@ -97,7 +97,7 @@ export class MetorialManagementInstanceIntegrationsEndpoint {
     integrationId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIntegrationsGetOutput> {
-    let path = `instances/${instanceId}/integrations/${integrationId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/integrations/${encodeURIComponent(integrationId)}`;
 
     let request = {
       path,
@@ -112,7 +112,7 @@ export class MetorialManagementInstanceIntegrationsEndpoint {
 
   /**
    * @name Create integration
-   * @description Creates a new integration.
+   * @description Creates an integration.
    *
    * @param `instanceId` - string
    * @param `body` - DashboardInstanceIntegrationsCreateBody
@@ -126,7 +126,7 @@ export class MetorialManagementInstanceIntegrationsEndpoint {
     body: DashboardInstanceIntegrationsCreateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIntegrationsCreateOutput> {
-    let path = `instances/${instanceId}/integrations`;
+    let path = `instances/${encodeURIComponent(instanceId)}/integrations`;
 
     let request = {
       path,
@@ -142,7 +142,7 @@ export class MetorialManagementInstanceIntegrationsEndpoint {
 
   /**
    * @name Update integration
-   * @description Updates a specific integration.
+   * @description Updates an integration. Omitted fields keep their current value.
    *
    * @param `instanceId` - string
    * @param `integrationId` - string
@@ -158,7 +158,7 @@ export class MetorialManagementInstanceIntegrationsEndpoint {
     body: DashboardInstanceIntegrationsUpdateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIntegrationsUpdateOutput> {
-    let path = `instances/${instanceId}/integrations/${integrationId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/integrations/${encodeURIComponent(integrationId)}`;
 
     let request = {
       path,
@@ -173,8 +173,8 @@ export class MetorialManagementInstanceIntegrationsEndpoint {
   }
 
   /**
-   * @name Delete integration
-   * @description Archives a specific integration.
+   * @name Archive integration
+   * @description Archives an integration. It stays retrievable by ID and listable with `status=archived`.
    *
    * @param `instanceId` - string
    * @param `integrationId` - string
@@ -188,7 +188,7 @@ export class MetorialManagementInstanceIntegrationsEndpoint {
     integrationId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIntegrationsDeleteOutput> {
-    let path = `instances/${instanceId}/integrations/${integrationId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/integrations/${encodeURIComponent(integrationId)}`;
 
     let request = {
       path,

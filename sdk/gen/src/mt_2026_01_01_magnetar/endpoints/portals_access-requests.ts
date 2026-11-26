@@ -18,7 +18,7 @@ import {
 
 /**
  * @name Portal Access Requests controller
- * @description Review and resolve access requests for a portal.
+ * @description A portal access request is a consumer's request for access to a listing. Approving it grants access through a consumer group.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -59,7 +59,7 @@ export class MetorialPortalsAccessRequestsEndpoint {
     query?: DashboardInstancePortalsAccessRequestsListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstancePortalsAccessRequestsListOutput> {
-    let path = `portals/${portalId}/access-requests`;
+    let path = `portals/${encodeURIComponent(portalId)}/access-requests`;
 
     let request = {
       path,
@@ -77,7 +77,7 @@ export class MetorialPortalsAccessRequestsEndpoint {
 
   /**
    * @name Get portal access request
-   * @description Retrieves a access request by ID.
+   * @description Retrieves a portal access request.
    *
    * @param `portalId` - string
    * @param `accessRequestId` - string
@@ -91,7 +91,7 @@ export class MetorialPortalsAccessRequestsEndpoint {
     accessRequestId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstancePortalsAccessRequestsGetOutput> {
-    let path = `portals/${portalId}/access-requests/${accessRequestId}`;
+    let path = `portals/${encodeURIComponent(portalId)}/access-requests/${encodeURIComponent(accessRequestId)}`;
 
     let request = {
       path,
@@ -106,7 +106,7 @@ export class MetorialPortalsAccessRequestsEndpoint {
 
   /**
    * @name Review portal access request
-   * @description Approves or rejects a access request.
+   * @description Approves or rejects a portal access request. Approving with a consumer group grants access through that group.
    *
    * @param `portalId` - string
    * @param `accessRequestId` - string
@@ -122,7 +122,7 @@ export class MetorialPortalsAccessRequestsEndpoint {
     body: DashboardInstancePortalsAccessRequestsUpdateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstancePortalsAccessRequestsUpdateOutput> {
-    let path = `portals/${portalId}/access-requests/${accessRequestId}`;
+    let path = `portals/${encodeURIComponent(portalId)}/access-requests/${encodeURIComponent(accessRequestId)}`;
 
     let request = {
       path,

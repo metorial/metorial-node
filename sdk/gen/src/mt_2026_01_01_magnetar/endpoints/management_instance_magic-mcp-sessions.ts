@@ -14,7 +14,7 @@ import {
 
 /**
  * @name Magic MCP Sessions controller
- * @description Magic MCP sessions map a Magic MCP server to one Subspace session and are created on demand by the MCP connection API.
+ * @description A magic MCP session is the live connection behind a magic MCP server or endpoint. Sessions are created on demand when a client connects.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -55,7 +55,7 @@ export class MetorialManagementInstanceMagicMcpSessionsEndpoint {
     query?: DashboardInstanceMagicMcpSessionsListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceMagicMcpSessionsListOutput> {
-    let path = `instances/${instanceId}/magic-mcp-sessions`;
+    let path = `instances/${encodeURIComponent(instanceId)}/magic-mcp-sessions`;
 
     let request = {
       path,
@@ -87,7 +87,7 @@ export class MetorialManagementInstanceMagicMcpSessionsEndpoint {
     magicMcpSessionId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceMagicMcpSessionsGetOutput> {
-    let path = `instances/${instanceId}/magic-mcp-sessions/${magicMcpSessionId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/magic-mcp-sessions/${encodeURIComponent(magicMcpSessionId)}`;
 
     let request = {
       path,

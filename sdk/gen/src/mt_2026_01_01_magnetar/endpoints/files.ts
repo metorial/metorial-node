@@ -16,7 +16,7 @@ import {
 
 /**
  * @name Files controller
- * @description Represents files that you have uploaded to Metorial. Files can be linked to various resources based on their purpose. Metorial can also automatically extract files for you, for example for data exports.
+ * @description A file is content uploaded to an instance, such as an image or an attachment. Its purpose controls what it can be linked to.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -42,8 +42,8 @@ export class MetorialFilesEndpoint {
   }
 
   /**
-   * @name List instance files
-   * @description Returns a paginated list of files owned by the instance.
+   * @name List files
+   * @description Returns a paginated list of files.
    *
    * @param `query` - DashboardInstanceFilesListQuery
    * @param `opts` - { headers?: Record<string, string> }
@@ -70,8 +70,8 @@ export class MetorialFilesEndpoint {
   }
 
   /**
-   * @name Get file by ID
-   * @description Retrieves details for a specific file by its ID.
+   * @name Get file
+   * @description Retrieves a file.
    *
    * @param `fileId` - string
    * @param `opts` - { headers?: Record<string, string> }
@@ -83,7 +83,7 @@ export class MetorialFilesEndpoint {
     fileId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceFilesGetOutput> {
-    let path = `files/${fileId}`;
+    let path = `files/${encodeURIComponent(fileId)}`;
 
     let request = {
       path,
@@ -95,8 +95,8 @@ export class MetorialFilesEndpoint {
   }
 
   /**
-   * @name Delete file by ID
-   * @description Deletes a specific file by its ID.
+   * @name Delete file
+   * @description Deletes a file.
    *
    * @param `fileId` - string
    * @param `opts` - { headers?: Record<string, string> }
@@ -108,7 +108,7 @@ export class MetorialFilesEndpoint {
     fileId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceFilesDeleteOutput> {
-    let path = `files/${fileId}`;
+    let path = `files/${encodeURIComponent(fileId)}`;
 
     let request = {
       path,

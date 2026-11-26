@@ -18,7 +18,7 @@ import {
 
 /**
  * @name Integration Instance Providers controller
- * @description Integration instance providers resolve the effective per-instance provider materialization for an integration.
+ * @description An integration instance provider binds one provider of an integration instance to the deployment, config, credentials, and tool filters it runs with.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -77,7 +77,7 @@ export class MetorialIntegrationsInstancesProvidersEndpoint {
 
   /**
    * @name Get integration instance provider
-   * @description Retrieves a specific integration instance provider.
+   * @description Retrieves an integration instance provider.
    *
    * @param `integrationInstanceProviderId` - string
    * @param `opts` - { headers?: Record<string, string> }
@@ -89,7 +89,7 @@ export class MetorialIntegrationsInstancesProvidersEndpoint {
     integrationInstanceProviderId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIntegrationsInstancesProvidersGetOutput> {
-    let path = `integration-instance-providers/${integrationInstanceProviderId}`;
+    let path = `integration-instance-providers/${encodeURIComponent(integrationInstanceProviderId)}`;
 
     let request = {
       path,
@@ -104,7 +104,7 @@ export class MetorialIntegrationsInstancesProvidersEndpoint {
 
   /**
    * @name Set integration instance provider
-   * @description Creates or updates the effective integration instance provider materialization.
+   * @description Sets the deployment, config, credentials, and tool filters one provider of an integration instance runs with. Creates the entry when none exists, otherwise updates it.
    *
    * @param `integrationInstanceId` - string
    * @param `providerId` - string
@@ -120,7 +120,7 @@ export class MetorialIntegrationsInstancesProvidersEndpoint {
     body: DashboardInstanceIntegrationsInstancesProvidersSetBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIntegrationsInstancesProvidersSetOutput> {
-    let path = `integration-instances/${integrationInstanceId}/providers/${providerId}`;
+    let path = `integration-instances/${encodeURIComponent(integrationInstanceId)}/providers/${encodeURIComponent(providerId)}`;
 
     let request = {
       path,

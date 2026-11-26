@@ -1,6 +1,7 @@
 import { createMapper } from '@metorial/util-resource-mapper/compact';
 
 export type DashboardInstanceMagicMcpServersProvidersListOutput = {
+  object: 'list';
   items: {
     object: 'magic_mcp.server.provider';
     id: string;
@@ -81,6 +82,7 @@ export type DashboardInstanceMagicMcpServersProvidersListOutput = {
       status: 'active' | 'archived' | 'deleted';
       isDefault: boolean;
       isManaged: boolean;
+      managedBy: 'metorial' | 'installation' | null;
       name: string | null;
       description: string | null;
       metadata: Record<string, any> | null;
@@ -115,7 +117,12 @@ export type DashboardInstanceMagicMcpServersProvidersListOutput = {
     updatedAt: Date;
     archivedAt: Date | null;
   }[];
-  pagination: { hasMoreBefore: boolean; hasMoreAfter: boolean };
+  pagination: {
+    hasMoreBefore: boolean;
+    hasMoreAfter: boolean;
+    before?: string | undefined;
+    after?: string | undefined;
+  };
 };
 
 export let mapDashboardInstanceMagicMcpServersProvidersListOutput =
@@ -157,6 +164,7 @@ export let mapDashboardInstanceMagicMcpServersProvidersListOutput =
               [
                 'is_default',
                 'is_managed',
+                'managed_by',
                 'provider_id',
                 'created_at',
                 'updated_at'

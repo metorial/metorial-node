@@ -18,7 +18,7 @@ import {
 
 /**
  * @name Network Policies controller
- * @description Manage reusable network policy definitions and their rules.
+ * @description A network policy is a reusable set of allow and deny rules. Firewalls attach policies to enforce them.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -61,7 +61,7 @@ export class MetorialManagementInstanceNetworkPoliciesRulesEndpoint {
     body: DashboardInstanceNetworkPoliciesRulesCreateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceNetworkPoliciesRulesCreateOutput> {
-    let path = `instances/${instanceId}/network-policies/${networkPolicyId}/rules`;
+    let path = `instances/${encodeURIComponent(instanceId)}/network-policies/${encodeURIComponent(networkPolicyId)}/rules`;
 
     let request = {
       path,
@@ -97,7 +97,7 @@ export class MetorialManagementInstanceNetworkPoliciesRulesEndpoint {
     body: DashboardInstanceNetworkPoliciesRulesUpdateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceNetworkPoliciesRulesUpdateOutput> {
-    let path = `instances/${instanceId}/network-policies/${networkPolicyId}/rules/${ruleId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/network-policies/${encodeURIComponent(networkPolicyId)}/rules/${encodeURIComponent(ruleId)}`;
 
     let request = {
       path,
@@ -131,7 +131,7 @@ export class MetorialManagementInstanceNetworkPoliciesRulesEndpoint {
     ruleId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceNetworkPoliciesRulesDeleteOutput> {
-    let path = `instances/${instanceId}/network-policies/${networkPolicyId}/rules/${ruleId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/network-policies/${encodeURIComponent(networkPolicyId)}/rules/${encodeURIComponent(ruleId)}`;
 
     let request = {
       path,

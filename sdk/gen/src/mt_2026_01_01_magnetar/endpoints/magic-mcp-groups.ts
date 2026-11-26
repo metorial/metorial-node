@@ -32,7 +32,7 @@ import {
 
 /**
  * @name Magic MCP Groups controller
- * @description Magic MCP groups categorize servers and can be bound to token access.
+ * @description A magic MCP group is a set of magic MCP servers that a token can be scoped to.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -101,7 +101,7 @@ export class MetorialMagicMcpGroupsEndpoint {
     magicMcpGroupId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceMagicMcpGroupsGetOutput> {
-    let path = `magic-mcp-groups/${magicMcpGroupId}`;
+    let path = `magic-mcp-groups/${encodeURIComponent(magicMcpGroupId)}`;
 
     let request = {
       path,
@@ -156,7 +156,7 @@ export class MetorialMagicMcpGroupsEndpoint {
     magicMcpGroupId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceMagicMcpGroupsDeleteOutput> {
-    let path = `magic-mcp-groups/${magicMcpGroupId}`;
+    let path = `magic-mcp-groups/${encodeURIComponent(magicMcpGroupId)}`;
 
     let request = {
       path,
@@ -171,7 +171,7 @@ export class MetorialMagicMcpGroupsEndpoint {
 
   /**
    * @name Update magic MCP group
-   * @description Updates a magic MCP group.
+   * @description Updates a magic MCP group. Omitted fields keep their current value.
    *
    * @param `magicMcpGroupId` - string
    * @param `body` - DashboardInstanceMagicMcpGroupsUpdateBody
@@ -185,7 +185,7 @@ export class MetorialMagicMcpGroupsEndpoint {
     body: DashboardInstanceMagicMcpGroupsUpdateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceMagicMcpGroupsUpdateOutput> {
-    let path = `magic-mcp-groups/${magicMcpGroupId}`;
+    let path = `magic-mcp-groups/${encodeURIComponent(magicMcpGroupId)}`;
 
     let request = {
       path,
@@ -215,7 +215,7 @@ export class MetorialMagicMcpGroupsEndpoint {
     body: DashboardInstanceMagicMcpGroupsAddServersBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceMagicMcpGroupsAddServersOutput> {
-    let path = `magic-mcp-groups/${magicMcpGroupId}/add-servers`;
+    let path = `magic-mcp-groups/${encodeURIComponent(magicMcpGroupId)}/add-servers`;
 
     let request = {
       path,
@@ -245,7 +245,7 @@ export class MetorialMagicMcpGroupsEndpoint {
     body: DashboardInstanceMagicMcpGroupsRemoveServersBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceMagicMcpGroupsRemoveServersOutput> {
-    let path = `magic-mcp-groups/${magicMcpGroupId}/remove-servers`;
+    let path = `magic-mcp-groups/${encodeURIComponent(magicMcpGroupId)}/remove-servers`;
 
     let request = {
       path,

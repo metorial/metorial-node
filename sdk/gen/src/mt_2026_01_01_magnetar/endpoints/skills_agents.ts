@@ -24,7 +24,7 @@ import {
 
 /**
  * @name Skill Agents controller
- * @description Manage sub-agents attached to a skill.
+ * @description A skill agent is a reusable sub-agent document stored in a skill.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -65,7 +65,7 @@ export class MetorialSkillsAgentsEndpoint {
     body: DashboardInstanceSkillsAgentsCreateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsAgentsCreateOutput> {
-    let path = `skills/${skillId}/agents`;
+    let path = `skills/${encodeURIComponent(skillId)}/agents`;
 
     let request = {
       path,
@@ -81,7 +81,7 @@ export class MetorialSkillsAgentsEndpoint {
 
   /**
    * @name List skill agents
-   * @description Returns a paginated list of agents for a specific skill.
+   * @description Returns a paginated list of skill agents.
    *
    * @param `skillId` - string
    * @param `query` - DashboardInstanceSkillsAgentsListQuery
@@ -95,7 +95,7 @@ export class MetorialSkillsAgentsEndpoint {
     query?: DashboardInstanceSkillsAgentsListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsAgentsListOutput> {
-    let path = `skills/${skillId}/agents`;
+    let path = `skills/${encodeURIComponent(skillId)}/agents`;
 
     let request = {
       path,
@@ -112,8 +112,8 @@ export class MetorialSkillsAgentsEndpoint {
   }
 
   /**
-   * @name Get skill agent by ID
-   * @description Retrieves a specific agent within a skill.
+   * @name Get skill agent
+   * @description Retrieves a skill agent.
    *
    * @param `skillId` - string
    * @param `skillAgentId` - string
@@ -127,7 +127,7 @@ export class MetorialSkillsAgentsEndpoint {
     skillAgentId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsAgentsGetOutput> {
-    let path = `skills/${skillId}/agents/${skillAgentId}`;
+    let path = `skills/${encodeURIComponent(skillId)}/agents/${encodeURIComponent(skillAgentId)}`;
 
     let request = {
       path,
@@ -142,7 +142,7 @@ export class MetorialSkillsAgentsEndpoint {
 
   /**
    * @name Update skill agent
-   * @description Updates the name or description for a specific skill agent.
+   * @description Updates a skill agent. Omitted fields keep their current value.
    *
    * @param `skillId` - string
    * @param `skillAgentId` - string
@@ -158,7 +158,7 @@ export class MetorialSkillsAgentsEndpoint {
     body: DashboardInstanceSkillsAgentsUpdateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsAgentsUpdateOutput> {
-    let path = `skills/${skillId}/agents/${skillAgentId}`;
+    let path = `skills/${encodeURIComponent(skillId)}/agents/${encodeURIComponent(skillAgentId)}`;
 
     let request = {
       path,
@@ -173,8 +173,8 @@ export class MetorialSkillsAgentsEndpoint {
   }
 
   /**
-   * @name Delete skill agent
-   * @description Archives a specific skill agent and removes its linked store item.
+   * @name Archive skill agent
+   * @description Archives a skill agent and removes its linked store item.
    *
    * @param `skillId` - string
    * @param `skillAgentId` - string
@@ -188,7 +188,7 @@ export class MetorialSkillsAgentsEndpoint {
     skillAgentId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsAgentsDeleteOutput> {
-    let path = `skills/${skillId}/agents/${skillAgentId}`;
+    let path = `skills/${encodeURIComponent(skillId)}/agents/${encodeURIComponent(skillAgentId)}`;
 
     let request = {
       path,

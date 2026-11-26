@@ -14,7 +14,7 @@ import {
 
 /**
  * @name Store Participants controller
- * @description Inspect participants assigned to an instance store.
+ * @description A store participant is an actor with access to a store and its contents.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -41,7 +41,7 @@ export class MetorialManagementInstanceStoresParticipantsEndpoint {
 
   /**
    * @name List store participants
-   * @description Returns a paginated list of participants for a specific store.
+   * @description Returns a paginated list of participants in a store.
    *
    * @param `instanceId` - string
    * @param `storeId` - string
@@ -57,7 +57,7 @@ export class MetorialManagementInstanceStoresParticipantsEndpoint {
     query?: DashboardInstanceStoresParticipantsListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceStoresParticipantsListOutput> {
-    let path = `instances/${instanceId}/stores/${storeId}/participants`;
+    let path = `instances/${encodeURIComponent(instanceId)}/stores/${encodeURIComponent(storeId)}/participants`;
 
     let request = {
       path,
@@ -74,8 +74,8 @@ export class MetorialManagementInstanceStoresParticipantsEndpoint {
   }
 
   /**
-   * @name Get store participant by ID
-   * @description Retrieves a specific participant within a store.
+   * @name Get store participant
+   * @description Retrieves a participant in a store.
    *
    * @param `instanceId` - string
    * @param `storeId` - string
@@ -91,7 +91,7 @@ export class MetorialManagementInstanceStoresParticipantsEndpoint {
     storeParticipantId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceStoresParticipantsGetOutput> {
-    let path = `instances/${instanceId}/stores/${storeId}/participants/${storeParticipantId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/stores/${encodeURIComponent(storeId)}/participants/${encodeURIComponent(storeParticipantId)}`;
 
     let request = {
       path,

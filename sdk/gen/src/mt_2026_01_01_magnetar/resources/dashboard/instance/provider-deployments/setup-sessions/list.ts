@@ -1,6 +1,7 @@
 import { createMapper } from '@metorial/util-resource-mapper/compact';
 
 export type DashboardInstanceProviderDeploymentsSetupSessionsListOutput = {
+  object: 'list';
   items: {
     object: 'provider.setup_session';
     id: string;
@@ -74,6 +75,7 @@ export type DashboardInstanceProviderDeploymentsSetupSessionsListOutput = {
       status: 'active' | 'archived' | 'deleted';
       isDefault: boolean;
       isManaged: boolean;
+      managedBy: 'metorial' | 'installation' | null;
       name: string | null;
       description: string | null;
       metadata: Record<string, any> | null;
@@ -126,6 +128,7 @@ export type DashboardInstanceProviderDeploymentsSetupSessionsListOutput = {
         status: 'active' | 'archived' | 'deleted';
         isDefault: boolean;
         isManaged: boolean;
+        managedBy: 'metorial' | 'installation' | null;
         name: string | null;
         description: string | null;
         metadata: Record<string, any> | null;
@@ -265,7 +268,12 @@ export type DashboardInstanceProviderDeploymentsSetupSessionsListOutput = {
     updatedAt: Date;
     expiresAt: Date;
   }[];
-  pagination: { hasMoreBefore: boolean; hasMoreAfter: boolean };
+  pagination: {
+    hasMoreBefore: boolean;
+    hasMoreAfter: boolean;
+    before?: string | undefined;
+    after?: string | undefined;
+  };
 };
 
 export let mapDashboardInstanceProviderDeploymentsSetupSessionsListOutput =
@@ -327,6 +335,7 @@ export let mapDashboardInstanceProviderDeploymentsSetupSessionsListOutput =
               [
                 'is_default',
                 'is_managed',
+                'managed_by',
                 'provider_id',
                 'created_at',
                 'updated_at'
@@ -355,6 +364,7 @@ export let mapDashboardInstanceProviderDeploymentsSetupSessionsListOutput =
                     [
                       'is_default',
                       'is_managed',
+                      'managed_by',
                       'provider_id',
                       'created_at',
                       'updated_at'

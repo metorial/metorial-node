@@ -36,8 +36,8 @@ export class MetorialInstanceEndpoint {
   }
 
   /**
-   * @name Get instance details
-   * @description Retrieves metadata and configuration details for a specific instance.
+   * @name Get instance
+   * @description Retrieves an instance.
    *
    * @param `opts` - { headers?: Record<string, string> }
    * @returns DashboardInstanceInstanceGetOutput

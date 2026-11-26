@@ -20,7 +20,7 @@ import {
 
 /**
  * @name ProtoGuard Suppression controller
- * @description ProtoGuard suppressions mark known-benign findings so they no longer raise alerts.
+ * @description A ProtoGuard suppression is a rule that hides known-benign findings. Matching findings no longer raise alerts.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -47,7 +47,7 @@ export class MetorialProtoGuardSuppressionsEndpoint {
 
   /**
    * @name List ProtoGuard suppressions
-   * @description Returns the ProtoGuard suppressions of this instance.
+   * @description Returns a paginated list of ProtoGuard suppressions in the instance.
    *
    * @param `query` - DashboardInstanceProtoGuardSuppressionsListQuery
    * @param `opts` - { headers?: Record<string, string> }
@@ -89,7 +89,7 @@ export class MetorialProtoGuardSuppressionsEndpoint {
     suppressionId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProtoGuardSuppressionsGetOutput> {
-    let path = `protoguard-suppressions/${suppressionId}`;
+    let path = `protoguard-suppressions/${encodeURIComponent(suppressionId)}`;
 
     let request = {
       path,
@@ -146,7 +146,7 @@ export class MetorialProtoGuardSuppressionsEndpoint {
     suppressionId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProtoGuardSuppressionsArchiveOutput> {
-    let path = `protoguard-suppressions/${suppressionId}/archive`;
+    let path = `protoguard-suppressions/${encodeURIComponent(suppressionId)}/archive`;
 
     let request = {
       path,

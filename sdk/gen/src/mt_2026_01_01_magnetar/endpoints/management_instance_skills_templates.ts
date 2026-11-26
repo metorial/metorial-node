@@ -24,7 +24,7 @@ import {
 
 /**
  * @name Skill Templates controller
- * @description Skill templates define reusable starting points for skills.
+ * @description A skill template is a reusable starting point for creating skills.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -65,7 +65,7 @@ export class MetorialManagementInstanceSkillsTemplatesEndpoint {
     query?: DashboardInstanceSkillsTemplatesListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsTemplatesListOutput> {
-    let path = `instances/${instanceId}/skill-templates`;
+    let path = `instances/${encodeURIComponent(instanceId)}/skill-templates`;
 
     let request = {
       path,
@@ -83,7 +83,7 @@ export class MetorialManagementInstanceSkillsTemplatesEndpoint {
 
   /**
    * @name Get skill template
-   * @description Retrieves a specific skill template.
+   * @description Retrieves a skill template.
    *
    * @param `instanceId` - string
    * @param `skillTemplateId` - string
@@ -97,7 +97,7 @@ export class MetorialManagementInstanceSkillsTemplatesEndpoint {
     skillTemplateId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsTemplatesGetOutput> {
-    let path = `instances/${instanceId}/skill-templates/${skillTemplateId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/skill-templates/${encodeURIComponent(skillTemplateId)}`;
 
     let request = {
       path,
@@ -126,7 +126,7 @@ export class MetorialManagementInstanceSkillsTemplatesEndpoint {
     body: DashboardInstanceSkillsTemplatesCreateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsTemplatesCreateOutput> {
-    let path = `instances/${instanceId}/skill-templates`;
+    let path = `instances/${encodeURIComponent(instanceId)}/skill-templates`;
 
     let request = {
       path,
@@ -142,7 +142,7 @@ export class MetorialManagementInstanceSkillsTemplatesEndpoint {
 
   /**
    * @name Update skill template
-   * @description Updates a skill template.
+   * @description Updates a skill template. Omitted fields keep their current value.
    *
    * @param `instanceId` - string
    * @param `skillTemplateId` - string
@@ -158,7 +158,7 @@ export class MetorialManagementInstanceSkillsTemplatesEndpoint {
     body: DashboardInstanceSkillsTemplatesUpdateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsTemplatesUpdateOutput> {
-    let path = `instances/${instanceId}/skill-templates/${skillTemplateId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/skill-templates/${encodeURIComponent(skillTemplateId)}`;
 
     let request = {
       path,
@@ -173,7 +173,7 @@ export class MetorialManagementInstanceSkillsTemplatesEndpoint {
   }
 
   /**
-   * @name Delete skill template
+   * @name Archive skill template
    * @description Archives a skill template.
    *
    * @param `instanceId` - string
@@ -188,7 +188,7 @@ export class MetorialManagementInstanceSkillsTemplatesEndpoint {
     skillTemplateId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsTemplatesDeleteOutput> {
-    let path = `instances/${instanceId}/skill-templates/${skillTemplateId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/skill-templates/${encodeURIComponent(skillTemplateId)}`;
 
     let request = {
       path,

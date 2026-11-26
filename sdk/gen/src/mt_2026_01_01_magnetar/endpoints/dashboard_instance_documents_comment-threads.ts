@@ -24,7 +24,7 @@ import {
 
 /**
  * @name Document Comment Threads controller
- * @description Discuss selected text in a document through comment threads.
+ * @description A document comment thread is a discussion anchored to a text selection in a document.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -51,7 +51,7 @@ export class MetorialDashboardInstanceDocumentsCommentThreadsEndpoint {
 
   /**
    * @name List document comment threads
-   * @description Returns a paginated list of comment threads for a specific document.
+   * @description Returns a paginated list of comment threads in a document.
    *
    * @param `instanceId` - string
    * @param `documentId` - string
@@ -67,7 +67,7 @@ export class MetorialDashboardInstanceDocumentsCommentThreadsEndpoint {
     query?: DashboardInstanceDocumentsCommentThreadsListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceDocumentsCommentThreadsListOutput> {
-    let path = `dashboard/instances/${instanceId}/documents/${documentId}/comment-threads`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/documents/${encodeURIComponent(documentId)}/comment-threads`;
 
     let request = {
       path,
@@ -86,8 +86,8 @@ export class MetorialDashboardInstanceDocumentsCommentThreadsEndpoint {
   }
 
   /**
-   * @name Get document comment thread by ID
-   * @description Retrieves a specific comment thread with its comments.
+   * @name Get document comment thread
+   * @description Retrieves a document comment thread with its comments.
    *
    * @param `instanceId` - string
    * @param `documentId` - string
@@ -103,7 +103,7 @@ export class MetorialDashboardInstanceDocumentsCommentThreadsEndpoint {
     documentCommentThreadId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceDocumentsCommentThreadsGetOutput> {
-    let path = `dashboard/instances/${instanceId}/documents/${documentId}/comment-threads/${documentCommentThreadId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/documents/${encodeURIComponent(documentId)}/comment-threads/${encodeURIComponent(documentCommentThreadId)}`;
 
     let request = {
       path,
@@ -134,7 +134,7 @@ export class MetorialDashboardInstanceDocumentsCommentThreadsEndpoint {
     body: DashboardInstanceDocumentsCommentThreadsCreateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceDocumentsCommentThreadsCreateOutput> {
-    let path = `dashboard/instances/${instanceId}/documents/${documentId}/comment-threads`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/documents/${encodeURIComponent(documentId)}/comment-threads`;
 
     let request = {
       path,
@@ -170,7 +170,7 @@ export class MetorialDashboardInstanceDocumentsCommentThreadsEndpoint {
     body: DashboardInstanceDocumentsCommentThreadsUpdateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceDocumentsCommentThreadsUpdateOutput> {
-    let path = `dashboard/instances/${instanceId}/documents/${documentId}/comment-threads/${documentCommentThreadId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/documents/${encodeURIComponent(documentId)}/comment-threads/${encodeURIComponent(documentCommentThreadId)}`;
 
     let request = {
       path,
@@ -204,7 +204,7 @@ export class MetorialDashboardInstanceDocumentsCommentThreadsEndpoint {
     documentCommentThreadId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceDocumentsCommentThreadsDeleteOutput> {
-    let path = `dashboard/instances/${instanceId}/documents/${documentId}/comment-threads/${documentCommentThreadId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/documents/${encodeURIComponent(documentId)}/comment-threads/${encodeURIComponent(documentCommentThreadId)}`;
 
     let request = {
       path,

@@ -24,7 +24,7 @@ import {
 
 /**
  * @name Identity Actors controller
- * @description Identity actors represent people or agents that can own identities and participate in delegations.
+ * @description An identity actor is a person or agent that can own identities and take part in delegations.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -65,7 +65,7 @@ export class MetorialManagementInstanceIdentityActorsEndpoint {
     query?: DashboardInstanceIdentityActorsListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIdentityActorsListOutput> {
-    let path = `instances/${instanceId}/identity-actors`;
+    let path = `instances/${encodeURIComponent(instanceId)}/identity-actors`;
 
     let request = {
       path,
@@ -83,7 +83,7 @@ export class MetorialManagementInstanceIdentityActorsEndpoint {
 
   /**
    * @name Get identity actor
-   * @description Retrieves a specific identity actor by ID.
+   * @description Retrieves an identity actor.
    *
    * @param `instanceId` - string
    * @param `identityActorId` - string
@@ -97,7 +97,7 @@ export class MetorialManagementInstanceIdentityActorsEndpoint {
     identityActorId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIdentityActorsGetOutput> {
-    let path = `instances/${instanceId}/identity-actors/${identityActorId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/identity-actors/${encodeURIComponent(identityActorId)}`;
 
     let request = {
       path,
@@ -112,7 +112,7 @@ export class MetorialManagementInstanceIdentityActorsEndpoint {
 
   /**
    * @name Create identity actor
-   * @description Creates a new identity actor.
+   * @description Creates an identity actor.
    *
    * @param `instanceId` - string
    * @param `body` - DashboardInstanceIdentityActorsCreateBody
@@ -126,7 +126,7 @@ export class MetorialManagementInstanceIdentityActorsEndpoint {
     body: DashboardInstanceIdentityActorsCreateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIdentityActorsCreateOutput> {
-    let path = `instances/${instanceId}/identity-actors`;
+    let path = `instances/${encodeURIComponent(instanceId)}/identity-actors`;
 
     let request = {
       path,
@@ -142,7 +142,7 @@ export class MetorialManagementInstanceIdentityActorsEndpoint {
 
   /**
    * @name Update identity actor
-   * @description Updates mutable fields on an existing identity actor.
+   * @description Updates an identity actor. Omitted fields keep their current value.
    *
    * @param `instanceId` - string
    * @param `identityActorId` - string
@@ -158,7 +158,7 @@ export class MetorialManagementInstanceIdentityActorsEndpoint {
     body: DashboardInstanceIdentityActorsUpdateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIdentityActorsUpdateOutput> {
-    let path = `instances/${instanceId}/identity-actors/${identityActorId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/identity-actors/${encodeURIComponent(identityActorId)}`;
 
     let request = {
       path,
@@ -173,8 +173,8 @@ export class MetorialManagementInstanceIdentityActorsEndpoint {
   }
 
   /**
-   * @name Delete identity actor
-   * @description Archives an identity actor.
+   * @name Archive identity actor
+   * @description Archives an identity actor. It stays listable with `status=archived`.
    *
    * @param `instanceId` - string
    * @param `identityActorId` - string
@@ -188,7 +188,7 @@ export class MetorialManagementInstanceIdentityActorsEndpoint {
     identityActorId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIdentityActorsDeleteOutput> {
-    let path = `instances/${instanceId}/identity-actors/${identityActorId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/identity-actors/${encodeURIComponent(identityActorId)}`;
 
     let request = {
       path,
