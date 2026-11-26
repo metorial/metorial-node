@@ -14,7 +14,7 @@ import {
 
 /**
  * @name Document Versions controller
- * @description Inspect document version history for an instance document.
+ * @description A document version is a snapshot of a document's content.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -41,7 +41,7 @@ export class MetorialDashboardInstanceDocumentsVersionsEndpoint {
 
   /**
    * @name List document versions
-   * @description Returns a paginated list of versions for a specific document.
+   * @description Returns a paginated list of versions of a document.
    *
    * @param `instanceId` - string
    * @param `documentId` - string
@@ -57,7 +57,7 @@ export class MetorialDashboardInstanceDocumentsVersionsEndpoint {
     query?: DashboardInstanceDocumentsVersionsListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceDocumentsVersionsListOutput> {
-    let path = `dashboard/instances/${instanceId}/documents/${documentId}/versions`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/documents/${encodeURIComponent(documentId)}/versions`;
 
     let request = {
       path,
@@ -74,8 +74,8 @@ export class MetorialDashboardInstanceDocumentsVersionsEndpoint {
   }
 
   /**
-   * @name Get document version by ID
-   * @description Retrieves a specific document version by its ID.
+   * @name Get document version
+   * @description Retrieves a version of a document.
    *
    * @param `instanceId` - string
    * @param `documentId` - string
@@ -91,7 +91,7 @@ export class MetorialDashboardInstanceDocumentsVersionsEndpoint {
     documentVersionId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceDocumentsVersionsGetOutput> {
-    let path = `dashboard/instances/${instanceId}/documents/${documentId}/versions/${documentVersionId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/documents/${encodeURIComponent(documentId)}/versions/${encodeURIComponent(documentVersionId)}`;
 
     let request = {
       path,

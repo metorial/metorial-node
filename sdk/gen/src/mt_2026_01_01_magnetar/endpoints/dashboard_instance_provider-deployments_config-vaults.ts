@@ -24,7 +24,7 @@ import {
 
 /**
  * @name Provider Config Vaults controller
- * @description A config vault is a saved, reusable set of configuration values. Use vaults to store credentials once and apply them to multiple deployments without re-entering.
+ * @description A provider config vault is a saved, reusable set of configuration values. Configs can reference a vault instead of holding values directly.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -65,7 +65,7 @@ export class MetorialDashboardInstanceProviderDeploymentsConfigVaultsEndpoint {
     query?: DashboardInstanceProviderDeploymentsConfigVaultsListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProviderDeploymentsConfigVaultsListOutput> {
-    let path = `dashboard/instances/${instanceId}/provider-config-vaults`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/provider-config-vaults`;
 
     let request = {
       path,
@@ -99,7 +99,7 @@ export class MetorialDashboardInstanceProviderDeploymentsConfigVaultsEndpoint {
     providerConfigVaultId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProviderDeploymentsConfigVaultsGetOutput> {
-    let path = `dashboard/instances/${instanceId}/provider-config-vaults/${providerConfigVaultId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/provider-config-vaults/${encodeURIComponent(providerConfigVaultId)}`;
 
     let request = {
       path,
@@ -128,7 +128,7 @@ export class MetorialDashboardInstanceProviderDeploymentsConfigVaultsEndpoint {
     body: DashboardInstanceProviderDeploymentsConfigVaultsCreateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProviderDeploymentsConfigVaultsCreateOutput> {
-    let path = `dashboard/instances/${instanceId}/provider-config-vaults`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/provider-config-vaults`;
 
     let request = {
       path,
@@ -162,7 +162,7 @@ export class MetorialDashboardInstanceProviderDeploymentsConfigVaultsEndpoint {
     body: DashboardInstanceProviderDeploymentsConfigVaultsUpdateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProviderDeploymentsConfigVaultsUpdateOutput> {
-    let path = `dashboard/instances/${instanceId}/provider-config-vaults/${providerConfigVaultId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/provider-config-vaults/${encodeURIComponent(providerConfigVaultId)}`;
 
     let request = {
       path,
@@ -179,8 +179,8 @@ export class MetorialDashboardInstanceProviderDeploymentsConfigVaultsEndpoint {
   }
 
   /**
-   * @name Delete provider config vault
-   * @description Permanently deletes a provider config vault.
+   * @name Archive provider config vault
+   * @description Archives a provider config vault. It stays listable with `status=archived`.
    *
    * @param `instanceId` - string
    * @param `providerConfigVaultId` - string
@@ -194,7 +194,7 @@ export class MetorialDashboardInstanceProviderDeploymentsConfigVaultsEndpoint {
     providerConfigVaultId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProviderDeploymentsConfigVaultsDeleteOutput> {
-    let path = `dashboard/instances/${instanceId}/provider-config-vaults/${providerConfigVaultId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/provider-config-vaults/${encodeURIComponent(providerConfigVaultId)}`;
 
     let request = {
       path,

@@ -7,7 +7,7 @@ import { mapTokenGetOutput, type TokenGetOutput } from '../resources';
 
 /**
  * @name Token controller
- * @description Endpoint for retrieving metadata about the token used for authentication. This is useful for clients to understand the type and capabilities of the token they are using, especially since Metorial supports multiple token types with different permission models.
+ * @description A token is the credential a request authenticates with. This resource describes the calling token’s type and scope.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -33,8 +33,8 @@ export class MetorialTokenEndpoint {
   }
 
   /**
-   * @name Get token details
-   * @description Retrieves metadata and configuration details for a specific token.
+   * @name Get token
+   * @description Retrieves metadata about the calling token.
    *
    * @param `opts` - { headers?: Record<string, string> }
    * @returns TokenGetOutput

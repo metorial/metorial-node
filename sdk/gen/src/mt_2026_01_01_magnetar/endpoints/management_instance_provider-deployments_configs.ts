@@ -28,7 +28,7 @@ import {
 
 /**
  * @name Provider Configs controller
- * @description A config holds settings for a deployment, like API endpoints or feature flags. Create configs with values directly, or from a saved config vault with pre-saved values.
+ * @description A provider config is a set of configuration values for a provider. It holds values directly or references a config vault.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -69,7 +69,7 @@ export class MetorialManagementInstanceProviderDeploymentsConfigsEndpoint {
     query?: DashboardInstanceProviderDeploymentsConfigsListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProviderDeploymentsConfigsListOutput> {
-    let path = `instances/${instanceId}/provider-configs`;
+    let path = `instances/${encodeURIComponent(instanceId)}/provider-configs`;
 
     let request = {
       path,
@@ -103,7 +103,7 @@ export class MetorialManagementInstanceProviderDeploymentsConfigsEndpoint {
     providerConfigId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProviderDeploymentsConfigsGetOutput> {
-    let path = `instances/${instanceId}/provider-configs/${providerConfigId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/provider-configs/${encodeURIComponent(providerConfigId)}`;
 
     let request = {
       path,
@@ -118,7 +118,7 @@ export class MetorialManagementInstanceProviderDeploymentsConfigsEndpoint {
 
   /**
    * @name Create provider config
-   * @description Creates a new provider config.
+   * @description Creates a provider config.
    *
    * @param `instanceId` - string
    * @param `body` - DashboardInstanceProviderDeploymentsConfigsCreateBody
@@ -132,7 +132,7 @@ export class MetorialManagementInstanceProviderDeploymentsConfigsEndpoint {
     body: DashboardInstanceProviderDeploymentsConfigsCreateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProviderDeploymentsConfigsCreateOutput> {
-    let path = `instances/${instanceId}/provider-configs`;
+    let path = `instances/${encodeURIComponent(instanceId)}/provider-configs`;
 
     let request = {
       path,
@@ -166,7 +166,7 @@ export class MetorialManagementInstanceProviderDeploymentsConfigsEndpoint {
     body: DashboardInstanceProviderDeploymentsConfigsUpdateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProviderDeploymentsConfigsUpdateOutput> {
-    let path = `instances/${instanceId}/provider-configs/${providerConfigId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/provider-configs/${encodeURIComponent(providerConfigId)}`;
 
     let request = {
       path,
@@ -183,8 +183,8 @@ export class MetorialManagementInstanceProviderDeploymentsConfigsEndpoint {
   }
 
   /**
-   * @name Delete provider config
-   * @description Permanently deletes a provider config.
+   * @name Archive provider config
+   * @description Archives a provider config. It stays listable with `status=archived`.
    *
    * @param `instanceId` - string
    * @param `providerConfigId` - string
@@ -198,7 +198,7 @@ export class MetorialManagementInstanceProviderDeploymentsConfigsEndpoint {
     providerConfigId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProviderDeploymentsConfigsDeleteOutput> {
-    let path = `instances/${instanceId}/provider-configs/${providerConfigId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/provider-configs/${encodeURIComponent(providerConfigId)}`;
 
     let request = {
       path,
@@ -213,7 +213,7 @@ export class MetorialManagementInstanceProviderDeploymentsConfigsEndpoint {
 
   /**
    * @name Get config schema
-   * @description Retrieves the JSON Schema for configuration of this provider deployment.
+   * @description Returns the JSON Schema for provider configuration, resolved from the given provider, version, deployment, or config.
    *
    * @param `instanceId` - string
    * @param `query` - DashboardInstanceProviderDeploymentsConfigsGetConfigSchemaQuery
@@ -227,7 +227,7 @@ export class MetorialManagementInstanceProviderDeploymentsConfigsEndpoint {
     query?: DashboardInstanceProviderDeploymentsConfigsGetConfigSchemaQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProviderDeploymentsConfigsGetConfigSchemaOutput> {
-    let path = `instances/${instanceId}/provider-config-schema`;
+    let path = `instances/${encodeURIComponent(instanceId)}/provider-config-schema`;
 
     let request = {
       path,

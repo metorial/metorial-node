@@ -28,7 +28,7 @@ import {
 
 /**
  * @name Documents controller
- * @description Create and manage instance documents backed by Cargo.
+ * @description A document is rich text with comments, versions, and participants.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -55,7 +55,7 @@ export class MetorialManagementInstanceDocumentsEndpoint {
 
   /**
    * @name List documents
-   * @description Returns a paginated list of documents owned by the instance.
+   * @description Returns a paginated list of documents.
    *
    * @param `instanceId` - string
    * @param `query` - DashboardInstanceDocumentsListQuery
@@ -69,7 +69,7 @@ export class MetorialManagementInstanceDocumentsEndpoint {
     query?: DashboardInstanceDocumentsListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceDocumentsListOutput> {
-    let path = `instances/${instanceId}/documents`;
+    let path = `instances/${encodeURIComponent(instanceId)}/documents`;
 
     let request = {
       path,
@@ -87,7 +87,7 @@ export class MetorialManagementInstanceDocumentsEndpoint {
 
   /**
    * @name Create document
-   * @description Creates a new document for the instance.
+   * @description Creates a document.
    *
    * @param `instanceId` - string
    * @param `body` - DashboardInstanceDocumentsCreateBody
@@ -101,7 +101,7 @@ export class MetorialManagementInstanceDocumentsEndpoint {
     body: DashboardInstanceDocumentsCreateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceDocumentsCreateOutput> {
-    let path = `instances/${instanceId}/documents`;
+    let path = `instances/${encodeURIComponent(instanceId)}/documents`;
 
     let request = {
       path,
@@ -116,8 +116,8 @@ export class MetorialManagementInstanceDocumentsEndpoint {
   }
 
   /**
-   * @name Get document by ID
-   * @description Retrieves a document by its ID.
+   * @name Get document
+   * @description Retrieves a document.
    *
    * @param `instanceId` - string
    * @param `documentId` - string
@@ -131,7 +131,7 @@ export class MetorialManagementInstanceDocumentsEndpoint {
     documentId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceDocumentsGetOutput> {
-    let path = `instances/${instanceId}/documents/${documentId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/documents/${encodeURIComponent(documentId)}`;
 
     let request = {
       path,
@@ -143,8 +143,8 @@ export class MetorialManagementInstanceDocumentsEndpoint {
   }
 
   /**
-   * @name Update document by ID
-   * @description Updates a specific document.
+   * @name Update document
+   * @description Updates a document.
    *
    * @param `instanceId` - string
    * @param `documentId` - string
@@ -160,7 +160,7 @@ export class MetorialManagementInstanceDocumentsEndpoint {
     body: DashboardInstanceDocumentsUpdateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceDocumentsUpdateOutput> {
-    let path = `instances/${instanceId}/documents/${documentId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/documents/${encodeURIComponent(documentId)}`;
 
     let request = {
       path,
@@ -175,8 +175,8 @@ export class MetorialManagementInstanceDocumentsEndpoint {
   }
 
   /**
-   * @name Delete document by ID
-   * @description Deletes a specific document.
+   * @name Delete document
+   * @description Deletes a document.
    *
    * @param `instanceId` - string
    * @param `documentId` - string
@@ -190,7 +190,7 @@ export class MetorialManagementInstanceDocumentsEndpoint {
     documentId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceDocumentsDeleteOutput> {
-    let path = `instances/${instanceId}/documents/${documentId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/documents/${encodeURIComponent(documentId)}`;
 
     let request = {
       path,
@@ -204,8 +204,8 @@ export class MetorialManagementInstanceDocumentsEndpoint {
   }
 
   /**
-   * @name Clone document by ID
-   * @description Clones a specific document.
+   * @name Clone document
+   * @description Creates a copy of a document.
    *
    * @param `instanceId` - string
    * @param `documentId` - string
@@ -221,7 +221,7 @@ export class MetorialManagementInstanceDocumentsEndpoint {
     body: DashboardInstanceDocumentsCloneBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceDocumentsCloneOutput> {
-    let path = `instances/${instanceId}/documents/${documentId}/clone`;
+    let path = `instances/${encodeURIComponent(instanceId)}/documents/${encodeURIComponent(documentId)}/clone`;
 
     let request = {
       path,

@@ -47,7 +47,7 @@ export class MetorialDashboardInstanceChatsMessagesReactionsEndpoint {
 
   /**
    * @name List chat message reactions
-   * @description Returns the reactions left on a specific chat message.
+   * @description Returns the reactions left on a chat message.
    *
    * @param `instanceId` - string
    * @param `chatId` - string
@@ -65,7 +65,7 @@ export class MetorialDashboardInstanceChatsMessagesReactionsEndpoint {
     query?: DashboardInstanceChatsMessagesReactionsListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceChatsMessagesReactionsListOutput> {
-    let path = `dashboard/instances/${instanceId}/chats/${chatId}/messages/${messageId}/reactions`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/chats/${encodeURIComponent(chatId)}/messages/${encodeURIComponent(messageId)}/reactions`;
 
     let request = {
       path,
@@ -83,7 +83,7 @@ export class MetorialDashboardInstanceChatsMessagesReactionsEndpoint {
 
   /**
    * @name Add chat message reaction
-   * @description Adds a reaction to a specific chat message.
+   * @description Adds a reaction to a chat message.
    *
    * @param `instanceId` - string
    * @param `chatId` - string
@@ -101,7 +101,7 @@ export class MetorialDashboardInstanceChatsMessagesReactionsEndpoint {
     body: DashboardInstanceChatsMessagesReactionsCreateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceChatsMessagesReactionsCreateOutput> {
-    let path = `dashboard/instances/${instanceId}/chats/${chatId}/messages/${messageId}/reactions`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/chats/${encodeURIComponent(chatId)}/messages/${encodeURIComponent(messageId)}/reactions`;
 
     let request = {
       path,
@@ -119,7 +119,7 @@ export class MetorialDashboardInstanceChatsMessagesReactionsEndpoint {
 
   /**
    * @name Remove chat message reaction
-   * @description Removes a reaction from a specific chat message.
+   * @description Removes a reaction from a chat message.
    *
    * @param `instanceId` - string
    * @param `chatId` - string
@@ -137,7 +137,7 @@ export class MetorialDashboardInstanceChatsMessagesReactionsEndpoint {
     query?: DashboardInstanceChatsMessagesReactionsDeleteQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceChatsMessagesReactionsDeleteOutput> {
-    let path = `dashboard/instances/${instanceId}/chats/${chatId}/messages/${messageId}/reactions`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/chats/${encodeURIComponent(chatId)}/messages/${encodeURIComponent(messageId)}/reactions`;
 
     let request = {
       path,

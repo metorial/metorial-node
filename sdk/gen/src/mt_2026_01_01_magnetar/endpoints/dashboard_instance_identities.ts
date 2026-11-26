@@ -24,7 +24,7 @@ import {
 
 /**
  * @name Identities controller
- * @description Identities bundle credentials under a single owner actor so provider access can be managed and delegated consistently.
+ * @description An identity is a set of provider credentials owned by one actor. It lets you manage and delegate provider access consistently.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -65,7 +65,7 @@ export class MetorialDashboardInstanceIdentitiesEndpoint {
     query?: DashboardInstanceIdentitiesListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIdentitiesListOutput> {
-    let path = `dashboard/instances/${instanceId}/identities`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/identities`;
 
     let request = {
       path,
@@ -83,7 +83,7 @@ export class MetorialDashboardInstanceIdentitiesEndpoint {
 
   /**
    * @name Get identity
-   * @description Retrieves a specific identity by ID.
+   * @description Retrieves an identity.
    *
    * @param `instanceId` - string
    * @param `identityId` - string
@@ -97,7 +97,7 @@ export class MetorialDashboardInstanceIdentitiesEndpoint {
     identityId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIdentitiesGetOutput> {
-    let path = `dashboard/instances/${instanceId}/identities/${identityId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/identities/${encodeURIComponent(identityId)}`;
 
     let request = {
       path,
@@ -112,7 +112,7 @@ export class MetorialDashboardInstanceIdentitiesEndpoint {
 
   /**
    * @name Create identity
-   * @description Creates a new identity owned by an existing identity actor.
+   * @description Creates an identity.
    *
    * @param `instanceId` - string
    * @param `body` - DashboardInstanceIdentitiesCreateBody
@@ -126,7 +126,7 @@ export class MetorialDashboardInstanceIdentitiesEndpoint {
     body: DashboardInstanceIdentitiesCreateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIdentitiesCreateOutput> {
-    let path = `dashboard/instances/${instanceId}/identities`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/identities`;
 
     let request = {
       path,
@@ -142,7 +142,7 @@ export class MetorialDashboardInstanceIdentitiesEndpoint {
 
   /**
    * @name Update identity
-   * @description Updates mutable fields on an existing identity.
+   * @description Updates an identity. Omitted fields keep their current value.
    *
    * @param `instanceId` - string
    * @param `identityId` - string
@@ -158,7 +158,7 @@ export class MetorialDashboardInstanceIdentitiesEndpoint {
     body: DashboardInstanceIdentitiesUpdateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIdentitiesUpdateOutput> {
-    let path = `dashboard/instances/${instanceId}/identities/${identityId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/identities/${encodeURIComponent(identityId)}`;
 
     let request = {
       path,
@@ -173,8 +173,8 @@ export class MetorialDashboardInstanceIdentitiesEndpoint {
   }
 
   /**
-   * @name Delete identity
-   * @description Archives an identity.
+   * @name Archive identity
+   * @description Archives an identity. It stays listable with `status=archived`.
    *
    * @param `instanceId` - string
    * @param `identityId` - string
@@ -188,7 +188,7 @@ export class MetorialDashboardInstanceIdentitiesEndpoint {
     identityId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIdentitiesDeleteOutput> {
-    let path = `dashboard/instances/${instanceId}/identities/${identityId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/identities/${encodeURIComponent(identityId)}`;
 
     let request = {
       path,

@@ -24,7 +24,7 @@ import {
 
 /**
  * @name Skill Configurations controller
- * @description Manage configuration profiles for skill execution.
+ * @description A skill configuration is a profile controlling how skills execute.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -65,7 +65,7 @@ export class MetorialManagementInstanceSkillsConfigurationsEndpoint {
     body: DashboardInstanceSkillsConfigurationsCreateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsConfigurationsCreateOutput> {
-    let path = `instances/${instanceId}/skills/configurations`;
+    let path = `instances/${encodeURIComponent(instanceId)}/skills/configurations`;
 
     let request = {
       path,
@@ -97,7 +97,7 @@ export class MetorialManagementInstanceSkillsConfigurationsEndpoint {
     query?: DashboardInstanceSkillsConfigurationsListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsConfigurationsListOutput> {
-    let path = `instances/${instanceId}/skills/configurations`;
+    let path = `instances/${encodeURIComponent(instanceId)}/skills/configurations`;
 
     let request = {
       path,
@@ -115,7 +115,7 @@ export class MetorialManagementInstanceSkillsConfigurationsEndpoint {
 
   /**
    * @name Get skill configuration
-   * @description Retrieves a specific skill configuration by ID, or the default.
+   * @description Retrieves a skill configuration. Pass `default` for the default configuration.
    *
    * @param `instanceId` - string
    * @param `skillConfigurationId` - string
@@ -129,7 +129,7 @@ export class MetorialManagementInstanceSkillsConfigurationsEndpoint {
     skillConfigurationId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsConfigurationsGetOutput> {
-    let path = `instances/${instanceId}/skills/configurations/${skillConfigurationId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/skills/configurations/${encodeURIComponent(skillConfigurationId)}`;
 
     let request = {
       path,
@@ -144,7 +144,7 @@ export class MetorialManagementInstanceSkillsConfigurationsEndpoint {
 
   /**
    * @name Update skill configuration
-   * @description Updates a specific skill configuration. Updating default creates it first if needed.
+   * @description Updates a skill configuration. Omitted fields keep their current value. Updating `default` creates it first if needed.
    *
    * @param `instanceId` - string
    * @param `skillConfigurationId` - string
@@ -160,7 +160,7 @@ export class MetorialManagementInstanceSkillsConfigurationsEndpoint {
     body: DashboardInstanceSkillsConfigurationsUpdateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsConfigurationsUpdateOutput> {
-    let path = `instances/${instanceId}/skills/configurations/${skillConfigurationId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/skills/configurations/${encodeURIComponent(skillConfigurationId)}`;
 
     let request = {
       path,
@@ -178,7 +178,7 @@ export class MetorialManagementInstanceSkillsConfigurationsEndpoint {
 
   /**
    * @name Delete skill configuration
-   * @description Soft deletes a specific non-internal skill configuration.
+   * @description Deletes a skill configuration. The default and internal configurations cannot be deleted.
    *
    * @param `instanceId` - string
    * @param `skillConfigurationId` - string
@@ -192,7 +192,7 @@ export class MetorialManagementInstanceSkillsConfigurationsEndpoint {
     skillConfigurationId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsConfigurationsDeleteOutput> {
-    let path = `instances/${instanceId}/skills/configurations/${skillConfigurationId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/skills/configurations/${encodeURIComponent(skillConfigurationId)}`;
 
     let request = {
       path,

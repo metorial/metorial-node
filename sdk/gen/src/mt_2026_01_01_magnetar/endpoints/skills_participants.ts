@@ -14,7 +14,7 @@ import {
 
 /**
  * @name Skill Participants controller
- * @description Inspect participants associated with an instance skill.
+ * @description A skill participant is a member or consumer participating in a skill.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -41,7 +41,7 @@ export class MetorialSkillsParticipantsEndpoint {
 
   /**
    * @name List skill participants
-   * @description Returns a paginated list of participants for a specific skill.
+   * @description Returns a paginated list of skill participants.
    *
    * @param `skillId` - string
    * @param `query` - DashboardInstanceSkillsParticipantsListQuery
@@ -55,7 +55,7 @@ export class MetorialSkillsParticipantsEndpoint {
     query?: DashboardInstanceSkillsParticipantsListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsParticipantsListOutput> {
-    let path = `skills/${skillId}/participants`;
+    let path = `skills/${encodeURIComponent(skillId)}/participants`;
 
     let request = {
       path,
@@ -72,8 +72,8 @@ export class MetorialSkillsParticipantsEndpoint {
   }
 
   /**
-   * @name Get skill participant by ID
-   * @description Retrieves a specific participant within a skill.
+   * @name Get skill participant
+   * @description Retrieves a skill participant.
    *
    * @param `skillId` - string
    * @param `skillParticipantId` - string
@@ -87,7 +87,7 @@ export class MetorialSkillsParticipantsEndpoint {
     skillParticipantId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsParticipantsGetOutput> {
-    let path = `skills/${skillId}/participants/${skillParticipantId}`;
+    let path = `skills/${encodeURIComponent(skillId)}/participants/${encodeURIComponent(skillParticipantId)}`;
 
     let request = {
       path,

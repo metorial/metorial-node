@@ -20,7 +20,7 @@ import {
 
 /**
  * @name Skill Items controller
- * @description Skill items attach integrations and providers to skills.
+ * @description A skill item is a provider or integration attached to a skill.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -47,7 +47,7 @@ export class MetorialManagementInstanceSkillsItemsEndpoint {
 
   /**
    * @name List skill items
-   * @description Returns a paginated list of items for a skill.
+   * @description Returns a paginated list of skill items.
    *
    * @param `instanceId` - string
    * @param `skillId` - string
@@ -63,7 +63,7 @@ export class MetorialManagementInstanceSkillsItemsEndpoint {
     query?: DashboardInstanceSkillsItemsListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsItemsListOutput> {
-    let path = `instances/${instanceId}/skills/${skillId}/items`;
+    let path = `instances/${encodeURIComponent(instanceId)}/skills/${encodeURIComponent(skillId)}/items`;
 
     let request = {
       path,
@@ -81,7 +81,7 @@ export class MetorialManagementInstanceSkillsItemsEndpoint {
 
   /**
    * @name Get skill item
-   * @description Retrieves a specific skill item.
+   * @description Retrieves a skill item.
    *
    * @param `instanceId` - string
    * @param `skillId` - string
@@ -97,7 +97,7 @@ export class MetorialManagementInstanceSkillsItemsEndpoint {
     skillItemId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsItemsGetOutput> {
-    let path = `instances/${instanceId}/skills/${skillId}/items/${skillItemId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/skills/${encodeURIComponent(skillId)}/items/${encodeURIComponent(skillItemId)}`;
 
     let request = {
       path,
@@ -128,7 +128,7 @@ export class MetorialManagementInstanceSkillsItemsEndpoint {
     body: DashboardInstanceSkillsItemsCreateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsItemsCreateOutput> {
-    let path = `instances/${instanceId}/skills/${skillId}/items`;
+    let path = `instances/${encodeURIComponent(instanceId)}/skills/${encodeURIComponent(skillId)}/items`;
 
     let request = {
       path,
@@ -143,7 +143,7 @@ export class MetorialManagementInstanceSkillsItemsEndpoint {
   }
 
   /**
-   * @name Delete skill item
+   * @name Archive skill item
    * @description Archives a skill item.
    *
    * @param `instanceId` - string
@@ -160,7 +160,7 @@ export class MetorialManagementInstanceSkillsItemsEndpoint {
     skillItemId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsItemsDeleteOutput> {
-    let path = `instances/${instanceId}/skills/${skillId}/items/${skillItemId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/skills/${encodeURIComponent(skillId)}/items/${encodeURIComponent(skillItemId)}`;
 
     let request = {
       path,

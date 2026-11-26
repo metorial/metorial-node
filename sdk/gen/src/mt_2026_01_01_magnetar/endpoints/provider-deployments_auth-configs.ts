@@ -24,7 +24,7 @@ import {
 
 /**
  * @name Provider Auth Configs controller
- * @description An auth config is a user's authenticated connection to a provider. Created when a user completes OAuth or manually enters an API token.
+ * @description A provider auth config is a user's authenticated connection to a provider. It is created when a user completes OAuth or enters an API token.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -95,7 +95,7 @@ export class MetorialProviderDeploymentsAuthConfigsEndpoint {
     providerAuthConfigId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProviderDeploymentsAuthConfigsGetOutput> {
-    let path = `provider-auth-configs/${providerAuthConfigId}`;
+    let path = `provider-auth-configs/${encodeURIComponent(providerAuthConfigId)}`;
 
     let request = {
       path,
@@ -110,7 +110,7 @@ export class MetorialProviderDeploymentsAuthConfigsEndpoint {
 
   /**
    * @name Create provider auth config
-   * @description Creates a new provider auth config.
+   * @description Creates a provider auth config.
    *
    * @param `body` - DashboardInstanceProviderDeploymentsAuthConfigsCreateBody
    * @param `opts` - { headers?: Record<string, string> }
@@ -154,7 +154,7 @@ export class MetorialProviderDeploymentsAuthConfigsEndpoint {
     body: DashboardInstanceProviderDeploymentsAuthConfigsUpdateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProviderDeploymentsAuthConfigsUpdateOutput> {
-    let path = `provider-auth-configs/${providerAuthConfigId}`;
+    let path = `provider-auth-configs/${encodeURIComponent(providerAuthConfigId)}`;
 
     let request = {
       path,
@@ -171,8 +171,8 @@ export class MetorialProviderDeploymentsAuthConfigsEndpoint {
   }
 
   /**
-   * @name Delete provider auth config
-   * @description Permanently deletes a provider auth config.
+   * @name Archive provider auth config
+   * @description Archives a provider auth config. It stays listable with `status=archived`.
    *
    * @param `providerAuthConfigId` - string
    * @param `opts` - { headers?: Record<string, string> }
@@ -184,7 +184,7 @@ export class MetorialProviderDeploymentsAuthConfigsEndpoint {
     providerAuthConfigId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProviderDeploymentsAuthConfigsDeleteOutput> {
-    let path = `provider-auth-configs/${providerAuthConfigId}`;
+    let path = `provider-auth-configs/${encodeURIComponent(providerAuthConfigId)}`;
 
     let request = {
       path,

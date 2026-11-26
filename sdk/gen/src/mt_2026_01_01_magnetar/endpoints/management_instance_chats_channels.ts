@@ -57,7 +57,7 @@ export class MetorialManagementInstanceChatsChannelsEndpoint {
     query?: DashboardInstanceChatsChannelsListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceChatsChannelsListOutput> {
-    let path = `instances/${instanceId}/chats/${chatId}/channels`;
+    let path = `instances/${encodeURIComponent(instanceId)}/chats/${encodeURIComponent(chatId)}/channels`;
 
     let request = {
       path,
@@ -75,7 +75,7 @@ export class MetorialManagementInstanceChatsChannelsEndpoint {
 
   /**
    * @name Get chat channel
-   * @description Retrieves a specific chat channel.
+   * @description Retrieves a chat channel.
    *
    * @param `instanceId` - string
    * @param `chatId` - string
@@ -91,7 +91,7 @@ export class MetorialManagementInstanceChatsChannelsEndpoint {
     channelId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceChatsChannelsGetOutput> {
-    let path = `instances/${instanceId}/chats/${chatId}/channels/${channelId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/chats/${encodeURIComponent(chatId)}/channels/${encodeURIComponent(channelId)}`;
 
     let request = {
       path,

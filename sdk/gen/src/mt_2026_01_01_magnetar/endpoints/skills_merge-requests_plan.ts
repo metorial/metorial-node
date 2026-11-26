@@ -10,7 +10,7 @@ import {
 
 /**
  * @name Skill Merge Requests controller
- * @description Review, resolve, and apply changes between skills.
+ * @description A skill merge request is a proposed change from one skill into another.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -49,7 +49,7 @@ export class MetorialSkillsMergeRequestsPlanEndpoint {
     skillMergeRequestId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsMergeRequestsPlanGetOutput> {
-    let path = `skill-merge-requests/${skillMergeRequestId}/plan`;
+    let path = `skill-merge-requests/${encodeURIComponent(skillMergeRequestId)}/plan`;
 
     let request = {
       path,

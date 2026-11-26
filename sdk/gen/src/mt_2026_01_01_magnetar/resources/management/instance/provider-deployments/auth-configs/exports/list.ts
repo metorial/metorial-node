@@ -2,6 +2,7 @@ import { createMapper } from '@metorial/util-resource-mapper/compact';
 
 export type ManagementInstanceProviderDeploymentsAuthConfigsExportsListOutput =
   {
+    object: 'list';
     items: {
       object: 'provider.auth_export';
       id: string;
@@ -53,6 +54,7 @@ export type ManagementInstanceProviderDeploymentsAuthConfigsExportsListOutput =
           status: 'active' | 'archived' | 'deleted';
           isDefault: boolean;
           isManaged: boolean;
+          managedBy: 'metorial' | 'installation' | null;
           name: string | null;
           description: string | null;
           metadata: Record<string, any> | null;
@@ -118,7 +120,12 @@ export type ManagementInstanceProviderDeploymentsAuthConfigsExportsListOutput =
       createdAt: Date;
       expiresAt: Date | null;
     }[];
-    pagination: { hasMoreBefore: boolean; hasMoreAfter: boolean };
+    pagination: {
+      hasMoreBefore: boolean;
+      hasMoreAfter: boolean;
+      before?: string | undefined;
+      after?: string | undefined;
+    };
   };
 
 export let mapManagementInstanceProviderDeploymentsAuthConfigsExportsListOutput =
@@ -151,6 +158,7 @@ export let mapManagementInstanceProviderDeploymentsAuthConfigsExportsListOutput 
                     [
                       'is_default',
                       'is_managed',
+                      'managed_by',
                       'provider_id',
                       'created_at',
                       'updated_at'

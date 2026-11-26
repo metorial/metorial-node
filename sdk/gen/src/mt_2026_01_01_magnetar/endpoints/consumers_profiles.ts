@@ -14,7 +14,7 @@ import {
 
 /**
  * @name Consumers controller
- * @description Manage instance consumers independently from portals and inspect the profiles linked to each consumer.
+ * @description A consumer is a person or system that uses an instance. Each consumer has profiles linking them to the surfaces they can access.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -41,7 +41,7 @@ export class MetorialConsumersProfilesEndpoint {
 
   /**
    * @name List consumer profiles
-   * @description Returns a paginated list of profiles for a consumer in an instance.
+   * @description Returns a paginated list of profiles for a consumer.
    *
    * @param `consumerId` - string
    * @param `query` - DashboardInstanceConsumersProfilesListQuery
@@ -55,7 +55,7 @@ export class MetorialConsumersProfilesEndpoint {
     query?: DashboardInstanceConsumersProfilesListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceConsumersProfilesListOutput> {
-    let path = `consumers/${consumerId}/profiles`;
+    let path = `consumers/${encodeURIComponent(consumerId)}/profiles`;
 
     let request = {
       path,
@@ -73,7 +73,7 @@ export class MetorialConsumersProfilesEndpoint {
 
   /**
    * @name Get consumer profile
-   * @description Retrieves a consumer profile by ID for a consumer.
+   * @description Retrieves a consumer profile.
    *
    * @param `consumerId` - string
    * @param `consumerProfileId` - string
@@ -87,7 +87,7 @@ export class MetorialConsumersProfilesEndpoint {
     consumerProfileId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceConsumersProfilesGetOutput> {
-    let path = `consumers/${consumerId}/profiles/${consumerProfileId}`;
+    let path = `consumers/${encodeURIComponent(consumerId)}/profiles/${encodeURIComponent(consumerProfileId)}`;
 
     let request = {
       path,

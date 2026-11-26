@@ -55,7 +55,7 @@ export class MetorialManagementInstanceCallbackInstancesEndpoint {
     query?: DashboardInstanceCallbackInstancesListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceCallbackInstancesListOutput> {
-    let path = `instances/${instanceId}/callback-instances`;
+    let path = `instances/${encodeURIComponent(instanceId)}/callback-instances`;
 
     let request = {
       path,
@@ -73,7 +73,7 @@ export class MetorialManagementInstanceCallbackInstancesEndpoint {
 
   /**
    * @name Get callback instance
-   * @description Retrieves a specific callback instance by ID.
+   * @description Retrieves a callback instance.
    *
    * @param `instanceId` - string
    * @param `callbackInstanceId` - string
@@ -87,7 +87,7 @@ export class MetorialManagementInstanceCallbackInstancesEndpoint {
     callbackInstanceId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceCallbackInstancesGetOutput> {
-    let path = `instances/${instanceId}/callback-instances/${callbackInstanceId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/callback-instances/${encodeURIComponent(callbackInstanceId)}`;
 
     let request = {
       path,

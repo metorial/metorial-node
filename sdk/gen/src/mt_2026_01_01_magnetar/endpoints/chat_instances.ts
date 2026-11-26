@@ -26,7 +26,7 @@ import {
 
 /**
  * @name Chat Instances controller
- * @description Chat instances materialize a chat connection for a specific runtime configuration.
+ * @description A chat instance is a chat connection running with its own configuration and identity.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -83,7 +83,7 @@ export class MetorialChatInstancesEndpoint {
 
   /**
    * @name Get chat instance
-   * @description Retrieves a specific chat instance.
+   * @description Retrieves a chat instance.
    *
    * @param `chatInstanceId` - string
    * @param `opts` - { headers?: Record<string, string> }
@@ -95,7 +95,7 @@ export class MetorialChatInstancesEndpoint {
     chatInstanceId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceChatInstancesGetOutput> {
-    let path = `chat/instances/${chatInstanceId}`;
+    let path = `chat/instances/${encodeURIComponent(chatInstanceId)}`;
 
     let request = {
       path,
@@ -138,7 +138,7 @@ export class MetorialChatInstancesEndpoint {
 
   /**
    * @name Update chat instance
-   * @description Updates a specific chat instance.
+   * @description Updates a chat instance. Omitted fields keep their current value.
    *
    * @param `chatInstanceId` - string
    * @param `body` - DashboardInstanceChatInstancesUpdateBody
@@ -152,7 +152,7 @@ export class MetorialChatInstancesEndpoint {
     body: DashboardInstanceChatInstancesUpdateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceChatInstancesUpdateOutput> {
-    let path = `chat/instances/${chatInstanceId}`;
+    let path = `chat/instances/${encodeURIComponent(chatInstanceId)}`;
 
     let request = {
       path,
@@ -167,8 +167,8 @@ export class MetorialChatInstancesEndpoint {
   }
 
   /**
-   * @name Delete chat instance
-   * @description Archives a specific chat instance.
+   * @name Archive chat instance
+   * @description Archives a chat instance. It stays listable with `status=archived`.
    *
    * @param `chatInstanceId` - string
    * @param `opts` - { headers?: Record<string, string> }
@@ -180,7 +180,7 @@ export class MetorialChatInstancesEndpoint {
     chatInstanceId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceChatInstancesDeleteOutput> {
-    let path = `chat/instances/${chatInstanceId}`;
+    let path = `chat/instances/${encodeURIComponent(chatInstanceId)}`;
 
     let request = {
       path,
@@ -207,7 +207,7 @@ export class MetorialChatInstancesEndpoint {
     chatInstanceId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceChatInstancesSyncOutput> {
-    let path = `chat/instances/${chatInstanceId}/sync`;
+    let path = `chat/instances/${encodeURIComponent(chatInstanceId)}/sync`;
 
     let request = {
       path,

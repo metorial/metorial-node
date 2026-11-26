@@ -26,7 +26,7 @@ import {
 
 /**
  * @name Custom Providers controller
- * @description Custom providers allow you to deploy your own MCP servers. Create providers from container images, remote URLs, or serverless functions.
+ * @description A custom provider is an MCP server you deploy and use through your instance. It runs from a container image, a remote URL, or serverless function code.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -67,7 +67,7 @@ export class MetorialManagementInstanceCustomProvidersEndpoint {
     query?: DashboardInstanceCustomProvidersListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceCustomProvidersListOutput> {
-    let path = `instances/${instanceId}/custom-providers`;
+    let path = `instances/${encodeURIComponent(instanceId)}/custom-providers`;
 
     let request = {
       path,
@@ -85,7 +85,7 @@ export class MetorialManagementInstanceCustomProvidersEndpoint {
 
   /**
    * @name Get custom provider
-   * @description Retrieves a specific custom provider by ID.
+   * @description Retrieves a custom provider.
    *
    * @param `instanceId` - string
    * @param `customProviderId` - string
@@ -99,7 +99,7 @@ export class MetorialManagementInstanceCustomProvidersEndpoint {
     customProviderId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceCustomProvidersGetOutput> {
-    let path = `instances/${instanceId}/custom-providers/${customProviderId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/custom-providers/${encodeURIComponent(customProviderId)}`;
 
     let request = {
       path,
@@ -114,7 +114,7 @@ export class MetorialManagementInstanceCustomProvidersEndpoint {
 
   /**
    * @name Get custom provider environment
-   * @description Retrieves the environment variables for a specific custom provider by ID.
+   * @description Retrieves the environment variables for a custom provider.
    *
    * @param `instanceId` - string
    * @param `customProviderId` - string
@@ -128,7 +128,7 @@ export class MetorialManagementInstanceCustomProvidersEndpoint {
     customProviderId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceCustomProvidersGetEnvOutput> {
-    let path = `instances/${instanceId}/custom-providers/${customProviderId}/env`;
+    let path = `instances/${encodeURIComponent(instanceId)}/custom-providers/${encodeURIComponent(customProviderId)}/env`;
 
     let request = {
       path,
@@ -157,7 +157,7 @@ export class MetorialManagementInstanceCustomProvidersEndpoint {
     body: DashboardInstanceCustomProvidersCreateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceCustomProvidersCreateOutput> {
-    let path = `instances/${instanceId}/custom-providers`;
+    let path = `instances/${encodeURIComponent(instanceId)}/custom-providers`;
 
     let request = {
       path,
@@ -173,7 +173,7 @@ export class MetorialManagementInstanceCustomProvidersEndpoint {
 
   /**
    * @name Update custom provider
-   * @description Updates a specific custom provider.
+   * @description Updates a custom provider.
    *
    * @param `instanceId` - string
    * @param `customProviderId` - string
@@ -189,7 +189,7 @@ export class MetorialManagementInstanceCustomProvidersEndpoint {
     body: DashboardInstanceCustomProvidersUpdateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceCustomProvidersUpdateOutput> {
-    let path = `instances/${instanceId}/custom-providers/${customProviderId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/custom-providers/${encodeURIComponent(customProviderId)}`;
 
     let request = {
       path,
@@ -205,7 +205,7 @@ export class MetorialManagementInstanceCustomProvidersEndpoint {
 
   /**
    * @name Archive custom provider
-   * @description Archives a specific custom provider and disables new connections to it.
+   * @description Archives a custom provider and disables new connections to it.
    *
    * @param `instanceId` - string
    * @param `customProviderId` - string
@@ -219,7 +219,7 @@ export class MetorialManagementInstanceCustomProvidersEndpoint {
     customProviderId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceCustomProvidersArchiveOutput> {
-    let path = `instances/${instanceId}/custom-providers/${customProviderId}/archive`;
+    let path = `instances/${encodeURIComponent(instanceId)}/custom-providers/${encodeURIComponent(customProviderId)}/archive`;
 
     let request = {
       path,

@@ -12,7 +12,7 @@ import {
 
 /**
  * @name Instances controller
- * @description Endpoints for listing and retrieving instances. An instance is an isolated environment within a Metorial project. Instances are created via the dashboard (since API keys are scoped to instances). Common setups include production, staging, and development instances.
+ * @description An instance is an isolated environment within a Metorial project. Only the instances you can access are listed.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -38,8 +38,8 @@ export class MetorialInstancesEndpoint {
   }
 
   /**
-   * @name Get instance details
-   * @description Retrieves metadata and configuration details for a specific instance.
+   * @name Get instance
+   * @description Retrieves an instance.
    *
    * @param `instanceId` - string
    * @param `opts` - { headers?: Record<string, string> }
@@ -51,7 +51,7 @@ export class MetorialInstancesEndpoint {
     instanceId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<InstancesGetOutput> {
-    let path = `instances/${instanceId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}`;
 
     let request = {
       path,
@@ -64,7 +64,7 @@ export class MetorialInstancesEndpoint {
 
   /**
    * @name List instances
-   * @description Lists all instances within the organization that the authenticated actor has access to.
+   * @description Returns the instances in the organization that the caller can access.
    *
    * @param `opts` - { headers?: Record<string, string> }
    * @returns InstancesListOutput

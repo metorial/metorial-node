@@ -18,7 +18,7 @@ import {
 
 /**
  * @name Portal Access Requests controller
- * @description Review and resolve access requests for a portal.
+ * @description A portal access request is a consumer's request for access to a listing. Approving it grants access through a consumer group.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -61,7 +61,7 @@ export class MetorialManagementInstancePortalsAccessRequestsEndpoint {
     query?: DashboardInstancePortalsAccessRequestsListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstancePortalsAccessRequestsListOutput> {
-    let path = `instances/${instanceId}/portals/${portalId}/access-requests`;
+    let path = `instances/${encodeURIComponent(instanceId)}/portals/${encodeURIComponent(portalId)}/access-requests`;
 
     let request = {
       path,
@@ -79,7 +79,7 @@ export class MetorialManagementInstancePortalsAccessRequestsEndpoint {
 
   /**
    * @name Get portal access request
-   * @description Retrieves a access request by ID.
+   * @description Retrieves a portal access request.
    *
    * @param `instanceId` - string
    * @param `portalId` - string
@@ -95,7 +95,7 @@ export class MetorialManagementInstancePortalsAccessRequestsEndpoint {
     accessRequestId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstancePortalsAccessRequestsGetOutput> {
-    let path = `instances/${instanceId}/portals/${portalId}/access-requests/${accessRequestId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/portals/${encodeURIComponent(portalId)}/access-requests/${encodeURIComponent(accessRequestId)}`;
 
     let request = {
       path,
@@ -110,7 +110,7 @@ export class MetorialManagementInstancePortalsAccessRequestsEndpoint {
 
   /**
    * @name Review portal access request
-   * @description Approves or rejects a access request.
+   * @description Approves or rejects a portal access request. Approving with a consumer group grants access through that group.
    *
    * @param `instanceId` - string
    * @param `portalId` - string
@@ -128,7 +128,7 @@ export class MetorialManagementInstancePortalsAccessRequestsEndpoint {
     body: DashboardInstancePortalsAccessRequestsUpdateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstancePortalsAccessRequestsUpdateOutput> {
-    let path = `instances/${instanceId}/portals/${portalId}/access-requests/${accessRequestId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/portals/${encodeURIComponent(portalId)}/access-requests/${encodeURIComponent(accessRequestId)}`;
 
     let request = {
       path,

@@ -1,6 +1,7 @@
 import { createMapper } from '@metorial/util-resource-mapper/compact';
 
 export type DashboardInstanceChatEventsListOutput = {
+  object: 'list';
   items: {
     object: 'chat.event';
     id: string;
@@ -20,7 +21,12 @@ export type DashboardInstanceChatEventsListOutput = {
     occurredAt: Date;
     createdAt: Date;
   }[];
-  pagination: { hasMoreBefore: boolean; hasMoreAfter: boolean };
+  pagination: {
+    hasMoreBefore: boolean;
+    hasMoreAfter: boolean;
+    before?: string | undefined;
+    after?: string | undefined;
+  };
 };
 
 export let mapDashboardInstanceChatEventsListOutput =

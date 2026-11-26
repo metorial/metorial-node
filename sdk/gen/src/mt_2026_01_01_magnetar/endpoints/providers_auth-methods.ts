@@ -14,7 +14,7 @@ import {
 
 /**
  * @name Provider Auth Methods controller
- * @description An auth method defines one way to authenticate with a provider (OAuth, API token, or custom credentials). A provider version may support multiple auth methods.
+ * @description A provider auth method is one way to authenticate with a provider, such as OAuth, an API token, or custom credentials. A provider version can offer multiple auth methods.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -83,7 +83,7 @@ export class MetorialProvidersAuthMethodsEndpoint {
     providerAuthMethodId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProvidersAuthMethodsGetOutput> {
-    let path = `provider-auth-methods/${providerAuthMethodId}`;
+    let path = `provider-auth-methods/${encodeURIComponent(providerAuthMethodId)}`;
 
     let request = {
       path,

@@ -14,7 +14,7 @@ import {
 
 /**
  * @name Provider Issues controller
- * @description Provider issues aggregate repeated provider errors, authentication failures and ProtoGuard warnings into one record per distinct problem.
+ * @description A provider issue is a group of repeated provider errors, authentication failures, or ProtoGuard warnings sharing one underlying problem.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -83,7 +83,7 @@ export class MetorialProviderIssuesEndpoint {
     providerIssueId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProviderIssuesGetOutput> {
-    let path = `provider-issues/${providerIssueId}`;
+    let path = `provider-issues/${encodeURIComponent(providerIssueId)}`;
 
     let request = {
       path,

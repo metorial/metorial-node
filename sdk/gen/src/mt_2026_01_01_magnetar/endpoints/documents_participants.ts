@@ -14,7 +14,7 @@ import {
 
 /**
  * @name Document Participants controller
- * @description Inspect document participants and their linked Metorial resources.
+ * @description A document participant is an actor with access to a document.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -41,7 +41,7 @@ export class MetorialDocumentsParticipantsEndpoint {
 
   /**
    * @name List document participants
-   * @description Returns a paginated list of participants for a specific document.
+   * @description Returns a paginated list of participants in a document.
    *
    * @param `documentId` - string
    * @param `query` - DashboardInstanceDocumentsParticipantsListQuery
@@ -55,7 +55,7 @@ export class MetorialDocumentsParticipantsEndpoint {
     query?: DashboardInstanceDocumentsParticipantsListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceDocumentsParticipantsListOutput> {
-    let path = `documents/${documentId}/participants`;
+    let path = `documents/${encodeURIComponent(documentId)}/participants`;
 
     let request = {
       path,
@@ -72,8 +72,8 @@ export class MetorialDocumentsParticipantsEndpoint {
   }
 
   /**
-   * @name Get document participant by ID
-   * @description Retrieves a specific document participant by its ID.
+   * @name Get document participant
+   * @description Retrieves a participant in a document.
    *
    * @param `documentId` - string
    * @param `documentParticipantId` - string
@@ -87,7 +87,7 @@ export class MetorialDocumentsParticipantsEndpoint {
     documentParticipantId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceDocumentsParticipantsGetOutput> {
-    let path = `documents/${documentId}/participants/${documentParticipantId}`;
+    let path = `documents/${encodeURIComponent(documentId)}/participants/${encodeURIComponent(documentParticipantId)}`;
 
     let request = {
       path,

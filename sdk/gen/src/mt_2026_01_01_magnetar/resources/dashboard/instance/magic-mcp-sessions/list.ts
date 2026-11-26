@@ -1,6 +1,7 @@
 import { createMapper } from '@metorial/util-resource-mapper/compact';
 
 export type DashboardInstanceMagicMcpSessionsListOutput = {
+  object: 'list';
   items: {
     object: 'magic_mcp.session';
     id: string;
@@ -101,6 +102,7 @@ export type DashboardInstanceMagicMcpSessionsListOutput = {
           status: 'active' | 'archived' | 'deleted';
           isDefault: boolean;
           isManaged: boolean;
+          managedBy: 'metorial' | 'installation' | null;
           name: string | null;
           description: string | null;
           metadata: Record<string, any> | null;
@@ -223,7 +225,12 @@ export type DashboardInstanceMagicMcpSessionsListOutput = {
     createdAt: Date;
     updatedAt: Date;
   }[];
-  pagination: { hasMoreBefore: boolean; hasMoreAfter: boolean };
+  pagination: {
+    hasMoreBefore: boolean;
+    hasMoreAfter: boolean;
+    before?: string | undefined;
+    after?: string | undefined;
+  };
 };
 
 export let mapDashboardInstanceMagicMcpSessionsListOutput =
@@ -293,6 +300,7 @@ export let mapDashboardInstanceMagicMcpSessionsListOutput =
                             [
                               'is_default',
                               'is_managed',
+                              'managed_by',
                               'provider_id',
                               'created_at',
                               'updated_at'

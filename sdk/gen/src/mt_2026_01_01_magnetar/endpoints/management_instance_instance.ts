@@ -36,8 +36,8 @@ export class MetorialManagementInstanceInstanceEndpoint {
   }
 
   /**
-   * @name Get instance details
-   * @description Retrieves metadata and configuration details for a specific instance.
+   * @name Get instance
+   * @description Retrieves an instance.
    *
    * @param `instanceId` - string
    * @param `opts` - { headers?: Record<string, string> }
@@ -49,7 +49,7 @@ export class MetorialManagementInstanceInstanceEndpoint {
     instanceId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceInstanceGetOutput> {
-    let path = `instances/${instanceId}/instance`;
+    let path = `instances/${encodeURIComponent(instanceId)}/instance`;
 
     let request = {
       path,

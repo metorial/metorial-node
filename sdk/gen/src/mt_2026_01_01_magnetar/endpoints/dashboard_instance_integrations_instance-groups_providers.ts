@@ -20,7 +20,7 @@ import {
 
 /**
  * @name Integration Instance Group Providers controller
- * @description Integration instance group providers define the effective routed provider set for an integration instance group.
+ * @description An integration instance group provider links one integration instance provider into a group, with optional tool filters.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -61,7 +61,7 @@ export class MetorialDashboardInstanceIntegrationsInstanceGroupsProvidersEndpoin
     query?: DashboardInstanceIntegrationsInstanceGroupsProvidersListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIntegrationsInstanceGroupsProvidersListOutput> {
-    let path = `dashboard/instances/${instanceId}/integration-instance-group-providers`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/integration-instance-group-providers`;
 
     let request = {
       path,
@@ -81,7 +81,7 @@ export class MetorialDashboardInstanceIntegrationsInstanceGroupsProvidersEndpoin
 
   /**
    * @name Get integration instance group provider
-   * @description Retrieves a specific integration instance group provider.
+   * @description Retrieves an integration instance group provider.
    *
    * @param `instanceId` - string
    * @param `integrationInstanceGroupProviderId` - string
@@ -95,7 +95,7 @@ export class MetorialDashboardInstanceIntegrationsInstanceGroupsProvidersEndpoin
     integrationInstanceGroupProviderId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIntegrationsInstanceGroupsProvidersGetOutput> {
-    let path = `dashboard/instances/${instanceId}/integration-instance-group-providers/${integrationInstanceGroupProviderId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/integration-instance-group-providers/${encodeURIComponent(integrationInstanceGroupProviderId)}`;
 
     let request = {
       path,
@@ -110,7 +110,7 @@ export class MetorialDashboardInstanceIntegrationsInstanceGroupsProvidersEndpoin
 
   /**
    * @name Set integration instance group provider
-   * @description Creates or updates the effective integration instance group provider materialization.
+   * @description Links an existing integration instance provider into the group, with optional tool filters. Creates the link when none exists, otherwise updates its tool filters.
    *
    * @param `instanceId` - string
    * @param `integrationInstanceGroupId` - string
@@ -128,7 +128,7 @@ export class MetorialDashboardInstanceIntegrationsInstanceGroupsProvidersEndpoin
     body: DashboardInstanceIntegrationsInstanceGroupsProvidersSetBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIntegrationsInstanceGroupsProvidersSetOutput> {
-    let path = `dashboard/instances/${instanceId}/integration-instance-groups/${integrationInstanceGroupId}/providers/${integrationInstanceProviderId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/integration-instance-groups/${encodeURIComponent(integrationInstanceGroupId)}/providers/${encodeURIComponent(integrationInstanceProviderId)}`;
 
     let request = {
       path,
@@ -145,8 +145,8 @@ export class MetorialDashboardInstanceIntegrationsInstanceGroupsProvidersEndpoin
   }
 
   /**
-   * @name Delete integration instance group provider
-   * @description Archives a specific integration instance group provider.
+   * @name Archive integration instance group provider
+   * @description Archives an integration instance group provider. It stays retrievable by ID and listable with `status=archived`.
    *
    * @param `instanceId` - string
    * @param `integrationInstanceGroupProviderId` - string
@@ -160,7 +160,7 @@ export class MetorialDashboardInstanceIntegrationsInstanceGroupsProvidersEndpoin
     integrationInstanceGroupProviderId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIntegrationsInstanceGroupsProvidersDeleteOutput> {
-    let path = `dashboard/instances/${instanceId}/integration-instance-group-providers/${integrationInstanceGroupProviderId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/integration-instance-group-providers/${encodeURIComponent(integrationInstanceGroupProviderId)}`;
 
     let request = {
       path,

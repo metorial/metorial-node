@@ -81,7 +81,7 @@ export class MetorialChatConnectionsEndpoint {
 
   /**
    * @name Get chat connection
-   * @description Retrieves a specific chat connection.
+   * @description Retrieves a chat connection.
    *
    * @param `chatConnectionId` - string
    * @param `opts` - { headers?: Record<string, string> }
@@ -93,7 +93,7 @@ export class MetorialChatConnectionsEndpoint {
     chatConnectionId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceChatConnectionsGetOutput> {
-    let path = `chat/connections/${chatConnectionId}`;
+    let path = `chat/connections/${encodeURIComponent(chatConnectionId)}`;
 
     let request = {
       path,
@@ -136,7 +136,7 @@ export class MetorialChatConnectionsEndpoint {
 
   /**
    * @name Update chat connection
-   * @description Updates a specific chat connection.
+   * @description Updates a chat connection. Omitted fields keep their current value.
    *
    * @param `chatConnectionId` - string
    * @param `body` - DashboardInstanceChatConnectionsUpdateBody
@@ -150,7 +150,7 @@ export class MetorialChatConnectionsEndpoint {
     body: DashboardInstanceChatConnectionsUpdateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceChatConnectionsUpdateOutput> {
-    let path = `chat/connections/${chatConnectionId}`;
+    let path = `chat/connections/${encodeURIComponent(chatConnectionId)}`;
 
     let request = {
       path,
@@ -165,8 +165,8 @@ export class MetorialChatConnectionsEndpoint {
   }
 
   /**
-   * @name Delete chat connection
-   * @description Archives a specific chat connection.
+   * @name Archive chat connection
+   * @description Archives a chat connection. It stays listable with `status=archived`.
    *
    * @param `chatConnectionId` - string
    * @param `opts` - { headers?: Record<string, string> }
@@ -178,7 +178,7 @@ export class MetorialChatConnectionsEndpoint {
     chatConnectionId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceChatConnectionsDeleteOutput> {
-    let path = `chat/connections/${chatConnectionId}`;
+    let path = `chat/connections/${encodeURIComponent(chatConnectionId)}`;
 
     let request = {
       path,

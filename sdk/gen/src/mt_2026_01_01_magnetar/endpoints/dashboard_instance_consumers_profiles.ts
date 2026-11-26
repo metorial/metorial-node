@@ -14,7 +14,7 @@ import {
 
 /**
  * @name Consumers controller
- * @description Manage instance consumers independently from portals and inspect the profiles linked to each consumer.
+ * @description A consumer is a person or system that uses an instance. Each consumer has profiles linking them to the surfaces they can access.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -41,7 +41,7 @@ export class MetorialDashboardInstanceConsumersProfilesEndpoint {
 
   /**
    * @name List consumer profiles
-   * @description Returns a paginated list of profiles for a consumer in an instance.
+   * @description Returns a paginated list of profiles for a consumer.
    *
    * @param `instanceId` - string
    * @param `consumerId` - string
@@ -57,7 +57,7 @@ export class MetorialDashboardInstanceConsumersProfilesEndpoint {
     query?: DashboardInstanceConsumersProfilesListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceConsumersProfilesListOutput> {
-    let path = `dashboard/instances/${instanceId}/consumers/${consumerId}/profiles`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/consumers/${encodeURIComponent(consumerId)}/profiles`;
 
     let request = {
       path,
@@ -75,7 +75,7 @@ export class MetorialDashboardInstanceConsumersProfilesEndpoint {
 
   /**
    * @name Get consumer profile
-   * @description Retrieves a consumer profile by ID for a consumer.
+   * @description Retrieves a consumer profile.
    *
    * @param `instanceId` - string
    * @param `consumerId` - string
@@ -91,7 +91,7 @@ export class MetorialDashboardInstanceConsumersProfilesEndpoint {
     consumerProfileId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceConsumersProfilesGetOutput> {
-    let path = `dashboard/instances/${instanceId}/consumers/${consumerId}/profiles/${consumerProfileId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/consumers/${encodeURIComponent(consumerId)}/profiles/${encodeURIComponent(consumerProfileId)}`;
 
     let request = {
       path,

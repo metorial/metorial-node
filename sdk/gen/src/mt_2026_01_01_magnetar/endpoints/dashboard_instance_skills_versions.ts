@@ -14,7 +14,7 @@ import {
 
 /**
  * @name Skill Versions controller
- * @description Inspect version history and snapshots for a skill.
+ * @description A skill version is a snapshot of a skill at a point in time.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -41,7 +41,7 @@ export class MetorialDashboardInstanceSkillsVersionsEndpoint {
 
   /**
    * @name List skill versions
-   * @description Returns a paginated list of versions for a specific skill.
+   * @description Returns a paginated list of skill versions.
    *
    * @param `instanceId` - string
    * @param `skillId` - string
@@ -57,7 +57,7 @@ export class MetorialDashboardInstanceSkillsVersionsEndpoint {
     query?: DashboardInstanceSkillsVersionsListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsVersionsListOutput> {
-    let path = `dashboard/instances/${instanceId}/skills/${skillId}/versions`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/skills/${encodeURIComponent(skillId)}/versions`;
 
     let request = {
       path,
@@ -74,8 +74,8 @@ export class MetorialDashboardInstanceSkillsVersionsEndpoint {
   }
 
   /**
-   * @name Get skill version by ID
-   * @description Retrieves a specific skill version by its ID.
+   * @name Get skill version
+   * @description Retrieves a skill version.
    *
    * @param `instanceId` - string
    * @param `skillId` - string
@@ -91,7 +91,7 @@ export class MetorialDashboardInstanceSkillsVersionsEndpoint {
     skillVersionId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsVersionsGetOutput> {
-    let path = `dashboard/instances/${instanceId}/skills/${skillId}/versions/${skillVersionId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/skills/${encodeURIComponent(skillId)}/versions/${encodeURIComponent(skillVersionId)}`;
 
     let request = {
       path,

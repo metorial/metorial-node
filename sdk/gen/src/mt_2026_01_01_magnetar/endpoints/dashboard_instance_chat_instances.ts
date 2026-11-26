@@ -26,7 +26,7 @@ import {
 
 /**
  * @name Chat Instances controller
- * @description Chat instances materialize a chat connection for a specific runtime configuration.
+ * @description A chat instance is a chat connection running with its own configuration and identity.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -67,7 +67,7 @@ export class MetorialDashboardInstanceChatInstancesEndpoint {
     query?: DashboardInstanceChatInstancesListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceChatInstancesListOutput> {
-    let path = `dashboard/instances/${instanceId}/chat/instances`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/chat/instances`;
 
     let request = {
       path,
@@ -85,7 +85,7 @@ export class MetorialDashboardInstanceChatInstancesEndpoint {
 
   /**
    * @name Get chat instance
-   * @description Retrieves a specific chat instance.
+   * @description Retrieves a chat instance.
    *
    * @param `instanceId` - string
    * @param `chatInstanceId` - string
@@ -99,7 +99,7 @@ export class MetorialDashboardInstanceChatInstancesEndpoint {
     chatInstanceId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceChatInstancesGetOutput> {
-    let path = `dashboard/instances/${instanceId}/chat/instances/${chatInstanceId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/chat/instances/${encodeURIComponent(chatInstanceId)}`;
 
     let request = {
       path,
@@ -128,7 +128,7 @@ export class MetorialDashboardInstanceChatInstancesEndpoint {
     body: DashboardInstanceChatInstancesCreateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceChatInstancesCreateOutput> {
-    let path = `dashboard/instances/${instanceId}/chat/instances`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/chat/instances`;
 
     let request = {
       path,
@@ -144,7 +144,7 @@ export class MetorialDashboardInstanceChatInstancesEndpoint {
 
   /**
    * @name Update chat instance
-   * @description Updates a specific chat instance.
+   * @description Updates a chat instance. Omitted fields keep their current value.
    *
    * @param `instanceId` - string
    * @param `chatInstanceId` - string
@@ -160,7 +160,7 @@ export class MetorialDashboardInstanceChatInstancesEndpoint {
     body: DashboardInstanceChatInstancesUpdateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceChatInstancesUpdateOutput> {
-    let path = `dashboard/instances/${instanceId}/chat/instances/${chatInstanceId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/chat/instances/${encodeURIComponent(chatInstanceId)}`;
 
     let request = {
       path,
@@ -175,8 +175,8 @@ export class MetorialDashboardInstanceChatInstancesEndpoint {
   }
 
   /**
-   * @name Delete chat instance
-   * @description Archives a specific chat instance.
+   * @name Archive chat instance
+   * @description Archives a chat instance. It stays listable with `status=archived`.
    *
    * @param `instanceId` - string
    * @param `chatInstanceId` - string
@@ -190,7 +190,7 @@ export class MetorialDashboardInstanceChatInstancesEndpoint {
     chatInstanceId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceChatInstancesDeleteOutput> {
-    let path = `dashboard/instances/${instanceId}/chat/instances/${chatInstanceId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/chat/instances/${encodeURIComponent(chatInstanceId)}`;
 
     let request = {
       path,
@@ -219,7 +219,7 @@ export class MetorialDashboardInstanceChatInstancesEndpoint {
     chatInstanceId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceChatInstancesSyncOutput> {
-    let path = `dashboard/instances/${instanceId}/chat/instances/${chatInstanceId}/sync`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/chat/instances/${encodeURIComponent(chatInstanceId)}/sync`;
 
     let request = {
       path,

@@ -14,7 +14,7 @@ import {
 
 /**
  * @name Session Messages controller
- * @description Session messages represent the MCP protocol messages exchanged during a session. This read-only resource provides visibility into the communication between clients and providers.
+ * @description A session message is one MCP message exchanged between a client and a provider. Messages are recorded automatically as the session runs.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -41,7 +41,7 @@ export class MetorialDashboardInstanceSessionsMessagesEndpoint {
 
   /**
    * @name List session messages
-   * @description Returns a paginated list of messages for a session.
+   * @description Returns a paginated list of session messages.
    *
    * @param `instanceId` - string
    * @param `query` - DashboardInstanceSessionsMessagesListQuery
@@ -55,7 +55,7 @@ export class MetorialDashboardInstanceSessionsMessagesEndpoint {
     query?: DashboardInstanceSessionsMessagesListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSessionsMessagesListOutput> {
-    let path = `dashboard/instances/${instanceId}/session-messages`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/session-messages`;
 
     let request = {
       path,
@@ -73,7 +73,7 @@ export class MetorialDashboardInstanceSessionsMessagesEndpoint {
 
   /**
    * @name Get session message
-   * @description Retrieves a specific message from a session.
+   * @description Retrieves a session message.
    *
    * @param `instanceId` - string
    * @param `sessionMessageId` - string
@@ -87,7 +87,7 @@ export class MetorialDashboardInstanceSessionsMessagesEndpoint {
     sessionMessageId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSessionsMessagesGetOutput> {
-    let path = `dashboard/instances/${instanceId}/session-messages/${sessionMessageId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/session-messages/${encodeURIComponent(sessionMessageId)}`;
 
     let request = {
       path,

@@ -18,7 +18,7 @@ import {
 
 /**
  * @name Network Policies controller
- * @description Manage reusable network policy definitions and their rules.
+ * @description A network policy is a reusable set of allow and deny rules. Firewalls attach policies to enforce them.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -59,7 +59,7 @@ export class MetorialNetworkPoliciesRulesEndpoint {
     body: DashboardInstanceNetworkPoliciesRulesCreateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceNetworkPoliciesRulesCreateOutput> {
-    let path = `network-policies/${networkPolicyId}/rules`;
+    let path = `network-policies/${encodeURIComponent(networkPolicyId)}/rules`;
 
     let request = {
       path,
@@ -93,7 +93,7 @@ export class MetorialNetworkPoliciesRulesEndpoint {
     body: DashboardInstanceNetworkPoliciesRulesUpdateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceNetworkPoliciesRulesUpdateOutput> {
-    let path = `network-policies/${networkPolicyId}/rules/${ruleId}`;
+    let path = `network-policies/${encodeURIComponent(networkPolicyId)}/rules/${encodeURIComponent(ruleId)}`;
 
     let request = {
       path,
@@ -125,7 +125,7 @@ export class MetorialNetworkPoliciesRulesEndpoint {
     ruleId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceNetworkPoliciesRulesDeleteOutput> {
-    let path = `network-policies/${networkPolicyId}/rules/${ruleId}`;
+    let path = `network-policies/${encodeURIComponent(networkPolicyId)}/rules/${encodeURIComponent(ruleId)}`;
 
     let request = {
       path,

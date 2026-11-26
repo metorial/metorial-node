@@ -18,7 +18,7 @@ import {
 
 /**
  * @name Skill Exports controller
- * @description Export skills, skill plugins, and skill marketplaces as zip files.
+ * @description A skill export is a zip file containing a skill, plugin, or marketplace.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -87,7 +87,7 @@ export class MetorialSkillsExportsEndpoint {
     skillExportId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsExportsGetOutput> {
-    let path = `skill-exports/${skillExportId}`;
+    let path = `skill-exports/${encodeURIComponent(skillExportId)}`;
 
     let request = {
       path,

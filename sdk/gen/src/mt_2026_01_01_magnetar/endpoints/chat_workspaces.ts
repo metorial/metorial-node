@@ -73,7 +73,7 @@ export class MetorialChatWorkspacesEndpoint {
 
   /**
    * @name Get chat workspace
-   * @description Retrieves a specific chat workspace.
+   * @description Retrieves a chat workspace.
    *
    * @param `chatWorkspaceId` - string
    * @param `query` - DashboardInstanceChatWorkspacesGetQuery
@@ -87,7 +87,7 @@ export class MetorialChatWorkspacesEndpoint {
     query?: DashboardInstanceChatWorkspacesGetQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceChatWorkspacesGetOutput> {
-    let path = `chat/workspaces/${chatWorkspaceId}`;
+    let path = `chat/workspaces/${encodeURIComponent(chatWorkspaceId)}`;
 
     let request = {
       path,

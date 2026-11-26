@@ -20,7 +20,7 @@ import {
 
 /**
  * @name Skill Marketplace Plugins controller
- * @description Manage plugin links for skill marketplaces.
+ * @description A skill marketplace plugin is one plugin in a skill marketplace.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -63,7 +63,7 @@ export class MetorialManagementInstanceSkillsMarketplacesPluginsEndpoint {
     query?: DashboardInstanceSkillsMarketplacesPluginsListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsMarketplacesPluginsListOutput> {
-    let path = `instances/${instanceId}/skill-marketplaces/${skillMarketplaceId}/plugins`;
+    let path = `instances/${encodeURIComponent(instanceId)}/skill-marketplaces/${encodeURIComponent(skillMarketplaceId)}/plugins`;
 
     let request = {
       path,
@@ -83,7 +83,7 @@ export class MetorialManagementInstanceSkillsMarketplacesPluginsEndpoint {
 
   /**
    * @name Add skill marketplace plugin
-   * @description Adds a skill plugin to a skill marketplace.
+   * @description Adds a skill plugin to a skill marketplace. Adding a plugin that was removed reactivates its link.
    *
    * @param `instanceId` - string
    * @param `skillMarketplaceId` - string
@@ -99,7 +99,7 @@ export class MetorialManagementInstanceSkillsMarketplacesPluginsEndpoint {
     body: DashboardInstanceSkillsMarketplacesPluginsAddBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsMarketplacesPluginsAddOutput> {
-    let path = `instances/${instanceId}/skill-marketplaces/${skillMarketplaceId}/plugins`;
+    let path = `instances/${encodeURIComponent(instanceId)}/skill-marketplaces/${encodeURIComponent(skillMarketplaceId)}/plugins`;
 
     let request = {
       path,
@@ -133,7 +133,7 @@ export class MetorialManagementInstanceSkillsMarketplacesPluginsEndpoint {
     skillMarketplacePluginId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsMarketplacesPluginsGetOutput> {
-    let path = `instances/${instanceId}/skill-marketplaces/${skillMarketplaceId}/plugins/${skillMarketplacePluginId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/skill-marketplaces/${encodeURIComponent(skillMarketplaceId)}/plugins/${encodeURIComponent(skillMarketplacePluginId)}`;
 
     let request = {
       path,
@@ -164,7 +164,7 @@ export class MetorialManagementInstanceSkillsMarketplacesPluginsEndpoint {
     skillMarketplacePluginId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsMarketplacesPluginsRemoveOutput> {
-    let path = `instances/${instanceId}/skill-marketplaces/${skillMarketplaceId}/plugins/${skillMarketplacePluginId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/skill-marketplaces/${encodeURIComponent(skillMarketplaceId)}/plugins/${encodeURIComponent(skillMarketplacePluginId)}`;
 
     let request = {
       path,

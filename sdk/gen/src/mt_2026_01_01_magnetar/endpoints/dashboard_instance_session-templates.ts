@@ -26,7 +26,7 @@ import {
 
 /**
  * @name Session Templates controller
- * @description Session templates define reusable configurations for sessions, including which providers to include. Templates can be used to quickly create new sessions with consistent settings.
+ * @description A session template is a reusable configuration for creating sessions with the same providers.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -67,7 +67,7 @@ export class MetorialDashboardInstanceSessionTemplatesEndpoint {
     query?: DashboardInstanceSessionTemplatesListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSessionTemplatesListOutput> {
-    let path = `dashboard/instances/${instanceId}/session-templates`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/session-templates`;
 
     let request = {
       path,
@@ -85,7 +85,7 @@ export class MetorialDashboardInstanceSessionTemplatesEndpoint {
 
   /**
    * @name Get session template
-   * @description Retrieves a specific session template by ID.
+   * @description Retrieves a session template.
    *
    * @param `instanceId` - string
    * @param `sessionTemplateId` - string
@@ -99,7 +99,7 @@ export class MetorialDashboardInstanceSessionTemplatesEndpoint {
     sessionTemplateId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSessionTemplatesGetOutput> {
-    let path = `dashboard/instances/${instanceId}/session-templates/${sessionTemplateId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/session-templates/${encodeURIComponent(sessionTemplateId)}`;
 
     let request = {
       path,
@@ -114,7 +114,7 @@ export class MetorialDashboardInstanceSessionTemplatesEndpoint {
 
   /**
    * @name Create session template
-   * @description Creates a new session template.
+   * @description Creates a session template.
    *
    * @param `instanceId` - string
    * @param `body` - DashboardInstanceSessionTemplatesCreateBody
@@ -128,7 +128,7 @@ export class MetorialDashboardInstanceSessionTemplatesEndpoint {
     body: DashboardInstanceSessionTemplatesCreateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSessionTemplatesCreateOutput> {
-    let path = `dashboard/instances/${instanceId}/session-templates`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/session-templates`;
 
     let request = {
       path,
@@ -144,7 +144,7 @@ export class MetorialDashboardInstanceSessionTemplatesEndpoint {
 
   /**
    * @name Update session template
-   * @description Updates a specific session template.
+   * @description Updates a session template. Omitted fields keep their current value.
    *
    * @param `instanceId` - string
    * @param `sessionTemplateId` - string
@@ -160,7 +160,7 @@ export class MetorialDashboardInstanceSessionTemplatesEndpoint {
     body: DashboardInstanceSessionTemplatesUpdateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSessionTemplatesUpdateOutput> {
-    let path = `dashboard/instances/${instanceId}/session-templates/${sessionTemplateId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/session-templates/${encodeURIComponent(sessionTemplateId)}`;
 
     let request = {
       path,
@@ -175,8 +175,8 @@ export class MetorialDashboardInstanceSessionTemplatesEndpoint {
   }
 
   /**
-   * @name Delete session template
-   * @description Deletes a specific session template.
+   * @name Archive session template
+   * @description Archives a session template. It stays listable with `status=archived`.
    *
    * @param `instanceId` - string
    * @param `sessionTemplateId` - string
@@ -190,7 +190,7 @@ export class MetorialDashboardInstanceSessionTemplatesEndpoint {
     sessionTemplateId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSessionTemplatesDeleteOutput> {
-    let path = `dashboard/instances/${instanceId}/session-templates/${sessionTemplateId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/session-templates/${encodeURIComponent(sessionTemplateId)}`;
 
     let request = {
       path,
@@ -219,7 +219,7 @@ export class MetorialDashboardInstanceSessionTemplatesEndpoint {
     sessionTemplateId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSessionTemplatesListToolsOutput> {
-    let path = `dashboard/instances/${instanceId}/session-templates/${sessionTemplateId}/tools`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/session-templates/${encodeURIComponent(sessionTemplateId)}/tools`;
 
     let request = {
       path,

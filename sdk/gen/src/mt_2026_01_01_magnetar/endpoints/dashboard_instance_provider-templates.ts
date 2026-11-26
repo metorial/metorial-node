@@ -24,7 +24,7 @@ import {
 
 /**
  * @name Provider Templates controller
- * @description Provider templates are reusable, consumer-facing wrappers around integrations.
+ * @description A provider template is a consumer-facing view of an integration. It is created from an existing integration.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -65,7 +65,7 @@ export class MetorialDashboardInstanceProviderTemplatesEndpoint {
     query?: DashboardInstanceProviderTemplatesListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProviderTemplatesListOutput> {
-    let path = `dashboard/instances/${instanceId}/provider-templates`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/provider-templates`;
 
     let request = {
       path,
@@ -83,7 +83,7 @@ export class MetorialDashboardInstanceProviderTemplatesEndpoint {
 
   /**
    * @name Get provider template
-   * @description Retrieves a specific provider template.
+   * @description Retrieves a provider template.
    *
    * @param `instanceId` - string
    * @param `providerTemplateId` - string
@@ -97,7 +97,7 @@ export class MetorialDashboardInstanceProviderTemplatesEndpoint {
     providerTemplateId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProviderTemplatesGetOutput> {
-    let path = `dashboard/instances/${instanceId}/provider-templates/${providerTemplateId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/provider-templates/${encodeURIComponent(providerTemplateId)}`;
 
     let request = {
       path,
@@ -112,7 +112,7 @@ export class MetorialDashboardInstanceProviderTemplatesEndpoint {
 
   /**
    * @name Create provider template
-   * @description Creates a new provider template from an existing integration.
+   * @description Creates a provider template from an existing integration.
    *
    * @param `instanceId` - string
    * @param `body` - DashboardInstanceProviderTemplatesCreateBody
@@ -126,7 +126,7 @@ export class MetorialDashboardInstanceProviderTemplatesEndpoint {
     body: DashboardInstanceProviderTemplatesCreateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProviderTemplatesCreateOutput> {
-    let path = `dashboard/instances/${instanceId}/provider-templates`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/provider-templates`;
 
     let request = {
       path,
@@ -142,7 +142,7 @@ export class MetorialDashboardInstanceProviderTemplatesEndpoint {
 
   /**
    * @name Update provider template
-   * @description Updates an existing provider template.
+   * @description Updates a provider template. Omitted fields keep their current value.
    *
    * @param `instanceId` - string
    * @param `providerTemplateId` - string
@@ -158,7 +158,7 @@ export class MetorialDashboardInstanceProviderTemplatesEndpoint {
     body: DashboardInstanceProviderTemplatesUpdateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProviderTemplatesUpdateOutput> {
-    let path = `dashboard/instances/${instanceId}/provider-templates/${providerTemplateId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/provider-templates/${encodeURIComponent(providerTemplateId)}`;
 
     let request = {
       path,
@@ -174,7 +174,7 @@ export class MetorialDashboardInstanceProviderTemplatesEndpoint {
 
   /**
    * @name Archive provider template
-   * @description Archives an existing provider template.
+   * @description Archives a provider template.
    *
    * @param `instanceId` - string
    * @param `providerTemplateId` - string
@@ -188,7 +188,7 @@ export class MetorialDashboardInstanceProviderTemplatesEndpoint {
     providerTemplateId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProviderTemplatesDeleteOutput> {
-    let path = `dashboard/instances/${instanceId}/provider-templates/${providerTemplateId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/provider-templates/${encodeURIComponent(providerTemplateId)}`;
 
     let request = {
       path,

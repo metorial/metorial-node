@@ -18,7 +18,7 @@ import {
 
 /**
  * @name Document Comments controller
- * @description Reply to, edit, and delete comments in a document comment thread.
+ * @description A document comment is a message in a document comment thread.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -44,8 +44,8 @@ export class MetorialManagementInstanceDocumentsCommentThreadsCommentsEndpoint {
   }
 
   /**
-   * @name Reply to document comment thread
-   * @description Adds a comment to an existing comment thread.
+   * @name Create document comment
+   * @description Creates a comment in a document comment thread.
    *
    * @param `instanceId` - string
    * @param `documentId` - string
@@ -63,7 +63,7 @@ export class MetorialManagementInstanceDocumentsCommentThreadsCommentsEndpoint {
     body: DashboardInstanceDocumentsCommentThreadsCommentsCreateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceDocumentsCommentThreadsCommentsCreateOutput> {
-    let path = `instances/${instanceId}/documents/${documentId}/comment-threads/${documentCommentThreadId}/comments`;
+    let path = `instances/${encodeURIComponent(instanceId)}/documents/${encodeURIComponent(documentId)}/comment-threads/${encodeURIComponent(documentCommentThreadId)}/comments`;
 
     let request = {
       path,
@@ -101,7 +101,7 @@ export class MetorialManagementInstanceDocumentsCommentThreadsCommentsEndpoint {
     body: DashboardInstanceDocumentsCommentThreadsCommentsUpdateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceDocumentsCommentThreadsCommentsUpdateOutput> {
-    let path = `instances/${instanceId}/documents/${documentId}/comment-threads/${documentCommentThreadId}/comments/${documentCommentId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/documents/${encodeURIComponent(documentId)}/comment-threads/${encodeURIComponent(documentCommentThreadId)}/comments/${encodeURIComponent(documentCommentId)}`;
 
     let request = {
       path,
@@ -137,7 +137,7 @@ export class MetorialManagementInstanceDocumentsCommentThreadsCommentsEndpoint {
     documentCommentId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceDocumentsCommentThreadsCommentsDeleteOutput> {
-    let path = `instances/${instanceId}/documents/${documentId}/comment-threads/${documentCommentThreadId}/comments/${documentCommentId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/documents/${encodeURIComponent(documentId)}/comment-threads/${encodeURIComponent(documentCommentThreadId)}/comments/${encodeURIComponent(documentCommentId)}`;
 
     let request = {
       path,

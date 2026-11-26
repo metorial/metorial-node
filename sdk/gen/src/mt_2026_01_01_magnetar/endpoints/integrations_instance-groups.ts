@@ -32,7 +32,7 @@ import {
 
 /**
  * @name Integration Instance Groups controller
- * @description Integration instance groups combine instance providers into a grouped routed configuration.
+ * @description An integration instance group combines providers from multiple integration instances into one set, with a shared session template.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -91,7 +91,7 @@ export class MetorialIntegrationsInstanceGroupsEndpoint {
 
   /**
    * @name Get integration instance group
-   * @description Retrieves a specific integration instance group.
+   * @description Retrieves an integration instance group.
    *
    * @param `integrationInstanceGroupId` - string
    * @param `opts` - { headers?: Record<string, string> }
@@ -103,7 +103,7 @@ export class MetorialIntegrationsInstanceGroupsEndpoint {
     integrationInstanceGroupId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIntegrationsInstanceGroupsGetOutput> {
-    let path = `integration-instance-groups/${integrationInstanceGroupId}`;
+    let path = `integration-instance-groups/${encodeURIComponent(integrationInstanceGroupId)}`;
 
     let request = {
       path,
@@ -118,7 +118,7 @@ export class MetorialIntegrationsInstanceGroupsEndpoint {
 
   /**
    * @name Create integration instance group session template
-   * @description Creates or updates the shared session template for a specific integration instance group.
+   * @description Creates or updates the shared session template for the integration instance group.
    *
    * @param `integrationInstanceGroupId` - string
    * @param `body` - DashboardInstanceIntegrationsInstanceGroupsCreateSessionTemplateBody
@@ -132,7 +132,7 @@ export class MetorialIntegrationsInstanceGroupsEndpoint {
     body: DashboardInstanceIntegrationsInstanceGroupsCreateSessionTemplateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIntegrationsInstanceGroupsCreateSessionTemplateOutput> {
-    let path = `integration-instance-groups/${integrationInstanceGroupId}/session-template`;
+    let path = `integration-instance-groups/${encodeURIComponent(integrationInstanceGroupId)}/session-template`;
 
     let request = {
       path,
@@ -150,7 +150,7 @@ export class MetorialIntegrationsInstanceGroupsEndpoint {
 
   /**
    * @name Create integration instance group session
-   * @description Creates a session from the shared session template of a specific integration instance group.
+   * @description Creates a session from the shared session template of the integration instance group.
    *
    * @param `integrationInstanceGroupId` - string
    * @param `body` - DashboardInstanceIntegrationsInstanceGroupsCreateSessionBody
@@ -164,7 +164,7 @@ export class MetorialIntegrationsInstanceGroupsEndpoint {
     body: DashboardInstanceIntegrationsInstanceGroupsCreateSessionBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIntegrationsInstanceGroupsCreateSessionOutput> {
-    let path = `integration-instance-groups/${integrationInstanceGroupId}/session`;
+    let path = `integration-instance-groups/${encodeURIComponent(integrationInstanceGroupId)}/session`;
 
     let request = {
       path,
@@ -182,7 +182,7 @@ export class MetorialIntegrationsInstanceGroupsEndpoint {
 
   /**
    * @name Create integration instance group
-   * @description Creates a new integration instance group.
+   * @description Creates an integration instance group.
    *
    * @param `body` - DashboardInstanceIntegrationsInstanceGroupsCreateBody
    * @param `opts` - { headers?: Record<string, string> }
@@ -212,7 +212,7 @@ export class MetorialIntegrationsInstanceGroupsEndpoint {
 
   /**
    * @name Update integration instance group
-   * @description Updates a specific integration instance group.
+   * @description Updates an integration instance group. Omitted fields keep their current value.
    *
    * @param `integrationInstanceGroupId` - string
    * @param `body` - DashboardInstanceIntegrationsInstanceGroupsUpdateBody
@@ -226,7 +226,7 @@ export class MetorialIntegrationsInstanceGroupsEndpoint {
     body: DashboardInstanceIntegrationsInstanceGroupsUpdateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIntegrationsInstanceGroupsUpdateOutput> {
-    let path = `integration-instance-groups/${integrationInstanceGroupId}`;
+    let path = `integration-instance-groups/${encodeURIComponent(integrationInstanceGroupId)}`;
 
     let request = {
       path,
@@ -243,8 +243,8 @@ export class MetorialIntegrationsInstanceGroupsEndpoint {
   }
 
   /**
-   * @name Delete integration instance group
-   * @description Archives a specific integration instance group.
+   * @name Archive integration instance group
+   * @description Archives an integration instance group. It stays retrievable by ID and listable with `status=archived`.
    *
    * @param `integrationInstanceGroupId` - string
    * @param `opts` - { headers?: Record<string, string> }
@@ -256,7 +256,7 @@ export class MetorialIntegrationsInstanceGroupsEndpoint {
     integrationInstanceGroupId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIntegrationsInstanceGroupsDeleteOutput> {
-    let path = `integration-instance-groups/${integrationInstanceGroupId}`;
+    let path = `integration-instance-groups/${encodeURIComponent(integrationInstanceGroupId)}`;
 
     let request = {
       path,

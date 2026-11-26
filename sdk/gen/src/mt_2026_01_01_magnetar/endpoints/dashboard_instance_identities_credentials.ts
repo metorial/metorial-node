@@ -24,7 +24,7 @@ import {
 
 /**
  * @name Identity Credentials controller
- * @description Identity credentials bind an identity to concrete provider deployment, config, and auth resources.
+ * @description An identity credential is one provider attachment on an identity. It links the identity to a provider deployment, config, or auth config.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -65,7 +65,7 @@ export class MetorialDashboardInstanceIdentitiesCredentialsEndpoint {
     query?: DashboardInstanceIdentitiesCredentialsListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIdentitiesCredentialsListOutput> {
-    let path = `dashboard/instances/${instanceId}/identity-credentials`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/identity-credentials`;
 
     let request = {
       path,
@@ -83,7 +83,7 @@ export class MetorialDashboardInstanceIdentitiesCredentialsEndpoint {
 
   /**
    * @name Get identity credential
-   * @description Retrieves a specific identity credential by ID.
+   * @description Retrieves an identity credential.
    *
    * @param `instanceId` - string
    * @param `identityCredentialId` - string
@@ -97,7 +97,7 @@ export class MetorialDashboardInstanceIdentitiesCredentialsEndpoint {
     identityCredentialId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIdentitiesCredentialsGetOutput> {
-    let path = `dashboard/instances/${instanceId}/identity-credentials/${identityCredentialId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/identity-credentials/${encodeURIComponent(identityCredentialId)}`;
 
     let request = {
       path,
@@ -112,7 +112,7 @@ export class MetorialDashboardInstanceIdentitiesCredentialsEndpoint {
 
   /**
    * @name Create identity credential
-   * @description Creates a new credential and attaches it to an identity.
+   * @description Creates an identity credential.
    *
    * @param `instanceId` - string
    * @param `body` - DashboardInstanceIdentitiesCredentialsCreateBody
@@ -126,7 +126,7 @@ export class MetorialDashboardInstanceIdentitiesCredentialsEndpoint {
     body: DashboardInstanceIdentitiesCredentialsCreateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIdentitiesCredentialsCreateOutput> {
-    let path = `dashboard/instances/${instanceId}/identity-credentials`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/identity-credentials`;
 
     let request = {
       path,
@@ -160,7 +160,7 @@ export class MetorialDashboardInstanceIdentitiesCredentialsEndpoint {
     body: DashboardInstanceIdentitiesCredentialsUpdateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIdentitiesCredentialsUpdateOutput> {
-    let path = `dashboard/instances/${instanceId}/identity-credentials/${identityCredentialId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/identity-credentials/${encodeURIComponent(identityCredentialId)}`;
 
     let request = {
       path,
@@ -177,8 +177,8 @@ export class MetorialDashboardInstanceIdentitiesCredentialsEndpoint {
   }
 
   /**
-   * @name Delete identity credential
-   * @description Archives an identity credential.
+   * @name Archive identity credential
+   * @description Archives an identity credential. It stays listable with `status=archived`.
    *
    * @param `instanceId` - string
    * @param `identityCredentialId` - string
@@ -192,7 +192,7 @@ export class MetorialDashboardInstanceIdentitiesCredentialsEndpoint {
     identityCredentialId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIdentitiesCredentialsDeleteOutput> {
-    let path = `dashboard/instances/${instanceId}/identity-credentials/${identityCredentialId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/identity-credentials/${encodeURIComponent(identityCredentialId)}`;
 
     let request = {
       path,

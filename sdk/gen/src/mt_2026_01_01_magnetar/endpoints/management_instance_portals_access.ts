@@ -24,7 +24,7 @@ import {
 
 /**
  * @name Portal Access controller
- * @description Manage which consumer groups can access portal provider templates and MCP servers.
+ * @description A portal access rule grants one consumer group access to one listing target, such as an integration, skill, or skill set.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -67,7 +67,7 @@ export class MetorialManagementInstancePortalsAccessEndpoint {
     query?: DashboardInstancePortalsAccessListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstancePortalsAccessListOutput> {
-    let path = `instances/${instanceId}/portals/${portalId}/access`;
+    let path = `instances/${encodeURIComponent(instanceId)}/portals/${encodeURIComponent(portalId)}/access`;
 
     let request = {
       path,
@@ -85,7 +85,7 @@ export class MetorialManagementInstancePortalsAccessEndpoint {
 
   /**
    * @name Get portal access
-   * @description Retrieves a portal access rule by ID.
+   * @description Retrieves a portal access rule.
    *
    * @param `instanceId` - string
    * @param `portalId` - string
@@ -101,7 +101,7 @@ export class MetorialManagementInstancePortalsAccessEndpoint {
     accessId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstancePortalsAccessGetOutput> {
-    let path = `instances/${instanceId}/portals/${portalId}/access/${accessId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/portals/${encodeURIComponent(portalId)}/access/${encodeURIComponent(accessId)}`;
 
     let request = {
       path,
@@ -116,7 +116,7 @@ export class MetorialManagementInstancePortalsAccessEndpoint {
 
   /**
    * @name Create portal access
-   * @description Creates a new consumer access rule for the portal.
+   * @description Creates a consumer access rule for a portal.
    *
    * @param `instanceId` - string
    * @param `portalId` - string
@@ -132,7 +132,7 @@ export class MetorialManagementInstancePortalsAccessEndpoint {
     body: DashboardInstancePortalsAccessCreateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstancePortalsAccessCreateOutput> {
-    let path = `instances/${instanceId}/portals/${portalId}/access`;
+    let path = `instances/${encodeURIComponent(instanceId)}/portals/${encodeURIComponent(portalId)}/access`;
 
     let request = {
       path,
@@ -148,7 +148,7 @@ export class MetorialManagementInstancePortalsAccessEndpoint {
 
   /**
    * @name Update portal access
-   * @description Updates the shared listing fields of a portal access rule, and the access level of skill and skill group rules.
+   * @description Updates a portal access rule. Only skill and skill group rules use `permission`. Omitted fields keep their current value.
    *
    * @param `instanceId` - string
    * @param `portalId` - string
@@ -166,7 +166,7 @@ export class MetorialManagementInstancePortalsAccessEndpoint {
     body: DashboardInstancePortalsAccessUpdateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstancePortalsAccessUpdateOutput> {
-    let path = `instances/${instanceId}/portals/${portalId}/access/${accessId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/portals/${encodeURIComponent(portalId)}/access/${encodeURIComponent(accessId)}`;
 
     let request = {
       path,
@@ -182,7 +182,7 @@ export class MetorialManagementInstancePortalsAccessEndpoint {
 
   /**
    * @name Delete portal access
-   * @description Deletes a consumer access rule from the portal.
+   * @description Deletes a portal access rule.
    *
    * @param `instanceId` - string
    * @param `portalId` - string
@@ -198,7 +198,7 @@ export class MetorialManagementInstancePortalsAccessEndpoint {
     accessId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstancePortalsAccessDeleteOutput> {
-    let path = `instances/${instanceId}/portals/${portalId}/access/${accessId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/portals/${encodeURIComponent(portalId)}/access/${encodeURIComponent(accessId)}`;
 
     let request = {
       path,

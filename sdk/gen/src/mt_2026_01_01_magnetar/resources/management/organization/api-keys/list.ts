@@ -1,6 +1,7 @@
 import { createMapper } from '@metorial/util-resource-mapper/compact';
 
 export type ManagementOrganizationApiKeysListOutput = {
+  object: 'list';
   items: {
     object: 'machine_access.api_key';
     id: string;
@@ -106,7 +107,12 @@ export type ManagementOrganizationApiKeysListOutput = {
     createdAt: Date;
     updatedAt: Date;
   }[];
-  pagination: { hasMoreBefore: boolean; hasMoreAfter: boolean };
+  pagination: {
+    hasMoreBefore: boolean;
+    hasMoreAfter: boolean;
+    before?: string | undefined;
+    after?: string | undefined;
+  };
 };
 
 export let mapManagementOrganizationApiKeysListOutput =

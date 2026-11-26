@@ -24,7 +24,7 @@ import {
 
 /**
  * @name Integration Providers controller
- * @description Integration providers define the shared provider-level contract for a given integration.
+ * @description An integration provider is one provider in an integration, with the deployment, configuration, credentials, and tool filters it runs with.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -65,7 +65,7 @@ export class MetorialDashboardInstanceIntegrationsProvidersEndpoint {
     query?: DashboardInstanceIntegrationsProvidersListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIntegrationsProvidersListOutput> {
-    let path = `dashboard/instances/${instanceId}/integration-providers`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/integration-providers`;
 
     let request = {
       path,
@@ -83,7 +83,7 @@ export class MetorialDashboardInstanceIntegrationsProvidersEndpoint {
 
   /**
    * @name Get integration provider
-   * @description Retrieves a specific integration provider.
+   * @description Retrieves an integration provider.
    *
    * @param `instanceId` - string
    * @param `integrationProviderId` - string
@@ -97,7 +97,7 @@ export class MetorialDashboardInstanceIntegrationsProvidersEndpoint {
     integrationProviderId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIntegrationsProvidersGetOutput> {
-    let path = `dashboard/instances/${instanceId}/integration-providers/${integrationProviderId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/integration-providers/${encodeURIComponent(integrationProviderId)}`;
 
     let request = {
       path,
@@ -112,7 +112,7 @@ export class MetorialDashboardInstanceIntegrationsProvidersEndpoint {
 
   /**
    * @name Create integration provider
-   * @description Creates a new integration provider.
+   * @description Creates an integration provider.
    *
    * @param `instanceId` - string
    * @param `body` - DashboardInstanceIntegrationsProvidersCreateBody
@@ -126,7 +126,7 @@ export class MetorialDashboardInstanceIntegrationsProvidersEndpoint {
     body: DashboardInstanceIntegrationsProvidersCreateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIntegrationsProvidersCreateOutput> {
-    let path = `dashboard/instances/${instanceId}/integration-providers`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/integration-providers`;
 
     let request = {
       path,
@@ -144,7 +144,7 @@ export class MetorialDashboardInstanceIntegrationsProvidersEndpoint {
 
   /**
    * @name Update integration provider
-   * @description Updates a specific integration provider.
+   * @description Updates an integration provider. Omitted fields keep their current value.
    *
    * @param `instanceId` - string
    * @param `integrationProviderId` - string
@@ -160,7 +160,7 @@ export class MetorialDashboardInstanceIntegrationsProvidersEndpoint {
     body: DashboardInstanceIntegrationsProvidersUpdateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIntegrationsProvidersUpdateOutput> {
-    let path = `dashboard/instances/${instanceId}/integration-providers/${integrationProviderId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/integration-providers/${encodeURIComponent(integrationProviderId)}`;
 
     let request = {
       path,
@@ -177,8 +177,8 @@ export class MetorialDashboardInstanceIntegrationsProvidersEndpoint {
   }
 
   /**
-   * @name Delete integration provider
-   * @description Archives a specific integration provider.
+   * @name Archive integration provider
+   * @description Archives an integration provider. It stays retrievable by ID and listable with `status=archived`.
    *
    * @param `instanceId` - string
    * @param `integrationProviderId` - string
@@ -192,7 +192,7 @@ export class MetorialDashboardInstanceIntegrationsProvidersEndpoint {
     integrationProviderId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIntegrationsProvidersDeleteOutput> {
-    let path = `dashboard/instances/${instanceId}/integration-providers/${integrationProviderId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/integration-providers/${encodeURIComponent(integrationProviderId)}`;
 
     let request = {
       path,

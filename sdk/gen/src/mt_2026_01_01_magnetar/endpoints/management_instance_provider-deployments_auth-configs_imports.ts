@@ -22,7 +22,7 @@ import {
 
 /**
  * @name Provider Auth Imports controller
- * @description An auth import lets you bring in existing OAuth tokens or credentials from another system, so users don't need to re-authenticate to use Metorial.
+ * @description A provider auth import is existing authentication credentials brought into Metorial from another system, so users skip re-authenticating.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -63,7 +63,7 @@ export class MetorialManagementInstanceProviderDeploymentsAuthConfigsImportsEndp
     query?: DashboardInstanceProviderDeploymentsAuthConfigsImportsListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProviderDeploymentsAuthConfigsImportsListOutput> {
-    let path = `instances/${instanceId}/provider-auth-config-imports`;
+    let path = `instances/${encodeURIComponent(instanceId)}/provider-auth-config-imports`;
 
     let request = {
       path,
@@ -97,7 +97,7 @@ export class MetorialManagementInstanceProviderDeploymentsAuthConfigsImportsEndp
     providerAuthImportId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProviderDeploymentsAuthConfigsImportsGetOutput> {
-    let path = `instances/${instanceId}/provider-auth-config-imports/${providerAuthImportId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/provider-auth-config-imports/${encodeURIComponent(providerAuthImportId)}`;
 
     let request = {
       path,
@@ -112,7 +112,7 @@ export class MetorialManagementInstanceProviderDeploymentsAuthConfigsImportsEndp
 
   /**
    * @name Create provider auth import
-   * @description Imports authentication credentials for a provider.
+   * @description Imports existing authentication credentials into Metorial.
    *
    * @param `instanceId` - string
    * @param `body` - DashboardInstanceProviderDeploymentsAuthConfigsImportsCreateBody
@@ -126,7 +126,7 @@ export class MetorialManagementInstanceProviderDeploymentsAuthConfigsImportsEndp
     body: DashboardInstanceProviderDeploymentsAuthConfigsImportsCreateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProviderDeploymentsAuthConfigsImportsCreateOutput> {
-    let path = `instances/${instanceId}/provider-auth-config-imports`;
+    let path = `instances/${encodeURIComponent(instanceId)}/provider-auth-config-imports`;
 
     let request = {
       path,
@@ -158,7 +158,7 @@ export class MetorialManagementInstanceProviderDeploymentsAuthConfigsImportsEndp
     query?: DashboardInstanceProviderDeploymentsAuthConfigsImportsGetSchemaQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProviderDeploymentsAuthConfigsImportsGetSchemaOutput> {
-    let path = `instances/${instanceId}/provider-auth-config-imports/schema`;
+    let path = `instances/${encodeURIComponent(instanceId)}/provider-auth-config-imports/schema`;
 
     let request = {
       path,

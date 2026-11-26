@@ -28,7 +28,7 @@ import {
 
 /**
  * @name Skill Marketplaces controller
- * @description Manage skill marketplaces for an instance.
+ * @description A skill marketplace is a curated collection of skill plugins.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -97,7 +97,7 @@ export class MetorialSkillsMarketplacesEndpoint {
     skillMarketplaceId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsMarketplacesGetOutput> {
-    let path = `skill-marketplaces/${skillMarketplaceId}`;
+    let path = `skill-marketplaces/${encodeURIComponent(skillMarketplaceId)}`;
 
     let request = {
       path,
@@ -140,7 +140,7 @@ export class MetorialSkillsMarketplacesEndpoint {
 
   /**
    * @name Update skill marketplace
-   * @description Updates a skill marketplace.
+   * @description Updates a skill marketplace. Omitted fields keep their current value.
    *
    * @param `skillMarketplaceId` - string
    * @param `body` - DashboardInstanceSkillsMarketplacesUpdateBody
@@ -154,7 +154,7 @@ export class MetorialSkillsMarketplacesEndpoint {
     body: DashboardInstanceSkillsMarketplacesUpdateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsMarketplacesUpdateOutput> {
-    let path = `skill-marketplaces/${skillMarketplaceId}`;
+    let path = `skill-marketplaces/${encodeURIComponent(skillMarketplaceId)}`;
 
     let request = {
       path,
@@ -182,7 +182,7 @@ export class MetorialSkillsMarketplacesEndpoint {
     skillMarketplaceId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsMarketplacesArchiveOutput> {
-    let path = `skill-marketplaces/${skillMarketplaceId}`;
+    let path = `skill-marketplaces/${encodeURIComponent(skillMarketplaceId)}`;
 
     let request = {
       path,
@@ -197,7 +197,7 @@ export class MetorialSkillsMarketplacesEndpoint {
 
   /**
    * @name Sync skill marketplace
-   * @description Forces a skill marketplace sync.
+   * @description Starts a sync of the skill marketplace to its linked repositories, even if nothing changed.
    *
    * @param `skillMarketplaceId` - string
    * @param `body` - DashboardInstanceSkillsMarketplacesSyncBody
@@ -211,7 +211,7 @@ export class MetorialSkillsMarketplacesEndpoint {
     body: DashboardInstanceSkillsMarketplacesSyncBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsMarketplacesSyncOutput> {
-    let path = `skill-marketplaces/${skillMarketplaceId}/sync`;
+    let path = `skill-marketplaces/${encodeURIComponent(skillMarketplaceId)}/sync`;
 
     let request = {
       path,

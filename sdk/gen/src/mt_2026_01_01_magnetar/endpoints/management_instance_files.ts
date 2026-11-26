@@ -16,7 +16,7 @@ import {
 
 /**
  * @name Files controller
- * @description Represents files that you have uploaded to Metorial. Files can be linked to various resources based on their purpose. Metorial can also automatically extract files for you, for example for data exports.
+ * @description A file is content uploaded to an instance, such as an image or an attachment. Its purpose controls what it can be linked to.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -42,8 +42,8 @@ export class MetorialManagementInstanceFilesEndpoint {
   }
 
   /**
-   * @name List instance files
-   * @description Returns a paginated list of files owned by the instance.
+   * @name List files
+   * @description Returns a paginated list of files.
    *
    * @param `instanceId` - string
    * @param `query` - DashboardInstanceFilesListQuery
@@ -57,7 +57,7 @@ export class MetorialManagementInstanceFilesEndpoint {
     query?: DashboardInstanceFilesListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceFilesListOutput> {
-    let path = `instances/${instanceId}/files`;
+    let path = `instances/${encodeURIComponent(instanceId)}/files`;
 
     let request = {
       path,
@@ -72,8 +72,8 @@ export class MetorialManagementInstanceFilesEndpoint {
   }
 
   /**
-   * @name Get file by ID
-   * @description Retrieves details for a specific file by its ID.
+   * @name Get file
+   * @description Retrieves a file.
    *
    * @param `instanceId` - string
    * @param `fileId` - string
@@ -87,7 +87,7 @@ export class MetorialManagementInstanceFilesEndpoint {
     fileId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceFilesGetOutput> {
-    let path = `instances/${instanceId}/files/${fileId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/files/${encodeURIComponent(fileId)}`;
 
     let request = {
       path,
@@ -99,8 +99,8 @@ export class MetorialManagementInstanceFilesEndpoint {
   }
 
   /**
-   * @name Delete file by ID
-   * @description Deletes a specific file by its ID.
+   * @name Delete file
+   * @description Deletes a file.
    *
    * @param `instanceId` - string
    * @param `fileId` - string
@@ -114,7 +114,7 @@ export class MetorialManagementInstanceFilesEndpoint {
     fileId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceFilesDeleteOutput> {
-    let path = `instances/${instanceId}/files/${fileId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/files/${encodeURIComponent(fileId)}`;
 
     let request = {
       path,

@@ -24,7 +24,7 @@ import {
 
 /**
  * @name Integrations controller
- * @description Integrations define reusable provider contracts that can then be materialized into integration instances.
+ * @description An integration is a reusable set of providers with shared configuration. Integration instances connect it for a specific actor or identity.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -81,7 +81,7 @@ export class MetorialIntegrationsEndpoint {
 
   /**
    * @name Get integration
-   * @description Retrieves a specific integration.
+   * @description Retrieves an integration.
    *
    * @param `integrationId` - string
    * @param `opts` - { headers?: Record<string, string> }
@@ -93,7 +93,7 @@ export class MetorialIntegrationsEndpoint {
     integrationId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIntegrationsGetOutput> {
-    let path = `integrations/${integrationId}`;
+    let path = `integrations/${encodeURIComponent(integrationId)}`;
 
     let request = {
       path,
@@ -108,7 +108,7 @@ export class MetorialIntegrationsEndpoint {
 
   /**
    * @name Create integration
-   * @description Creates a new integration.
+   * @description Creates an integration.
    *
    * @param `body` - DashboardInstanceIntegrationsCreateBody
    * @param `opts` - { headers?: Record<string, string> }
@@ -136,7 +136,7 @@ export class MetorialIntegrationsEndpoint {
 
   /**
    * @name Update integration
-   * @description Updates a specific integration.
+   * @description Updates an integration. Omitted fields keep their current value.
    *
    * @param `integrationId` - string
    * @param `body` - DashboardInstanceIntegrationsUpdateBody
@@ -150,7 +150,7 @@ export class MetorialIntegrationsEndpoint {
     body: DashboardInstanceIntegrationsUpdateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIntegrationsUpdateOutput> {
-    let path = `integrations/${integrationId}`;
+    let path = `integrations/${encodeURIComponent(integrationId)}`;
 
     let request = {
       path,
@@ -165,8 +165,8 @@ export class MetorialIntegrationsEndpoint {
   }
 
   /**
-   * @name Delete integration
-   * @description Archives a specific integration.
+   * @name Archive integration
+   * @description Archives an integration. It stays retrievable by ID and listable with `status=archived`.
    *
    * @param `integrationId` - string
    * @param `opts` - { headers?: Record<string, string> }
@@ -178,7 +178,7 @@ export class MetorialIntegrationsEndpoint {
     integrationId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceIntegrationsDeleteOutput> {
-    let path = `integrations/${integrationId}`;
+    let path = `integrations/${encodeURIComponent(integrationId)}`;
 
     let request = {
       path,

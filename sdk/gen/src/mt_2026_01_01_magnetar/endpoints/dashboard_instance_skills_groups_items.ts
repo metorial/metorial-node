@@ -20,7 +20,7 @@ import {
 
 /**
  * @name Skill Group Items controller
- * @description Skill group items link groups to skills.
+ * @description A skill group item is one skill in a skill group.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -47,7 +47,7 @@ export class MetorialDashboardInstanceSkillsGroupsItemsEndpoint {
 
   /**
    * @name List skill group items
-   * @description Returns a paginated list of items for a skill group.
+   * @description Returns a paginated list of skill group items.
    *
    * @param `instanceId` - string
    * @param `skillGroupId` - string
@@ -63,7 +63,7 @@ export class MetorialDashboardInstanceSkillsGroupsItemsEndpoint {
     query?: DashboardInstanceSkillsGroupsItemsListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsGroupsItemsListOutput> {
-    let path = `dashboard/instances/${instanceId}/skill-groups/${skillGroupId}/items`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/skill-groups/${encodeURIComponent(skillGroupId)}/items`;
 
     let request = {
       path,
@@ -81,7 +81,7 @@ export class MetorialDashboardInstanceSkillsGroupsItemsEndpoint {
 
   /**
    * @name Get skill group item
-   * @description Retrieves a specific skill group item.
+   * @description Retrieves a skill group item.
    *
    * @param `instanceId` - string
    * @param `skillGroupId` - string
@@ -97,7 +97,7 @@ export class MetorialDashboardInstanceSkillsGroupsItemsEndpoint {
     skillGroupItemId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsGroupsItemsGetOutput> {
-    let path = `dashboard/instances/${instanceId}/skill-groups/${skillGroupId}/items/${skillGroupItemId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/skill-groups/${encodeURIComponent(skillGroupId)}/items/${encodeURIComponent(skillGroupItemId)}`;
 
     let request = {
       path,
@@ -128,7 +128,7 @@ export class MetorialDashboardInstanceSkillsGroupsItemsEndpoint {
     body: DashboardInstanceSkillsGroupsItemsCreateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsGroupsItemsCreateOutput> {
-    let path = `dashboard/instances/${instanceId}/skill-groups/${skillGroupId}/items`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/skill-groups/${encodeURIComponent(skillGroupId)}/items`;
 
     let request = {
       path,
@@ -143,7 +143,7 @@ export class MetorialDashboardInstanceSkillsGroupsItemsEndpoint {
   }
 
   /**
-   * @name Delete skill group item
+   * @name Archive skill group item
    * @description Archives a skill group item.
    *
    * @param `instanceId` - string
@@ -160,7 +160,7 @@ export class MetorialDashboardInstanceSkillsGroupsItemsEndpoint {
     skillGroupItemId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsGroupsItemsDeleteOutput> {
-    let path = `dashboard/instances/${instanceId}/skill-groups/${skillGroupId}/items/${skillGroupItemId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/skill-groups/${encodeURIComponent(skillGroupId)}/items/${encodeURIComponent(skillGroupItemId)}`;
 
     let request = {
       path,

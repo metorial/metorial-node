@@ -1,6 +1,7 @@
 import { createMapper } from '@metorial/util-resource-mapper/compact';
 
 export type ProviderDeploymentsSetupSessionsListOutput = {
+  object: 'list';
   items: {
     object: 'provider.setup_session';
     id: string;
@@ -74,6 +75,7 @@ export type ProviderDeploymentsSetupSessionsListOutput = {
       status: 'active' | 'archived' | 'deleted';
       isDefault: boolean;
       isManaged: boolean;
+      managedBy: 'metorial' | 'installation' | null;
       name: string | null;
       description: string | null;
       metadata: Record<string, any> | null;
@@ -126,6 +128,7 @@ export type ProviderDeploymentsSetupSessionsListOutput = {
         status: 'active' | 'archived' | 'deleted';
         isDefault: boolean;
         isManaged: boolean;
+        managedBy: 'metorial' | 'installation' | null;
         name: string | null;
         description: string | null;
         metadata: Record<string, any> | null;
@@ -265,7 +268,12 @@ export type ProviderDeploymentsSetupSessionsListOutput = {
     updatedAt: Date;
     expiresAt: Date;
   }[];
-  pagination: { hasMoreBefore: boolean; hasMoreAfter: boolean };
+  pagination: {
+    hasMoreBefore: boolean;
+    hasMoreAfter: boolean;
+    before?: string | undefined;
+    after?: string | undefined;
+  };
 };
 
 export let mapProviderDeploymentsSetupSessionsListOutput =
@@ -327,6 +335,7 @@ export let mapProviderDeploymentsSetupSessionsListOutput =
               [
                 'is_default',
                 'is_managed',
+                'managed_by',
                 'provider_id',
                 'created_at',
                 'updated_at'
@@ -355,6 +364,7 @@ export let mapProviderDeploymentsSetupSessionsListOutput =
                     [
                       'is_default',
                       'is_managed',
+                      'managed_by',
                       'provider_id',
                       'created_at',
                       'updated_at'

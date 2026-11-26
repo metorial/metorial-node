@@ -20,7 +20,7 @@ import {
 
 /**
  * @name File Links controller
- * @description Files are private by default. If you want to share a file, you can create a link for it. Links are public and do not require authentication to access, so be careful with what you share.
+ * @description A file link is a public URL for a file. Anyone with the link can download the file without authenticating, until the link expires or is deleted.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -47,7 +47,7 @@ export class MetorialManagementInstanceFilesLinksEndpoint {
 
   /**
    * @name List file links
-   * @description Returns a paginated list of file links owned by the instance organization.
+   * @description Returns a paginated list of file links.
    *
    * @param `instanceId` - string
    * @param `query` - DashboardInstanceFilesLinksListQuery
@@ -61,7 +61,7 @@ export class MetorialManagementInstanceFilesLinksEndpoint {
     query?: DashboardInstanceFilesLinksListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceFilesLinksListOutput> {
-    let path = `instances/${instanceId}/file-links`;
+    let path = `instances/${encodeURIComponent(instanceId)}/file-links`;
 
     let request = {
       path,
@@ -78,8 +78,8 @@ export class MetorialManagementInstanceFilesLinksEndpoint {
   }
 
   /**
-   * @name Get file link by ID
-   * @description Retrieves the details of a specific file link by its ID.
+   * @name Get file link
+   * @description Retrieves a file link.
    *
    * @param `instanceId` - string
    * @param `linkId` - string
@@ -93,7 +93,7 @@ export class MetorialManagementInstanceFilesLinksEndpoint {
     linkId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceFilesLinksGetOutput> {
-    let path = `instances/${instanceId}/file-links/${linkId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/file-links/${encodeURIComponent(linkId)}`;
 
     let request = {
       path,
@@ -108,7 +108,7 @@ export class MetorialManagementInstanceFilesLinksEndpoint {
 
   /**
    * @name Create file link
-   * @description Creates a new link for a specific file.
+   * @description Creates a link for a file.
    *
    * @param `instanceId` - string
    * @param `body` - DashboardInstanceFilesLinksCreateBody
@@ -122,7 +122,7 @@ export class MetorialManagementInstanceFilesLinksEndpoint {
     body: DashboardInstanceFilesLinksCreateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceFilesLinksCreateOutput> {
-    let path = `instances/${instanceId}/file-links`;
+    let path = `instances/${encodeURIComponent(instanceId)}/file-links`;
 
     let request = {
       path,
@@ -137,8 +137,8 @@ export class MetorialManagementInstanceFilesLinksEndpoint {
   }
 
   /**
-   * @name Delete file link by ID
-   * @description Deletes a specific file link by its ID.
+   * @name Delete file link
+   * @description Deletes a file link. The file itself is kept.
    *
    * @param `instanceId` - string
    * @param `linkId` - string
@@ -152,7 +152,7 @@ export class MetorialManagementInstanceFilesLinksEndpoint {
     linkId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceFilesLinksDeleteOutput> {
-    let path = `instances/${instanceId}/file-links/${linkId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/file-links/${encodeURIComponent(linkId)}`;
 
     let request = {
       path,

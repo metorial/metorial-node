@@ -14,7 +14,7 @@ import {
 
 /**
  * @name Agents controller
- * @description Inspect agents and their linked clients and instances.
+ * @description An agent is an identity that acts in your instance. It links to the clients and instances it runs as.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -57,7 +57,7 @@ export class MetorialDashboardInstanceAgentsInstancesEndpoint {
     query?: DashboardInstanceAgentsInstancesListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceAgentsInstancesListOutput> {
-    let path = `dashboard/instances/${instanceId}/agents/${agentId}/instances`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/agents/${encodeURIComponent(agentId)}/instances`;
 
     let request = {
       path,
@@ -75,7 +75,7 @@ export class MetorialDashboardInstanceAgentsInstancesEndpoint {
 
   /**
    * @name Get agent instance
-   * @description Retrieves a specific agent instance by ID.
+   * @description Retrieves an agent instance.
    *
    * @param `instanceId` - string
    * @param `agentId` - string
@@ -91,7 +91,7 @@ export class MetorialDashboardInstanceAgentsInstancesEndpoint {
     agentInstanceId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceAgentsInstancesGetOutput> {
-    let path = `dashboard/instances/${instanceId}/agents/${agentId}/instances/${agentInstanceId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/agents/${encodeURIComponent(agentId)}/instances/${encodeURIComponent(agentInstanceId)}`;
 
     let request = {
       path,

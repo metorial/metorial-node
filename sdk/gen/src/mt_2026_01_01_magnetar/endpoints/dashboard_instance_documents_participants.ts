@@ -14,7 +14,7 @@ import {
 
 /**
  * @name Document Participants controller
- * @description Inspect document participants and their linked Metorial resources.
+ * @description A document participant is an actor with access to a document.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -41,7 +41,7 @@ export class MetorialDashboardInstanceDocumentsParticipantsEndpoint {
 
   /**
    * @name List document participants
-   * @description Returns a paginated list of participants for a specific document.
+   * @description Returns a paginated list of participants in a document.
    *
    * @param `instanceId` - string
    * @param `documentId` - string
@@ -57,7 +57,7 @@ export class MetorialDashboardInstanceDocumentsParticipantsEndpoint {
     query?: DashboardInstanceDocumentsParticipantsListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceDocumentsParticipantsListOutput> {
-    let path = `dashboard/instances/${instanceId}/documents/${documentId}/participants`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/documents/${encodeURIComponent(documentId)}/participants`;
 
     let request = {
       path,
@@ -74,8 +74,8 @@ export class MetorialDashboardInstanceDocumentsParticipantsEndpoint {
   }
 
   /**
-   * @name Get document participant by ID
-   * @description Retrieves a specific document participant by its ID.
+   * @name Get document participant
+   * @description Retrieves a participant in a document.
    *
    * @param `instanceId` - string
    * @param `documentId` - string
@@ -91,7 +91,7 @@ export class MetorialDashboardInstanceDocumentsParticipantsEndpoint {
     documentParticipantId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceDocumentsParticipantsGetOutput> {
-    let path = `dashboard/instances/${instanceId}/documents/${documentId}/participants/${documentParticipantId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/documents/${encodeURIComponent(documentId)}/participants/${encodeURIComponent(documentParticipantId)}`;
 
     let request = {
       path,

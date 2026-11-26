@@ -22,7 +22,7 @@ import {
 
 /**
  * @name ProtoGuard Config controller
- * @description ProtoGuard config controls prompt-injection filters and alert thresholds.
+ * @description ProtoGuard config is the prompt-injection filter set for an instance. It controls which filters run and when they raise alerts.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -49,7 +49,7 @@ export class MetorialManagementInstanceProtoGuardConfigEndpoint {
 
   /**
    * @name Get ProtoGuard config
-   * @description Retrieves ProtoGuard filter configuration for this instance.
+   * @description Retrieves the ProtoGuard config for the instance.
    *
    * @param `instanceId` - string
    * @param `opts` - { headers?: Record<string, string> }
@@ -61,7 +61,7 @@ export class MetorialManagementInstanceProtoGuardConfigEndpoint {
     instanceId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProtoGuardConfigGetOutput> {
-    let path = `instances/${instanceId}/protoguard-config`;
+    let path = `instances/${encodeURIComponent(instanceId)}/protoguard-config`;
 
     let request = {
       path,
@@ -90,7 +90,7 @@ export class MetorialManagementInstanceProtoGuardConfigEndpoint {
     body: DashboardInstanceProtoGuardConfigUpdateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProtoGuardConfigUpdateOutput> {
-    let path = `instances/${instanceId}/protoguard-config`;
+    let path = `instances/${encodeURIComponent(instanceId)}/protoguard-config`;
 
     let request = {
       path,
@@ -122,7 +122,7 @@ export class MetorialManagementInstanceProtoGuardConfigEndpoint {
     body: DashboardInstanceProtoGuardConfigUpdateFilterBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProtoGuardConfigUpdateFilterOutput> {
-    let path = `instances/${instanceId}/protoguard-config/filters/${filterId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/protoguard-config/filters/${encodeURIComponent(filterId)}`;
 
     let request = {
       path,
@@ -154,7 +154,7 @@ export class MetorialManagementInstanceProtoGuardConfigEndpoint {
     body: DashboardInstanceProtoGuardConfigSetAlertFilterCountThresholdBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProtoGuardConfigSetAlertFilterCountThresholdOutput> {
-    let path = `instances/${instanceId}/protoguard-config/alert-filter-count-threshold`;
+    let path = `instances/${encodeURIComponent(instanceId)}/protoguard-config/alert-filter-count-threshold`;
 
     let request = {
       path,

@@ -32,7 +32,7 @@ import {
 
 /**
  * @name Magic MCP Endpoints controller
- * @description Magic MCP endpoints combine multiple Magic MCP servers behind one routed connection target.
+ * @description A magic MCP endpoint is one connection target that routes to multiple magic MCP servers.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -73,7 +73,7 @@ export class MetorialManagementInstanceMagicMcpEndpointsEndpoint {
     query?: DashboardInstanceMagicMcpEndpointsListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceMagicMcpEndpointsListOutput> {
-    let path = `instances/${instanceId}/magic-mcp-endpoints`;
+    let path = `instances/${encodeURIComponent(instanceId)}/magic-mcp-endpoints`;
 
     let request = {
       path,
@@ -105,7 +105,7 @@ export class MetorialManagementInstanceMagicMcpEndpointsEndpoint {
     magicMcpEndpointId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceMagicMcpEndpointsGetOutput> {
-    let path = `instances/${instanceId}/magic-mcp-endpoints/${magicMcpEndpointId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/magic-mcp-endpoints/${encodeURIComponent(magicMcpEndpointId)}`;
 
     let request = {
       path,
@@ -134,7 +134,7 @@ export class MetorialManagementInstanceMagicMcpEndpointsEndpoint {
     body: DashboardInstanceMagicMcpEndpointsCreateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceMagicMcpEndpointsCreateOutput> {
-    let path = `instances/${instanceId}/magic-mcp-endpoints`;
+    let path = `instances/${encodeURIComponent(instanceId)}/magic-mcp-endpoints`;
 
     let request = {
       path,
@@ -149,7 +149,7 @@ export class MetorialManagementInstanceMagicMcpEndpointsEndpoint {
   }
 
   /**
-   * @name Delete magic MCP endpoint
+   * @name Archive magic MCP endpoint
    * @description Archives a magic MCP endpoint.
    *
    * @param `instanceId` - string
@@ -164,7 +164,7 @@ export class MetorialManagementInstanceMagicMcpEndpointsEndpoint {
     magicMcpEndpointId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceMagicMcpEndpointsDeleteOutput> {
-    let path = `instances/${instanceId}/magic-mcp-endpoints/${magicMcpEndpointId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/magic-mcp-endpoints/${encodeURIComponent(magicMcpEndpointId)}`;
 
     let request = {
       path,
@@ -179,7 +179,7 @@ export class MetorialManagementInstanceMagicMcpEndpointsEndpoint {
 
   /**
    * @name Update magic MCP endpoint
-   * @description Updates a magic MCP endpoint.
+   * @description Updates a magic MCP endpoint. Omitted fields keep their current value.
    *
    * @param `instanceId` - string
    * @param `magicMcpEndpointId` - string
@@ -195,7 +195,7 @@ export class MetorialManagementInstanceMagicMcpEndpointsEndpoint {
     body: DashboardInstanceMagicMcpEndpointsUpdateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceMagicMcpEndpointsUpdateOutput> {
-    let path = `instances/${instanceId}/magic-mcp-endpoints/${magicMcpEndpointId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/magic-mcp-endpoints/${encodeURIComponent(magicMcpEndpointId)}`;
 
     let request = {
       path,
@@ -227,7 +227,7 @@ export class MetorialManagementInstanceMagicMcpEndpointsEndpoint {
     body: DashboardInstanceMagicMcpEndpointsAddServersBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceMagicMcpEndpointsAddServersOutput> {
-    let path = `instances/${instanceId}/magic-mcp-endpoints/${magicMcpEndpointId}/add-servers`;
+    let path = `instances/${encodeURIComponent(instanceId)}/magic-mcp-endpoints/${encodeURIComponent(magicMcpEndpointId)}/add-servers`;
 
     let request = {
       path,
@@ -261,7 +261,7 @@ export class MetorialManagementInstanceMagicMcpEndpointsEndpoint {
     body: DashboardInstanceMagicMcpEndpointsRemoveServersBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceMagicMcpEndpointsRemoveServersOutput> {
-    let path = `instances/${instanceId}/magic-mcp-endpoints/${magicMcpEndpointId}/remove-servers`;
+    let path = `instances/${encodeURIComponent(instanceId)}/magic-mcp-endpoints/${encodeURIComponent(magicMcpEndpointId)}/remove-servers`;
 
     let request = {
       path,

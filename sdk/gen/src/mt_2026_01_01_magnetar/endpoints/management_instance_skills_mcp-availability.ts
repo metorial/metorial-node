@@ -10,7 +10,7 @@ import {
 
 /**
  * @name Skill Files controller
- * @description Read and edit the files of a skill by path.
+ * @description Skill files are the versioned files that make up a skill, addressed by path.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -51,7 +51,7 @@ export class MetorialManagementInstanceSkillsMcpAvailabilityEndpoint {
     skillId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceSkillsMcpAvailabilityGetOutput> {
-    let path = `instances/${instanceId}/skills/${skillId}/mcp-availability`;
+    let path = `instances/${encodeURIComponent(instanceId)}/skills/${encodeURIComponent(skillId)}/mcp-availability`;
 
     let request = {
       path,

@@ -16,7 +16,7 @@ import {
 
 /**
  * @name Custom Provider Deployments controller
- * @description Deployments track the build and deployment process of custom provider versions. View deployment status and logs.
+ * @description A custom provider deployment is a build and rollout of one custom provider version.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -43,7 +43,7 @@ export class MetorialDashboardInstanceCustomProvidersDeploymentsEndpoint {
 
   /**
    * @name List custom provider deployments
-   * @description Returns a paginated list of deployments for a custom provider.
+   * @description Returns a paginated list of custom provider deployments.
    *
    * @param `instanceId` - string
    * @param `query` - DashboardInstanceCustomProvidersDeploymentsListQuery
@@ -57,7 +57,7 @@ export class MetorialDashboardInstanceCustomProvidersDeploymentsEndpoint {
     query?: DashboardInstanceCustomProvidersDeploymentsListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceCustomProvidersDeploymentsListOutput> {
-    let path = `dashboard/instances/${instanceId}/custom-provider-deployments`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/custom-provider-deployments`;
 
     let request = {
       path,
@@ -77,7 +77,7 @@ export class MetorialDashboardInstanceCustomProvidersDeploymentsEndpoint {
 
   /**
    * @name Get custom provider deployment
-   * @description Retrieves a specific deployment.
+   * @description Retrieves a custom provider deployment.
    *
    * @param `instanceId` - string
    * @param `customProviderDeploymentId` - string
@@ -91,7 +91,7 @@ export class MetorialDashboardInstanceCustomProvidersDeploymentsEndpoint {
     customProviderDeploymentId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceCustomProvidersDeploymentsGetOutput> {
-    let path = `dashboard/instances/${instanceId}/custom-provider-deployments/${customProviderDeploymentId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/custom-provider-deployments/${encodeURIComponent(customProviderDeploymentId)}`;
 
     let request = {
       path,
@@ -105,8 +105,8 @@ export class MetorialDashboardInstanceCustomProvidersDeploymentsEndpoint {
   }
 
   /**
-   * @name Get deployment logs
-   * @description Retrieves the build and deployment logs for a deployment.
+   * @name Get custom provider deployment logs
+   * @description Retrieves the build and deployment logs for a custom provider deployment.
    *
    * @param `instanceId` - string
    * @param `customProviderDeploymentId` - string
@@ -120,7 +120,7 @@ export class MetorialDashboardInstanceCustomProvidersDeploymentsEndpoint {
     customProviderDeploymentId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceCustomProvidersDeploymentsGetLogsOutput> {
-    let path = `dashboard/instances/${instanceId}/custom-provider-deployments/${customProviderDeploymentId}/logs`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/custom-provider-deployments/${encodeURIComponent(customProviderDeploymentId)}/logs`;
 
     let request = {
       path,

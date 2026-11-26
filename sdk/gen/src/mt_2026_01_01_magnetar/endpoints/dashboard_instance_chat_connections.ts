@@ -65,7 +65,7 @@ export class MetorialDashboardInstanceChatConnectionsEndpoint {
     query?: DashboardInstanceChatConnectionsListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceChatConnectionsListOutput> {
-    let path = `dashboard/instances/${instanceId}/chat/connections`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/chat/connections`;
 
     let request = {
       path,
@@ -83,7 +83,7 @@ export class MetorialDashboardInstanceChatConnectionsEndpoint {
 
   /**
    * @name Get chat connection
-   * @description Retrieves a specific chat connection.
+   * @description Retrieves a chat connection.
    *
    * @param `instanceId` - string
    * @param `chatConnectionId` - string
@@ -97,7 +97,7 @@ export class MetorialDashboardInstanceChatConnectionsEndpoint {
     chatConnectionId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceChatConnectionsGetOutput> {
-    let path = `dashboard/instances/${instanceId}/chat/connections/${chatConnectionId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/chat/connections/${encodeURIComponent(chatConnectionId)}`;
 
     let request = {
       path,
@@ -126,7 +126,7 @@ export class MetorialDashboardInstanceChatConnectionsEndpoint {
     body: DashboardInstanceChatConnectionsCreateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceChatConnectionsCreateOutput> {
-    let path = `dashboard/instances/${instanceId}/chat/connections`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/chat/connections`;
 
     let request = {
       path,
@@ -142,7 +142,7 @@ export class MetorialDashboardInstanceChatConnectionsEndpoint {
 
   /**
    * @name Update chat connection
-   * @description Updates a specific chat connection.
+   * @description Updates a chat connection. Omitted fields keep their current value.
    *
    * @param `instanceId` - string
    * @param `chatConnectionId` - string
@@ -158,7 +158,7 @@ export class MetorialDashboardInstanceChatConnectionsEndpoint {
     body: DashboardInstanceChatConnectionsUpdateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceChatConnectionsUpdateOutput> {
-    let path = `dashboard/instances/${instanceId}/chat/connections/${chatConnectionId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/chat/connections/${encodeURIComponent(chatConnectionId)}`;
 
     let request = {
       path,
@@ -173,8 +173,8 @@ export class MetorialDashboardInstanceChatConnectionsEndpoint {
   }
 
   /**
-   * @name Delete chat connection
-   * @description Archives a specific chat connection.
+   * @name Archive chat connection
+   * @description Archives a chat connection. It stays listable with `status=archived`.
    *
    * @param `instanceId` - string
    * @param `chatConnectionId` - string
@@ -188,7 +188,7 @@ export class MetorialDashboardInstanceChatConnectionsEndpoint {
     chatConnectionId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceChatConnectionsDeleteOutput> {
-    let path = `dashboard/instances/${instanceId}/chat/connections/${chatConnectionId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/chat/connections/${encodeURIComponent(chatConnectionId)}`;
 
     let request = {
       path,

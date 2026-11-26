@@ -26,7 +26,7 @@ import {
 
 /**
  * @name Magic MCP Servers controller
- * @description Magic MCP servers are stable MCP entrypoints backed by one Subspace session template.
+ * @description A magic MCP server is a stable MCP entrypoint with its own providers and tool filters. Servers can be grouped and bound to tokens, or combined behind an endpoint.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -67,7 +67,7 @@ export class MetorialManagementInstanceMagicMcpServersEndpoint {
     query?: DashboardInstanceMagicMcpServersListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceMagicMcpServersListOutput> {
-    let path = `instances/${instanceId}/magic-mcp-servers`;
+    let path = `instances/${encodeURIComponent(instanceId)}/magic-mcp-servers`;
 
     let request = {
       path,
@@ -99,7 +99,7 @@ export class MetorialManagementInstanceMagicMcpServersEndpoint {
     magicMcpServerId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceMagicMcpServersGetOutput> {
-    let path = `instances/${instanceId}/magic-mcp-servers/${magicMcpServerId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/magic-mcp-servers/${encodeURIComponent(magicMcpServerId)}`;
 
     let request = {
       path,
@@ -128,7 +128,7 @@ export class MetorialManagementInstanceMagicMcpServersEndpoint {
     magicMcpServerId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceMagicMcpServersToolsOutput> {
-    let path = `instances/${instanceId}/magic-mcp-servers/${magicMcpServerId}/tools`;
+    let path = `instances/${encodeURIComponent(instanceId)}/magic-mcp-servers/${encodeURIComponent(magicMcpServerId)}/tools`;
 
     let request = {
       path,
@@ -143,7 +143,7 @@ export class MetorialManagementInstanceMagicMcpServersEndpoint {
 
   /**
    * @name Create magic MCP server
-   * @description Creates a magic MCP server with a new session template. A Subspace session is created automatically on first connection and then reused.
+   * @description Creates a magic MCP server. A session is created automatically on first connection and then reused.
    *
    * @param `instanceId` - string
    * @param `body` - DashboardInstanceMagicMcpServersCreateBody
@@ -157,7 +157,7 @@ export class MetorialManagementInstanceMagicMcpServersEndpoint {
     body: DashboardInstanceMagicMcpServersCreateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceMagicMcpServersCreateOutput> {
-    let path = `instances/${instanceId}/magic-mcp-servers`;
+    let path = `instances/${encodeURIComponent(instanceId)}/magic-mcp-servers`;
 
     let request = {
       path,
@@ -172,7 +172,7 @@ export class MetorialManagementInstanceMagicMcpServersEndpoint {
   }
 
   /**
-   * @name Delete magic MCP server
+   * @name Archive magic MCP server
    * @description Archives a magic MCP server.
    *
    * @param `instanceId` - string
@@ -187,7 +187,7 @@ export class MetorialManagementInstanceMagicMcpServersEndpoint {
     magicMcpServerId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceMagicMcpServersDeleteOutput> {
-    let path = `instances/${instanceId}/magic-mcp-servers/${magicMcpServerId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/magic-mcp-servers/${encodeURIComponent(magicMcpServerId)}`;
 
     let request = {
       path,
@@ -202,7 +202,7 @@ export class MetorialManagementInstanceMagicMcpServersEndpoint {
 
   /**
    * @name Update magic MCP server
-   * @description Updates a magic MCP server.
+   * @description Updates a magic MCP server. Omitted fields keep their current value.
    *
    * @param `instanceId` - string
    * @param `magicMcpServerId` - string
@@ -218,7 +218,7 @@ export class MetorialManagementInstanceMagicMcpServersEndpoint {
     body: DashboardInstanceMagicMcpServersUpdateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceMagicMcpServersUpdateOutput> {
-    let path = `instances/${instanceId}/magic-mcp-servers/${magicMcpServerId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/magic-mcp-servers/${encodeURIComponent(magicMcpServerId)}`;
 
     let request = {
       path,

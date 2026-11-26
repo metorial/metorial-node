@@ -14,7 +14,7 @@ import {
 
 /**
  * @name Provider Triggers controller
- * @description A provider trigger describes an event source a provider can emit for callbacks. Use triggers to discover which callback subscriptions a provider version supports.
+ * @description A provider trigger is an event a provider can emit for callbacks. Each provider version has its own set of triggers.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -55,7 +55,7 @@ export class MetorialDashboardInstanceProvidersTriggersEndpoint {
     query?: DashboardInstanceProvidersTriggersListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProvidersTriggersListOutput> {
-    let path = `dashboard/instances/${instanceId}/provider-triggers`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/provider-triggers`;
 
     let request = {
       path,
@@ -87,7 +87,7 @@ export class MetorialDashboardInstanceProvidersTriggersEndpoint {
     providerTriggerId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProvidersTriggersGetOutput> {
-    let path = `dashboard/instances/${instanceId}/provider-triggers/${providerTriggerId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/provider-triggers/${encodeURIComponent(providerTriggerId)}`;
 
     let request = {
       path,

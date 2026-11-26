@@ -24,7 +24,7 @@ import {
 
 /**
  * @name Firewalls controller
- * @description Manage firewalls and their attached network policies. Firewalls apply to integration enclaves, providers, and sandbox machines.
+ * @description A firewall is a set of network policies applied to targets. Firewalls apply to integration enclaves, providers, and sandbox machines.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -51,7 +51,7 @@ export class MetorialManagementInstanceFirewallsEndpoint {
 
   /**
    * @name List firewalls
-   * @description Returns a paginated list of firewalls.
+   * @description Returns a paginated list of firewalls in the instance.
    *
    * @param `instanceId` - string
    * @param `query` - DashboardInstanceFirewallsListQuery
@@ -65,7 +65,7 @@ export class MetorialManagementInstanceFirewallsEndpoint {
     query?: DashboardInstanceFirewallsListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceFirewallsListOutput> {
-    let path = `instances/${instanceId}/firewalls`;
+    let path = `instances/${encodeURIComponent(instanceId)}/firewalls`;
 
     let request = {
       path,
@@ -83,7 +83,7 @@ export class MetorialManagementInstanceFirewallsEndpoint {
 
   /**
    * @name Get firewall
-   * @description Retrieves a specific firewall by ID.
+   * @description Retrieves a firewall.
    *
    * @param `instanceId` - string
    * @param `firewallId` - string
@@ -97,7 +97,7 @@ export class MetorialManagementInstanceFirewallsEndpoint {
     firewallId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceFirewallsGetOutput> {
-    let path = `instances/${instanceId}/firewalls/${firewallId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/firewalls/${encodeURIComponent(firewallId)}`;
 
     let request = {
       path,
@@ -110,7 +110,7 @@ export class MetorialManagementInstanceFirewallsEndpoint {
 
   /**
    * @name Create firewall
-   * @description Creates a new firewall.
+   * @description Creates a firewall.
    *
    * @param `instanceId` - string
    * @param `body` - DashboardInstanceFirewallsCreateBody
@@ -124,7 +124,7 @@ export class MetorialManagementInstanceFirewallsEndpoint {
     body: DashboardInstanceFirewallsCreateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceFirewallsCreateOutput> {
-    let path = `instances/${instanceId}/firewalls`;
+    let path = `instances/${encodeURIComponent(instanceId)}/firewalls`;
 
     let request = {
       path,
@@ -140,7 +140,7 @@ export class MetorialManagementInstanceFirewallsEndpoint {
 
   /**
    * @name Update firewall
-   * @description Updates a firewall definition.
+   * @description Updates a firewall. Omitted fields keep their current value.
    *
    * @param `instanceId` - string
    * @param `firewallId` - string
@@ -156,7 +156,7 @@ export class MetorialManagementInstanceFirewallsEndpoint {
     body: DashboardInstanceFirewallsUpdateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceFirewallsUpdateOutput> {
-    let path = `instances/${instanceId}/firewalls/${firewallId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/firewalls/${encodeURIComponent(firewallId)}`;
 
     let request = {
       path,
@@ -171,8 +171,8 @@ export class MetorialManagementInstanceFirewallsEndpoint {
   }
 
   /**
-   * @name Delete firewall
-   * @description Archives a firewall.
+   * @name Archive firewall
+   * @description Archives a firewall. It stays listable with `status=archived`.
    *
    * @param `instanceId` - string
    * @param `firewallId` - string
@@ -186,7 +186,7 @@ export class MetorialManagementInstanceFirewallsEndpoint {
     firewallId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceFirewallsDeleteOutput> {
-    let path = `instances/${instanceId}/firewalls/${firewallId}`;
+    let path = `instances/${encodeURIComponent(instanceId)}/firewalls/${encodeURIComponent(firewallId)}`;
 
     let request = {
       path,

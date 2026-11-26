@@ -24,7 +24,7 @@ import {
 
 /**
  * @name Stores controller
- * @description Create and manage instance stores backed by Cargo.
+ * @description A store is a shared collection of files and documents. Participants get read or write access to its contents.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -51,7 +51,7 @@ export class MetorialDashboardInstanceStoresEndpoint {
 
   /**
    * @name List stores
-   * @description Returns a paginated list of stores owned by the instance.
+   * @description Returns a paginated list of stores.
    *
    * @param `instanceId` - string
    * @param `query` - DashboardInstanceStoresListQuery
@@ -65,7 +65,7 @@ export class MetorialDashboardInstanceStoresEndpoint {
     query?: DashboardInstanceStoresListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceStoresListOutput> {
-    let path = `dashboard/instances/${instanceId}/stores`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/stores`;
 
     let request = {
       path,
@@ -81,7 +81,7 @@ export class MetorialDashboardInstanceStoresEndpoint {
 
   /**
    * @name Create store
-   * @description Creates a new store for the instance.
+   * @description Creates a store.
    *
    * @param `instanceId` - string
    * @param `body` - DashboardInstanceStoresCreateBody
@@ -95,7 +95,7 @@ export class MetorialDashboardInstanceStoresEndpoint {
     body: DashboardInstanceStoresCreateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceStoresCreateOutput> {
-    let path = `dashboard/instances/${instanceId}/stores`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/stores`;
 
     let request = {
       path,
@@ -110,8 +110,8 @@ export class MetorialDashboardInstanceStoresEndpoint {
   }
 
   /**
-   * @name Get store by ID
-   * @description Retrieves a store by its ID.
+   * @name Get store
+   * @description Retrieves a store.
    *
    * @param `instanceId` - string
    * @param `storeId` - string
@@ -125,7 +125,7 @@ export class MetorialDashboardInstanceStoresEndpoint {
     storeId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceStoresGetOutput> {
-    let path = `dashboard/instances/${instanceId}/stores/${storeId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/stores/${encodeURIComponent(storeId)}`;
 
     let request = {
       path,
@@ -137,8 +137,8 @@ export class MetorialDashboardInstanceStoresEndpoint {
   }
 
   /**
-   * @name Update store by ID
-   * @description Updates a specific store.
+   * @name Update store
+   * @description Updates a store.
    *
    * @param `instanceId` - string
    * @param `storeId` - string
@@ -154,7 +154,7 @@ export class MetorialDashboardInstanceStoresEndpoint {
     body: DashboardInstanceStoresUpdateBody,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceStoresUpdateOutput> {
-    let path = `dashboard/instances/${instanceId}/stores/${storeId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/stores/${encodeURIComponent(storeId)}`;
 
     let request = {
       path,
@@ -169,8 +169,8 @@ export class MetorialDashboardInstanceStoresEndpoint {
   }
 
   /**
-   * @name Delete store by ID
-   * @description Deletes a specific store.
+   * @name Delete store
+   * @description Deletes a store.
    *
    * @param `instanceId` - string
    * @param `storeId` - string
@@ -184,7 +184,7 @@ export class MetorialDashboardInstanceStoresEndpoint {
     storeId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceStoresDeleteOutput> {
-    let path = `dashboard/instances/${instanceId}/stores/${storeId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/stores/${encodeURIComponent(storeId)}`;
 
     let request = {
       path,

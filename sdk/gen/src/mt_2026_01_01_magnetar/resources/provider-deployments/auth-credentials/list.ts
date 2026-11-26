@@ -1,6 +1,7 @@
 import { createMapper } from '@metorial/util-resource-mapper/compact';
 
 export type ProviderDeploymentsAuthCredentialsListOutput = {
+  object: 'list';
   items: {
     object: 'provider.auth_credentials';
     id: string;
@@ -8,6 +9,7 @@ export type ProviderDeploymentsAuthCredentialsListOutput = {
     status: 'active' | 'archived' | 'deleted';
     isDefault: boolean;
     isManaged: boolean;
+    managedBy: 'metorial' | 'installation' | null;
     name: string | null;
     description: string | null;
     metadata: Record<string, any> | null;
@@ -16,7 +18,12 @@ export type ProviderDeploymentsAuthCredentialsListOutput = {
     createdAt: Date;
     updatedAt: Date;
   }[];
-  pagination: { hasMoreBefore: boolean; hasMoreAfter: boolean };
+  pagination: {
+    hasMoreBefore: boolean;
+    hasMoreAfter: boolean;
+    before?: string | undefined;
+    after?: string | undefined;
+  };
 };
 
 export let mapProviderDeploymentsAuthCredentialsListOutput =
@@ -25,7 +32,14 @@ export let mapProviderDeploymentsAuthCredentialsListOutput =
       7,
       [
         1,
-        ['is_default', 'is_managed', 'provider_id', 'created_at', 'updated_at']
+        [
+          'is_default',
+          'is_managed',
+          'managed_by',
+          'provider_id',
+          'created_at',
+          'updated_at'
+        ]
       ]
     ],
     1

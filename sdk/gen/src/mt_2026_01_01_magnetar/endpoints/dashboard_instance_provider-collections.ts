@@ -14,7 +14,7 @@ import {
 
 /**
  * @name Provider Collections controller
- * @description A collection is a curated set of providers like 'Featured', 'Most Popular', or 'New Arrivals'.
+ * @description A provider collection is a curated set of providers.
  *
  * @see https://metorial.com/api
  * @see https://metorial.com/docs
@@ -55,7 +55,7 @@ export class MetorialDashboardInstanceProviderCollectionsEndpoint {
     query?: DashboardInstanceProviderCollectionsListQuery,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProviderCollectionsListOutput> {
-    let path = `dashboard/instances/${instanceId}/provider-collections`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/provider-collections`;
 
     let request = {
       path,
@@ -87,7 +87,7 @@ export class MetorialDashboardInstanceProviderCollectionsEndpoint {
     providerCollectionId: string,
     opts?: { headers?: Record<string, string> }
   ): Promise<DashboardInstanceProviderCollectionsGetOutput> {
-    let path = `dashboard/instances/${instanceId}/provider-collections/${providerCollectionId}`;
+    let path = `dashboard/instances/${encodeURIComponent(instanceId)}/provider-collections/${encodeURIComponent(providerCollectionId)}`;
 
     let request = {
       path,
